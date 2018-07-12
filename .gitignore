@@ -1,0 +1,6 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+#Editor 
+Hub Pitch.code-workspace
+# dependencies
+node_modules
+package-lock.json

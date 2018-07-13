@@ -1,5 +1,4 @@
 const md5 = require("md5");
-const uuidV4 = require("uuid/v4");
 const db = require("./db");
 const Joi = require("joi");
 const nodemailer = require("nodemailer");
@@ -8,6 +7,7 @@ const jwtsecret = "Narola123";
 const expiresIn = 86400; // expires in 24 hours
 class authController {
   static async singup(req, res, next) {
+    console.log('BODD',req.body);
     try {
       const userData = Joi.validate(Object.assign(req.params, req.body), {
         firstName: Joi.string()
@@ -34,10 +34,10 @@ class authController {
       }
 
       db.query(
-        "SELECT * FROM users WHERE email = ?",
+        "SELECT * FROM hp_users WHERE email = ?",
         [req.body.email],
-        function(error, results, fields) {
-          //console.log(error, results, fields);
+        function (error, results, fields) {
+          console.log(error, results, fields);
           if (results.length) {
             res.send({
               success: false,
@@ -62,13 +62,13 @@ class authController {
             tomail = req.body.email;
             // setup e-mail data with unicode symbols
             var mailOptions = {
-              from: "getprep.io@gmail.com", // sender address
+              from: "demo.narolainfotech@gmail.com", // sender address
               to: tomail, // list of receivers
               subject: "Random password for login", // Subject line
               html: "<h1> Your rendom password is" + randompassword + "</h1>"
             };
             // send mail with defined transport object
-            smtpTransport.sendMail(mailOptions, function(err, info) {
+            smtpTransport.sendMail(mailOptions, function (err, info) {
               if (err) {
                 console.log(err);
               } else {
@@ -78,14 +78,13 @@ class authController {
 
             //------------------------preparing user object----------------------
             var newUser = {
-              user_id: uuidV4(),
               first_name: req.body.firstName,
               last_name: req.body.lastName,
               email: req.body.email,
               password: md5(randompassword)
             };
 
-            db.query("INSERT INTO users SET ?", newUser, function(
+            db.query("INSERT INTO hp_users SET ?", newUser, function (
               error,
               results,
               fields
@@ -95,7 +94,6 @@ class authController {
                 res.send({ success: "false", message: "Something went wrong" });
               }
               if (results) {
-                //console.log(results);
                 res.send({ success: true });
               }
             });
@@ -114,9 +112,9 @@ class authController {
         email: Joi.string()
           .email()
           .required(),
-        password:Joi.string()
+        password: Joi.string()
           .min(3)
-          .required()      
+          .required()
       });
 
       if (userData.error) {
@@ -124,10 +122,9 @@ class authController {
         return;
       }
       db.query(
-        'SELECT * FROM users WHERE email = ? AND password = ? AND role = 0',
-        [req.body.email,md5(req.body.password)],
-        //'SELECT * FROM users WHERE email = '+ req.body.email +' AND password ='+ md5(req.body.password),
-        function(error, results, fields) {
+        'SELECT * FROM hp_users WHERE email = ? AND password = ?',
+        [req.body.email, md5(req.body.password)],
+        function (error, results, fields) {
           console.log(error, results, fields);
           if (results.length) {
             console.log(results.user_id);
@@ -137,8 +134,8 @@ class authController {
 
             res.send({
               success: true,
-              message:"Successfully signin.",
-              accesstoken :authToken             
+              message: "Successfully signin.",
+              accesstoken: authToken
             });
           } else {
             res.send({
@@ -146,15 +143,11 @@ class authController {
               message: "email or password is incorrect"
             });
           }
-          });
-
-    }catch (error) {
+        });
+    } catch (error) {
       console.error(error);
       res.send({ success: false, error });
     }
   }
-
-
-
 }
 module.exports = authController;

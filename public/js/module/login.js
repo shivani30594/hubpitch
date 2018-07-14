@@ -27,17 +27,27 @@ const Login = function () {
                     "lastName": lastName,
                     "email": email
                 }
-                fetch('http://localhost:3000/signup', {
-                    method: 'post',
-                    headers: {
-                        'Accept': 'application/json',
+                var data = new FormData();
+                data.append( "json", JSON.stringify( DataJson ) );
+                console.log(data);
+                $.ajax({
+                    url: 'http://localhost:3000/signup',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        firstName:  $('#sign_up_form input[name="firstName"]').val(),
+                        lastName: $('#sign_up_form input[name="lastName"]').val(),
+                        email: $('#sign_up_form input[name="email"]').val()
                     },
-                    body: DataJson
-                }).then(function (response) {
-                    console.log(response);
-                    return response.json();
-                }).then(function (myJson) {
-                    console.log(myJson);
+                    success: function(response) {
+                        if(!response.success) {
+                            return alert(JSON.stringify(response.error));
+                        }
+                       console.log(response)
+                    },
+                    error: function(jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    }
                 });
                 //form.submit();
             }

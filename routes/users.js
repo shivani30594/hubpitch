@@ -1,9 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const Controller = require('../userController');
-bodyParser = require('body-parser'),
-router
-    .use(bodyParser.json())
 function wrap(func) {
   return async (req, res, next) => {
       try {
@@ -23,6 +20,12 @@ router.get('/signup', function(req, res, next) {
 });
 router.get('/payment', function(req, res, next) {
     res.render('loginModule/', { title: 'Payment Page || Hub Pitch' });
+});
+router.get('/forgot-password',function(req,res,next){
+    res.render('loginModule/forget', { title: 'Forgot Password || Hub Pitch' });
+});
+router.get('/reset-password',function(req,res,next){
+    res.render('loginModule/reset', { title: 'Reset Password || Hub Pitch' });
 });
 
 router.post('/signup',Controller.authController.singup);

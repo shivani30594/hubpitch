@@ -149,5 +149,11 @@ class authController {
       res.send({ success: false, error });
     }
   }
+  static async forgotPasswor(req,res,next){
+
+  }
+  static async resetPassword(req,res,next){
+
+  }
 }
 module.exports = authController;

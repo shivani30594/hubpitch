@@ -25,6 +25,7 @@ router.get('/forgot-password',function(req,res,next){
     res.render('loginModule/forget', { title: 'Forgot Password || Hub Pitch' });
 });
 router.get('/reset-password/:id',Controller.authController.checkToken);
+router.get('/user/dashboard',Controller.dashboardController.dashboard);
 
 router.post('/signup',Controller.authController.singup);
 router.post('/signin',Controller.authController.signin);

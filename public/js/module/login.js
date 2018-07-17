@@ -113,9 +113,47 @@ const Login = function () {
             }
         });
     }
+    const handleLogin = () => {
+        $("#sign_in").validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'error-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                }
+            },
+            submitHandler: function (form) {
+                $.ajax({
+                    url: 'http://localhost:3000/forgot_password',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        email: $('#sign_in input[name="email"]').val(),
+                        password: $('#sign_in input[name="password"]').val()
+                    },
+                    success: function(response) {
+                        if(!response.success) {
+                            return alert(JSON.stringify(response.message));
+                        }
+                        window.location.href = "/";
+                    },
+                    error: function(jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    }
+                });
+            }
+        });
+    }
     return {
         //main function to initiate the module
         init: function () {
+            handleLogin();
             handleSignUp();
             fogotPassword();
             resetPassword();

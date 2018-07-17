@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>
+		<%= title %>
+	</title>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"><!-- bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"><!-- Optional theme -->
+
+	<script src="/js/jquery.min.js"></script><!--jquery js-->	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><!-- bootstrap js -->
+	<script src="https://use.fontawesome.com/8a22b161e0.js"></script> <!-- font awesome -->
+	<script src="/js/custom.js"></script>
+
+	<link rel="stylesheet" href="/stylesheets/style.css"> <!-- custom css -->
+
+	<link rel="shortcut icon" type="/img/logo.png" href="/favicon.png"/>
+	<link rel="shortcut icon" type="/img/logo.png" href="http://example.com/favicon.png"/>
+
+</head>
+<body>
+	<header class="custom-header">
+		<div class="container">
+			<div class="row">
+				<nav class="navigation">
+				    
+				    <div class="menu-items">
+				    	<div class="mobile-menu">
+				     	<a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+				    </div>
+				      <ul>
+				        <li class="active"><a href="#">Home</a></li>
+				        <li><a href="#">Add a New Pitch</a></li>
+				        <li><a href="#" data-toggle="modal" data-target="#SearchModal">Support</a></li>
+				        <li class="logo"><a href="#"><img src="/img/white-logo.png" alt="Logo"></a></li>
+				      </ul>
+				    <div class="search-box">
+				     	<form>
+					        <div class="form-group">
+					         	<input type="text" class="form-control" placeholder="Search...">
+					        </div>
+				      	</form>
+				    </div>
+			        <div class="logged-user">
+			        	<ul>
+			        		<li class="account">
+			        			<a href="javascript:(void)">Dennis Smith <span>hubPitch</span></a>
+			        			<ul class="account-sub-menu">
+			        				<li><a href="#">My Settings</a></li>
+			        				<li><a href="#">What's new</a></li>
+			        				<li><a href="#">Support</a></li>
+			        				<li><a href="#">Sign Out</a></li>
+			        			</ul>
+			        		</li>
+			        	</ul>
+			        </div>
+				    </div><!-- /.navbar-collapse -->
+				</nav>
+			</div>
+		</div>
+	</header>
+
+	<section class="dashboard-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="list-wrap">
+					<ul>
+						<li>
+							<div class="list-left">
+								<div class="title"><h3>Skyline Software</h3></div>
+								<div class="uploaded-txt">Uploaded: June 14th, 2018</div>
+							</div>
+							<div class="list-right">
+								<div class="message" data-toggle="modal" data-target="#messageModal">2 New Messages</div>
+								<div class="pages-num">2 <span>Pages</span></div>
+							</div>
+						</li>
+						<li>
+							<div class="list-left">
+								<div class="title"><h3>DocuSquare</h3></div>
+								<div class="uploaded-txt">Uploaded: June 12th, 2018</div>
+							</div>
+							<div class="list-right">
+								<div class="message" data-toggle="modal" data-target="#messageModal">1 New Messages</div>
+								<div class="pages-num">4 <span>Pages</span></div>
+							</div>
+						</li>
+						<li>
+							<div class="list-left">
+								<div class="title"><h3>HighPitch</h3></div>
+								<div class="uploaded-txt">Uploaded: June 10th, 2018</div>
+							</div>
+							<div class="list-right">
+								<div class="message" data-toggle="modal" data-target="#messageModal">3 New Messages</div>
+								<div class="pages-num">4 <span>Pages</span></div>
+							</div>
+						</li>
+						<li>
+							<div class="list-left">
+								<div class="title"><h3>Quicken Smart</h3></div>
+								<div class="uploaded-txt">Uploaded: June 9th, 2018</div>
+							</div>
+							<div class="list-right">
+								<!-- <div class="message" data-toggle="modal" data-target="#messageModal">3 New Messages</div> -->
+								<div class="pages-num">2 <span>Pages</span></div>
+							</div>
+						</li>
+						<li>
+							<div class="list-left">
+								<div class="title"><h3>LiteSheet</h3></div>
+								<div class="uploaded-txt">Uploaded: June 9th, 2018</div>
+							</div>
+							<div class="list-right">
+								<!-- <div class="message" data-toggle="modal" data-target="#messageModal" >3 New Messages</div> -->
+								<div class="pages-num">5 <span>Pages</span></div>
+							</div>
+						</li>
+						<li>
+							<div class="list-left">
+								<div class="title"><h3>Capital Investments</h3></div>
+								<div class="uploaded-txt">Uploaded: June 8th, 2018</div>
+							</div>
+							<div class="list-right">
+								<!-- <div class="message" data-toggle="modal" data-target="#messageModal">3 New Messages</div> -->
+								<div class="pages-num">2 <span>Pages</span></div>
+							</div>
+						</li>
+						<li>
+							<div class="list-left">
+								<div class="title"><h3>Ericson Private Equity</h3></div>
+								<div class="uploaded-txt">Uploaded: June 6th, 2018</div>
+							</div>
+							<div class="list-right">
+								<div class="message" data-toggle="modal" data-target="#messageModal">2 New Messages</div>
+								<div class="pages-num">2 <span>Pages</span></div>
+							</div>
+						</li>
+						<li>
+							<div class="list-left">
+								<div class="title"><h3>Qumlo Digital</h3></div>
+								<div class="uploaded-txt">Uploaded: June 5th, 2018</div>
+							</div>
+							<div class="list-right">
+								<!-- <div class="message" data-toggle="modal" data-target="#messageModal">2 New Messages</div> -->
+								<div class="pages-num">1 <span>Pages</span></div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+<!-- Modals -->
+<div class="modal fade" id="SearchModal" role="dialog">
+    <div class="modal-dialog">
+<!-- Modal content-->
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Support</h4>
+		</div>
+		<div class="modal-body">
+			<p class="modal-head">What can we help you with?</p>
+			<form>
+			<div class="form-group">
+			      <textarea cols="30" rows="10" placeholder="Tell us what we can help you with..."></textarea>
+			    </div>
+			</form>
+		</div> 
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Send</button>
+		</div>
+		</div>
+
+	</div>
+</div>
+
+
+<div class="modal fade" id="messageModal" role="dialog">
+    <div class="modal-dialog">
+<!-- Modal content-->
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Kerry W. <br> Skyline Software <br> Director of Marketing</h4>
+		</div>
+		<div class="modal-body">
+			<div class="msg-block">
+				<div class="m-name">Kerry Washington</div>
+				<div class="m-time">6.05 AM</div>
+				<div class="m-text">
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem fugit sit eum aperiam consectetur, veritatis quaerat cum, dolorem maxime doloremque.</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, ducimus.</p>
+				</div>
+			</div>
+			<div class="msg-block">
+				<div class="m-name">Dennis Smith</div>
+				<div class="m-time">6.15 AM</div>
+				<div class="m-text">
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem fugit sit eum aperiam consectetur, veritatis quaerat cum, dolorem maxime doloremque.</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, ducimus.</p>
+				</div>
+			</div>
+		</div> 
+		<div class="modal-footer">
+			<div class="form-group">
+			     <textarea cols="30" rows="10" placeholder="Type a message..."></textarea>
+			    </div>
+			</form>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Send</button>
+		</div>
+		</div>
+
+	</div>
+</div>
+<!-- Modals -->
+
+</body>
+</html>

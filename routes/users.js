@@ -24,11 +24,11 @@ router.get('/payment', function(req, res, next) {
 router.get('/forgot-password',function(req,res,next){
     res.render('loginModule/forget', { title: 'Forgot Password || Hub Pitch' });
 });
-router.get('/reset-password',function(req,res,next){
-    res.render('loginModule/reset', { title: 'Reset Password || Hub Pitch' });
-});
+router.get('/reset-password/:id',Controller.authController.checkToken);
 
 router.post('/signup',Controller.authController.singup);
 router.post('/signin',Controller.authController.signin);
+router.post('/forgot_password',Controller.authController.forgotPassword);
+router.post('/reset_password',Controller.authController.resetPassword);
 
 module.exports = router;

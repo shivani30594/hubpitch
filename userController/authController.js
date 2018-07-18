@@ -47,8 +47,6 @@ class authController {
             var randompassword = Math.random()
               .toString(36)
               .slice(-8);
-
-            console.log(randompassword);
             var smtpTransport = nodemailer.createTransport({
               service: "Gmail",
               auth: {
@@ -98,7 +96,7 @@ class authController {
                       from: "demo.narolainfotech@gmail.com", // sender address
                       to: tomail, // list of receivers
                       subject: "Random password for login", // Subject line
-                      html: "<h1> Your rendom password is:- " + randompassword + "</h1> <br/> Reset Link: " + 'http:/localhost:3000/reset/' + token
+                      html: "<h1> Your rendom password is:- " + randompassword + "</h1> <br/> Reset Link: " + 'http:/localhost:3000/reset-password/' + token
                     };
                     // send mail with defined transport object
                     smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -144,13 +142,14 @@ class authController {
         function (error, results, fields) {
           console.log(error, results, fields);
           if (results.length) {
-            console.log(results.user_id);
-            var authToken = jwt.sign({ user: results.user_id }, jwtsecret, {
+            let dashboardURL = (results[0].role == 'user') ? 'user/dashboard' : 'admin/dashboard';
+            var authToken = jwt.sign({ user: results[0].user_id }, jwtsecret, {
               expiresIn: expiresIn
             });
             res.send({
               success: true,
               message: "Successfully signin.",
+              url: dashboardURL,
               accesstoken: authToken
             });
           } else {
@@ -211,7 +210,7 @@ class authController {
                   from: "demo.narolainfotech@gmail.com", // sender address
                   to: tomail, // list of receivers
                   subject: "Password Reset Link", // Subject line
-                  html: "Here is Reset Password Link: " + 'http:/localhost:3000/reset/' + token
+                  html: "Here is Reset Password Link: " + 'http:/localhost:3000/reset-password/' + token
                 };
                 // send mail with defined transport object
                 smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -250,7 +249,10 @@ class authController {
       let user_id = "";
       user_id = req.body.token;
       let sqlUpdatePassword = '';
-      sqlUpdatePassword = "UPDATE hp_users SET `password` = '"+ md5([req.body.password]) +"' WHERE `user_id` = '" + user_id + "'"
+      sqlUpdatePassword = "UPDATE hp_users SET password ='"+md5(req.body.password)+"' WHERE `user_id` = '" + user_id + "'"
+      console.log(md5([req.body.password]));
+      console.log(req.body.password);
+      console.log(sqlUpdatePassword);
       db.query(sqlUpdatePassword,
         function (error, results, fields) {
           console.log(error, results, fields);

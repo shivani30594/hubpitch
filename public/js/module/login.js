@@ -23,17 +23,17 @@ const Login = function () {
                     type: 'POST',
                     dataType: 'json',
                     data: {
-                        firstName:  $('#sign_up_form input[name="firstName"]').val(),
+                        firstName: $('#sign_up_form input[name="firstName"]').val(),
                         lastName: $('#sign_up_form input[name="lastName"]').val(),
                         email: $('#sign_up_form input[name="email"]').val()
                     },
-                    success: function(response) {
-                        if(!response.success) {
+                    success: function (response) {
+                        if (!response.success) {
                             return alert(JSON.stringify(response.error));
                         }
-                       console.log(response)
+                        console.log(response)
                     },
-                    error: function(jqXHR, textStatus) {
+                    error: function (jqXHR, textStatus) {
                         alert("Request failed: " + textStatus);
                     }
                 });
@@ -61,13 +61,13 @@ const Login = function () {
                     data: {
                         email: $('#forgot_form input[name="email"]').val()
                     },
-                    success: function(response) {
-                        if(!response.success) {
+                    success: function (response) {
+                        if (!response.success) {
                             return alert(JSON.stringify(response.message));
                         }
                         window.location.href = "/";
                     },
-                    error: function(jqXHR, textStatus) {
+                    error: function (jqXHR, textStatus) {
                         alert("Request failed: " + textStatus);
                     }
                 });
@@ -80,7 +80,7 @@ const Login = function () {
             errorClass: 'error-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             ignore: "",
-            rules:{
+            rules: {
                 password: {
                     required: true,
                     minlength: 5,
@@ -100,13 +100,13 @@ const Login = function () {
                         token: $('#reset_form input[name="reset-token"]').val(),
                         password: $('#reset_form input[name="password"]').val(),
                     },
-                    success: function(response) {
-                        if(!response.success) {
+                    success: function (response) {
+                        if (!response.success) {
                             return alert(JSON.stringify(response.message));
                         }
                         window.location.href = "/";
                     },
-                    error: function(jqXHR, textStatus) {
+                    error: function (jqXHR, textStatus) {
                         alert("Request failed: " + textStatus);
                     }
                 });
@@ -130,21 +130,23 @@ const Login = function () {
             },
             submitHandler: function (form) {
                 $.ajax({
-                    url: 'http://localhost:3000/forgot_password',
+                    url: 'http://localhost:3000/signin',
                     type: 'POST',
                     dataType: 'json',
                     data: {
                         email: $('#sign_in input[name="email"]').val(),
                         password: $('#sign_in input[name="password"]').val()
                     },
-                    success: function(response) {
-                        if(!response.success) {
+                    success: function (response) {
+                        if (!response.success) {
                             return alert(JSON.stringify(response.message));
                         }
-                        window.location.href = "/";
+                        document.cookie = "accesstoken=" + response.accesstoken;
+                        window.location.href = "/" + response.url;
                     },
-                    error: function(jqXHR, textStatus) {
+                    error: function (jqXHR, textStatus) {
                         alert("Request failed: " + textStatus);
+                        $("#sign_in").reset();
                     }
                 });
             }

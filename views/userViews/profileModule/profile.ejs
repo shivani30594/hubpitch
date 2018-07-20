@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>
+		<%= title %>
+	</title>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"><!-- bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"><!-- Optional theme -->
+
+	<script src="/js/jquery.min.js"></script><!--jquery js-->	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><!-- bootstrap js -->
+	<script src="https://use.fontawesome.com/8a22b161e0.js"></script> <!-- font awesome -->
+	<script src="/js/custom.js"></script>
+
+	<link rel="stylesheet" href="/stylesheets/style.css"> <!-- custom css -->
+
+	<link rel="shortcut icon" type="/img/logo.png" href="/favicon.png"/>
+	<link rel="shortcut icon" type="/img/logo.png" href="http://example.com/favicon.png"/>
+
+
+</head>
+<body>
+	<header class="custom-header">
+		<div class="container">
+			<div class="row">
+				<nav class="navigation">
+
+				    <div class="menu-items">
+				    	<div class="mobile-menu">
+				     	<a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+				    </div>
+				      <ul>
+				        <li class="active"><a href="home.html">Home</a></li>
+				        <li><a href="NewPitch.html">Add a New Pitch</a></li>
+				        <li><a href="#" data-toggle="modal" data-target="#SearchModal">Support</a></li>
+				        <li class="logo"><a href="#"><img src="/img/white-logo.png" alt="Logo"></a></li>
+				      </ul>
+				    <div class="search-box">
+				     	<form>
+					        <div class="form-group">
+					         	<input type="text" class="form-control" placeholder="Search...">
+					        </div>
+				      	</form>
+				    </div>
+			        <div class="logged-user">
+			        	<ul>
+			        		<li class="account">
+			        			<a href="javascript:(void)">Dennis Smith <span>hubPitch</span></a>
+			        			<ul class="account-sub-menu">
+			        				<li><a href="#">My Settings</a></li>
+			        				<li><a href="#">What's new</a></li>
+			        				<li><a href="#">Support</a></li>
+			        				<li><a href="#">Sign Out</a></li>
+			        			</ul>
+			        		</li>
+			        	</ul>
+			        </div>
+				    </div><!-- /.navbar-collapse -->
+				</nav>
+			</div>
+		</div>
+	</header>
+
+	<div class="setting_wrapper">
+		<div class="container">
+			<div class="setting_inner_wrapper">
+				<h2 class="head_global primary_color">Setting</h2>
+				<div class="form_inner_data">
+					<form>
+					  <div class="form-group row">
+					    <label class="col-sm-3 col-form-label">Name</label>
+					    <div class="col-sm-9">
+								<div class="row">
+									<div class="col-sm-6">
+										<input type="text" class="form-control" id="" placeholder="Denish">
+									</div>
+									<div class="col-sm-6">
+										<input type="text" class="form-control" id="" placeholder="Smith">
+									</div>
+								</div>
+							</div>
+					  </div>
+						<div class="form-group row">
+					    <label class="col-sm-3 col-form-label">Company Name:</label>
+					    <div class="col-sm-9">
+									<input type="text" class="form-control" id="" placeholder="hunPitch">
+							</div>
+					  </div>
+						<div class="form-group row">
+					    <label class="col-sm-3 col-form-label">Email Address</label>
+					    <div class="col-sm-9">
+									<input type="email" class="form-control" id="" placeholder="denish@hubpitch.com">
+							</div>
+					  </div>
+						<div class="form-group row">
+					    <label class="col-sm-3 col-form-label">Password</label>
+					    <div class="col-sm-9">
+									<input type="password" class="form-control" id="" placeholder="password1234">
+									<a class="a_change_pass" href="#">change password</a>
+							</div>
+					  </div>
+						<div class="form-group row">
+					    <label class="col-sm-3 col-form-label">Notification</label>
+					    <div class="col-sm-9">
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+									<label class="form-check-label" for="defaultCheck1">Recieve Email when Pitch is Opened or Viewed</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+									<label class="form-check-label" for="defaultCheck1">Recieve Email when a New message is Recieved</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+									<label class="form-check-label" for="defaultCheck1">Recieve Email when Pitch is shared</label>
+								</div>
+							</div>
+					  </div>
+					</form>
+					<div class="btn_dicard">
+						<button class="btn_form">Discard</button>
+						<button class="btn_form">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+    
+</body>
+</html>

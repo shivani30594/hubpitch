@@ -29,6 +29,7 @@ router.get('/reset-password/:id',Controller.authController.checkToken);
 
 // ====== USER PAGE CALLING METHOD 
 router.get('/user/dashboard',Controller.dashboardController.dashboard);
+router.get('/user/profile',Controller.usersController.profile);
 
 // =========== ADMIN PAGE CALLING METHOD
 
@@ -41,6 +42,7 @@ router.post('/signup',Controller.authController.singup);
 router.post('/signin',Controller.authController.signin);
 router.post('/forgot_password',Controller.authController.forgotPassword);
 router.post('/reset_password',Controller.authController.resetPassword);
+router.post('/me',Controller.usersController.me)
 
 // ADMIN API METHOD
 

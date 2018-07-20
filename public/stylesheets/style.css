@@ -1,5 +1,5 @@
-body{overflow-x: hidden; 
-    font-family: 'Arial',sans-serif;}
+body{overflow-x: hidden;
+        font-family: 'roboto',sans-serif;}
 a,a:hover{text-decoration: none;}
 
 /*Sign up page*/
@@ -191,7 +191,7 @@ section.dashboard-wrap {padding: 80px 0;}
 .menu-items > ul li a {
     color: #fff;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 400;
 }
 .menu-items > ul .logo img{height: 20px;}
 .search-box .form-group {
@@ -410,11 +410,34 @@ input[type=range] {width: 100% !important;}
 .form-control:focus {color: #495057 !important; background-color: #fff !important;border-color: #80bdff !important; outline: 0 !important; -webkit-box-shadow: none !important; box-shadow: none !important;}
 
 .custom-header.dashboard-header .menu-items > ul{width: 84%;}
+/** for setting page ***/
+.setting_inner_wrapper {max-width: 901px;margin: 0 auto;}
+.head_global {color: #fff;text-align: center;padding: 12px 0;font-size: 18px;font-weight: 400;letter-spacing: 1px;line-height: 24px;margin: 0;}
+.primary_color {background: #4a90e2;}
+.form_inner_data {border: 1px solid #979797;padding: 35px;}
+.setting_wrapper {padding: 50px 0;}
+.form_inner_data form {max-width: 495px;margin: 0 auto;}
+.form_inner_data input.form-control {border: 1px solid #979797 !important;box-shadow: none !important;background: #fbf9fc !important;height: 26px!important;line-height: normal !important;padding: 0 5px !important;color: #333 !important;}
+.form_inner_data label {color: #333;font-weight: 400;padding: 4px 0px !important;line-height: normal !important;}
+.form_inner_data input.form-control::-webkit-input-placeholder {color: #333;}
+.form_inner_data input.form-control::-moz-placeholder {color: #333;}
+.form_inner_data input.form-control:-ms-input-placeholder {color: #333;}
+.form_inner_data input.form-control:-moz-placeholder {color: #333;}
+.a_change_pass {position: absolute;right: -100px;font-size: 13px;top: 3px;font-weight: 400;color: #4a90e2;}
+.form_inner_data .form-check {margin-bottom: 10px;}
+.form_inner_data .form-check input {margin: 0;position: relative;top: 2px;}
+.form_inner_data .form-check label {padding: 0 0 0 8px !important;}
+.form_inner_data .form-group {margin-bottom: 20px !important;}
+.btn_dicard {text-align: right;margin: 0 -10px;}
+.btn_dicard button {color: #333;font-weight: 400;padding: 4px 15px !important;line-height: normal !important;border: 0;background: transparent;padding: 0 10px !important;}
+/** end  setting page ***/
+
 /*Tables forms*/
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }
 @media screen and (max-width: 991px){
+    .form_inner_data form {max-width: 470px;}
 	.sign-up-form input[type="email"], .sign-up-form input[type="password"], .sign-up-form input[type="text"],.form-bottom{width: 400px;}
 	.mobile-menu {display: inline-block; width: 48%; vertical-align: middle}
 	
@@ -442,6 +465,16 @@ input[type=range] {width: 100% !important;}
 	#messageModal .modal-footer button{width: 38%;}
 }
 @media screen and (max-width: 767px){
+    .form_inner_data input.form-control {margin-bottom: 5px;}
+    .form_inner_data .form-group.row > div {padding: 0;}
+    .form_inner_data .form-group.row {margin: 0;}
+    .form_inner_data {padding: 20px 20px;}
+    .a_change_pass {position: relative;right: 0;top: 0;margin-top: 5px;float: right;}
+    .form_inner_data .form-group {margin-bottom: 10px !important;}
+    .form_inner_data label {padding: 4px 0px 8px 0px !important;}
+    .form_inner_data .form-check {padding-left: 15px;    position: relative;}
+    .form_inner_data .form-check input {margin: 0;position: absolute;top: 2px;left: 0;}
+    .form_inner_data .form-check label {padding: 0 0 0 8px !important;}
 	.sign-up-form input[type="email"], .sign-up-form input[type="password"], .sign-up-form input[type="text"],.form-bottom{width: 100%;}
 	.message{margin-bottom: 10px;}
 	.pages-num span{display: inline-block;}

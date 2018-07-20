@@ -19,6 +19,7 @@
     "mysql": "^2.15.0",
     "nodemailer": "^4.6.7",
     "nodemon": "^1.18.0",
+    "paypal-express-checkout": "^1.6.3",
     "uuid": "^3.3.2"
   }
 }

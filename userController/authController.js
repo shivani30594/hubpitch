@@ -37,7 +37,6 @@ class authController {
         "SELECT * FROM hp_users WHERE email = ?",
         [req.body.email],
         function (error, results, fields) {
-          console.log(error, results, fields);
           if (results.length) {
             res.send({
               success: false,
@@ -140,7 +139,6 @@ class authController {
         'SELECT * FROM hp_users WHERE email = ? AND password = ?',
         [req.body.email, md5(req.body.password)],
         function (error, results, fields) {
-          console.log(error, results, fields);
           if (results.length) {
             let dashboardURL = (results[0].role == 'user') ? 'user/dashboard' : 'admin/dashboard';
             var authToken = jwt.sign({ user: results[0].user_id }, jwtsecret, {
@@ -230,7 +228,6 @@ class authController {
           }
         });
     } catch (error) {
-      console.error(error);
       res.send({ success: false, error });
     }
   }
@@ -250,15 +247,10 @@ class authController {
       user_id = req.body.token;
       let sqlUpdatePassword = '';
       sqlUpdatePassword = "UPDATE hp_users SET password ='"+md5(req.body.password)+"' WHERE `user_id` = '" + user_id + "'"
-      console.log(md5([req.body.password]));
-      console.log(req.body.password);
-      console.log(sqlUpdatePassword);
       db.query(sqlUpdatePassword,
         function (error, results, fields) {
-          console.log(error, results, fields);
           if (results.affectedRows > 0) {
             db.query('DELETE FROM hp_users_reset_token WHERE `user_id` = ?', user_id, function (error, results, fields) {
-              console.log(error, results, fields);
             if (results.affectedRows > 0) {
                 res.send({ success: true, message: 'Password Reset Successfuly' });
               }
@@ -272,7 +264,6 @@ class authController {
         })
     }
     catch (error) {
-      console.error(error);
       res.send({ success: false, error });
     }
   }
@@ -284,7 +275,6 @@ class authController {
       fields
     ) {
       if (error) {
-        console.log(error);
         res.send({ success: "false", message: "Something went wrong" });
       }
       if (results.length > 0) {

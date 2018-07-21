@@ -10,5 +10,8 @@ class dashboardController {
     static async dashboard(req, res, next) {
         res.render('adminViews/dashboard', { title: 'Admin Dashboard || Hub Pitch' });
     }
+    static async profile (req, res, next) {
+        res.render('adminViews/profile', { title: 'Admin Profile || Hub Pitch' });
+    }
 }
 module.exports = dashboardController;

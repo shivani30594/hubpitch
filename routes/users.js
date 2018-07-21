@@ -34,6 +34,7 @@ router.get('/user/profile',Controller.usersController.profile);
 // =========== ADMIN PAGE CALLING METHOD
 
 router.get('/admin/dashboard',adminController.dashboardController.dashboard);
+router.get('/admin/profile',adminController.dashboardController.profile);
 
 // ================ API METHODS ========
 

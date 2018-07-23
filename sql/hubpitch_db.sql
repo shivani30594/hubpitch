@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 18, 2018 at 12:10 PM
+-- Generation Time: Jul 23, 2018 at 11:43 AM
 -- Server version: 5.7.19
 -- PHP Version: 7.1.9
 
@@ -21,6 +21,54 @@ SET time_zone = "+00:00";
 --
 -- Database: `hubpitch_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hp_pitch_info`
+--
+
+DROP TABLE IF EXISTS `hp_pitch_info`;
+CREATE TABLE IF NOT EXISTS `hp_pitch_info` (
+  `pitch_info_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pitch_id` int(11) NOT NULL,
+  `pitch_attachment_type` enum('document','video','image','others') NOT NULL DEFAULT 'others',
+  `pitch_attachment_name` text NOT NULL,
+  `pitch_attachment_text` text NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT NULL,
+  PRIMARY KEY (`pitch_info_id`),
+  KEY `pitch_id` (`pitch_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hp_pitch_master`
+--
+
+DROP TABLE IF EXISTS `hp_pitch_master`;
+CREATE TABLE IF NOT EXISTS `hp_pitch_master` (
+  `pitch_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) NOT NULL,
+  `company_name` varchar(255) NOT NULL,
+  `is_published` enum('yes','no') NOT NULL DEFAULT 'no',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT NULL,
+  PRIMARY KEY (`pitch_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hp_pitch_master`
+--
+
+INSERT INTO `hp_pitch_master` (`pitch_id`, `user_id`, `company_name`, `is_published`, `created`, `updated`) VALUES
+(1, '46263dfe-507c-410e-8701-f5b2ca16336b', 'test', 'no', '2018-07-23 10:20:17', NULL),
+(2, '46263dfe-507c-410e-8701-f5b2ca16336b', 'test', 'no', '2018-07-23 10:20:40', NULL),
+(3, '46263dfe-507c-410e-8701-f5b2ca16336b', 'test', 'no', '2018-07-23 11:34:16', NULL),
+(4, '46263dfe-507c-410e-8701-f5b2ca16336b', 'test', 'no', '2018-07-23 11:35:01', NULL),
+(5, '46263dfe-507c-410e-8701-f5b2ca16336b', 'test', 'no', '2018-07-23 11:35:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -56,6 +104,26 @@ INSERT INTO `hp_users` (`user_id`, `first_name`, `last_name`, `email`, `password
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `hp_users_info`
+--
+
+DROP TABLE IF EXISTS `hp_users_info`;
+CREATE TABLE IF NOT EXISTS `hp_users_info` (
+  `users_info_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) NOT NULL,
+  `company_name` varchar(255) NOT NULL,
+  `notification_1` enum('yes','no') NOT NULL DEFAULT 'no',
+  `notification_2` enum('yes','no') NOT NULL DEFAULT 'no',
+  `notification_3` enum('yes','no') NOT NULL DEFAULT 'no',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL,
+  PRIMARY KEY (`users_info_id`),
+  UNIQUE KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `hp_users_reset_token`
 --
 
@@ -67,6 +135,22 @@ CREATE TABLE IF NOT EXISTS `hp_users_reset_token` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`token_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `hp_pitch_info`
+--
+ALTER TABLE `hp_pitch_info`
+  ADD CONSTRAINT `hp_pitch_info_ibfk_1` FOREIGN KEY (`pitch_id`) REFERENCES `hp_pitch_master` (`pitch_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `hp_pitch_master`
+--
+ALTER TABLE `hp_pitch_master`
+  ADD CONSTRAINT `hp_pitch_master_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `hp_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

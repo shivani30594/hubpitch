@@ -27,16 +27,30 @@ router.get('/forgot-password',function(req,res,next){
 });
 router.get('/reset-password/:id',Controller.authController.checkToken);
 
-// ====== USER PAGE CALLING METHOD 
+/** 
+ * 
+ *  ====== USER PAGE CALLING METHOD 
+ *  
+ */
 router.get('/user/dashboard',Controller.dashboardController.dashboard);
 router.get('/user/profile',Controller.usersController.profile);
 
-// =========== ADMIN PAGE CALLING METHOD
+// Pitch Module 
+router.get('/pitch/add',Controller.pitchController.addNewPitchView);
+/**
+ * 
+ * =========== ADMIN PAGE CALLING METHOD
+ * 
+ */
 
 router.get('/admin/dashboard',adminController.dashboardController.dashboard);
 router.get('/admin/profile',adminController.dashboardController.profile);
 
-// ================ API METHODS ========
+/** 
+ * 
+ * ================ API METHODS ========
+ * 
+ */ 
 
 // GENRAL API METHOD
 router.post('/signup',Controller.authController.singup);
@@ -50,4 +64,5 @@ router.post('/me',Controller.usersController.me)
 
 // USER API METHOD
 
+router.post('/add_pitch',Controller.pitchController.addPitch);
 module.exports = router;

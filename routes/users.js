@@ -65,4 +65,6 @@ router.post('/me',Controller.usersController.me)
 // USER API METHOD
 
 router.post('/add_pitch',Controller.pitchController.addPitch);
+router.post('/get_user_pitchs',Controller.pitchController.getPitch)
+router.post('/detele_pitch',Controller.pitchController.deletePitch)
 module.exports = router;

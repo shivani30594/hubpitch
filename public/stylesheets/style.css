@@ -419,10 +419,10 @@ input[type=range] {width: 100% !important;}
 .form_inner_data form {max-width: 495px;margin: 0 auto;}
 .form_inner_data input.form-control {border: 1px solid #979797 !important;box-shadow: none !important;background: #fbf9fc !important;height: 26px!important;line-height: normal !important;padding: 0 5px !important;color: #333 !important;}
 .form_inner_data label {color: #333;font-weight: 400;padding: 4px 0px !important;line-height: normal !important;}
-.form_inner_data input.form-control::-webkit-input-placeholder {color: #333;}
-.form_inner_data input.form-control::-moz-placeholder {color: #333;}
-.form_inner_data input.form-control:-ms-input-placeholder {color: #333;}
-.form_inner_data input.form-control:-moz-placeholder {color: #333;}
+.form_inner_data input.form-control::-webkit-input-placeholder {color: #8a8a8a;font-weight: 400;}
+.form_inner_data input.form-control::-moz-placeholder {color: #8a8a8a;font-weight: 400;}
+.form_inner_data input.form-control:-ms-input-placeholder {color: #8a8a8a;font-weight: 400;}
+.form_inner_data input.form-control:-moz-placeholder {color: #8a8a8a;font-weight: 400;}
 .a_change_pass {position: absolute;right: -100px;font-size: 13px;top: 3px;font-weight: 400;color: #4a90e2;}
 .form_inner_data .form-check {margin-bottom: 10px;}
 .form_inner_data .form-check input {margin: 0;position: relative;top: 2px;}
@@ -433,6 +433,38 @@ input[type=range] {width: 100% !important;}
 /** end  setting page ***/
 
 /*Tables forms*/
+.top-area{margin-top: 100px !important;}
+.top-area , .bottom-area , .bottom-btn{max-width: 700px;margin: 0 auto;}
+.js .file {background-color: #fff;border: 2px solid #797979;border-radius: 0;display: block;line-height: 1;overflow: hidden;padding: 60px 0;position: relative;text-align: center;margin-bottom: 15px;margin-top: 100px;}
+.js .file.active .file-label {border: 0;clip: rect(0 0 0 0);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}
+.js .file:hover {border-color: #c3c3c3;}
+.js .file.focus {border-color: #709AD0;box-shadow: 0 0 0 1px #709AD0, 0 2px 0 1px #ddd;}
+.js .file.focus::after {border-top-color: #709AD0;}
+.js .file input,.js .file input::-webkit-file-upload-button {cursor: pointer;}
+.js .file input {height: 100%;left: 0;opacity: 0;position: absolute;top: 0;width: 100%;font-size: 10em;}
+.js .file-value {color: #709AD0;display: none;}
+.js .file.active .file-value {display: inline;}
+.js .file-label{color: #313131;font-size: 18px;font-weight: 500;}
+.js .upld-btn{background-color: transparent;border: 2px solid #39cb04;background-image: none;font-size: 16px;padding: 6px 20px;margin-top: 15px;}
+.js .fa{font-size: 100px;color: #39cb04;}
+.bottom-area .form-group {display: -webkit-box;display: -ms-flexbox;display: flex;width: 100%;-webkit-box-align: center;-ms-flex-align: center;align-items: center;}
+.bottom-area label{width: 20%;color: #5f5e5e;}
+.bottom-area .form-control{border-color: #5f5e5e !important;}
+.bottom-btn {text-align: right;margin: 10px auto 10px;clear: both;}
+.bottom-btn a{color: #5f5e5e;margin: 0 5px;}
+.bottom-btn a:last-child{margin-right: 0 !important;}
+.bottom-btn a:first-child{margin-left: 0 !important;}
+.bottom-btn a.a_another_btn{float: left;color: #337ab7;}
+.preview{background-color: #fff;border: 2px solid #797979;border-radius: 0;display: block;line-height: 1;overflow: hidden;padding: 15px;}
+.preview img{width: 100%;margin: 0 auto;}
+
+.edit-wrap {margin-top: 100px;}
+.edit-wrap .top-area {margin-top: 0px !important;}
+.edit-wrap textarea {width: 100%;}
+.edit-wrap .bottom-btn {width: 100%;max-width: 100%;padding: 0 15px;float: left;}
+
+
+
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

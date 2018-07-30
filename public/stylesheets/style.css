@@ -447,7 +447,8 @@ input[type=range] {width: 100% !important;}
 .js .file-label{color: #313131;font-size: 18px;font-weight: 500;}
 .js .upld-btn{background-color: transparent;border: 2px solid #39cb04;background-image: none;font-size: 16px;padding: 6px 20px;margin-top: 15px;}
 .js .fa{font-size: 100px;color: #39cb04;}
-.bottom-area .form-group {display: -webkit-box;display: -ms-flexbox;display: flex;width: 100%;-webkit-box-align: center;-ms-flex-align: center;align-items: center;}
+.bottom-area .form-group {display: -webkit-box;display: -ms-flexbox;display: flex;width: 100%;-webkit-box-align: center;-ms-flex-align: center;align-items: center;    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;}
 .bottom-area label{width: 20%;color: #5f5e5e;}
 .bottom-area .form-control{border-color: #5f5e5e !important;}
 .bottom-btn {text-align: right;margin: 10px auto 10px;clear: both;}
@@ -455,12 +456,9 @@ input[type=range] {width: 100% !important;}
 .bottom-btn a:last-child{margin-right: 0 !important;}
 .bottom-btn a:first-child{margin-left: 0 !important;}
 .bottom-btn a.a_another_btn{float: left;color: #337ab7;}
-.preview{ background-color: #fff;border-radius: 0;display: block;line-height: 1;overflow: hidden;padding: 15px;text-align: center;}
+.preview{ background-color: #fff;border-radius: 0;display: block;line-height: 1;overflow: hidden;text-align: center;}
 .preview img{width: 100%;margin: 0 auto;}
-.preview video {
-    border: 2px solid #797979;
-    padding: 15px;
-}
+.preview video {border: 2px solid #797979;padding: 15px;width: 100%;}
 
 
 .edit-wrap {margin-top: 100px;}
@@ -519,11 +517,14 @@ input[type=range] {width: 100% !important;}
 	.sign-up-form .input-group,.form-wrap{width: 100%;}
 	.form-wrap{padding:15px;}
 	.form-bottom{padding: 0 15px;}
-	.logo-wrap {
-    	padding-top: 50px;
-    	padding-bottom: 30px;
-	}
-	.signup-wrapper {padding-bottom: 50px;}
+    .logo-wrap {padding-top: 50px;padding-bottom: 30px;}
+    .signup-wrapper {padding-bottom: 50px;}
+    .col-md-12.current_preview {padding: 0;}
+    embed.docs_priview_e {width: 100%;}
+    .bottom-area label {width: 100%;}
+    .js .file-label{line-height: 1.5;padding: 0 15px;}
+    .edit-wrap .top-area {width: 100%;max-width: 100%;}
+    .edit-wrap textarea {margin: 15px 0 0 0;width: 100%;}
 }
 @media screen and (max-width: 600px){
 	.mobile-menu{width: 33%;}

@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const jwtsecret = "Narola123";
 const expiresIn = 86400; // expires in 24 hours
 class authController {
+  
   static async singup(req, res, next) {
     try {
       const userData = Joi.validate(Object.assign(req.params, req.body), {
@@ -162,6 +163,7 @@ class authController {
       res.send({ success: false, error });
     }
   }
+
   static async forgotPassword(req, res, next) {
 
     try {
@@ -231,6 +233,7 @@ class authController {
       res.send({ success: false, error });
     }
   }
+
   static async resetPassword(req, res, next) {
     try {
       const userData = Joi.validate(Object.assign(req.params, req.body), {

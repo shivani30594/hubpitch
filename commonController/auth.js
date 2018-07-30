@@ -12,7 +12,7 @@ exports.verifytoken = function (req, res, next) {
             //return false;
         } else {
             userid = decoded.user;
-            console.log(userid);
+            
             return res.status(200).send({ success: true, user: userid });
         }
     });

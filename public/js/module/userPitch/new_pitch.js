@@ -4,11 +4,13 @@ const newPitch = function () {
 
     }
     const handleNewPitchFormUI = () => {
+        
         $('.placeholder').hide();
         $('.preview_file').hide();
         $('.preview_file_image').hide();
         $('.preview_file_docs').hide();
         $('#main-box').addClass('active_one');
+        
         $('#continue_btn_main').on("click", function () {
             $('.active_one').hide();
             $('#main-box').removeClass('active_one');
@@ -16,6 +18,7 @@ const newPitch = function () {
             $('div').removeClass('active_one');
             $(".current_preview").show('200');
         });
+        
         $(document).on("click", '.a_another_btn', function () {
             $('.current_preview').hide();
             $('.active_one').hide();
@@ -24,19 +27,13 @@ const newPitch = function () {
             $(".another-page-blank").clone().appendTo(".add_box_here").addClass('add_another_o active_one').removeClass('another-page-blank');
             $('.add_another_o').show('200');
         })
+        
         $(document).on("click", '.continue_btn', function () {
             $('.active_one').hide();
             $('div').removeClass('active_one');
             $(".current_preview").show('200');
-            //$('#placeholder-box').addClass('active_one');
         })
-        // $(document).on("click",'.continue_btn',function(){
-        //     $('.active_one').hide();
-        //     $('div').removeClass('active_one');
-        //     $('#placeholder-box-2').show('200');
-        //     $('#placeholder-box').addClass('active_one');
-        // })
-
+        
     }
 
     const handleDropZone = () => {
@@ -55,12 +52,15 @@ const newPitch = function () {
             $element.toggleClass('active', !!val.length);
             // Set the value text accordingly
             $value.text(val);
-            $(this).parent('.file').html(val);
-            $(this).addClass('focus');
+            console.log($value);
+           // $(this).parent('.file').html(val);
+           $(this).addClass('focus');
+           $(this).closest('div.file-label').hide();
+           $(this).closest("div.file-value").show();
             // 
             var fileExtensionVideo = ['avi', 'wmv', 'mov', '3gp', 'mp4'];
             var fileExtensionImage = ['png', 'jpeg', 'jpg','bmp'];
-            var fileExtensionDocs = ['pdf'];
+            var fileExtensionDocs = ['pdf','txt'];
             var filename = val;
             if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionVideo) != -1) {
                 // Video Preview
@@ -71,12 +71,13 @@ const newPitch = function () {
             }
             else if(jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionImage) != -1) {
                 // Image Preview
-                $('div').removeClass('current_preview');
+            $('div').removeClass('current_preview');
                $(".preview_file_image").clone().appendTo(".add_preview").addClass('current_preview active_one').removeClass('preview_file_image');
                let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
                $(".current_preview .preview_image").attr("src", fileUrl);
             }
             else if(jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionDocs) != -1) {
+                // PDF Preview
                 $('div').removeClass('current_preview');
                 $(".preview_file_docs").clone().appendTo(".add_preview").addClass('current_preview active_one').removeClass('preview_file_docs');
                let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);

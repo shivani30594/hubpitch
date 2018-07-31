@@ -400,7 +400,7 @@ nav.navigation {
 .col-form-label {padding-top: calc(6px + 1px) !important; padding-bottom: calc(6px + 1px) !important; margin-bottom: 0 !important; font-size: inherit !important; line-height: 1.5 !important;}
 .form-control {display: block !important;  width: 100% !important; padding: 6px 12px !important; font-size: 14px !important; line-height: 1.5 !important; color: #6c757d !important; background-color: #fff !important; border: 1px solid #ced4da !important; border-radius: 4px !important; -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out !important;transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out !important; transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important; transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out !important;}
 .dropdown-menu, .form-control, .modal-content, .popover {background-clip: padding-box !important;}
-textarea {resize: vertical !important;}
+textarea {resize: vertical !important;margin-top: 100px;width: 100%;}
 .form-control:disabled, .form-control[readonly] { background-color: #e9ecef !important; opacity: 1 !important;}
 .form-control-plaintext { display: block !important; width: 100% !important; padding-top: 6px !important; padding-bottom: 6px !important; margin-bottom: 0 !important;line-height: 1.5 !important;color: #212529 !important; background-color: transparent !important; border: solid transparent !important; border-width: 1px 0 !important;}
 select.form-control:not([size]):not([multiple]) {height: calc(36px + 2px) !important;}
@@ -435,6 +435,8 @@ input[type=range] {width: 100% !important;}
 /*Tables forms*/
 .top-area{margin-top: 100px !important;}
 .top-area , .bottom-area , .bottom-btn{max-width: 700px;margin: 0 auto;}
+.preview_box.display_current .bottom-btn{max-width: 100%;margin: 0 auto;}
+
 .js .file {background-color: #fff;border: 2px solid #797979;border-radius: 0;display: block;line-height: 1;overflow: hidden;padding: 60px 0;position: relative;text-align: center;margin-bottom: 15px;margin-top: 100px;}
 .js .file.active .file-label {border: 0;clip: rect(0 0 0 0);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}
 .js .file:hover {border-color: #c3c3c3;}
@@ -452,7 +454,7 @@ input[type=range] {width: 100% !important;}
 .bottom-area label{width: 20%;color: #5f5e5e;}
 .bottom-area .form-control{border-color: #5f5e5e !important;}
 .bottom-btn {text-align: right;margin: 10px auto 10px;clear: both;}
-.bottom-btn a{color: #5f5e5e;margin: 0 5px;}
+.bottom-btn a{color: #111;margin: 0 5px;}
 .bottom-btn a:last-child{margin-right: 0 !important;}
 .bottom-btn a:first-child{margin-left: 0 !important;}
 .bottom-btn a.a_another_btn{float: left;color: #337ab7;}
@@ -465,8 +467,9 @@ input[type=range] {width: 100% !important;}
 .edit-wrap .top-area {margin-top: 0px !important;}
 .edit-wrap textarea {width: 100%;}
 .edit-wrap .bottom-btn {width: 100%;max-width: 100%;padding: 0 15px;float: left;}
-
-
+.col-md-12.top-area.preview {margin: 0 auto;float: none;}
+.image_priview img{width: initial;}
+.image_priview .preview {border: 1px solid #ddd;}
 
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
@@ -525,6 +528,7 @@ input[type=range] {width: 100% !important;}
     .js .file-label{line-height: 1.5;padding: 0 15px;}
     .edit-wrap .top-area {width: 100%;max-width: 100%;}
     .edit-wrap textarea {margin: 15px 0 0 0;width: 100%;}
+    
 }
 @media screen and (max-width: 600px){
 	.mobile-menu{width: 33%;}

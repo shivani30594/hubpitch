@@ -4,39 +4,43 @@ const newPitch = function () {
 
     }
     const handleNewPitchFormUI = () => {
-        
+
         $('.placeholder').hide();
         $('.preview_file').hide();
         $('.preview_file_image').hide();
         $('.preview_file_docs').hide();
         $('#main-box').addClass('active_one');
-        
+
         $('#continue_btn_main').on("click", function () {
-            $('.active_one').hide();
-            $('#main-box').removeClass('active_one');
-            $('.active_one').hide();
-            $('div').removeClass('active_one');
-            $(".current_preview").show('200');
+            if ($('#c-name').val() == '') {
+                Swal('Validation Error', 'Company Name Is Required!', 'error')
+            } else {
+                $('.active_one').hide();
+                $('#main-box').removeClass('active_one');
+                $('.active_one').hide();
+                $('div').removeClass('active_one');
+                $(".current_preview").show('200');
+            }
         });
-        
+
         $(document).on("click", '.a_another_btn', function () {
             $('.current_preview').hide();
-            $('.active_one').hide();
             $('.add_another_o').hide();
-            $(".add_another_o").removeClass("active_one");
+            $("div").removeClass("active_one");
             $(".another-page-blank").clone().appendTo(".add_box_here").addClass('add_another_o active_one').removeClass('another-page-blank');
-            $('.add_another_o').show('200');
+            $('.active_one').show('200');
         })
-        
+
         $(document).on("click", '.continue_btn', function () {
             $('.active_one').hide();
             $('div').removeClass('active_one');
             $(".current_preview").show('200');
         })
-        
+
     }
 
     const handleDropZone = () => {
+        var count = 1;
         $(document).on("change", '.drop_zone_input', function () {
             var $element = $(this);
             var $input = $element;
@@ -52,48 +56,88 @@ const newPitch = function () {
             $element.toggleClass('active', !!val.length);
             // Set the value text accordingly
             $value.text(val);
-            console.log($value);
-           // $(this).parent('.file').html(val);
-           $(this).addClass('focus');
-           $(this).closest('div.file-label').hide();
-           $(this).closest("div.file-value").show();
-            // 
+            $(this).parent('.file').find('.file-label').html(val);
+            $(this).addClass('focus');
+            // $(this).closest('div.file-label').hide();
+            // $(this).closest("div.file-value").show();
             var fileExtensionVideo = ['avi', 'wmv', 'mov', '3gp', 'mp4'];
-            var fileExtensionImage = ['png', 'jpeg', 'jpg','bmp'];
-            var fileExtensionDocs = ['pdf','txt'];
+            var fileExtensionImage = ['png', 'jpeg', 'jpg', 'bmp'];
+            var fileExtensionDocs = ['pdf', 'txt'];
             var filename = val;
             if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionVideo) != -1) {
                 // Video Preview
                 $('div').removeClass('current_preview');
-                $(".preview_file").clone().appendTo(".add_preview").addClass('current_preview active_one').removeClass('preview_file');
+                $(".preview_file").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_file');
                 let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
                 $(".current_preview .video_here").attr("src", fileUrl);
             }
-            else if(jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionImage) != -1) {
+            else if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionImage) != -1) {
                 // Image Preview
-            $('div').removeClass('current_preview');
-               $(".preview_file_image").clone().appendTo(".add_preview").addClass('current_preview active_one').removeClass('preview_file_image');
-               let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
-               $(".current_preview .preview_image").attr("src", fileUrl);
+                $('div').removeClass('current_preview');
+                $(".preview_file_image").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_file_image');
+                let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
+                $(".current_preview .preview_image").attr("src", fileUrl);
             }
-            else if(jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionDocs) != -1) {
+            else if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionDocs) != -1) {
                 // PDF Preview
                 $('div').removeClass('current_preview');
-                $(".preview_file_docs").clone().appendTo(".add_preview").addClass('current_preview active_one').removeClass('preview_file_docs');
-               let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
-               $(".current_preview .docs_priview_e").attr("src", fileUrl);
+                $(".preview_file_docs").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_file_docs');
+                let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
+                $(".current_preview .docs_priview_e").attr("src", fileUrl);
             }
-            else{
-              alert('FILE TYPE NOT SUPPORTED');
+            else {
+                alert('FILE TYPE NOT SUPPORTED');
             }
 
         })
+    }
+    const handleContinue_final = () => {
+        $(document).on("click", '.continue_btn_final', function () {
+            let $this = '';
+            $('.preview_box').hide('100');
+            if ($('div.preview_box').hasClass('display_current') === true) {
+                $this = $('.display_current').next();
+                if($this.length === 0){
+                    handleContinueUpload();
+                } 
+                $('div.preview_box').removeClass('display_current');
+            } else {
+                $this = $(".add_preview .preview_box:first-child");
+            }
+            $this.addClass('display_current');
+            $this.show('100');
+            $this.find('.a_another_btn').html(' ');
+            $this.find('.top-area').removeClass('col-md-12').addClass('col-md-6');
+            $this.find('.text-box').show('100');
+        });
+    }
+    const handleContinueUpload = () => {
+      // FILE CODE 
+      var cnt = 1;
+      var ad_img_array = [];
+      jQuery(".drop_zone_input").each(function () {
+          ad_img_array.push(jQuery(this)[0].files[0]);
+          cnt++;
+      });
+
+      console.log('IMAGE:',ad_img_array);
+
+      // TEXT CODE 
+      var cnt2 = 1;
+      var ad_text_array = [];
+      jQuery(".display_box_d .text_box_ta").each(function () {
+          ad_text_array.push(jQuery(this).val());
+          cnt2++;
+      });
+      console.log('TEXT:',ad_text_array);
+
     }
     return {
         //main function to initiate the module
         init: function () {
             handleNewPitchFormUI();
             handleDropZone();
+            handleContinue_final();
         }
     };
 }();

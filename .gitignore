@@ -4,3 +4,4 @@ Hub Pitch.code-workspace
 # dependencies
 node_modules
 package-lock.json
+uploads

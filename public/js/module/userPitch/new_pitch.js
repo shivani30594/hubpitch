@@ -1,8 +1,6 @@
 const newPitch = function () {
 
-    const handlePreview = (event) => {
 
-    }
     const handleNewPitchFormUI = () => {
 
         $('.placeholder').hide();
@@ -97,9 +95,9 @@ const newPitch = function () {
             $('.preview_box').hide('100');
             if ($('div.preview_box').hasClass('display_current') === true) {
                 $this = $('.display_current').next();
-                if($this.length === 0){
+                if ($this.length === 0) {
                     handleContinueUpload();
-                } 
+                }
                 $('div.preview_box').removeClass('display_current');
             } else {
                 $this = $(".add_preview .preview_box:first-child");
@@ -112,25 +110,48 @@ const newPitch = function () {
         });
     }
     const handleContinueUpload = () => {
-      // FILE CODE 
-      var cnt = 1;
-      var ad_img_array = [];
-      jQuery(".drop_zone_input").each(function () {
-          ad_img_array.push(jQuery(this)[0].files[0]);
-          cnt++;
-      });
+        // FILE CODE 
+        var cnt = 1;
+        var ad_img_array = [];
+        jQuery(".drop_zone_input").each(function () {
+            ad_img_array.push(jQuery(this)[0].files[0]);
+            cnt++;
+        });
 
-      console.log('IMAGE:',ad_img_array);
+        console.log('IMAGE:', ad_img_array);
 
-      // TEXT CODE 
-      var cnt2 = 1;
-      var ad_text_array = [];
-      jQuery(".display_box_d .text_box_ta").each(function () {
-          ad_text_array.push(jQuery(this).val());
-          cnt2++;
-      });
-      console.log('TEXT:',ad_text_array);
-
+        // TEXT CODE 
+        var cnt2 = 1;
+        var ad_text_array = [];
+        jQuery(".display_box_d .text_box_ta").each(function () {
+            ad_text_array.push(jQuery(this).val());
+            cnt2++;
+        });
+        console.log('TEXT:', ad_text_array);
+        var input = document.querySelector('input[name="drop_zone[]"]')
+        console.log('input', input);
+        var formData = new FormData();
+        var company_name = $('#c-name').val();
+        ad_img_array.forEach((obj) => {
+            if (obj) {
+                formData.append('pitch_files', obj);
+            }
+        })
+        formData.append('pitch_text', ad_text_array);
+        formData.append('company_name', company_name);
+        fetch('http://localhost:3000/add_pitch', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+            },
+            body: formData
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .catch(function (error) {
+                return error;
+            });
     }
     return {
         //main function to initiate the module

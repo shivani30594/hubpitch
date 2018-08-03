@@ -137,12 +137,17 @@ const newPitch = function () {
                 formData.append('pitch_files', obj);
             }
         })
-        formData.append('pitch_text', ad_text_array);
+        ad_text_array.forEach((obj) => {
+            if (obj) {
+                formData.append('pitch_text', obj);
+            }
+        })
         formData.append('company_name', company_name);
         fetch('http://localhost:3000/add_pitch', {
             method: 'post',
             headers: {
-                'Accept': 'application/json',
+                'Accept': 'application/json',                                            
+                "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNDYyNjNkZmUtNTA3Yy00MTBlLTg3MDEtZjViMmNhMTYzMzZiIiwiaWF0IjoxNTMzMjc5NDc4LCJleHAiOjE1MzMzNjU4Nzh9.6YdJTpGNYOX41EIEdfb9aw0rqtsvedTdhlh1OX4f47I"
             },
             body: formData
         })

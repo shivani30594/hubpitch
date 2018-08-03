@@ -5,20 +5,23 @@ const jwtsecret = "Narola123";
 const _ = require('lodash');
 const dir = './uploads/test';
 const fs = require('fs')
+var multer = require('multer');
+var upload = multer({ dest: 'uploads/' })
+var async = require('async')
+
 class pitchController {
 
     static async addNewPitchView(req, res, next) {
         res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch' });
-    }
+    } 
 
     static async addPitch(req, res, next) {
-        console.log('assd===? files == ',req.files);
-        console.log('assd===? body == ',req.body);
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body, req.flies), {
                 company_name: Joi.string()
                     .min(3)
-                    .required()
+                    .required(),
+                pitch_text: Joi.any().required()
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
@@ -33,79 +36,154 @@ class pitchController {
                     userid = decoded.user;
                 }
             });
-
-
-            // if (!req.files) {
-            //     res.send('No files were uploaded.');
-            //     return;
-            // }
-            // for (var key in req.files) {
-            //     thisFile = req.files[key];
-            //     console.log(req.files[key].name);
-            //     thisFile.mv(dir + '/' + req.files[key].name, function (err) {
-            //         if (err) {
-            //             console.log(err);
-            //         }
-            //         else {
-            //             console.log('File uploaded!');
-            //         }
-            //     });
-            // }
-
-            // for (var key in req.files) { 
-            //     var thisFile = req.files[key];
-            //     console.log(thisFile);
-            //     if (mimetype.indexOf(file.mimetype) !== -1) {
-            //             if (!fs.existsSync(dir)) {
-            //                 fs.mkdirSync(dir);
-            //             }
-            //             var fileExtension = '';
-            //             var filename = '';
-            //             fileExtension = thisFile.mimetype.split("/");
-            //             filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
-            //             file.mv(dir + '/' + filename, async (err) => {
-            //                 if (err) {
-            //                     console.log("There was an issue in uploading cover image");
-            //                 } else {
-            //                     console.log("File has been uploaded");
-            //                 }
-            //             });
-
-            //         } else {
-            //             return res.status(500).send({ success: false, message: 'File is not support by HubPitch System' , file:thisFile });
-            //         }
-            // }
-            // _.forEach(req.files, function (key, value) {
-               
-            //     //fileExtension = file.mimetype.split("/");
-                
-            // })
-
-            // var file = req.files['pitch_files'];
-            // var mimetype = ['image/png', 'image/jpeg', 'image/jpg', 'video/mp4'];
-            // if (mimetype.indexOf(file.mimetype) !== -1) {
-            //     if (!fs.existsSync(dir)) {
-            //         fs.mkdirSync(dir);
-            //     }
-
-            //     var filename = "cover_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
-            //     file.mv(dir + '/' + filename, async (err) => {
-            //         if (err) {
-            //             console.log("There was an issue in uploading cover image");
-            //         } else {
-            //             console.log("File has been uploaded");
-
-            //         }
-            //     });
-            // } else {
-            //     return res.status(500).send({ success: false, message: 'File is not support by HubPitch System' });
-            // }
-
-            // let pitchID = '';
-            // let newPitch = {
-            //     company_name: req.body.company_name,
-            //     user_id: userid,
-            // }
+            var fileExtension = '';
+            var filename = '';
+            var thisFile = [];
+            var saveAble = [];
+            let counter = 0;
+            let pitchID = '';
+            let newPitch = {
+                company_name: req.body.company_name,
+                user_id: userid,
+            }
+            if (_.size(req.files) == 1 && _.size(req.files['pitch_files']) == 7) {
+                console.log('req.file',req.files)
+                fileExtension = '';
+                filename = '';
+                thisFile = [];
+                fileExtension = req.files['pitch_files'].mimetype.split("/");
+                filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
+                req.files['pitch_files'].mv(dir + '/' + filename, async (err) => {
+                    if (err) {
+                        console.log("There was an issue in uploading cover image");
+                    } else {
+                        saveAble = {
+                            'pitch_attachment': {
+                                'pitch_attachment_type': fileExtension[0],
+                                'pitch_attachment_name': filename,
+                                'pitch_attachment_text': req.body.pitch_text
+                            }
+                        }
+                        console.log('SAVE ABLE --- SINGLE ',saveAble);
+                        console.log("File has been uploaded");
+                        // savePinch(newPitch,saveAble);
+                        db.query("INSERT INTO hp_pitch_master SET?", newPitch, function (
+                            error,
+                            results,
+                            fields
+                        ) {
+                            if (results.insertId) {
+                                pitchID = results.insertId;
+                                console.log('FINAL',saveAble);
+                                _.forEach(saveAble, function (key, value) {
+                                    let newPitchInfo = {}
+                                    newPitchInfo = {
+                                        'pitch_id': pitchID,
+                                        'pitch_attachment_type': key.pitch_attachment_type,
+                                        'pitch_attachment_name': key.pitch_attachment_name,
+                                        'pitch_attachment_text': key.pitch_attachment_text
+                                    }
+                                    console.log(newPitchInfo);
+                                    db.query("INSERT INTO hp_pitch_info SET?", newPitchInfo, function (error,
+                                        results,
+                                        fields) {
+                                        if (results.affectedRows) {
+                                            res.send({ success: "true", message: "New Pitch Added" });
+                                        } else {
+                                            console.log(error,
+                                                results,
+                                                fields)
+                                            res.send({ success: "false", message: "Something went wrong || Info Table" });
+                                        }
+                                    })
+                                })
+                            }
+                            else {
+                                console.log(error,
+                                    results,
+                                    fields)
+                                res.send({ success: "false", message: "Something went wrong || Master Table" });
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                // console.log('req.file',req.files)
+                var temp = [];
+                console.log(req.body.pitch_text);
+                counter = 0;
+                async.eachSeries(req.files.pitch_files, function (value,each_callback) {
+                        fileExtension = '';
+                        filename = '';
+                        thisFile = [];
+                        thisFile = value;
+                        fileExtension = thisFile.mimetype.split("/");
+                        filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
+                        thisFile.mv(dir + '/' + filename,(err) => {
+                            if (err) {
+                                console.log("There was an issue in uploading cover image");
+                                each_callback();
+                            } else {
+                                temp = {
+                                    'pitch_attachment': {
+                                        'pitch_attachment_type': fileExtension[0],
+                                        'pitch_attachment_name': filename,
+                                        'pitch_attachment_text': req.body.pitch_text[counter]
+                                    }
+                                }
+                                console.log("temp:",temp);
+                                saveAble.push(temp);
+                                console.log("saveAble:",saveAble);
+                                console.log("File has been uploaded");
+                                counter ++;
+                                each_callback();
+                            }
+                        });
+                },function(err){
+                    if(err){
+                        console.log(err);
+                    }
+                    //savePinch(newPitch,saveAble);
+                    db.query("INSERT INTO hp_pitch_master SET?", newPitch, function (
+                        error,
+                        results,
+                        fields
+                    ) {
+                        if (results.insertId) {
+                            pitchID = results.insertId;
+                            console.log('FINAL',saveAble);
+                            _.forEach(saveAble[0], function (key, value) {
+                                let newPitchInfo = {}
+                                newPitchInfo = {
+                                    'pitch_id': pitchID,
+                                    'pitch_attachment_type': key.pitch_attachment_type,
+                                    'pitch_attachment_name': key.pitch_attachment_name,
+                                    'pitch_attachment_text': key.pitch_attachment_text
+                                }
+                                db.query("INSERT INTO hp_pitch_info SET?", newPitchInfo, function (error,
+                                    results,
+                                    fields) {
+                                    if (results.affectedRows) {
+                                        res.send({ success: "true", message: "New Pitch Added" });
+                                    } else {
+                                        console.log(error,
+                                            results,
+                                            fields)
+                                        res.send({ success: "false", message: "Something went wrong || Info Table" });
+                                    }
+                                })
+                            })
+                        }
+                        else {
+                            console.log(error,
+                                results,
+                                fields)
+                            res.send({ success: "false", message: "Something went wrong || Master Table" });
+                        }
+                    });
+                });
+            }
             // db.query("INSERT INTO hp_pitch_master SET?", newPitch, function (
             //     error,
             //     results,
@@ -113,7 +191,8 @@ class pitchController {
             // ) {
             //     if (results.insertId) {
             //         pitchID = results.insertId;
-            //         _.forEach(req.body.pitch_attachment, function (key, value) {
+            //         console.log('FINAL',saveAble);
+            //         _.forEach(saveAble, function (key, value) {
             //             let newPitchInfo = {}
             //             newPitchInfo = {
             //                 'pitch_id': pitchID,
@@ -121,6 +200,7 @@ class pitchController {
             //                 'pitch_attachment_name': key.pitch_attachment_name,
             //                 'pitch_attachment_text': key.pitch_attachment_text
             //             }
+            //             console.log(newPitchInfo);
             //             db.query("INSERT INTO hp_pitch_info SET?", newPitchInfo, function (error,
             //                 results,
             //                 fields) {
@@ -150,6 +230,7 @@ class pitchController {
         }
     }
 
+ 
     static async deletePitch(req, res, next) {
         if (req.body.pitch_delete_type = 'full') {
             try {

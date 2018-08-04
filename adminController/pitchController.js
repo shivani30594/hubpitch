@@ -12,9 +12,11 @@ class pitchController {
         let userid = '';
         jwt.verify(token, jwtsecret, function (err, decoded) {
             if (err) {
+                
                 return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
 
             } else {
+
                 userid = decoded.user;
             }
         });

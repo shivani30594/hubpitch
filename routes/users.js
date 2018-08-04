@@ -46,6 +46,7 @@ router.get('/pitch/add',Controller.pitchController.addNewPitchView);
 router.get('/admin/dashboard',adminController.dashboardController.dashboard);
 router.get('/admin/profile',adminController.dashboardController.profile);
 
+
 /** 
  * 
  * ================ API METHODS ========
@@ -62,9 +63,24 @@ router.post('/me',Controller.usersController.me)
 // ADMIN API METHOD
 
 
+    // PITCH METHOD
+
+router.post('/admin/get_pitch',adminController.pitchController.getPitch);
+router.post('/admin/get_user_pitch',adminController.pitchController.viewPitchDetails);
+
+    // SUPPORT METHOD
+
+router.post('/admin/get_support_message',adminController.dashboardController.profile);
+router.post('/admin/get_single_support_message',adminController.dashboardController.profile);
+
 // USER API METHOD
 
+    // PITCH
 router.post('/add_pitch',Controller.pitchController.addPitch);
 router.post('/get_user_pitchs',Controller.pitchController.getPitch)
 router.post('/detele_pitch',Controller.pitchController.deletePitch)
+
+    // SUPPORT 
+
+    router.post('/admin/send_support_message',Controller.supportController.send_support);
 module.exports = router;

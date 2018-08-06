@@ -1,5 +1,6 @@
 const newPitch = function () {
 
+    let accesstoken = getCookie('accesstoken');
 
     const handleNewPitchFormUI = () => {
 
@@ -147,7 +148,7 @@ const newPitch = function () {
             method: 'post',
             headers: {
                 'Accept': 'application/json',                                            
-                "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNDYyNjNkZmUtNTA3Yy00MTBlLTg3MDEtZjViMmNhMTYzMzZiIiwiaWF0IjoxNTMzMjc5NDc4LCJleHAiOjE1MzMzNjU4Nzh9.6YdJTpGNYOX41EIEdfb9aw0rqtsvedTdhlh1OX4f47I"
+                "access-token": accesstoken
             },
             body: formData
         })

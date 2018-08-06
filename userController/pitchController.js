@@ -13,7 +13,7 @@ class pitchController {
 
     static async addNewPitchView(req, res, next) {
         res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch' });
-    } 
+    }
 
     static async addPitch(req, res, next) {
         try {
@@ -47,7 +47,7 @@ class pitchController {
                 user_id: userid,
             }
             if (_.size(req.files) == 1 && _.size(req.files['pitch_files']) == 7) {
-                console.log('req.file',req.files)
+                console.log('req.file', req.files)
                 fileExtension = '';
                 filename = '';
                 thisFile = [];
@@ -64,8 +64,6 @@ class pitchController {
                                 'pitch_attachment_text': req.body.pitch_text
                             }
                         }
-                        console.log('SAVE ABLE --- SINGLE ',saveAble);
-                        console.log("File has been uploaded");
                         // savePinch(newPitch,saveAble);
                         db.query("INSERT INTO hp_pitch_master SET?", newPitch, function (
                             error,
@@ -74,7 +72,6 @@ class pitchController {
                         ) {
                             if (results.insertId) {
                                 pitchID = results.insertId;
-                                console.log('FINAL',saveAble);
                                 _.forEach(saveAble, function (key, value) {
                                     let newPitchInfo = {}
                                     newPitchInfo = {
@@ -83,7 +80,6 @@ class pitchController {
                                         'pitch_attachment_name': key.pitch_attachment_name,
                                         'pitch_attachment_text': key.pitch_attachment_text
                                     }
-                                    console.log(newPitchInfo);
                                     db.query("INSERT INTO hp_pitch_info SET?", newPitchInfo, function (error,
                                         results,
                                         fields) {
@@ -113,35 +109,35 @@ class pitchController {
                 var temp = [];
                 console.log(req.body.pitch_text);
                 counter = 0;
-                async.eachSeries(req.files.pitch_files, function (value,each_callback) {
-                        fileExtension = '';
-                        filename = '';
-                        thisFile = [];
-                        thisFile = value;
-                        fileExtension = thisFile.mimetype.split("/");
-                        filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
-                        thisFile.mv(dir + '/' + filename,(err) => {
-                            if (err) {
-                                console.log("There was an issue in uploading cover image");
-                                each_callback();
-                            } else {
-                                temp = {
-                                    'pitch_attachment': {
-                                        'pitch_attachment_type': fileExtension[0],
-                                        'pitch_attachment_name': filename,
-                                        'pitch_attachment_text': req.body.pitch_text[counter]
-                                    }
+                async.eachSeries(req.files.pitch_files, function (value, each_callback) {
+                    fileExtension = '';
+                    filename = '';
+                    thisFile = [];
+                    thisFile = value;
+                    fileExtension = thisFile.mimetype.split("/");
+                    filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
+                    thisFile.mv(dir + '/' + filename, (err) => {
+                        if (err) {
+                            console.log("There was an issue in uploading cover image");
+                            each_callback();
+                        } else {
+                            temp = {
+                                'pitch_attachment': {
+                                    'pitch_attachment_type': fileExtension[0],
+                                    'pitch_attachment_name': filename,
+                                    'pitch_attachment_text': req.body.pitch_text[counter]
                                 }
-                                console.log("temp:",temp);
-                                saveAble.push(temp);
-                                console.log("saveAble:",saveAble);
-                                console.log("File has been uploaded");
-                                counter ++;
-                                each_callback();
                             }
-                        });
-                },function(err){
-                    if(err){
+                            console.log("temp:", temp);
+                            saveAble.push(temp);
+                            console.log("saveAble:", saveAble);
+                            console.log("File has been uploaded");
+                            counter++;
+                            each_callback();
+                        }
+                    });
+                }, function (err) {
+                    if (err) {
                         console.log(err);
                     }
                     //savePinch(newPitch,saveAble);
@@ -152,7 +148,7 @@ class pitchController {
                     ) {
                         if (results.insertId) {
                             pitchID = results.insertId;
-                            console.log('FINAL',saveAble);
+                            console.log('FINAL', saveAble);
                             _.forEach(saveAble[0], function (key, value) {
                                 let newPitchInfo = {}
                                 newPitchInfo = {
@@ -184,44 +180,7 @@ class pitchController {
                     });
                 });
             }
-            // db.query("INSERT INTO hp_pitch_master SET?", newPitch, function (
-            //     error,
-            //     results,
-            //     fields
-            // ) {
-            //     if (results.insertId) {
-            //         pitchID = results.insertId;
-            //         console.log('FINAL',saveAble);
-            //         _.forEach(saveAble, function (key, value) {
-            //             let newPitchInfo = {}
-            //             newPitchInfo = {
-            //                 'pitch_id': pitchID,
-            //                 'pitch_attachment_type': key.pitch_attachment_type,
-            //                 'pitch_attachment_name': key.pitch_attachment_name,
-            //                 'pitch_attachment_text': key.pitch_attachment_text
-            //             }
-            //             console.log(newPitchInfo);
-            //             db.query("INSERT INTO hp_pitch_info SET?", newPitchInfo, function (error,
-            //                 results,
-            //                 fields) {
-            //                 if (results.affectedRows) {
-            //                     res.send({ success: "true", message: "New Pitch Added" });
-            //                 } else {
-            //                     console.log(error,
-            //                         results,
-            //                         fields)
-            //                     res.send({ success: "false", message: "Something went wrong || Info Table" });
-            //                 }
-            //             })
-            //         })
-            //     }
-            //     else {
-            //         console.log(error,
-            //             results,
-            //             fields)
-            //         res.send({ success: "false", message: "Something went wrong || Master Table" });
-            //     }
-            // });
+
 
         }
         catch (error) {
@@ -230,7 +189,7 @@ class pitchController {
         }
     }
 
- 
+
     static async deletePitch(req, res, next) {
         if (req.body.pitch_delete_type = 'full') {
             try {
@@ -287,12 +246,11 @@ class pitchController {
         jwt.verify(token, jwtsecret, function (err, decoded) {
             if (err) {
                 return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
-
             } else {
                 userid = decoded.user;
             }
         });
-        db.query("SELECT DISTINCT master.user_id,master.pitch_id,master.company_name,count(*) as page_count,master.created FROM hp_pitch_master as master JOIN hp_pitch_info ON master.pitch_id=hp_pitch_info.pitch_id WHERE master.user_id=? GROUP BY hp_pitch_info.pitch_id", userid, function (
+        db.query("SELECT DISTINCT master.user_id,master.pitch_id,master.company_name,count(*) as page_count,master.created FROM hp_pitch_master as master JOIN hp_pitch_info ON master.pitch_id=hp_pitch_info.pitch_id WHERE master.user_id=? GROUP BY hp_pitch_info.pitch_id ORDER BY master.created DESC", userid, function (
             error,
             results,
             fields
@@ -316,7 +274,7 @@ class pitchController {
                 res.send({ success: false, error: pitchData.error });
                 return;
             }
-            db.query("SELECT DISTINCT master.user_id,master.pitch_id,master.company_name,count(*) as page_count,master.created FROM hp_pitch_master as master JOIN hp_pitch_info ON master.pitch_id=hp_pitch_info.pitch_id WHERE master.pitch_id=? GROUP BY hp_pitch_info.pitch_id", userid, function (
+            db.query("SELECT master.user_id,master.pitch_id,master.company_name,count(*) as page_count,master.created,hp_pitch_info.pitch_attachment_type,hp_pitch_info.pitch_attachment_name,hp_pitch_info.pitch_attachment_text FROM hp_pitch_master as master JOIN hp_pitch_info ON master.pitch_id=hp_pitch_info.pitch_id WHERE master.pitch_id=? GROUP BY hp_pitch_info.pitch_id", pitch_id, function (
                 error,
                 results,
                 fields

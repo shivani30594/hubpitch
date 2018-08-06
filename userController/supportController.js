@@ -41,7 +41,7 @@ class supportController {
                 fields
             ) {
                 if (results) {
-                    res.send({ success: "true", data: results });
+                    res.send({ success: "true", message: 'Support Message Sent' });
                 } else {
                     console.log(error, results, fields);
                     return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });

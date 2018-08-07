@@ -1,88 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <% include ../component/headerFile.ejs %>
+	<% include ../component/headerFile.ejs %>
 </head>
+
 <body>
-    <% include ../component/header.ejs %>
-	<section class="dashboard-wrap">
-		<div class="container">
-			<div class="row">
-				<div class="list-wrap">
-					<ul class="ul_list_wapper">
-						
-					</ul>
+	<% include ../component/header.ejs %>
+		<section class="dashboard-wrap">
+			<div class="container">
+				<div class="row">
+					<div class="list-wrap">
+						<ul class="ul_list_wapper">
+
+						</ul>
+					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
 
-<!-- Modals -->
-<div class="modal fade" id="SearchModal" role="dialog">
-    <div class="modal-dialog">
-<!-- Modal content-->
-	<div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal">&times;</button>
-			<h4 class="modal-title">Support</h4>
-		</div>
-		<div class="modal-body">
-			<p class="modal-head">What can we help you with?</p>
-			<form>
-			<div class="form-group">
-			      <textarea cols="30" rows="10" placeholder="Tell us what we can help you with..."></textarea>
-			    </div>
-			</form>
-		</div> 
-		<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Send</button>
-		</div>
-		</div>
-
-	</div>
-</div>
-
-
-<div class="modal fade" id="messageModal" role="dialog">
-    <div class="modal-dialog">
-<!-- Modal content-->
-	<div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal">&times;</button>
-			<h4 class="modal-title">Kerry W. <br> Skyline Software <br> Director of Marketing</h4>
-		</div>
-		<div class="modal-body">
-			<div class="msg-block">
-				<div class="m-name">Kerry Washington</div>
-				<div class="m-time">6.05 AM</div>
-				<div class="m-text">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem fugit sit eum aperiam consectetur, veritatis quaerat cum, dolorem maxime doloremque.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, ducimus.</p>
+		<!-- Modals -->
+		<div class="modal fade" id="SearchModal" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Support</h4>
+					</div>
+					<div class="modal-body">
+						<p class="modal-head">What can we help you with?</p>
+						<form>
+							<div class="form-group">
+								<textarea id="support_msg" cols="30" rows="10" placeholder="Tell us what we can help you with..."></textarea>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" onclick="sendSupport()">Send</button>
+					</div>
 				</div>
+
 			</div>
-			<div class="msg-block">
-				<div class="m-name">Dennis Smith</div>
-				<div class="m-time">6.15 AM</div>
-				<div class="m-text">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem fugit sit eum aperiam consectetur, veritatis quaerat cum, dolorem maxime doloremque.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, ducimus.</p>
+		</div>
+
+
+		<div class="modal fade" id="messageModal" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Kerry W.
+							<br> Skyline Software
+							<br> Director of Marketing</h4>
+					</div>
+					<div class="modal-body">
+						<div class="msg-block">
+							<div class="m-name">Kerry Washington</div>
+							<div class="m-time">6.05 AM</div>
+							<div class="m-text">
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem fugit sit eum aperiam consectetur, veritatis
+									quaerat cum, dolorem maxime doloremque.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, ducimus.</p>
+							</div>
+						</div>
+						<div class="msg-block">
+							<div class="m-name">Dennis Smith</div>
+							<div class="m-time">6.15 AM</div>
+							<div class="m-text">
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem fugit sit eum aperiam consectetur, veritatis
+									quaerat cum, dolorem maxime doloremque.</p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, ducimus.</p>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<textarea cols="30" rows="10" placeholder="Type a message..."></textarea>
+						</div>
+						</form>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Send</button>
+					</div>
 				</div>
+
 			</div>
-		</div> 
-		<div class="modal-footer">
-			<div class="form-group">
-			     <textarea cols="30" rows="10" placeholder="Type a message..."></textarea>
-			    </div>
-			</form>
-			<button type="button" class="btn btn-default" data-dismiss="modal">Send</button>
 		</div>
-		</div>
+		<!-- Modals -->
 
-	</div>
-</div>
-<!-- Modals -->
-
-<script src="/js/module/userPitch/home.js"></script>
+		<script src="/js/module/userPitch/home.js"></script>
 </body>
+
 </html>

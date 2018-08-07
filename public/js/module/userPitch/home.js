@@ -18,7 +18,6 @@ const userPitch = function () {
                 let dataHTML = '';
                 data.forEach((obj) => {
                     dataHTML = ''
-                    console.log(obj);
                     if (obj) {
                         dataHTML = '<li> <div class="list-left"> <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded: June 14th, 2018</div> </div> <div class="list-right"> <div class="message" data-toggle="modal" data-target="#messageModal">2 New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> </div> </li>';
                         $('.ul_list_wapper').append(dataHTML);

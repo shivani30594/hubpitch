@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const jwtsecret = "Narola123";
 const _ = require('lodash');
 var async = require('async')
+const nodemailer = require("nodemailer");
 
 class supportController {
 
@@ -12,7 +13,9 @@ class supportController {
             const pitchData = Joi.validate(Object.assign(req.params, req.body, req.flies), {
                 support_message: Joi.string()
                     .min(3)
-                    .required()
+                    .required(),
+                user_name: Joi.string()
+                    .min(3).required(),
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
@@ -31,16 +34,46 @@ class supportController {
                     userid = decoded.user;
                 }
             });
+            let userName = req.body.user_name
+            let support_message = req.body.support_message
             supportArr = {
                 'user_id': userid,
-                'support_message': support_message,
+                'support_message': support_message
             }
-            db.query("INSERT INTO `hp_support` SET", supportArr, function (
+            db.query("INSERT INTO hp_support SET?", supportArr, function (
                 error,
                 results,
                 fields
             ) {
+                console.log(error,
+                    results,
+                    fields);
                 if (results) {
+                    var smtpTransport = nodemailer.createTransport({
+                        service: "Gmail",
+                        auth: {
+                            user: "demo.narolainfotech@gmail.com",
+                            pass: "Password123#"
+                        }
+                    });
+                    // -------------------------------mail sending-----------------------------
+                    var tomail = "";
+                    tomail = 'local.hubpitch@mailinator.com';
+                    // setup e-mail data with unicode symbols
+                    var mailOptions = {
+                        from: "demo.narolainfotech@gmail.com", // sender address
+                        to: tomail, // list of receivers
+                        subject: "Support Request", // Subject line
+                        html: "<strong>" + userName + " need support for following issue.</strong> <br/> " + support_message + " <br/> Thank You <br/> hubPitch."
+                    };
+                    // send mail with defined transport object
+                    smtpTransport.sendMail(mailOptions, function (err, info) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log("Message sent: " + info);
+                        }
+                    });
                     res.send({ success: "true", message: 'Support Message Sent' });
                 } else {
                     console.log(error, results, fields);

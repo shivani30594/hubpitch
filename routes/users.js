@@ -82,5 +82,5 @@ router.post('/detele_pitch',Controller.pitchController.deletePitch)
 
     // SUPPORT 
 
-    router.post('/admin/send_support_message',Controller.supportController.send_support);
+    router.post('/send_support_message',Controller.supportController.send_support);
 module.exports = router;

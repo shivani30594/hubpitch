@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../adminComponents/headerFile.ejs %>
+</head>
+
+<body>
+    <% include ../adminComponents/header.ejs %>
+        <div class="form-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card-box">
+
+                            <h4 class="m-t-0 header-title">All Pitchs</h4>
+                            <p class="text-muted m-b-30 font-14">Manage All Pitch From Here.</p>
+
+                            <div class="row data-table-wapper">
+                                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Company Name</th>
+                                            <th>Page Count</th>
+                                            <th>User Name</th>
+                                            <th>Created</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_datatable">
+                                        <% for(var i=0; i < data.length; i++) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= data[i].company_name %>
+                                                </td>
+                                                <td>
+                                                    <%= data[i].page_count %>
+                                                </td>
+                                                <td>
+                                                    <%= data[i].username %>
+                                                </td>
+                                                <td>
+                                                    <%= data[i].created %>
+                                                </td>
+                                                <td>
+                                                    <a class="action-table" href="javascript:void(0)">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    </a>
+                                                    <a class="action-table" href="javascript:void(0)">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- end card-box -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/module/admin/pitchListing.js"></script>
+</body>
+
+</html>

@@ -1,23 +1,16 @@
-const AdminCore = () => {
-
-    const getCookie = (name) => {
-        var value = "; " + document.cookie;
-        var parts = value.split("; " + name + "=");
-        if (parts.length == 2) return parts.pop().split(";").shift();
-    }
-
-    const handleAdminCoreCookie = () => {
-        let accesstoken = getCookie('accesstoken')
-        console.log(accesstoken);
-    }
-
-    return {
-        //main function to initiate the module
-        init: function () {
-            handleAdminCoreCookie();
-        }
-    };
+const getCookie = (name) => {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
 }
-jQuery(document).ready(function () {
-    AdminCore.init();
-});
+
+const signout = () => {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+    window.location.href = "/?logout=true";
+}

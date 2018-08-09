@@ -471,6 +471,7 @@ input[type=range] {width: 100% !important;}
 .image_priview img{width: initial;}
 .image_priview .preview {border: 1px solid #ddd;}
 
+.action-table {margin: 10px;}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

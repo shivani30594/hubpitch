@@ -118,9 +118,7 @@ const newPitch = function () {
             ad_img_array.push(jQuery(this)[0].files[0]);
             cnt++;
         });
-
-        console.log('IMAGE:', ad_img_array);
-
+        
         // TEXT CODE 
         var cnt2 = 1;
         var ad_text_array = [];

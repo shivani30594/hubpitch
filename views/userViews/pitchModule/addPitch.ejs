@@ -19,7 +19,7 @@
                                         <br> Drag and Drop a File to Edit for your Pitch
                                         <br>OR</br>
                                         <button type="button" class="btn btn-default upld-btn">Upload a File</button>
-                                        
+
                                     </div>
                                     <input type="file" name="drop_zone[]" class="drop_zone_input">
                                     <div class="file-value" aria-hidden="true"></div>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="row preview_file_docs docs_priview preview_box">
                     <div class="col-md-12 top-area preview">
-                        <embed src="" class="docs_priview_e" width="500" height="600"/>
+                        <embed src="" class="docs_priview_e" width="500" height="600" />
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
                         <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
@@ -142,6 +142,39 @@
                     </div>
                 </div>
             </form>
+            <div class="col-md-12" id="final_section">
+                <form class="share_pitch">
+                    <div class="card-box blue-box">
+                        <div class="box-title">
+                            <span>Create a Link to your Pitch</span>
+                        </div>
+                        <div class="action-wapper">
+                            <div class="text-box_wapper">
+                                <label>Name: </label>
+                                <input type="text" name="company_name" id="final_name">
+                            </div>
+                            <div class="check-box-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="" name="activity">Send Notification When There Is Activity</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="" name="allow_messging">Allow For Messaging </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="" name="allow_share">Allow For Pitch To Be Shared</label>
+                                </div>
+                            </div>
+                            <div class="bottom-button-wapper">
+                                <button class="create pitch hp_button" type="button" id="create_pitch">Create Pitch Link</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
         </div>
         <script src="/js/module/userPitch/new_pitch.js"></script>
 </body>

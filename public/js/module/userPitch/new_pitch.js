@@ -3,7 +3,7 @@ const newPitch = function () {
     let accesstoken = getCookie('accesstoken');
 
     const handleNewPitchFormUI = () => {
-
+        $('#final_section').hide();
         $('.placeholder').hide();
         $('.preview_file').hide();
         $('.preview_file_image').hide();
@@ -118,7 +118,7 @@ const newPitch = function () {
             ad_img_array.push(jQuery(this)[0].files[0]);
             cnt++;
         });
-        
+
         // TEXT CODE 
         var cnt2 = 1;
         var ad_text_array = [];
@@ -145,12 +145,17 @@ const newPitch = function () {
         fetch('http://localhost:3000/add_pitch', {
             method: 'post',
             headers: {
-                'Accept': 'application/json',                                            
+                'Accept': 'application/json',
                 "access-token": accesstoken
             },
             body: formData
         })
             .then(function (response) {
+                $('#add_new_pitch_form').hide('100');
+                let cName = $('#c-name').val();
+                $('#final_section').show('100');
+                $('#final_name').val(cName);
+                $('response.json()', response.json());
                 return response.json();
             })
             .catch(function (error) {

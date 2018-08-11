@@ -47,7 +47,6 @@ class pitchController {
                 user_id: userid,
             }
             if (_.size(req.files) == 1 && _.size(req.files['pitch_files']) == 7) {
-                console.log('req.file', req.files)
                 fileExtension = '';
                 filename = '';
                 thisFile = [];
@@ -105,9 +104,7 @@ class pitchController {
                 });
             }
             else {
-                // console.log('req.file',req.files)
                 var temp = [];
-                console.log(req.body.pitch_text);
                 counter = 0;
                 async.eachSeries(req.files.pitch_files, function (value, each_callback) {
                     fileExtension = '';
@@ -283,6 +280,50 @@ class pitchController {
                     res.send({ success: "true", data: results });
                 } else {
                     console.log(error, results, fields);
+                    return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
+                }
+            });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async managePitch(req, res, next) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                pitch_id: Joi.string()
+                    .required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            var token = req.headers['access-token'];
+            let userid = '';
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    userid = decoded.user;
+                }
+            });
+            var randomToken = Math.random()
+                .toString(36)
+                .slice(-8);
+            newPitch = {
+                pitch_id: req.body.pitch_id,
+                url_token: 'http://localhost:3000/' + randomToken
+            }
+            db.query("INSERT INTO hp_pitch_manager SET?", newPitch, function (
+                error,
+                results,
+                fields
+            ) {
+                if (results.insertId) {
+                    res.send({ success: "true", message: "New Pitch Added", data: url_token });
+                } else {
                     return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
                 }
             });

@@ -42,11 +42,19 @@ router.get('/pitch/add', Controller.pitchController.addNewPitchView);
  * =========== ADMIN PAGE CALLING METHOD
  * 
  */
- 
+
 router.get('/admin/dashboard', adminController.dashboardController.dashboard);
 router.get('/admin/profile', adminController.dashboardController.profile);
 router.get('/admin/manage-pitch', adminController.pitchController.allUsersPitchView)
 
+
+/**
+ * 
+ * ==================== END USER ROUTES & METHODS
+ * 
+ */
+
+router.get('/viewer/:id', Controller.enduserController.viewPitch)
 
 /** 
  * 
@@ -80,6 +88,7 @@ router.post('/admin/get_single_support_message', adminController.dashboardContro
 router.post('/add_pitch', Controller.pitchController.addPitch);
 router.post('/get_user_pitchs', Controller.pitchController.getPitch)
 router.post('/detele_pitch', Controller.pitchController.deletePitch)
+router.post('/manage_pitch', Controller.pitchController.managePitch)
 
 // SUPPORT 
 

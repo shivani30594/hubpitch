@@ -83,7 +83,7 @@ class pitchController {
                                         results,
                                         fields) {
                                         if (results.affectedRows) {
-                                            res.send({ success: "true", message: "New Pitch Added" });
+                                            res.send({ success: "true", message: "New Pitch Added", pitch: pitchID });
                                         } else {
                                             console.log(error,
                                                 results,
@@ -312,17 +312,21 @@ class pitchController {
             var randomToken = Math.random()
                 .toString(36)
                 .slice(-8);
-            newPitch = {
+            let url_token = randomToken
+            let newPitch = {
                 pitch_id: req.body.pitch_id,
-                url_token: 'http://localhost:3000/' + randomToken
+                url_token: url_token
             }
             db.query("INSERT INTO hp_pitch_manager SET?", newPitch, function (
                 error,
                 results,
                 fields
             ) {
-                if (results.insertId) {
-                    res.send({ success: "true", message: "New Pitch Added", data: url_token });
+                console.log(error,
+                    results,
+                    fields);
+                if (results) {
+                    res.send({ success: "true", message: "share link created", data: url_token });
                 } else {
                     return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
                 }

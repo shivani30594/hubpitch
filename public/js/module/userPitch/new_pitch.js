@@ -4,6 +4,7 @@ const newPitch = function () {
 
     const handleNewPitchFormUI = () => {
         $('#final_section').hide();
+        $('#share_box').hide();
         $('.placeholder').hide();
         $('.preview_file').hide();
         $('.preview_file_image').hide();
@@ -126,11 +127,10 @@ const newPitch = function () {
             ad_text_array.push(jQuery(this).val());
             cnt2++;
         });
-        console.log('TEXT:', ad_text_array);
         var input = document.querySelector('input[name="drop_zone[]"]')
-        console.log('input', input);
         var formData = new FormData();
         var company_name = $('#c-name').val();
+        formData.append('company_name', company_name);
         ad_img_array.forEach((obj) => {
             if (obj) {
                 formData.append('pitch_files', obj);
@@ -141,26 +141,57 @@ const newPitch = function () {
                 formData.append('pitch_text', obj);
             }
         })
-        formData.append('company_name', company_name);
-        fetch('http://localhost:3000/add_pitch', {
-            method: 'post',
+        $.ajax({
+            url: 'http://localhost:3000/add_pitch',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken
             },
-            body: formData
-        })
-            .then(function (response) {
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            method: 'POST',
+            data: formData,
+            success: function (response) {
+                if (!response.success) {
+                    return alert(JSON.stringify(response.message));
+                }
+                console.log('response', response);
                 $('#add_new_pitch_form').hide('100');
                 let cName = $('#c-name').val();
                 $('#final_section').show('100');
                 $('#final_name').val(cName);
-                $('response.json()', response.json());
-                return response.json();
-            })
-            .catch(function (error) {
-                return error;
+                $('#pitch_id').val(response.pitch);
+            },
+            error: function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            }
+        });
+    }
+    const handleShareLink = () => {
+        $(document).on("click", '#create_pitch', function () {
+            let accesstoken = getCookie('accesstoken')
+            $.ajax({
+                url: 'http://localhost:3000/manage_pitch',
+                headers: {
+                    'Accept': 'application/json',
+                    "access-token": accesstoken
+                },
+                method: 'POST',
+                data: {
+                    pitch_id: $('#pitch_id').val(),
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (!response.success) {
+                        return alert(JSON.stringify(response.message));
+                    }
+                    console.log(response);
+                },
+                error: function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                }
             });
+        });
     }
     return {
         //main function to initiate the module
@@ -168,6 +199,7 @@ const newPitch = function () {
             handleNewPitchFormUI();
             handleDropZone();
             handleContinue_final();
+            handleShareLink();
         }
     };
 }();

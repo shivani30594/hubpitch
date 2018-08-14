@@ -156,15 +156,15 @@
                             <div class="check-box-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="" name="activity">Send Notification When There Is Activity</label>
+                                        <input type="checkbox" value="" name="activity" checked>Send Notification When There Is Activity</label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="" name="allow_messging">Allow For Messaging </label>
+                                        <input type="checkbox" value="" name="allow_messging" checked>Allow For Messaging </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="" name="allow_share">Allow For Pitch To Be Shared</label>
+                                        <input type="checkbox" value="" name="allow_share" checked>Allow For Pitch To Be Shared</label>
                                 </div>
                             </div>
                             <div class="bottom-button-wapper">
@@ -174,6 +174,24 @@
                     </div>
 
                 </form>
+            </div>
+            <div class="card-box blue-box" id="share_box">
+                <div class="box-title">
+                    <span>Create a Link to your Pitch</span>
+                </div>
+                <div class="action-wapper">
+                    <div class="text-box_wapper">
+                        <label>Name: </label>
+                        <span id="pitch_name_t"></span>
+                        <input type="hidden" name="pitch_" id="pitch_id" value="">
+                    </div>
+                    <div class="placeholder-screenshot">
+                        <img src="/img/preview.jpg" />
+                    </div>
+                    <div class="link-place">
+                        <a href="" class="link_value"> </a>
+                    </div>
+                </div>
             </div>
         </div>
         <script src="/js/module/userPitch/new_pitch.js"></script>

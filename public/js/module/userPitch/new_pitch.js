@@ -9,6 +9,7 @@ const newPitch = function () {
         $('.preview_file').hide();
         $('.preview_file_image').hide();
         $('.preview_file_docs').hide();
+        $('.preview_docx').hide();
         $('#main-box').addClass('active_one');
 
         $('#continue_btn_main').on("click", function () {
@@ -63,6 +64,7 @@ const newPitch = function () {
             var fileExtensionVideo = ['avi', 'wmv', 'mov', '3gp', 'mp4'];
             var fileExtensionImage = ['png', 'jpeg', 'jpg', 'bmp'];
             var fileExtensionDocs = ['pdf', 'txt'];
+            var fileExtensionDocsViewer = ['docx', 'xlsx', ''];
             var filename = val;
             if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionVideo) != -1) {
                 // Video Preview
@@ -84,6 +86,195 @@ const newPitch = function () {
                 $(".preview_file_docs").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_file_docs');
                 let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
                 $(".current_preview .docs_priview_e").attr("src", fileUrl);
+            }
+            else if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionDocsViewer) != -1) {
+                $('div').removeClass('current_preview');
+                $(".preview_docx").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_docx');
+                var $kukuNode = $("#kuku-viewer-node");
+                var $files = this.files[0];
+                var $button = $("#view-btn");
+                var $prevbutton = $("#prev-btn");
+                var $nextbutton = $("#next-btn");
+                var $zoomInbutton = $("#zoom-in-btn");
+                var $zoomOutbutton = $("#zoom-out-btn");
+
+                var instance = null, fileType = null;
+                var docxJS = null, cellJS = null, slideJS = null, pdfJS = null;
+
+                var documentParser = function (file) {
+                    fileType = getInstanceOfFileType(file);
+
+                    if (fileType) {
+                        if (instance) {
+                            /** destroy API
+                             *  structure : destory(callback) **/
+                            instance.destroy();
+                        }
+
+                        if (fileType === 'docx') {
+                            if (!docxJS) {
+                                docxJS = new DocxJS();
+                            }
+                            instance = docxJS;
+                        } else if (fileType === 'xlsx') {
+                            if (!cellJS) {
+                                cellJS = new CellJS();
+                            }
+                            instance = cellJS;
+                        } else if (fileType === 'pptx') {
+                            if (!slideJS) {
+                                slideJS = new SlideJS();
+                            }
+                            instance = slideJS;
+                        } else if (fileType === 'pdf') {
+                            if (!pdfJS) {
+                                pdfJS = new PdfJS();
+                            }
+                            instance = pdfJS;
+
+                            instance.setCMapUrl('cmaps/');
+                        }
+
+                        if (instance) {
+                            /** parse API
+                             *  structure : parse(file, successCallbackFn, errorCallbackFn) **/
+                            instance.parse(file,
+                                function () {
+                                    /** render API
+                                     *  structure : render(element, callbackFn, pageId) **/
+                                    instance.render($kukuNode[0], function () {
+                                    });
+                                },
+                                function () {
+                                    console.log('document js viewer parsing error');
+                                });
+                        } else {
+                            console.log('no support files');
+                        }
+                    } else {
+                        console.log('no support files');
+                    }
+                };
+
+
+                //Utils
+                var stopEvent = function (e) {
+                    if (e.preventDefault) e.preventDefault();
+                    if (e.stopPropagation) e.stopPropagation();
+                    e.returnValue = false;
+                    e.cancelBubble = true;
+                    e.stopped = true;
+                };
+
+                var getInstanceOfFileType = function (file) {
+                    var fileExtension = null;
+                    if (file) {
+                        var fileName = file.name;
+                        fileExtension = fileName.split('.').pop();
+                    }
+                    return fileExtension;
+                };
+
+                //Event
+                var selectFile = null, currentId = null;
+                selectFile = this.files[0];
+                // $files.on('change', function (e) {
+                //     stopEvent(e);
+                //     selectFile = e.target.files[0];
+                // });
+                $button.on('click', function (e) {
+                    stopEvent(e);
+                    console.log(selectFile);
+                    if (selectFile) {
+                        documentParser(selectFile);
+                    } else {
+                        alert('no selected file');
+                    }
+                });
+
+
+                $prevbutton.on('click', function (e) {
+                    stopEvent(e);
+                    if (instance) {
+                        if (fileType === 'docx') {
+                            console.log('no support prev page');
+                        } else if (fileType === 'xlsx') {
+                            /** getFileInfo API
+                             *  structure : getFileInfo() **/
+                            var fileInfo = instance.getFileInfo();
+                            if (fileInfo.sheetNames) {
+                                /** getCurrentId API
+                                 *  structure : getCurrentId() **/
+                                currentId = instance.getCurrentId();
+                                var sheetId = null, isFind = false;
+                                $.each(fileInfo.sheetNames, function () {
+                                    if (currentId === this.sheetId) {
+                                        isFind = true
+                                    } else if (isFind === false) {
+                                        sheetId = this.sheetId;
+                                    }
+                                });
+
+                                if (sheetId && sheetId !== currentId) {
+                                    /** gotoPage API
+                                     *  structure : getCurrentId(pageId) **/
+                                    instance.gotoPage(sheetId);
+                                }
+                            }
+                        } else if (fileType === 'pptx' || fileType === 'pdf') {
+                            currentId = instance.getCurrentId();
+                            instance.gotoPage(currentId - 1);
+                        }
+                    }
+                });
+                $nextbutton.on('click', function (e) {
+                    stopEvent(e);
+                    if (instance) {
+                        if (fileType === 'docx') {
+                            console.log('no support next page');
+                        } else if (fileType === 'xlsx') {
+                            var fileInfo = instance.getFileInfo();
+                            if (fileInfo.sheetNames) {
+                                currentId = instance.getCurrentId();
+
+                                var sheetId = null;
+                                $.each(fileInfo.sheetNames, function () {
+                                    if (sheetId === -1) {
+                                        sheetId = this.sheetId;
+                                    }
+                                    if (currentId === this.sheetId) {
+                                        sheetId = -1;
+                                    }
+                                });
+
+                                if (sheetId && sheetId !== currentId) {
+                                    instance.gotoPage(sheetId);
+                                }
+                            }
+                        } else if (fileType === 'pptx' || fileType === 'pdf') {
+                            currentId = instance.getCurrentId();
+                            instance.gotoPage(currentId + 1);
+                        }
+                    }
+                });
+                $zoomInbutton.on('click', function (e) {
+                    stopEvent(e);
+                    if (instance) {
+                        /** getZoom API
+                         *  structure : getZoom() **/
+                        var currentZoom = instance.getZoom();
+
+                        /** setZoom API
+                         *  structure : setZoom(zoomVal) **/
+                        instance.setZoom(currentZoom + 0.5);
+                    }
+                });
+                $zoomOutbutton.on('click', function (e) {
+                    stopEvent(e);
+                    var currentZoom = instance.getZoom();
+                    instance.setZoom(currentZoom - 0.5);
+                });
+
             }
             else {
                 alert('FILE TYPE NOT SUPPORTED');

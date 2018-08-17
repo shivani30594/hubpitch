@@ -90,13 +90,12 @@ const newPitch = function () {
             else if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionDocsViewer) != -1) {
                 $('div').removeClass('current_preview');
                 $(".preview_docx").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_docx');
+                $(".current_preview").show();
+
                 var $kukuNode = $(".kuku-viewer-node");
                 var $files = this.files[0];
-                var $button = $(".view-btn");
                 var $prevbutton = $(".current_preview .prev-btn");
                 var $nextbutton = $(".current_preview .next-btn");
-                var $zoomInbutton = $("#zoom-in-btn");
-                var $zoomOutbutton = $("#zoom-out-btn");
 
                 var instance = null, fileType = null;
                 var docxJS = null, cellJS = null, slideJS = null, pdfJS = null;
@@ -123,6 +122,7 @@ const newPitch = function () {
                         } else if (fileType === 'pptx') {
                             if (!slideJS) {
                                 slideJS = new SlideJS();
+                                $('.kuku-docx-controller').show();
                             }
                             instance = slideJS;
                         } else if (fileType === 'pdf') {
@@ -142,6 +142,7 @@ const newPitch = function () {
                                     /** render API
                                      *  structure : render(element, callbackFn, pageId) **/
                                     instance.render($kukuNode[0], function () {
+                                        $(".current_preview").hide();
                                     });
                                 },
                                 function () {
@@ -185,17 +186,15 @@ const newPitch = function () {
                 } else {
                     alert('no selected file');
                 }
-                $prevbutton.on('click', function (e) {
-                    stopEvent(e);
-                    // currentId = instance.getCurrentId();
-                    // instance.gotoPage(currentId - 1);
-                    console.log('HERE PREV BUTTON');
+                $(document).on('click', '.current_preview .prev-btn', function () {
+                    currentId = instance.getCurrentId();
+                    instance.gotoPage(currentId - 1);
+                    return false;
                 });
-                $nextbutton.on('click', function (e) {
-                    stopEvent(e);
-                    // currentId = instance.getCurrentId();
-                    // instance.gotoPage(currentId + 1);
-                    console.log('HERE NEXT BUTTON');
+                $(document).on('click', '.current_preview .next-btn', function () {
+                    currentId = instance.getCurrentId();
+                    instance.gotoPage(currentId + 1);
+                    return false;
                 });
             }
             else {

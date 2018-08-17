@@ -6,7 +6,7 @@ class usersController {
 
     // Profile
     static async profile(req, res, next) {
-        res.render('userViews/profileModule/profile', { title: 'User Profile || Hub Pitch' });
+        res.render('userViews/profileModule/profile', { title: 'User Profile || Hub Pitch', documents_viewer: 'false' });
     }
 
     // User Info

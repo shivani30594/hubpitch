@@ -480,8 +480,8 @@ input[type=range] {width: 100% !important;}
 .card-box.blue-box .action-wapper .hp_button {background: transparent;border: none;color: #619ee5;}
 .card-box.blue-box .action-wapper .checkbox {margin: 15px 0;}
 .card-box.blue-box .action-wapper #final_name {width: 50%;}
-body .docx-outline{ width: initial !important; }
-body .docx-cover .docx-frame .docx-wrapper .docx-outline .docx-container { position: initial !important; }
+/* body .docx-outline{ width: initial !important; }
+body .docx-cover .docx-frame .docx-wrapper .docx-outline .docx-container { position: initial !important; } */
 .docs_priview .col-md-12.top-area.preview {max-width: 100%;}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}

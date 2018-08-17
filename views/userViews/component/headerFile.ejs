@@ -38,7 +38,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css">
 
-<!-- Documents Viewer -->
-<script src="/js/libraries/documents_viewer/docxjs/DocxJS.bundle.min.js"></script>
-<script src="/js/libraries/documents_viewer/celljs/CellJS.bundle.min.js"></script>
-<script src="/js/libraries/documents_viewer/slidejs/SlideJS.bundle.min.js"></script>
+<%if (documents_viewer == 'true') { %>
+    <!-- Documents Viewer -->
+    <script src="/js/libraries/documents_viewer/docxjs/DocxJS.bundle.min.js"></script>
+    <script src="/js/libraries/documents_viewer/celljs/CellJS.bundle.min.js"></script>
+    <script src="/js/libraries/documents_viewer/slidejs/SlideJS.bundle.min.js"></script>
+<% } %>

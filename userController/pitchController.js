@@ -12,7 +12,7 @@ var async = require('async')
 class pitchController {
 
     static async addNewPitchView(req, res, next) {
-        res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch' });
+        res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', documents_viewer: 'true' });
     }
 
     static async addPitch(req, res, next) {

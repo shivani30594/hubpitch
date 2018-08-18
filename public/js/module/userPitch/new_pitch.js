@@ -123,6 +123,7 @@ const newPitch = function () {
                             if (!slideJS) {
                                 slideJS = new SlideJS();
                                 $('.kuku-docx-controller').show();
+                                $('.current_preview').addClass('pptx_file_type');
                             }
                             instance = slideJS;
                         } else if (fileType === 'pdf') {

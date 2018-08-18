@@ -483,6 +483,14 @@ input[type=range] {width: 100% !important;}
 /* body .docx-outline{ width: initial !important; }
 body .docx-cover .docx-frame .docx-wrapper .docx-outline .docx-container { position: initial !important; } */
 .docs_priview .col-md-12.top-area.preview {max-width: 100%;}
+.kuku-viewer-node { margin: 0px auto !important;
+width: 100% !important;
+overflow: initial !important;
+}
+.pptx_file_type.display_current .kuku-viewer-node .docxjs-wrapper {
+margin: 0 !important;
+position: unset !important;
+}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

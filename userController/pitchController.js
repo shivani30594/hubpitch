@@ -107,78 +107,74 @@ class pitchController {
                 var temp = [];
                 counter = 0;
                 async.eachSeries(req.files.pitch_files, function (value, each_callback) {
+                    console.log(req.files.pitch_files);
                     fileExtension = '';
                     filename = '';
                     thisFile = [];
                     thisFile = value;
                     fileExtension = thisFile.mimetype.split("/");
                     filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
-                    thisFile.mv(dir + '/' + filename, (err) => {
-                        if (err) {
-                            console.log("There was an issue in uploading cover image");
-                            each_callback();
-                        } else {
-                            temp = {
-                                'pitch_attachment': {
-                                    'pitch_attachment_type': fileExtension[0],
-                                    'pitch_attachment_name': filename,
-                                    'pitch_attachment_text': req.body.pitch_text[counter]
-                                }
-                            }
-                            console.log("temp:", temp);
-                            saveAble.push(temp);
-                            console.log("saveAble:", saveAble);
-                            console.log("File has been uploaded");
-                            counter++;
-                            each_callback();
-                        }
-                    });
+                    // thisFile.mv(dir + '/' + filename, (err) => {
+                    //     if (err) {
+                    //         console.log("There was an issue in uploading cover image");
+                    //         each_callback();
+                    //     } else {
+                    //         temp = {
+                    //             'pitch_attachment': {
+                    //                 'pitch_attachment_type': fileExtension[0],
+                    //                 'pitch_attachment_name': filename,
+                    //                 'pitch_attachment_text': req.body.pitch_text[counter]
+                    //             }
+                    //         }
+                    //         saveAble.push(temp);
+                    //         counter++;
+                    //         each_callback();
+                    //     }
+                    // });
                 }, function (err) {
                     if (err) {
                         console.log(err);
                     }
-                    //savePinch(newPitch,saveAble);
-                    db.query("INSERT INTO hp_pitch_master SET?", newPitch, function (
-                        error,
-                        results,
-                        fields
-                    ) {
-                        if (results.insertId) {
-                            pitchID = results.insertId;
-                            console.log('FINAL', saveAble);
-                            _.forEach(saveAble[0], function (key, value) {
-                                let newPitchInfo = {}
-                                newPitchInfo = {
-                                    'pitch_id': pitchID,
-                                    'pitch_attachment_type': key.pitch_attachment_type,
-                                    'pitch_attachment_name': key.pitch_attachment_name,
-                                    'pitch_attachment_text': key.pitch_attachment_text
-                                }
-                                db.query("INSERT INTO hp_pitch_info SET?", newPitchInfo, function (error,
-                                    results,
-                                    fields) {
-                                    if (results.affectedRows) {
-                                        res.send({ success: "true", message: "New Pitch Added" });
-                                    } else {
-                                        console.log(error,
-                                            results,
-                                            fields)
-                                        res.send({ success: "false", message: "Something went wrong || Info Table" });
-                                    }
-                                })
-                            })
-                        }
-                        else {
-                            console.log(error,
-                                results,
-                                fields)
-                            res.send({ success: "false", message: "Something went wrong || Master Table" });
-                        }
-                    });
+                    // //savePinch(newPitch,saveAble);
+                    // //console.log("saveAble:", saveAble);
+                    // db.query("INSERT INTO hp_pitch_master SET?", newPitch, function (
+                    //     error,
+                    //     results,
+                    //     fields
+                    // ) {
+                    //     if (results.insertId) {
+                    //         pitchID = results.insertId;
+                    //         let counter_temp = 1;
+                    //         let newPitchInfo = {}
+                    //         async.forEachOf(saveAble, function (value, key, callback) {
+                    //             value['pitch_attachment']['pitch_id'] = pitchID;
+                    //             db.query("INSERT INTO hp_pitch_info SET?", value['pitch_attachment'], function (error,
+                    //                 results,
+                    //                 fields) {
+                    //                 if (results) {
+                    //                     res.send({ success: "true", message: "New Pitch Added" });
+                    //                 } else {
+                    //                     console.log(error,
+                    //                         results,
+                    //                         fields)
+                    //                     res.send({ success: "false", message: "Something went wrong || Info Table" });
+                    //                 }
+                    //             })
+                    //             callback();
+                    //         }, function (err) {
+                    //             if (err) console.error(err.message);
+                    //             // configs is now a map of JSON data
+                    //         });
+                    //     }
+                    //     else {
+                    //         console.log(error,
+                    //             results,
+                    //             fields)
+                    //         res.send({ success: "false", message: "Something went wrong || Master Table" });
+                    //     }
+                    // });
                 });
             }
-
-
         }
         catch (error) {
             console.error(error);

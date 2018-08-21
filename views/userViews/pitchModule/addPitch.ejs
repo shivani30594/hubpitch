@@ -179,15 +179,18 @@
                             <div class="check-box-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="" name="activity" checked>Send Notification When There Is Activity</label>
+                                        <input id="allow_notification" type="checkbox" value="checked" name="activity" checked>Send
+                                        Notification When There Is Activity</label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="" name="allow_messging" checked>Allow For Messaging </label>
+                                        <input id="allow_messaging" type="checkbox" value="checked" name="allow_messging" checked>Allow
+                                        For Messaging </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="" name="allow_share" checked>Allow For Pitch To Be Shared</label>
+                                        <input id="allow_share" type="checkbox" value="checked" name="allow_share" checked>Allow
+                                        For Pitch To Be Shared</label>
                                 </div>
                             </div>
                             <div class="bottom-button-wapper">
@@ -205,14 +208,20 @@
                 <div class="action-wapper">
                     <div class="text-box_wapper">
                         <label>Name: </label>
-                        <span id="pitch_name_t"></span>
+                        <span id="pitch_name_t"> </span>
                         <input type="hidden" name="pitch_" id="pitch_id" value="">
                     </div>
                     <div class="placeholder-screenshot">
                         <img src="/img/preview.jpg" />
                     </div>
                     <div class="link-place">
-                        <a href="" class="link_value"> </a>
+                        <a id="link_value" href="" class="link_value"> </a>
+                    </div>
+                </div>
+                <div class="bottom-action">
+                    <div class="button-wapper">
+                        <button class="cancel"> Cancel </button>
+                        <button class="copy_link_btn"> Copy Link To Dashboard </button>
                     </div>
                 </div>
             </div>

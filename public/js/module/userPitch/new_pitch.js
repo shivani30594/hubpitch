@@ -282,7 +282,11 @@ const newPitch = function () {
     }
     const handleShareLink = () => {
         $(document).on("click", '#create_pitch', function () {
-            let accesstoken = getCookie('accesstoken')
+            let accesstoken = getCookie('accesstoken');
+            var allow_notification = $('#allow_notification').is(":checked")
+            var allow_messaging = $('#allow_messaging').is(":checked")
+            var allow_share = $('#allow_share').is(":checked")
+
             $.ajax({
                 url: 'http://localhost:3000/manage_pitch',
                 headers: {
@@ -292,6 +296,9 @@ const newPitch = function () {
                 method: 'POST',
                 data: {
                     pitch_id: $('#pitch_id').val(),
+                    allow_notification: allow_notification,
+                    allow_messaging: allow_messaging,
+                    allow_share: allow_share
                 },
                 dataType: 'json',
                 success: function (response) {
@@ -299,11 +306,25 @@ const newPitch = function () {
                         return alert(JSON.stringify(response.message));
                     }
                     console.log(response);
+                    let linkValue = 'http://localhost:3000/viewer/' + response.data
+                    $('#link_value').attr("href", linkValue);
+                    $('#link_value').html(linkValue);
+                    $('#final_section').hide();
+                    $('#share_box').show();
+                    $('#pitch_name_t').html($('#final_name').val());
                 },
                 error: function (jqXHR, textStatus) {
                     alert("Request failed: " + textStatus);
                 }
             });
+        });
+    }
+    const handleCopyButton = () => {
+        $(document).on("click", '.copy_link_btn', function () {
+            var copyText = document.getElementById("link_value");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Copied the text: " + copyText.value);
         });
     }
     return {
@@ -313,6 +334,7 @@ const newPitch = function () {
             handleDropZone();
             handleContinue_final();
             handleShareLink();
+            handleCopyButton();
         }
     };
 }();

@@ -34,214 +34,65 @@
 </head>
 
 <body>
-
     <div class="container">
-
         <div class="slider-main-wrapper">
             <div class="gallery-wrap">
-
                 <div class="single-item">
-
-                    <div class="slide">
-
-                        <div class="edit-wrap">
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="top-area">
-                                        <h2>Lorem ipsum dolor</h2>
-                                        <div class="preview">
-                                            <img src="/img/preview.jpg" class="img-responsive" alt="preview">
+                    <% for(var i=0; i < data.length; i++) { %>
+                        <div class="slide">
+                            <div class="edit-wrap">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="top-area">
+                                            <h2>
+                                                <%= data[i].company_name %>
+                                            </h2>
+                                            <% if(data[i].pitch_attachment_type == 'image') { %>
+                                                <div class="preview">
+                                                    <img src="<%= dir_parth+data[i].pitch_attachment_name %>" class="img-responsive" alt="preview">
+                                                </div>
+                                                <% } %>
+                                                    <% if (data[i].pitch_attachment_type == 'video') { %>
+                                                        <div class="preview">
+                                                            <video width="400" controls>
+                                                                <source src="<%= dir_parth+data[i].pitch_attachment_name %>" class="video_here">                                                                Your
+                                                                browser does not support HTML5 video.
+                                                            </video>
+                                                        </div>
+                                                        <% } %>
+                                                            <% if (data[i].pitch_attachment_type == 'application') { %>
+                                                                <div class="preview">
+                                                                    <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e" width="500" height="600" />
+                                                                </div>
+                                                                <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="slider-text">
+                                            <p>
+                                                <%= data[i].pitch_attachment_text %>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="slider-text">
-                                        <h2>Lorem ipsum dolor</h2>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco
-                                        </p>
-                                        <p>laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-                                            in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                                            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
-                                            id est laborum.</p>
-                                        <a href="">(click to edit)</a>
+                                <div class="bottom-btn">
+                                    <a href="" class="a-another-btn">hubPitch</a>
+                                    <div class="slide-count-wrap">
+                                        <span>Page</span>
+                                        <span class="current"> </span> of
+                                        <span class="total"> <%= results_length %> </span>
                                     </div>
+                                    <a href="">
+                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                    </a>
                                 </div>
-
-                            </div>
-
-                            <div class="bottom-btn">
-                                <a href="" class="a-another-btn">hubPitch</a>
-                                <div class="slide-count-wrap">
-                                    <span>Page</span>
-                                    <span class="current"></span> of
-                                    <span class="total">4</span>
-                                </div>
-                                <a href="javascript:void(0)" class="share-btn">
-                                    Share
-                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                </a>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                    <div class="slide">
-
-
-                        <div class="edit-wrap">
-                            <div class="row">
-
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="top-area">
-                                        <h2>Lorem ipsum </h2>
-                                        <div class="preview">
-                                            <img src="/img/preview.jpg" class="img-responsive" alt="preview">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="slider-text">
-                                        <h2>Lorem ipsum </h2>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco
-                                        </p>
-                                        <p>laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-                                            in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                                            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
-                                            id est laborum.</p>
-                                        <a href="">(click to edit)</a>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="bottom-btn">
-                                <a href="" class="a-another-btn">hubPitch</a>
-                                <div class="slide-count-wrap">
-                                    <span>Page</span>
-                                    <span class="current"></span> of
-                                    <span class="total"></span>
-                                </div>
-                                <a href="">
-                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                </a>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                    <div class="slide">
-
-
-                        <div class="edit-wrap">
-                            <div class="row">
-
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="top-area">
-                                        <h2>ipsum dolor</h2>
-                                        <div class="preview">
-                                            <img src="/img/preview.jpg" class="img-responsive" alt="preview">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="slider-text">
-                                        <h2>ipsum dolor</h2>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco
-                                        </p>
-                                        <p>laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-                                            in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                                            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
-                                            id est laborum.</p>
-                                        <a href="">(click to edit)</a>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="bottom-btn">
-                                <a href="" class="a-another-btn">hubPitch</a>
-                                <div class="slide-count-wrap">
-                                    <span>Page</span>
-                                    <span class="current"></span> of
-                                    <span class="total"></span>
-                                </div>
-                                <a href="">
-                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                </a>
                             </div>
                         </div>
-                    </div>
-                    <div class="slide">
-                        <div class="edit-wrap">
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="top-area">
-                                        <h2>ipsum dolor Lorem </h2>
-                                        <div class="preview">
-                                            <img src="/img/preview.jpg" class="img-responsive" alt="preview">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="slider-text">
-                                        <h2>ipsum dolor Lorem </h2>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco
-                                        </p>
-                                        <p>laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-                                            in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                                            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
-                                            id est laborum.</p>
-                                        <a href="">(click to edit)</a>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="bottom-btn">
-                                <a href="" class="a-another-btn">hubPitch</a>
-                                <div class="slide-count-wrap">
-                                    <span>Page</span>
-                                    <span class="current"></span> of
-                                    <span class="total"></span>
-                                </div>
-                                <a href="">
-                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                </a>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-
+                        <% } %>
                 </div>
-
-
-
             </div>
-
             <a href="" class="send-message" data-toggle="modal" data-target="#chat-window"> Send Jonathan a Message </a>
-
         </div>
-
-
-
     </div>
 
     <!-- Modal -->
@@ -262,8 +113,8 @@
                             <span class="time-right">11:00 AM</span>
                         </div>
                         <p>Hello. How are you today?</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper
-                            ligula sodales.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis
+                            ullamcorper ligula sodales.</p>
 
                     </div>
 
@@ -273,8 +124,8 @@
                             <span class="time-right">11:01 AM</span>
                         </div>
                         <p>Hey! I'm fine. Thanks for asking!</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper
-                            ligula sodales.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis
+                            ullamcorper ligula sodales.</p>
 
                     </div>
 

@@ -3,11 +3,12 @@ const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const jwtsecret = "Narola123";
 const _ = require('lodash');
-const dir = './uploads/test';
+const dir = 'public/uploads/test';
 const fs = require('fs')
 var multer = require('multer');
 var upload = multer({ dest: 'uploads/' })
 var async = require('async')
+var path = require('path');
 
 class pitchController {
 
@@ -105,74 +106,84 @@ class pitchController {
             }
             else {
                 var temp = [];
+                var ext = '';
                 counter = 0;
                 async.eachSeries(req.files.pitch_files, function (value, each_callback) {
-                    console.log(req.files.pitch_files);
+
                     fileExtension = '';
                     filename = '';
                     thisFile = [];
                     thisFile = value;
-                    fileExtension = thisFile.mimetype.split("/");
+                    if (thisFile.mimetype == 'application/octet-stream') {
+                        fileExtension = thisFile.name.split(".");
+                    } else {
+                        fileExtension = thisFile.mimetype.split("/");
+                    }
                     filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
-                    // thisFile.mv(dir + '/' + filename, (err) => {
-                    //     if (err) {
-                    //         console.log("There was an issue in uploading cover image");
-                    //         each_callback();
-                    //     } else {
-                    //         temp = {
-                    //             'pitch_attachment': {
-                    //                 'pitch_attachment_type': fileExtension[0],
-                    //                 'pitch_attachment_name': filename,
-                    //                 'pitch_attachment_text': req.body.pitch_text[counter]
-                    //             }
-                    //         }
-                    //         saveAble.push(temp);
-                    //         counter++;
-                    //         each_callback();
-                    //     }
-                    // });
+                    console.log(filename);
+                    thisFile.mv(dir + '/' + filename, (err) => {
+                        if (err) {
+                            console.log("There was an issue in uploading cover image");
+                            each_callback();
+                        } else {
+                            temp = {
+                                'pitch_attachment': {
+                                    'pitch_attachment_type': fileExtension[0],
+                                    'pitch_attachment_name': filename,
+                                    'pitch_attachment_text': req.body.pitch_text[counter]
+                                }
+                            }
+                            saveAble.push(temp);
+                            counter++;
+                            each_callback();
+                        }
+                    });
                 }, function (err) {
                     if (err) {
                         console.log(err);
                     }
-                    // //savePinch(newPitch,saveAble);
-                    // //console.log("saveAble:", saveAble);
-                    // db.query("INSERT INTO hp_pitch_master SET?", newPitch, function (
-                    //     error,
-                    //     results,
-                    //     fields
-                    // ) {
-                    //     if (results.insertId) {
-                    //         pitchID = results.insertId;
-                    //         let counter_temp = 1;
-                    //         let newPitchInfo = {}
-                    //         async.forEachOf(saveAble, function (value, key, callback) {
-                    //             value['pitch_attachment']['pitch_id'] = pitchID;
-                    //             db.query("INSERT INTO hp_pitch_info SET?", value['pitch_attachment'], function (error,
-                    //                 results,
-                    //                 fields) {
-                    //                 if (results) {
-                    //                     res.send({ success: "true", message: "New Pitch Added" });
-                    //                 } else {
-                    //                     console.log(error,
-                    //                         results,
-                    //                         fields)
-                    //                     res.send({ success: "false", message: "Something went wrong || Info Table" });
-                    //                 }
-                    //             })
-                    //             callback();
-                    //         }, function (err) {
-                    //             if (err) console.error(err.message);
-                    //             // configs is now a map of JSON data
-                    //         });
-                    //     }
-                    //     else {
-                    //         console.log(error,
-                    //             results,
-                    //             fields)
-                    //         res.send({ success: "false", message: "Something went wrong || Master Table" });
-                    //     }
-                    // });
+                    //savePinch(newPitch,saveAble);
+                    //console.log("saveAble:", saveAble);
+
+                    db.query("INSERT INTO hp_pitch_master SET?", newPitch, function (
+                        error,
+                        results,
+                        fields
+                    ) {
+                        if (results.insertId) {
+                            pitchID = results.insertId;
+                            let counter_temp = 1;
+                            let newPitchInfo = {}
+                            async.forEachOf(saveAble, function (value, key, callback) {
+                                value['pitch_attachment']['pitch_id'] = pitchID;
+                                db.query("INSERT INTO hp_pitch_info SET?", value['pitch_attachment'], function (error,
+                                    results,
+                                    fields) {
+                                    if (results) {
+                                        console.log('ADDED')
+                                    } else {
+                                        console.log(error,
+                                            results,
+                                            fields)
+                                        res.send({ success: "false", message: "Something went wrong || Info Table" });
+                                    }
+                                })
+                                callback();
+                            }, function (err) {
+                                if (err) console.error(err.message);
+                                // configs is now a map of JSON 
+                                // console.log('SaveABle LENGTH', saveAble.length);
+                                // console.log('Counter', counter_temp);
+                                res.send({ success: "true", message: "New Pitch Added", pitch: pitchID });
+                            });
+                        }
+                        else {
+                            console.log(error,
+                                results,
+                                fields)
+                            res.send({ success: "false", message: "Something went wrong || Master Table" });
+                        }
+                    });
                 });
             }
         }
@@ -287,9 +298,16 @@ class pitchController {
     }
 
     static async managePitch(req, res, next) {
+        console.log(req.body);
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
                 pitch_id: Joi.string()
+                    .required(),
+                allow_notification: Joi.string()
+                    .required(),
+                allow_messaging: Joi.string()
+                    .required(),
+                allow_share: Joi.string()
                     .required(),
             });
             if (pitchData.error) {
@@ -311,6 +329,9 @@ class pitchController {
             let url_token = randomToken
             let newPitch = {
                 pitch_id: req.body.pitch_id,
+                allow_notification: req.body.allow_notification,
+                allow_messaging: req.body.allow_messaging,
+                allow_share: req.body.allow_share,
                 url_token: url_token
             }
             db.query("INSERT INTO hp_pitch_manager SET?", newPitch, function (

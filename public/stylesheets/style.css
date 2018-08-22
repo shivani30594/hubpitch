@@ -344,31 +344,15 @@ nav.navigation {
     padding-right: 20px;
     padding-bottom: 10px;
 }
-#messageModal .modal-footer .form-group {
-    display: inline-block;
-    text-align: left;
-    width: 90%;
-}
-#messageModal .modal-footer .form-group  textarea{
-	height: 30px;
-    border: 0;
-    width: 100%;
-    padding: 0;
-    vertical-align: middle;
-}
+#messageModal .modal-footer .form-group { display: inline-block; text-align: left; width: 90%; }
+#messageModal .modal-footer .form-group  textarea{ height: 30px; border: 0; width: 100%; padding: 0; vertical-align: middle;}
 #messageModal .modal-footer .form-group  textarea:focus{outline: none;}
 #messageModal .modal-footer button{padding-left: 10px;}
 /*modal*/
 
 /*Tables*/
 .table-wrap,.form-wrapper{padding: 50px 0; background-color: #F2F5F7;} 
-.card-box {
-    padding: 20px !important;
-    border-radius: 3px !important;
-    margin-bottom: 30px !important;
-    background-color: #fff !important;
-    -webkit-box-shadow: 0 10px 35px 0 rgba(154,161,171,.1) !important; 
-    box-shadow: 0 10px 35px 0 rgba(154,161,171,.1) !important;
+.card-box {padding: 20px !important; border-radius: 3px !important; margin-bottom: 30px !important; background-color: #fff !important; -webkit-box-shadow: 0 10px 35px 0 rgba(154,161,171,.1) !important;  box-shadow: 0 10px 35px 0 rgba(154,161,171,.1) !important;
 }
 .table-wrap .col-md-6:nth-child(2n+1){clear: both;}
 .card-box .header-title { margin-bottom: 8px !important; margin-top: 0 !important;}
@@ -436,8 +420,7 @@ input[type=range] {width: 100% !important;}
 .top-area{margin-top: 100px !important;}
 .top-area , .bottom-area , .bottom-btn{max-width: 700px;margin: 0 auto;}
 .preview_box.display_current .bottom-btn{max-width: 100%;margin: 0 auto;}
-
-.js .file {background-color: #fff;border: 2px solid #797979;border-radius: 0;display: block;line-height: 1;overflow: hidden;padding: 60px 0;position: relative;text-align: center;margin-bottom: 15px;margin-top: 100px;}
+.js .file {background-color: #fff;border: 2px solid #797979;border-radius: 0;display: block;line-height: 1;overflow: hidden;padding: 60px 0;position: relative;text-align: center;margin-bottom: 15px;}
 .js .file.active .file-label {border: 0;clip: rect(0 0 0 0);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}
 .js .file:hover {border-color: #c3c3c3;}
 .js .file.focus {border-color: #709AD0;box-shadow: 0 0 0 1px #709AD0, 0 2px 0 1px #ddd;}
@@ -461,8 +444,6 @@ input[type=range] {width: 100% !important;}
 .preview{ background-color: #fff;border-radius: 0;display: block;line-height: 1;overflow: hidden;text-align: center;}
 .preview img{width: 100%;margin: 0 auto;}
 .preview video {border: 2px solid #797979;padding: 15px;width: 100%;}
-
-
 .edit-wrap {margin-top: 100px;}
 .edit-wrap .top-area {margin-top: 0px !important;}
 .edit-wrap textarea {width: 100%;}
@@ -470,7 +451,6 @@ input[type=range] {width: 100% !important;}
 .col-md-12.top-area.preview {margin: 0 auto;float: none;}
 .image_priview img{width: initial;}
 .image_priview .preview {border: 1px solid #ddd;}
-
 .action-table {margin: 10px;}
 .card-box.blue-box {border: 1px solid #979797;margin-top: 70px;}
 .card-box.blue-box .box-title {background-color: #4a90e2;color: #fff;margin: -20px -20px 30px -20px;padding: 10px;}
@@ -483,14 +463,15 @@ input[type=range] {width: 100% !important;}
 /* body .docx-outline{ width: initial !important; }
 body .docx-cover .docx-frame .docx-wrapper .docx-outline .docx-container { position: initial !important; } */
 .docs_priview .col-md-12.top-area.preview {max-width: 100%;}
-.kuku-viewer-node { margin: 0px auto !important;
-width: 100% !important;
-overflow: initial !important;
-}
-.pptx_file_type.display_current .kuku-viewer-node .docxjs-wrapper {
-margin: 0 !important;
-position: unset !important;
-}
+.kuku-viewer-node { margin: 0px auto !important;width: 100% !important;overflow: initial !important;}
+.pptx_file_type.display_current .kuku-viewer-node .docxjs-wrapper {margin: 0 !important;position: unset !important;}
+#share_box .placeholder-screenshot {text-align: center;}
+#share_box .link-place {text-align: center;margin: 20px 0 50px 0;}
+#share_box .bottom-action {display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-pack: end;
+-ms-flex-pack: end;justify-content: flex-end;}
+#share_box .bottom-action button {background: transparent;border: none;}
+#share_box .bottom-action button.copy_link_btn {color: #337ab7;}
+#share_box .action-wapper {margin: 0;}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

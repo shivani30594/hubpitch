@@ -298,7 +298,7 @@ class pitchController {
     }
 
     static async managePitch(req, res, next) {
-        console.log(req.body);
+        
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
                 pitch_id: Joi.string()

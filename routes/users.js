@@ -56,6 +56,9 @@ router.get('/admin/manage-pitch', adminController.pitchController.allUsersPitchV
 
 router.get('/viewer/:id', Controller.enduserController.viewPitch)
 
+// Pitch Analytics
+router.get('/pitch-analytics', Controller.enduserController.viewPitch)
+
 /** 
  * 
  * ================ API METHODS ========
@@ -63,6 +66,7 @@ router.get('/viewer/:id', Controller.enduserController.viewPitch)
  */
 
 // GENRAL API METHOD
+
 router.post('/signup', Controller.authController.singup);
 router.post('/signin', Controller.authController.signin);
 router.post('/forgot_password', Controller.authController.forgotPassword);

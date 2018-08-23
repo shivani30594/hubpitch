@@ -57,7 +57,7 @@ router.get('/admin/manage-pitch', adminController.pitchController.allUsersPitchV
 router.get('/viewer/:id', Controller.enduserController.viewPitch)
 
 // Pitch Analytics
-router.get('/pitch-analytics', Controller.enduserController.viewPitch)
+router.post('/pitch-analytics', Controller.enduserController.pitchAnalytics)
 
 /** 
  * 

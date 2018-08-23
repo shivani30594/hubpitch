@@ -92,7 +92,7 @@ const newPitch = function () {
                 $(".preview_docx").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_docx');
                 $(".current_preview").show();
 
-                var $kukuNode = $(".kuku-viewer-node");
+                var $kukuNode = $(".current_preview .kuku-viewer-node");
                 var $files = this.files[0];
                 var $prevbutton = $(".current_preview .prev-btn");
                 var $nextbutton = $(".current_preview .next-btn");

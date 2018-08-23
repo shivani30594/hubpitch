@@ -24,7 +24,7 @@ class enduserController {
                         res.send({ success: "false", message: "Something went wrong" });
                     }
                     if (results.length > 0) {
-                        res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length });
+                        res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id });
                     } else {
                         res.send({ success: "false", message: "Something went wrong" });
                     }
@@ -46,7 +46,11 @@ class enduserController {
                 res.send({ success: false, error: pitchData.error });
                 return;
             }
-            db.query("SELECT pitch_id from hp_pitch_manager where url_token=? ", req.params.id, function (
+            let newView = {};
+            let updateView = {};
+            let pitch_id = '';
+            let viewCounter = 1;
+            db.query("SELECT pitch_id from hp_pitch_manager where url_token=? ", req.body.pitch_token, function (
                 error,
                 results,
                 fields
@@ -55,7 +59,49 @@ class enduserController {
                     res.send({ success: "false", message: "Something went wrong || Pitch Token" });
                 }
                 if (results.length > 0) {
-                    console.log(results);
+                    pitch_id = results[0].pitch_id
+                    db.query("SELECT * from hp_pitch_analytics where pitch_id=? ", pitch_id, function (
+                        error,
+                        results,
+                        fields
+                    ) {
+                        if (error) {
+                            res.send({ success: "false", message: "Something went wrong || Pitch Analytics" });
+                        }
+                        if (results) {
+                            if (results.length === 0) {
+                                newView = {
+                                    'pitch_id': pitch_id,
+                                    'pitch_view_counter': viewCounter,
+                                    'pitch_page_analytics': ''
+                                }
+                                db.query("INSERT INTO hp_pitch_analytics SET?", newView, function (
+                                    error,
+                                    results,
+                                    fields
+                                ) {
+                                    if (error) {
+                                        res.send({ success: "false", message: "Something went wrong || Pitch Analytics" });
+                                    }
+                                    res.send({ success: "true", message: "View Added" });
+
+                                });
+                            } else {
+                                viewCounter = viewCounter + results[0].pitch_view_counter
+                                db.query("UPDATE hp_pitch_analytics SET pitch_view_counter ='" + viewCounter + "' WHERE `pitch_analytics` = '" + results[0].pitch_analytics + "'", function (error,
+                                    results,
+                                    fields) {
+                                    if (error) {
+                                        res.send({ success: "false", message: "Something went wrong || Pitch Analytics" });
+                                    }
+                                    res.send({ success: "true", message: "View Update" });
+                                })
+                            }
+                        }
+                        else {
+                            res.send({ success: "false", message: "Something went wrong with SQL Analytics" });
+                        }
+                    });
                 } else {
                     res.send({ success: "false", message: "Something went wrong with SQL" });
                 }
@@ -65,6 +111,10 @@ class enduserController {
             console.error(error);
             res.send({ success: false, error });
         }
+    }
+
+    static async pitchPageView(req, res) {
+
     }
 }
 module.exports = enduserController;

@@ -18,6 +18,7 @@
     <script src="/js/jquery.min.js"></script>
     <!--jquery js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/libraries/documents_viewer/docxjs/DocxJS.bundle.min.js"></script>
     <!-- bootstrap js -->
     <script src="https://use.fontawesome.com/8a22b161e0.js"></script>
     <!-- font awesome -->
@@ -31,14 +32,50 @@
     <!-- Validation.Js -->
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/js/additional-methods.min.js"></script>
+    <script>
+        function display_p(params, i) {
+            console.log('dis functions');
+            console.log('p->' + params);
+            var req = new XMLHttpRequest();
+
+            //Check File URL & domain origin
+            req.open("GET", "http://localhost:3000" + params, true);
+            //Response Type is Blob
+            req.responseType = "blob";
+
+            req.onload = function (e) {
+                var blob = req.response;
+
+                var docxJS = new DocxJS();
+
+                docxJS.parse(
+                    blob,
+                    function () {
+                        //After Rendering
+                        docxJS.render($('#loaded-layout_' + i)[0], function (result) {
+                            if (result.isError) {
+                                console.log(result.msg);
+                            } else {
+                                console.log("Success Render");
+                            }
+                        });
+                    }, function (e) {
+                        console.log("Error!", e);
+                    }
+                );
+            };
+
+            req.send();
+        }
+    </script>
 </head>
 
 <body>
     <div class="container">
+        <input type="hidden" id="pitch_token" value="<%= pitch_token %>">
         <div class="slider-main-wrapper">
             <div class="gallery-wrap">
                 <div class="single-item">
-                    <input type="hidden" name="pitch_token" id="pitch_token" value="<%=pitch_token %>">
                     <% for(var i=0; i < data.length; i++) { %>
                         <div class="slide">
                             <div class="edit-wrap">
@@ -48,7 +85,9 @@
                                             <h2>
                                                 <%= data[i].company_name %>
                                             </h2>
+                                            <input type="hidden" class="pitch_info_token <%= i+1 %>_token" value="<%= data[i].pitch_info_id %>">
                                             <% if(data[i].pitch_attachment_type == 'image') { %>
+                                                <input type="hidden" value="0" class="sliderViewer">
                                                 <div class="preview">
                                                     <img src="<%= dir_parth+data[i].pitch_attachment_name %>" class="img-responsive" alt="preview">
                                                 </div>
@@ -66,6 +105,16 @@
                                                                     <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e" width="500" height="600" />
                                                                 </div>
                                                                 <% } %>
+                                                                    <% if(data[i].pitch_attachment_type == 'docx') { %>
+                                                                        <div class="preview">
+                                                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                                                            <script>
+                                                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                                                var i = '<%= i %>';
+                                                                                display_p(param, i);
+                                                                            </script>
+                                                                        </div>
+                                                                        <% } %>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -83,7 +132,7 @@
                                         <span class="current"> </span> of
                                         <span class="total_pitch"> <%= results_length %> </span>
                                     </div>
-                                    <a href="javascript:void(0)" class="share-btn">
+                                    <a href="javascript:void(0)" class="share-btn" data-toggle="modal" data-target="#name-window">
                                         Share
                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                     </a>
@@ -146,6 +195,32 @@
                 </div>
             </div>
         </div>
+    </div>
+    <!-- Modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="name-window" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title">Share Pitch</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input id="email-name" type="text" class="form-control" placeholder="Type your Name here...">
+                    </div>
+                    <div class="input-group">
+                        <input id="email-address" type="text" class="form-control" placeholder="Type your Name here...">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary btn" id="btn-chat"> Send</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
     <!-- Modal -->
 

@@ -70,12 +70,8 @@ a.share-btn .fa {font-size: 12px;padding-left: 3px;}
 .preview {border: 1px solid #ddd;height: 500px;display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-align: center;
 -ms-flex-align: center;align-items: center;-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;}
 .preview  embed.docs_priview_e {height: 450px;}
-
-
-
-
-
-
+#name-window .modal-header .close { color: #000; position: inherit;}
+#name-window .modal-header { color: #337ab7; }
 @media (max-width: 991px){
   .gallery-wrap .edit-wrap .slider-text {padding: 0;}
 }

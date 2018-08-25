@@ -43,6 +43,7 @@ class pitchController {
             var saveAble = [];
             let counter = 0;
             let pitchID = '';
+            let fileType = '';
             let newPitch = {
                 company_name: req.body.company_name,
                 user_id: userid,
@@ -51,7 +52,15 @@ class pitchController {
                 fileExtension = '';
                 filename = '';
                 thisFile = [];
-                fileExtension = req.files['pitch_files'].mimetype.split("/");
+
+                if (thisFile.mimetype == 'application/octet-stream') {
+                    fileExtension = thisFile.name.split(".");
+                    fileType = 'docx'
+                } else {
+                    fileExtension = thisFile.mimetype.split("/");
+                    fileType = fileExtension[0];
+                }
+
                 filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
                 req.files['pitch_files'].mv(dir + '/' + filename, async (err) => {
                     if (err) {
@@ -59,7 +68,7 @@ class pitchController {
                     } else {
                         saveAble = {
                             'pitch_attachment': {
-                                'pitch_attachment_type': fileExtension[0],
+                                'pitch_attachment_type': fileType,
                                 'pitch_attachment_name': filename,
                                 'pitch_attachment_text': req.body.pitch_text
                             }
@@ -109,15 +118,16 @@ class pitchController {
                 var ext = '';
                 counter = 0;
                 async.eachSeries(req.files.pitch_files, function (value, each_callback) {
-
                     fileExtension = '';
                     filename = '';
                     thisFile = [];
                     thisFile = value;
                     if (thisFile.mimetype == 'application/octet-stream') {
                         fileExtension = thisFile.name.split(".");
+                        fileType = 'docx'
                     } else {
                         fileExtension = thisFile.mimetype.split("/");
+                        fileType = fileExtension[0];
                     }
                     filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
                     console.log(filename);
@@ -128,7 +138,7 @@ class pitchController {
                         } else {
                             temp = {
                                 'pitch_attachment': {
-                                    'pitch_attachment_type': fileExtension[0],
+                                    'pitch_attachment_type': fileType,
                                     'pitch_attachment_name': filename,
                                     'pitch_attachment_text': req.body.pitch_text[counter]
                                 }
@@ -269,36 +279,24 @@ class pitchController {
     }
 
     static async viewPitchDetails(req, res, next) {
-        try {
-            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
-                pitch_id: Joi.string()
-                    .required(),
-            });
-            if (pitchData.error) {
-                res.send({ success: false, error: pitchData.error });
-                return;
+        db.query("SELECT analysis.pitch_view_counter as total_views ,info.average_view,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id WHERE master_tbl.pitch_id = ?", req.params.id, function (
+            error,
+            results,
+            fields
+        ) {
+            if (results) {
+                console.log(results);
+                res.render('userViews/pitchModule/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, documents_viewer: 'true' });
+            } else {
+                console.log(error, results, fields);
+                return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
             }
-            db.query("SELECT master.user_id,master.pitch_id,master.company_name,count(*) as page_count,master.created,hp_pitch_info.pitch_attachment_type,hp_pitch_info.pitch_attachment_name,hp_pitch_info.pitch_attachment_text FROM hp_pitch_master as master JOIN hp_pitch_info ON master.pitch_id=hp_pitch_info.pitch_id WHERE master.pitch_id=? GROUP BY hp_pitch_info.pitch_id", pitch_id, function (
-                error,
-                results,
-                fields
-            ) {
-                if (results) {
-                    res.send({ success: "true", data: results });
-                } else {
-                    console.log(error, results, fields);
-                    return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
-                }
-            });
-        }
-        catch (error) {
-            console.error(error);
-            res.send({ success: false, error });
-        }
+        });
+
     }
 
     static async managePitch(req, res, next) {
-        
+
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
                 pitch_id: Joi.string()

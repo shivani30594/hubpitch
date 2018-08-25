@@ -472,6 +472,14 @@ body .docx-cover .docx-frame .docx-wrapper .docx-outline .docx-container { posit
 #share_box .bottom-action button {background: transparent;border: none;}
 #share_box .bottom-action button.copy_link_btn {color: #337ab7;}
 #share_box .action-wapper {margin: 0;}
+.analysis-section {display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-pack: justify;
+-ms-flex-pack: justify;justify-content: space-between;background: #f1f1f1;padding: 10px;margin-bottom: 5px;color: #656565;}
+.analysis-section label {margin-bottom: 0 !important;}
+.analysis-section label span{color: #1d1d1d;}
+.user_pitch .gallery-wrap {border: 1px solid #f3f3f3 !important;}
+
+
+
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

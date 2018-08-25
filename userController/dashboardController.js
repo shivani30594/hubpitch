@@ -11,8 +11,7 @@ class dashboardController {
 
     // DASHBOARD
     static async dashboard(req, res, next) {
-        userID =
-            res.render('userViews/dashboardModule/index', { title: 'User Dashboard || Hub Pitch', documents_viewer: 'false' });
+        res.render('userViews/dashboardModule/index', { title: 'User Dashboard || Hub Pitch', documents_viewer: 'false' });
     }
 
 }

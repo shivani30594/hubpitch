@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../component/headerFile.ejs %>
+        <link rel="stylesheet" href="/stylesheets/slider-page.css">
+        <link rel="stylesheet" href="/stylesheets/slick.css">
+        <link rel="stylesheet" href="/stylesheets/slick-theme.css">
+</head>
+
+<body>
+    <% include ../component/header.ejs %>
+        <div class="container">
+            <div class="slider-main-wrapper user_pitch">
+                <div class="gallery-wrap">
+                    <div class="single-item">
+                        <% for(var i=0; i < data.length; i++) { %>
+                            <div class="slide">
+                                <div class="edit-wrap">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div class="top-area">
+                                                <h2>
+                                                    <%= data[i].company_name %>
+                                                </h2>
+                                                <div class="analysis-section">
+                                                    <label class="total_views">Viewers: <span> <i class="fa fa-eye" aria-hidden="true"></i> <%= data[i].total_views %> </span></label>
+                                                    <label class="pitch_views_time"> Average Viewing Time: <span> <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                                        <%= data[i].average_view %> Secords </span> </label>
+                                                </div>
+                                                <input type="hidden" class="pitch_info_token <%= i+1 %>_token" value="<%= data[i].pitch_info_id %>">
+                                                <% if(data[i].pitch_attachment_type == 'image') { %>
+                                                    <input type="hidden" value="0" class="sliderViewer">
+                                                    <div class="preview">
+                                                        <img src="<%= dir_parth+data[i].pitch_attachment_name %>" class="img-responsive" alt="preview">
+                                                    </div>
+                                                    <% } %>
+                                                        <% if (data[i].pitch_attachment_type == 'video') { %>
+                                                            <div class="preview">
+                                                                <video width="400" controls>
+                                                                    <source src="<%= dir_parth+data[i].pitch_attachment_name %>" class="video_here">                                                                    Your
+                                                                    browser does not support HTML5 video.
+                                                                </video>
+                                                            </div>
+                                                            <% } %>
+                                                                <% if (data[i].pitch_attachment_type == 'application') { %>
+                                                                    <div class="preview">
+                                                                        <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e" width="500" height="600" />
+                                                                    </div>
+                                                                    <% } %>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div class="slider-text">
+                                                <p>
+                                                    <%= data[i].pitch_attachment_text %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bottom-btn">
+                                        <a href="" class="a-another-btn">hubPitch</a>
+                                        <div class="slide-count-wrap">
+                                            <span>Page</span>
+                                            <span class="current"> </span> of
+                                            <span class="total_pitch"> <%= results_length %> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/module/endUser/pitchSliders.js"></script>
+</body>
+
+</html>

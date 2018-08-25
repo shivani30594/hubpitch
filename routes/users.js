@@ -37,6 +37,8 @@ router.get('/user/profile', Controller.usersController.profile);
 
 // Pitch Module 
 router.get('/pitch/add', Controller.pitchController.addNewPitchView);
+router.get('/user/pitch/viewer/:id', Controller.pitchController.viewPitchDetails)
+
 /**
  * 
  * =========== ADMIN PAGE CALLING METHOD
@@ -58,6 +60,7 @@ router.get('/viewer/:id', Controller.enduserController.viewPitch)
 
 // Pitch Analytics
 router.post('/pitch-analytics', Controller.enduserController.pitchAnalytics)
+router.post('/pitch-page-view', Controller.enduserController.pitchPageView)
 
 /** 
  * 

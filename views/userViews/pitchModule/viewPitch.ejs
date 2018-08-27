@@ -24,9 +24,13 @@
                                                     <%= data[i].company_name %>
                                                 </h2>
                                                 <div class="analysis-section">
-                                                    <label class="total_views">Viewers: <span> <i class="fa fa-eye" aria-hidden="true"></i> <%= data[i].total_views %> </span></label>
-                                                    <label class="pitch_views_time"> Average Viewing Time: <span> <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                                        <%= data[i].average_view %> Secords </span> </label>
+                                                    <label class="total_views">Viewers: <span> <i class="fa fa-eye" aria-hidden="true"></i>
+                                                            <%= data[i].total_views %> </span></label>
+                                                    <label class="total_share">Share: <span> <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                            <%= data[i].share_times %> </span></label>
+                                                    <label class="pitch_views_time"> Average Viewing Time: <span> <i class="fa fa-clock-o"
+                                                                aria-hidden="true"></i>
+                                                            <%= data[i].average_view %> Secords </span> </label>
                                                 </div>
                                                 <input type="hidden" class="pitch_info_token <%= i+1 %>_token" value="<%= data[i].pitch_info_id %>">
                                                 <% if(data[i].pitch_attachment_type == 'image') { %>

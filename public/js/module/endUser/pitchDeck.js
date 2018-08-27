@@ -123,9 +123,58 @@ const pitchDeck = function () {
         $('.slick-active .sliderViewer').addClass('1_page');
         setInterval(incrementSeconds, 1000);
     }
+    const share_pitch = () => {
+        $("#success-alert").hide();
+        $(".share_pitch_form").validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'error-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
+                email_id: {
+                    required: true,
+                    email: true
+                },
+                sender_name: {
+                    required: true
+                }
+            },
+            submitHandler: function (form) {
+                $.ajax({
+                    url: 'http://localhost:3000/share-pitch',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        email_id: $('input[name="email_id"]').val(),
+                        sender_name: $('input[name="sender_name"]').val(),
+                        url: window.location.href,
+                        pitch_token: $('#pitch_token').val()
+                    },
+                    success: function (response) {
+                        if (!response.success) {
+                            return alert(JSON.stringify(response.error));
+                        }
+                        console.log(response)
+                        if (JSON.stringify(response.success == 'true')) {
+                            $('input[name="sender_name"]').val(' ');
+                            $('input[name="email_id"]').val(' ');
+                            $('#name-window').modal('hide')
+                            $("#success-alert").fadeTo(5000, 500).slideUp(500, function () {
+                                $("#success-alert").slideUp(500);
+                            });
+                        }
+                    },
+                    error: function (jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    }
+                });
+            }
+        });
+    }
     return {
         //main function to initiate the module
         init: function () {
+            share_pitch();
             handlePitchDeck();
             handlePitchDeckAnalytics();
         }

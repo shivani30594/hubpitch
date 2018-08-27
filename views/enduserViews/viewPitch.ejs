@@ -19,6 +19,8 @@
     <!--jquery js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/js/libraries/documents_viewer/docxjs/DocxJS.bundle.min.js"></script>
+    <script src="/js/libraries/documents_viewer/slidejs/SlideJS.bundle.min.js"></script>
+    <script src="/js/libraries/documents_viewer/celljs/CellJs.bundle.min.js"></script>
     <!-- bootstrap js -->
     <script src="https://use.fontawesome.com/8a22b161e0.js"></script>
     <!-- font awesome -->
@@ -33,9 +35,8 @@
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/js/additional-methods.min.js"></script>
     <script>
-        function display_p(params, i) {
-            console.log('dis functions');
-            console.log('p->' + params);
+        function display_docx(params, i) {
+
             var req = new XMLHttpRequest();
 
             //Check File URL & domain origin
@@ -67,13 +68,51 @@
 
             req.send();
         }
+        function display_pptx(params, i) {
+            var req = new XMLHttpRequest();
+
+            //Check File URL & domain origin
+            req.open("GET", "http://localhost:3000" + params, true);
+            //Response Type is Blob
+            req.responseType = "blob";
+
+            req.onload = function (e) {
+                var blob = req.response;            
+
+                slideJS = new SlideJS();
+                slideJS.parse(
+                    blob,
+                    function () {
+                        //After Rendering
+                        slideJS.render($('#loaded-layout_' + i)[0], function (result) {
+                            if (result.isError) {
+                                console.log(result.msg);
+                            } else {
+                                console.log("Success Render");
+                            }
+                        });
+                    }, function (e) {
+                        console.log("Error!", e);
+                    }
+                );
+
+            };
+
+            req.send();
+        } 
     </script>
 </head>
 
 <body>
     <div class="container">
         <input type="hidden" id="pitch_token" value="<%= pitch_token %>">
+
         <div class="slider-main-wrapper">
+            <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong>Email Sent Successfully</strong>
+                Thank You For Sharing Pitch.
+            </div>
             <div class="gallery-wrap">
                 <div class="single-item">
                     <% for(var i=0; i < data.length; i++) { %>
@@ -111,10 +150,20 @@
                                                                             <script>
                                                                                 var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
                                                                                 var i = '<%= i %>';
-                                                                                display_p(param, i);
+                                                                                display_docx(param, i);
                                                                             </script>
                                                                         </div>
                                                                         <% } %>
+                                                                            <% if(data[i].pitch_attachment_type == 'pptx') { %>
+                                                                                <div class="preview pptx-view">
+                                                                                    <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                                                                    <script>
+                                                                                        var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                                                        var i = '<%= i %>';
+                                                                                        display_pptx(param, i);
+                                                                                    </script>
+                                                                                </div>
+                                                                                <% } %>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -206,17 +255,17 @@
                     <h5 class="modal-title">Share Pitch</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="input-group">
-                        <input id="email-name" type="text" class="form-control" placeholder="Type your Name here...">
-                    </div>
-                    <div class="input-group">
-                        <input id="email-address" type="text" class="form-control" placeholder="Type your Name here...">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary btn" id="btn-chat"> Send</button>
-                        </span>
-                    </div>
+                    <form class="share_pitch_form" name="share_pitch">
+                        <div class="form-group">
+                            <label for="email_id">Email Address:</label>
+                            <input type="text" class="form-control" name="email_id" id="email_id">
+                        </div>
+                        <div class="form-group">
+                            <label for="sender_name">Your Name:</label>
+                            <input type="text" name="sender_name" class="form-control" id="sender_name">
+                        </div>
+                        <button type="submit" name="share_pitch" class="btn btn-primary">Send</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -55,7 +55,7 @@ class pitchController {
 
                 if (thisFile.mimetype == 'application/octet-stream') {
                     fileExtension = thisFile.name.split(".");
-                    fileType = 'docx'
+                    fileType = fileExtension
                 } else {
                     fileExtension = thisFile.mimetype.split("/");
                     fileType = fileExtension[0];
@@ -124,7 +124,8 @@ class pitchController {
                     thisFile = value;
                     if (thisFile.mimetype == 'application/octet-stream') {
                         fileExtension = thisFile.name.split(".");
-                        fileType = 'docx'
+                        fileType = fileExtension[1];
+                        console.log('fileExtension', fileExtension);
                     } else {
                         fileExtension = thisFile.mimetype.split("/");
                         fileType = fileExtension[0];
@@ -270,6 +271,7 @@ class pitchController {
             fields
         ) {
             if (results) {
+                
                 res.send({ success: "true", data: results });
             } else {
                 console.log(error, results, fields);
@@ -279,7 +281,7 @@ class pitchController {
     }
 
     static async viewPitchDetails(req, res, next) {
-        db.query("SELECT analysis.pitch_view_counter as total_views ,info.average_view,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id WHERE master_tbl.pitch_id = ?", req.params.id, function (
+        db.query("SELECT master_tbl.share_times,analysis.pitch_view_counter as total_views ,info.average_view,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id WHERE master_tbl.pitch_id = ?", req.params.id, function (
             error,
             results,
             fields

@@ -2,8 +2,7 @@ const db = require("../dbconfig/db");
 const Joi = require("joi");
 var async = require('async');
 const dir = '/uploads/test';
-const _ = require('lodash');
-var serialize = require('node-serialize');
+const nodemailer = require("nodemailer");
 
 class enduserController {
 
@@ -126,12 +125,8 @@ class enduserController {
                 res.send({ success: false, error: pitchData.error });
                 return;
             }
-            console.log(req.body);
             let dataSetROW = {};
-            let newPageView = {};
             let avgView = '';
-            var objS = '';
-            var objz = '';
             db.query("SELECT pitch_view_counter as counter,hp_pitch_info.pitch_info_id as pitch_info_token,hp_pitch_info.average_view as average_view from hp_pitch_analytics JOIN hp_pitch_info ON hp_pitch_analytics.pitch_id = hp_pitch_info.pitch_id where hp_pitch_analytics.pitch_id=? ", req.body.pitch_token, function (error,
                 results,
                 fields) {
@@ -158,46 +153,75 @@ class enduserController {
                         })
                     }
                 });
-                // if (dataSetROW.analytics.length == 0) {
-                //     avgView = req.body.view / dataSetROW.counter
-                //     // newPageView = {
-                //     //     'page': {
-                //     //         'page_number': req.body.page,
-                //     //         'average_views': avgView
-                //     //     }
-                //     // }
-                //     newPageView[0] = avgView
-                //     objS = serialize.serialize(newPageView);
-                //     db.query("UPDATE hp_pitch_analytics SET pitch_page_analytics ='" + objS + "' WHERE `pitch_id` = '" + req.body.pitch_token + "'", function (error,
-                //         results,
-                //         fields) {
-                //         console.log(error,
-                //             results,
-                //             fields);
-                //         if (error) {
-                //             res.send({ success: "false", message: "Something went wrong || Pitch Analytics" });
-                //         }
-                //         res.send({ success: "true", message: "View Update" });
-                //     })
-                // } else {
-                //     objz = serialize.unserialize(dataSetROW.analytics)
-                //     console.log(objz);
-                //     if (objz.page.page_number == req.body.page) {
-                //         let newAgv = objz.page.average_views + req.body.view / dataSetROW.counter;
-                //         newPageView = {
-                //             'page': {
-                //                 'page': req.body.page,
-                //                 'average_views': newAgv
-                //             }
-                //         }
-                //         console.log(newPageView);
-                //     }
-                //     else {
-
-                //     }
-                // }
             });
 
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async sharePitch(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                email_id: Joi.string().required(),
+                sender_name: Joi.string().required(),
+                url: Joi.string().required(),
+                pitch_token: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            var smtpTransport = nodemailer.createTransport({
+                service: "Gmail",
+                auth: {
+                    user: "demo.narolainfotech@gmail.com",
+                    pass: "Password123#"
+                }
+            });
+
+            // -------------------------------mail sending-----------------------------
+            var tomail = "";
+            let share = '';
+            tomail = req.body.email_id;
+            // setup e-mail data with unicode symbols
+            var mailOptions = {
+                from: "demo.narolainfotech@gmail.com", // sender address
+                to: tomail, // list of receivers
+                subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
+                html: "You're invited To Visit hubPitch <br/> Here is link For The Pitch " + req.body.url + '<br/> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+            };
+            // send mail with defined transport object
+            smtpTransport.sendMail(mailOptions, function (err, info) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("Message sent: " + info);
+                    db.query("SELECT share_times AS counter FROM hp_pitch_master where pitch_id=?", req.body.pitch_token, function (error,
+                        results,
+                        fields) {
+                        if (error) {
+                            res.send({ success: "SQL_ISSUE", message: "Something went wrong With SQL FETCH" });
+                        }
+                        if (results.length > 0) {
+                            share = results[0].counter + 1
+                            db.query("UPDATE hp_pitch_master SET share_times ='" + share + "' WHERE `pitch_id` = '" + req.body.pitch_token + "'", function (error1,
+                                results1,
+                                fields1) {
+                                console.log(error1,
+                                    results1,
+                                    fields1)
+                                if (error1) {
+                                    res.send({ success: "SQL_ISSUE", message: "Something went wrong Updating Share"});
+                                }
+                                res.send({ success: "true" });
+                            })
+                        }
+                    })
+                }
+            });
         }
         catch (error) {
             console.error(error);

@@ -61,6 +61,7 @@ router.get('/viewer/:id', Controller.enduserController.viewPitch)
 // Pitch Analytics
 router.post('/pitch-analytics', Controller.enduserController.pitchAnalytics)
 router.post('/pitch-page-view', Controller.enduserController.pitchPageView)
+router.post('/share-pitch', Controller.enduserController.sharePitch);
 
 /** 
  * 

@@ -137,7 +137,10 @@ const pitchDeck = function () {
                 },
                 sender_name: {
                     required: true
-                }
+                },
+                email_body: {
+                    required: true
+                },
             },
             submitHandler: function (form) {
                 $.ajax({
@@ -148,6 +151,7 @@ const pitchDeck = function () {
                         email_id: $('input[name="email_id"]').val(),
                         sender_name: $('input[name="sender_name"]').val(),
                         url: window.location.href,
+                        email_body: $('input[name="email_body"]').val(),
                         pitch_token: $('#pitch_token').val()
                     },
                     success: function (response) {

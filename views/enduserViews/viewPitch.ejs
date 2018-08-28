@@ -19,8 +19,8 @@
     <!--jquery js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/js/libraries/documents_viewer/docxjs/DocxJS.bundle.min.js"></script>
-    <script src="/js/libraries/documents_viewer/slidejs/SlideJS.bundle.min.js"></script>
     <script src="/js/libraries/documents_viewer/celljs/CellJs.bundle.min.js"></script>
+    <script src="/js/libraries/documents_viewer/slidejs/SlideJS.bundle.min.js"></script>
     <!-- bootstrap js -->
     <script src="https://use.fontawesome.com/8a22b161e0.js"></script>
     <!-- font awesome -->
@@ -42,7 +42,7 @@
             req.open("GET", "http://localhost:3000" + params, true);
             //Response Type is Blob
             req.responseType = "blob";
-
+            console.log('asda', req);
             req.onload = function (e) {
                 var blob = req.response;
                 var docxJS = new DocxJS();
@@ -115,10 +115,12 @@
             req.open("GET", "http://localhost:3000" + params, true);
             //Response Type is Blob
             req.responseType = "blob";
-            console.log('asda',req.response);
+            console.log('asda', req.response);
             req.onload = function (e) {
                 var blob = req.response;
-                var cellJS = new CellJS();
+                var cellJS = null;
+                cellJS = new CellJS();
+                console.log(req);
                 cellJS.parse(
                     blob,
                     function () {
@@ -200,15 +202,15 @@
                                                                                         var i = '<%= i %>';
                                                                                         display_pptx(param, i);
                                                                                     </script>
-                                                                                    <div class="kuku-docx-controller">
-                                                                                        <button class="btn prev-btn">
-                                                                                            <i class="fa fa-arrow-left"></i>
-                                                                                            Prev</button>
-                                                                                        <button class="btn next-btn">
-                                                                                            Next
-                                                                                            <i class="fa fa-arrow-right"></i>
-                                                                                        </button>
-                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="kuku-docx-controller">
+                                                                                    <button class="btn prev-btn">
+                                                                                        <i class="fa fa-arrow-left"></i>
+                                                                                        Prev</button>
+                                                                                    <button class="btn next-btn">
+                                                                                        Next
+                                                                                        <i class="fa fa-arrow-right"></i>
+                                                                                    </button>
                                                                                 </div>
                                                                                 <% } %>
                                                                                     <% if(data[i].pitch_attachment_type == 'xlsx') { %>
@@ -262,8 +264,6 @@
                     <h5 class="">hubpitch</h5>
                 </div>
                 <div class="modal-body">
-
-
                     <div class="msg-block">
                         <div class="msg-head">
                             <h5>Jack Sparrow</h5>
@@ -272,9 +272,7 @@
                         <p>Hello. How are you today?</p>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis
                             ullamcorper ligula sodales.</p>
-
                     </div>
-
                     <div class="msg-block darker">
                         <div class="msg-head">
                             <h5>Bhaumik Patel</h5>
@@ -283,10 +281,7 @@
                         <p>Hey! I'm fine. Thanks for asking!</p>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis
                             ullamcorper ligula sodales.</p>
-
                     </div>
-
-
                 </div>
                 <div class="typing-box">
                     <div class="panel-footer">
@@ -313,15 +308,27 @@
                 </div>
                 <div class="modal-body">
                     <form class="share_pitch_form" name="share_pitch">
-                        <div class="form-group">
-                            <label for="email_id">Email Address:</label>
-                            <input type="text" class="form-control" name="email_id" id="email_id">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email_id">Email Address:</label>
+                                    <input type="text" class="form-control" name="email_id" id="email_id">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="sender_name">Your Name:</label>
+                                    <input type="text" name="sender_name" class="form-control" id="sender_name">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="sender_name">Your Message:</label>
+                                        <textarea rows="4" cols="50" class="form-control" name="email_body" class="form-control" id="email_body"></textarea>
+                                    </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="sender_name">Your Name:</label>
-                            <input type="text" name="sender_name" class="form-control" id="sender_name">
-                        </div>
-                        <button type="submit" name="share_pitch" class="btn btn-primary">Send</button>
+                        <button type="submit" name="share_pitch" class="btn btn-primary">Send <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </form>
                 </div>
             </div>

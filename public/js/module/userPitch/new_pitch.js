@@ -138,10 +138,12 @@ const newPitch = function () {
                         if (instance) {
                             /** parse API
                              *  structure : parse(file, successCallbackFn, errorCallbackFn) **/
+                            console.log(instance);
                             instance.parse(file,
                                 function () {
                                     /** render API
                                      *  structure : render(element, callbackFn, pageId) **/
+                                    console.log(file);
                                     instance.render($kukuNode[0], function () {
                                         $(".current_preview").hide();
                                     });

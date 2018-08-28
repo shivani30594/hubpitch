@@ -72,6 +72,45 @@ a.share-btn .fa {font-size: 12px;padding-left: 3px;}
 .preview  embed.docs_priview_e {height: 450px;}
 #name-window .modal-header .close { color: #000; position: inherit;}
 #name-window .modal-header { color: #337ab7; }
+.kuku-docx-controller{
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+-webkit-box-pack: justify;
+-ms-flex-pack: justify;
+justify-content: space-between;
+margin-top: 5px;
+}
+.kuku-docx-controller .btn {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 0;
+}
+div#name-window .share_pitch_form {border-radius: 0;}
+div#name-window .modal-header h5 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 18px;
+}
+div#name-window .share_pitch_form button {
+  background: #a3dc64 !important;
+  border: 1px solid #a3dc64 !important;
+}
+div#name-window .share_pitch_form button .fa{
+color: #fff;
+font-size: 14px;
+padding-left: 5px;
+}
+div#success-alert{
+position: absolute;
+z-index: 99;
+left: 50%;
+top: 12%;
+transform: translate(-50% , -50%);
+}
+.error-block {
+  color: #c50404;
+}
 @media (max-width: 991px){
   .gallery-wrap .edit-wrap .slider-text {padding: 0;}
 }

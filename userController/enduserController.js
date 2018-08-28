@@ -168,6 +168,7 @@ class enduserController {
                 email_id: Joi.string().required(),
                 sender_name: Joi.string().required(),
                 url: Joi.string().required(),
+                email_body:  Joi.string().required(),
                 pitch_token: Joi.string().required()
             });
             if (pitchData.error) {

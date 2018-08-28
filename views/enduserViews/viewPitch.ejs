@@ -36,19 +36,16 @@
     <script src="/js/additional-methods.min.js"></script>
     <script>
         var instance = null;
-        var req = new XMLHttpRequest();
-        var blob = null
         function display_docx(params, i) {
+            var req = new XMLHttpRequest();
             //Check File URL & domain origin
             req.open("GET", "http://localhost:3000" + params, true);
             //Response Type is Blob
             req.responseType = "blob";
 
             req.onload = function (e) {
-                blob = req.response;
-
+                var blob = req.response;
                 var docxJS = new DocxJS();
-
                 docxJS.parse(
                     blob,
                     function () {
@@ -70,13 +67,14 @@
         }
 
         function display_pptx(params, i) {
+            var req = new XMLHttpRequest();
             //Check File URL & domain origin
             req.open("GET", "http://localhost:3000" + params, true);
             //Response Type is Blob
             req.responseType = "blob";
 
             req.onload = function (e) {
-                blob = req.response;
+                var blob = req.response;
                 var slideJS = new SlideJS();
                 slideJS.parse(
                     blob,
@@ -112,18 +110,20 @@
             return false;
         });
         function display_excel(params, i) {
-            console.log(params, i)
+            var req = new XMLHttpRequest();
+            //Check File URL & domain origin
             req.open("GET", "http://localhost:3000" + params, true);
             //Response Type is Blob
             req.responseType = "blob";
+            console.log('asda',req.response);
             req.onload = function (e) {
-                blob = req.response;
+                var blob = req.response;
                 var cellJS = new CellJS();
                 cellJS.parse(
                     blob,
                     function () {
                         //After Rendering
-                        docxJS.render($('#loaded-layout_' + i)[0], function (result) {
+                        cellJS.render($('#loaded-layout_' + i)[0], function (result) {
                             if (result.isError) {
                                 console.log(result.msg);
                             } else {
@@ -134,7 +134,9 @@
                         console.log("Error!", e);
                     }
                 );
-            }
+            };
+
+            req.send();
         }
     </script>
 </head>

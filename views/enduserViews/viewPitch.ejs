@@ -35,17 +35,17 @@
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/js/additional-methods.min.js"></script>
     <script>
+        var instance = null;
+        var req = new XMLHttpRequest();
+        var blob = null
         function display_docx(params, i) {
-
-            var req = new XMLHttpRequest();
-
             //Check File URL & domain origin
             req.open("GET", "http://localhost:3000" + params, true);
             //Response Type is Blob
             req.responseType = "blob";
 
             req.onload = function (e) {
-                var blob = req.response;
+                blob = req.response;
 
                 var docxJS = new DocxJS();
 
@@ -68,18 +68,16 @@
 
             req.send();
         }
-        function display_pptx(params, i) {
-            var req = new XMLHttpRequest();
 
+        function display_pptx(params, i) {
             //Check File URL & domain origin
             req.open("GET", "http://localhost:3000" + params, true);
             //Response Type is Blob
             req.responseType = "blob";
 
             req.onload = function (e) {
-                var blob = req.response;            
-
-                slideJS = new SlideJS();
+                blob = req.response;
+                var slideJS = new SlideJS();
                 slideJS.parse(
                     blob,
                     function () {
@@ -95,11 +93,49 @@
                         console.log("Error!", e);
                     }
                 );
-
+                instance = slideJS;
             };
-
             req.send();
-        } 
+        }
+        $(document).on('click', '.slick-active .prev-btn', function () {
+            console.log('prev');
+            currentId = instance.getCurrentId();
+            instance.gotoPage(currentId - 1);
+            console.log('instance', instance);
+            return false;
+        });
+        $(document).on('click', '.slick-active .next-btn', function () {
+            console.log('next');
+            currentId = instance.getCurrentId();
+            instance.gotoPage(currentId + 1);
+            console.log('instance', instance);
+            return false;
+        });
+        function display_excel(params, i) {
+            console.log(params, i)
+            req.open("GET", "http://localhost:3000" + params, true);
+            //Response Type is Blob
+            req.responseType = "blob";
+            req.onload = function (e) {
+                blob = req.response;
+                var cellJS = new CellJS();
+                cellJS.parse(
+                    blob,
+                    function () {
+                        //After Rendering
+                        docxJS.render($('#loaded-layout_' + i)[0], function (result) {
+                            if (result.isError) {
+                                console.log(result.msg);
+                            } else {
+                                console.log("Success Render");
+                            }
+                        });
+                    }, function (e) {
+                        console.log("Error!", e);
+                    }
+                );
+            }
+        }
     </script>
 </head>
 
@@ -162,8 +198,27 @@
                                                                                         var i = '<%= i %>';
                                                                                         display_pptx(param, i);
                                                                                     </script>
+                                                                                    <div class="kuku-docx-controller">
+                                                                                        <button class="btn prev-btn">
+                                                                                            <i class="fa fa-arrow-left"></i>
+                                                                                            Prev</button>
+                                                                                        <button class="btn next-btn">
+                                                                                            Next
+                                                                                            <i class="fa fa-arrow-right"></i>
+                                                                                        </button>
+                                                                                    </div>
                                                                                 </div>
                                                                                 <% } %>
+                                                                                    <% if(data[i].pitch_attachment_type == 'xlsx') { %>
+                                                                                        <div class="preview pptx-view">
+                                                                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                                                                            <script>
+                                                                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                                                                var i = '<%= i %>';
+                                                                                                display_excel(param, i);
+                                                                                            </script>
+                                                                                        </div>
+                                                                                        <% } %>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">

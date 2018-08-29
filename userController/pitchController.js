@@ -271,7 +271,7 @@ class pitchController {
             fields
         ) {
             if (results) {
-                
+
                 res.send({ success: "true", data: results });
             } else {
                 console.log(error, results, fields);
@@ -287,7 +287,6 @@ class pitchController {
             fields
         ) {
             if (results) {
-                console.log(results);
                 res.render('userViews/pitchModule/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, documents_viewer: 'true' });
             } else {
                 console.log(error, results, fields);
@@ -339,15 +338,40 @@ class pitchController {
                 results,
                 fields
             ) {
-                console.log(error,
-                    results,
-                    fields);
                 if (results) {
                     res.send({ success: "true", message: "share link created", data: url_token });
                 } else {
                     return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
                 }
             });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static sharingDetails(req, res, next) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                pitch_id: Joi.string()
+                    .required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            db.query('SELECT * FROM hp_email_log WHERE `pitch_id` = ?', req.body.pitch_id, function (error, results, fields) {
+                if (error) {
+                    res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
+                }
+
+                if (results.length > 0) {
+                    res.send({ success: "true", data: results });
+                } else {
+                    res.send({ success: "true", message: "No Data" });
+                }
+            })
         }
         catch (error) {
             console.error(error);

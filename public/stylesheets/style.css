@@ -479,6 +479,15 @@ body .docx-cover .docx-frame .docx-wrapper .docx-outline .docx-container { posit
 .user_pitch .gallery-wrap {border: 1px solid #f3f3f3 !important;}
 
 
+.total_share{cursor: pointer;}
+div#share_details .close { position: inherit;line-height: inherit;padding: 0;}
+div#share_details ul.ul_list_wapper_sharing {list-style-type: none;text-align: left;padding-left: 0;margin-bottom: 0;}
+div#share_details ul.ul_list_wapper_sharing li {padding: 10px;border-bottom: 1px solid #ddd;}
+div#share_details .modal-footer{width: inherit !important;padding: 15px !important;}
+div#share_details .modal-body {padding-bottom: 0;}
+div#share_details  .modal-header {padding:15px 20px;display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-align: center;-ms-flex-align: center;
+align-items: center;-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
+div#share_details  .modal-header::before , div#share_details  .modal-header::after {display: none;}
 
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}

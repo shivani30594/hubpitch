@@ -26,7 +26,8 @@
                                                 <div class="analysis-section">
                                                     <label class="total_views">Viewers: <span> <i class="fa fa-eye" aria-hidden="true"></i>
                                                             <%= data[i].total_views %> </span></label>
-                                                    <label class="total_share">Share: <span> <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                    <label class="total_share" data-toggle="modal" data-target="#share_details">Share:
+                                                        <span> <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                             <%= data[i].share_times %> </span></label>
                                                     <label class="pitch_views_time"> Average Viewing Time: <span> <i class="fa fa-clock-o"
                                                                 aria-hidden="true"></i>
@@ -76,8 +77,30 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="share_details" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Pitch Sharing Information In Detail</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="ul_list_wapper_sharing">
+
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
         <script src="/js/module/endUser/pitchSliders.js"></script>
+        <script src="/js/module/userPitch/pitchDetails.js"></script>
 </body>
 
 </html>

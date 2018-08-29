@@ -168,7 +168,7 @@ class enduserController {
                 email_id: Joi.string().required(),
                 sender_name: Joi.string().required(),
                 url: Joi.string().required(),
-                email_body:  Joi.string().required(),
+                email_body: Joi.string().required(),
                 pitch_token: Joi.string().required()
             });
             if (pitchData.error) {
@@ -186,13 +186,17 @@ class enduserController {
             // -------------------------------mail sending-----------------------------
             var tomail = "";
             let share = '';
+            let newEmail = '';
+            let emailLog = {};
             tomail = req.body.email_id;
             // setup e-mail data with unicode symbols
+            // Email Body Builder 
+            newEmail = req.body.email_body + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
             var mailOptions = {
                 from: "demo.narolainfotech@gmail.com", // sender address
                 to: tomail, // list of receivers
                 subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
-                html: "You're invited To Visit hubPitch <br/> Here is link For The Pitch " + req.body.url + '<br/> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                html: newEmail
             };
             // send mail with defined transport object
             smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -211,13 +215,27 @@ class enduserController {
                             db.query("UPDATE hp_pitch_master SET share_times ='" + share + "' WHERE `pitch_id` = '" + req.body.pitch_token + "'", function (error1,
                                 results1,
                                 fields1) {
-                                console.log(error1,
-                                    results1,
-                                    fields1)
                                 if (error1) {
-                                    res.send({ success: "SQL_ISSUE", message: "Something went wrong Updating Share"});
+                                    res.send({ success: "SQL_ISSUE", message: "Something went wrong Updating Share" });
                                 }
-                                res.send({ success: "true" });
+                                emailLog = {
+                                    'pitch_id': req.body.pitch_token,
+                                    'sender_name': req.body.sender_name,
+                                    'receiver_email_address': req.body.email_id,
+                                    'email_body': req.body.email_body
+                                }
+                                db.query('INSERT into hp_email_log SET?', emailLog, function (error,
+                                    results,
+                                    fields) {
+                                    console.log(error,
+                                        results,
+                                        fields);
+                                    if (error) {
+                                        res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
+                                    }
+
+                                    res.send({ success: "true" });
+                                })
                             })
                         }
                     })

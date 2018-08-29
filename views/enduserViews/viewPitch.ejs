@@ -172,6 +172,7 @@
                                                 </div>
                                                 <% } %>
                                                     <% if (data[i].pitch_attachment_type == 'video') { %>
+                                                        <input type="hidden" value="0" class="sliderViewer">
                                                         <div class="preview">
                                                             <video width="400" controls>
                                                                 <source src="<%= dir_parth+data[i].pitch_attachment_name %>" class="video_here">                                                                Your
@@ -180,11 +181,13 @@
                                                         </div>
                                                         <% } %>
                                                             <% if (data[i].pitch_attachment_type == 'application') { %>
+                                                                <input type="hidden" value="0" class="sliderViewer">
                                                                 <div class="preview">
                                                                     <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e" width="500" height="600" />
                                                                 </div>
                                                                 <% } %>
                                                                     <% if(data[i].pitch_attachment_type == 'docx') { %>
+                                                                        <input type="hidden" value="0" class="sliderViewer">
                                                                         <div class="preview">
                                                                             <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
                                                                             <script>
@@ -195,6 +198,7 @@
                                                                         </div>
                                                                         <% } %>
                                                                             <% if(data[i].pitch_attachment_type == 'pptx') { %>
+                                                                                <input type="hidden" value="0" class="sliderViewer">
                                                                                 <div class="preview pptx-view">
                                                                                     <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
                                                                                     <script>
@@ -202,18 +206,19 @@
                                                                                         var i = '<%= i %>';
                                                                                         display_pptx(param, i);
                                                                                     </script>
-                                                                                </div>
-                                                                                <div class="kuku-docx-controller">
-                                                                                    <button class="btn prev-btn">
-                                                                                        <i class="fa fa-arrow-left"></i>
-                                                                                        Prev</button>
-                                                                                    <button class="btn next-btn">
-                                                                                        Next
-                                                                                        <i class="fa fa-arrow-right"></i>
-                                                                                    </button>
+                                                                                    <div class="kuku-docx-controller">
+                                                                                        <button class="btn prev-btn">
+                                                                                            <i class="fa fa-arrow-left"></i>
+                                                                                            Prev</button>
+                                                                                        <button class="btn next-btn">
+                                                                                            Next
+                                                                                            <i class="fa fa-arrow-right"></i>
+                                                                                        </button>
+                                                                                    </div>
                                                                                 </div>
                                                                                 <% } %>
                                                                                     <% if(data[i].pitch_attachment_type == 'xlsx') { %>
+                                                                                        <input type="hidden" value="0" class="sliderViewer">
                                                                                         <div class="preview pptx-view">
                                                                                             <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
                                                                                             <script>
@@ -322,13 +327,14 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="sender_name">Your Message:</label>
-                                        <textarea rows="4" cols="50" class="form-control" name="email_body" class="form-control" id="email_body"></textarea>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="sender_name">Your Message:</label>
+                                    <textarea rows="4" cols="50" class="form-control" name="email_body" class="form-control" id="email_body" ></textarea>
+                                </div>
                             </div>
                         </div>
-                        <button type="submit" name="share_pitch" class="btn btn-primary">Send <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                        <button type="submit" name="share_pitch" class="btn btn-primary">Send <i class="fa fa-paper-plane"
+                                aria-hidden="true"></i></button>
                     </form>
                 </div>
             </div>

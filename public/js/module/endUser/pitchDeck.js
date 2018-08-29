@@ -45,7 +45,6 @@ const pitchDeck = function () {
         $(document).on("click", '.btn-next', function () {
             seconds = 0;
             currentPage = $('.slick-active .current').text();
-            console.log('currentPage --------- ', currentPage);
             if (currentPage > 1) {
                 $('.slick-active .sliderViewer').addClass(currentPage + '_page');
                 lastValue = currentPage - 1;
@@ -151,7 +150,7 @@ const pitchDeck = function () {
                         email_id: $('input[name="email_id"]').val(),
                         sender_name: $('input[name="sender_name"]').val(),
                         url: window.location.href,
-                        email_body: $('input[name="email_body"]').val(),
+                        email_body: $('textarea[name="email_body"]').val(),
                         pitch_token: $('#pitch_token').val()
                     },
                     success: function (response) {
@@ -160,8 +159,8 @@ const pitchDeck = function () {
                         }
                         console.log(response)
                         if (JSON.stringify(response.success == 'true')) {
-                            $('input[name="sender_name"]').val(' ');
-                            $('input[name="email_id"]').val(' ');
+                            $('input[name="sender_name"]').val('');
+                            $('input[name="email_id"]').val('');
                             $('#name-window').modal('hide')
                             $("#success-alert").fadeTo(5000, 500).slideUp(500, function () {
                                 $("#success-alert").slideUp(500);

@@ -97,6 +97,7 @@ router.post('/add_pitch', Controller.pitchController.addPitch);
 router.post('/get_user_pitchs', Controller.pitchController.getPitch)
 router.post('/detele_pitch', Controller.pitchController.deletePitch)
 router.post('/manage_pitch', Controller.pitchController.managePitch)
+router.post('/sharing_details', Controller.pitchController.sharingDetails)
 
 // SUPPORT 
 

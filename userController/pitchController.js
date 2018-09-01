@@ -271,7 +271,7 @@ class pitchController {
             fields
         ) {
             if (results) {
-
+                
                 res.send({ success: "true", data: results });
             } else {
                 console.log(error, results, fields);

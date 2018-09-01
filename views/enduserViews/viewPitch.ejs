@@ -255,7 +255,7 @@
                         <% } %>
                 </div>
             </div>
-            <a href="" class="send-message" data-toggle="modal" data-target="#chat-window"> Send Jonathan a Message </a>
+            <a href="javascript:void(0)" class="send-message" id="conversation_"> Send Jonathan a Message </a>
         </div>
     </div>
 
@@ -329,7 +329,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="sender_name">Your Message:</label>
-                                    <textarea rows="4" cols="50" class="form-control" name="email_body" class="form-control" id="email_body" ></textarea>
+                                    <textarea rows="4" cols="50" class="form-control" name="email_body" class="form-control" id="email_body"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -343,6 +343,41 @@
     </div>
     <!-- Modal -->
 
+    <!-- Modal -->
+    <div class="modal fade" id="add_name_model" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Please Enter Your Name</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="name_from" name="name_fromh">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="end_user_name">Name: </label>
+                                    <input type="text" class="form-control" name="end_user_name" id="end_user_name">
+                                </div>
+                            </div>
+                            <button type="submit" name="add_name_" class="btn btn-primary"> Add Name <i class="fa fa-plus"
+                                    aria-hidden="true"></i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- LOADER  -->
+    <div class="loader_hp_">
+        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </div>
     <script src="/js/module/endUser/pitchSliders.js"></script>
     <script src="/js/module/endUser/pitchDeck.js"></script>
 </body>

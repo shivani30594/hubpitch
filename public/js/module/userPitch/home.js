@@ -15,12 +15,11 @@ const userPitch = function () {
                     return alert(JSON.stringify(response.message));
                 }
                 let data = response.data;
-                console.log(data);
                 let dataHTML = '';
                 data.forEach((obj) => {
                     dataHTML = ''
                     if (obj) {
-                        dataHTML = '<li> <a href="/user/pitch/viewer/' + obj.pitch_id + '"> <div class="list-left"> <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded: June 14th, 2018</div> </a> </div> <div class="list-right"> <div class="message" data-toggle="modal" data-target="#messageModal">2 New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> </div> </li>';
+                        dataHTML = '<li> <a href="/user/pitch/viewer/' + obj.pitch_id + '"> <div class="list-left"> <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss",'en') + '</div> </a> </div> <div class="list-right"> <div class="message" data-toggle="modal" data-target="#messageModal">2 New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> </div> </li>';
                         $('.ul_list_wapper').append(dataHTML);
                     }
                 })

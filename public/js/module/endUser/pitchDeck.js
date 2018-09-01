@@ -1,7 +1,15 @@
 const pitchDeck = function () {
     var seconds = 0;
+
+    const getCookie = (name) => {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+
     const handlePitchDeck = () => {
         console.log('HubPitch :) ');
+        $('.loader_hp_').hide();
         let pitchToken = $(location).attr("href").split('/').pop();
         if (pitchToken == '') {
             alert('SOME THING WENT WRONG');
@@ -142,6 +150,7 @@ const pitchDeck = function () {
                 },
             },
             submitHandler: function (form) {
+                $('.loader_hp_').show();
                 $.ajax({
                     url: 'http://localhost:3000/share-pitch',
                     type: 'POST',
@@ -157,7 +166,8 @@ const pitchDeck = function () {
                         if (!response.success) {
                             return alert(JSON.stringify(response.error));
                         }
-                        console.log(response)
+                        //console.log(response)
+                        $('.loader_hp_').hide();
                         if (JSON.stringify(response.success == 'true')) {
                             $('input[name="sender_name"]').val('');
                             $('input[name="email_id"]').val('');
@@ -174,12 +184,23 @@ const pitchDeck = function () {
             }
         });
     }
+    const handleConversation = () => {
+        $(document).on("click", '#conversation_', () => {
+            let endUserName = getCookie('endUserName');
+            if (endUserName == undefined) {
+                $('#add_name_model').modal('show');
+            } else {
+                $('#chat-window').modal('show');
+            }
+        })
+    }
     return {
         //main function to initiate the module
         init: function () {
             share_pitch();
             handlePitchDeck();
             handlePitchDeckAnalytics();
+            handleConversation();
         }
     };
 }();

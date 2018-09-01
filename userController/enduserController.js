@@ -247,5 +247,50 @@ class enduserController {
             res.send({ success: false, error });
         }
     }
+
+    static async conversationStart(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                conversation_id: Joi.string().required(),
+                pitch_id: Joi.string().required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async conversationCreater(req, res) {
+
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                pitch_id: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            let newConversation = {
+                
+            }
+            db.query("INSERT INTO hp_conversation SET ?", newConversation, function (
+                error,
+                results,
+                fields
+            ) {
+
+            });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+
+    }
 }
 module.exports = enduserController;

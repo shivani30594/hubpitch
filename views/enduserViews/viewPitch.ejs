@@ -147,7 +147,7 @@
     <div class="container">
         <input type="hidden" id="pitch_token" value="<%= pitch_token %>">
 
-        <div class="slider-main-wrapper">
+        <div  class="slider-main-wrapper">
             <div class="alert alert-success" id="success-alert">
                 <button type="button" class="close" data-dismiss="alert">x</button>
                 <strong>Email Sent Successfully</strong>
@@ -256,11 +256,54 @@
                 </div>
             </div>
             <a href="javascript:void(0)" class="send-message" id="conversation_"> Send Jonathan a Message </a>
+            <input type="hidden" id="user_token" value="<%= user_token %>">
         </div>
     </div>
 
     <!-- Modal -->
     <div class="modal fade" id="chat-window" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <form class="send_message_form" name="send_message_form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h5 class="modal-title"></h5>
+                        <h5 class=""></h5>
+                    </div>
+                    <div id="message_body" class="modal-body">
+                        <!-- <div class="msg-block">
+                            <div class="msg-head">
+                                <h5>Name</h5>
+                                <span class="time-right">time</span>
+                            </div>
+                            <p>MSG</p>
+                        </div> -->
+                        <!-- <div class="msg-block darker">
+                            <div class="msg-head">
+                                <h5>Name</h5>
+                                 <span class="time-right">TIME</span> 
+                            </div>
+                            <p></p>
+                        </div> -->
+                    </div>
+                    <div class="typing-box">
+                        <div class="panel-footer">
+                            <div class="input-group">
+                                <input id="btn-input" name="chat_msg" type="text" class="form-control input-sm chat_msg" placeholder="Type your message here...">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-warning btn-sm" id="btn-chat">
+                                        Send</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="chat-window-dummy" role="dialog">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -353,7 +396,7 @@
                     <h4 class="modal-title">Please Enter Your Name</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="name_from" name="name_fromh">
+                    <form class="conversation_creater_form" name="conversation_creater_form" method="post">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-group">
@@ -361,8 +404,8 @@
                                     <input type="text" class="form-control" name="end_user_name" id="end_user_name">
                                 </div>
                             </div>
-                            <button type="submit" name="add_name_" class="btn btn-primary"> Add Name <i class="fa fa-plus"
-                                    aria-hidden="true"></i></button>
+                            <button type="submit" name="add_name_" class="btn btn-primary" id="add_name_to_user"> Add Name
+                                <i class="fa fa-plus" aria-hidden="true"></i></button>
                         </div>
                     </form>
                 </div>

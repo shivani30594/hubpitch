@@ -489,6 +489,33 @@ div#share_details  .modal-header {padding:15px 20px;display: -webkit-box;display
 align-items: center;-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
 div#share_details  .modal-header::before , div#share_details  .modal-header::after {display: none;}
 
+ul#conversation_list {
+    list-style: none;
+    text-align: left;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+ul#conversation_list li {
+    margin: 0 15px 10px 0;
+    padding: 0px 0 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+ul#conversation_list li span {
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    vertical-align: middle;
+    background: #4a90e2;
+    text-align: center;
+    line-height: 23px;
+    color: #fff;
+    border-radius: 50px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+ul#conversation_list li a {
+    display: inline-block;
+}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

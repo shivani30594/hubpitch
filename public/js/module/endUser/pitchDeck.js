@@ -194,6 +194,101 @@ const pitchDeck = function () {
             }
         })
     }
+    const handleNewUser = () => {
+        $(".send_message_form").validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'error-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
+                chat_msg: {
+                    required: true
+                },
+            },
+            submitHandler: function (form) {
+                $('.loader_hp_').show();
+                let conversation_id = getCookie('conversation');
+                let sender = getCookie('endUserName');
+
+                $.ajax({
+                    url: 'http://localhost:3000/send-message',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        conversation_id: conversation_id,
+                        sender: sender,
+                        receiver: $('#user_token').val(),
+                        chat_text: $('.chat_msg').val(),
+                    },
+                    success: function (response) {
+                        if (response.success == 'true') {
+                            console.log(response);
+                            jQuery('#message_body').append('<div class="msg-block"> <div class="msg-head"> <h5>'+sender+'</h5> <!-- <span class="time-right">time</span> --> </div> <p>'+$('.chat_msg').val() +'</p></div>');
+                            $('.chat_msg').val('');
+                            $('.loader_hp_').hide();
+                        }
+                        else {
+                            alert('Something Went Wrong!');
+                        }
+                    },
+                    error: function (jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    }
+                });
+            }
+        });
+    }
+
+    const handleSendMsg = () => {
+        $(".conversation_creater_form").validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'error-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
+                end_user_name: {
+                    required: true
+                },
+            },
+            submitHandler: function (form) {
+                $('.loader_hp_').show();
+                let pitchTokenVl = $(location).attr("href").split('/').pop();
+                $.ajax({
+                    url: 'http://localhost:3000/conversation-creater',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        pitch_token: $('#pitch_token').val(),
+                        pitch_token: $('#pitch_token').val(),
+                    },
+                    success: function (response) {
+                        if (response.success == 'true') {
+                            document.cookie = "endUserName=" + $('#end_user_name').val();
+                            document.cookie = "conversation=" + response.data;
+                            $('.loader_hp_').hide();
+                            jQuery('#add_name_model').modal('hide');
+                            jQuery('#chat-window').modal('show');
+                        }
+                        else {
+                            alert('Something Went Wrong!');
+                        }
+                    },
+                    error: function (jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    }
+                });
+            }
+        });
+    }
+    const handleMutipleConversation = () => {
+        
+    }
     return {
         //main function to initiate the module
         init: function () {
@@ -201,6 +296,8 @@ const pitchDeck = function () {
             handlePitchDeck();
             handlePitchDeckAnalytics();
             handleConversation();
+            handleNewUser();
+            handleSendMsg();
         }
     };
 }();

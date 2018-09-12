@@ -38,6 +38,7 @@ router.get('/user/profile', Controller.usersController.profile);
 // Pitch Module 
 router.get('/pitch/add', Controller.pitchController.addNewPitchView);
 router.get('/user/pitch/viewer/:id', Controller.pitchController.viewPitchDetails)
+router.get('/user/pitch/edit/:id', Controller.pitchController.editPitchPage)
 
 /**
  * 
@@ -62,6 +63,8 @@ router.get('/viewer/:id', Controller.enduserController.viewPitch)
 router.post('/pitch-analytics', Controller.enduserController.pitchAnalytics)
 router.post('/pitch-page-view', Controller.enduserController.pitchPageView)
 router.post('/share-pitch', Controller.enduserController.sharePitch);
+router.post('/conversation-creater', Controller.enduserController.conversationCreater);
+router.post('/send-message',Controller.enduserController.sendMessage);
 
 /** 
  * 
@@ -98,6 +101,9 @@ router.post('/get_user_pitchs', Controller.pitchController.getPitch)
 router.post('/detele_pitch', Controller.pitchController.deletePitch)
 router.post('/manage_pitch', Controller.pitchController.managePitch)
 router.post('/sharing_details', Controller.pitchController.sharingDetails)
+router.post('/edit_pitch', Controller.pitchController.editPitch)
+router.post('/get_conversation', Controller.pitchController.getConversation)
+router.post('/get_conversation_messages', Controller.pitchController.getPitchMessage)
 
 // SUPPORT 
 

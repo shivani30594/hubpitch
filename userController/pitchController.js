@@ -12,11 +12,11 @@ var path = require('path');
 
 class pitchController {
 
-    static async addNewPitchView(req, res, next) {
+    static async addNewPitchView(res) {
         res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', documents_viewer: 'true' });
     }
 
-    static async addPitch(req, res, next) {
+    static async addPitch(req, res) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body, req.flies), {
                 company_name: Joi.string()
@@ -205,7 +205,7 @@ class pitchController {
     }
 
 
-    static async deletePitch(req, res, next) {
+    static async deletePitch(req, res) {
         if (req.body.pitch_delete_type = 'full') {
             try {
                 const pitchData = Joi.validate(Object.assign(req.params, req.body), {
@@ -255,7 +255,7 @@ class pitchController {
         }
     }
 
-    static async getPitch(req, res, next) {
+    static async getPitch(req, res) {
         var token = req.headers['access-token'];
         let userid = '';
         jwt.verify(token, jwtsecret, function (err, decoded) {
@@ -265,13 +265,13 @@ class pitchController {
                 userid = decoded.user;
             }
         });
-        db.query("SELECT DISTINCT master.user_id,master.pitch_id,master.company_name,count(*) as page_count,master.created FROM hp_pitch_master as master JOIN hp_pitch_info ON master.pitch_id=hp_pitch_info.pitch_id WHERE master.user_id=? GROUP BY hp_pitch_info.pitch_id ORDER BY master.created DESC", userid, function (
+        db.query("SELECT DISTINCT (SELECT COUNT(*) FROM hp_conversation JOIN hp_pitch_chat_tbl ON hp_conversation.conversation_id = hp_pitch_chat_tbl.conversation_id JOIN hp_pitch_master ON hp_conversation.pitch_id = hp_pitch_master.pitch_id WHERE hp_pitch_chat_tbl.receiver='" + userid + "' AND hp_pitch_master.pitch_id = master.pitch_id  AND hp_pitch_chat_tbl.status = 'unread') as messages, master.user_id,master.pitch_id,master.company_name,count(*) as page_count,master.created FROM hp_pitch_master as master JOIN hp_pitch_info ON master.pitch_id=hp_pitch_info.pitch_id WHERE master.user_id=? GROUP BY hp_pitch_info.pitch_id ORDER BY master.created DESC", userid, function (
             error,
             results,
             fields
         ) {
             if (results) {
-                
+
                 res.send({ success: "true", data: results });
             } else {
                 console.log(error, results, fields);
@@ -280,7 +280,7 @@ class pitchController {
         });
     }
 
-    static async viewPitchDetails(req, res, next) {
+    static async viewPitchDetails(req, res) {
         db.query("SELECT master_tbl.share_times,analysis.pitch_view_counter as total_views ,info.average_view,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id WHERE master_tbl.pitch_id = ?", req.params.id, function (
             error,
             results,
@@ -296,7 +296,7 @@ class pitchController {
 
     }
 
-    static async managePitch(req, res, next) {
+    static async managePitch(req, res) {
 
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
@@ -351,7 +351,7 @@ class pitchController {
         }
     }
 
-    static sharingDetails(req, res, next) {
+    static sharingDetails(req, res) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
                 pitch_id: Joi.string()
@@ -372,6 +372,177 @@ class pitchController {
                     res.send({ success: "true", message: "No Data" });
                 }
             })
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static getPitchMessage(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                conversation_id: Joi.string()
+                    .required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            db.query('SELECT * FROM hp_pitch_chat_tbl WHERE `conversation_id` = ?', req.body.conversation_id, function (error, results, fields) {
+                if (error) {
+                    res.send({ success: "false", message: "Something went wrong || GET Conversation" });
+                }
+                if (results.length > 0) {
+                    res.send({ success: "true", data: results });
+                } else {
+                    res.send({ success: "true", message: "No Data" });
+                }
+            })
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static replyPitchMessage(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                conversation_id: Joi.string().required(),
+                sender: Joi.string().required(),
+                receiver: Joi.string().required(),
+                chat_text: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            let userid = '';
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    userid = decoded.user;
+                }
+            });
+            let sendMsg = {
+                conversation_id: req.body.conversation_id,
+                sender: userid,
+                receiver: req.body.receiver,
+                chat_text: req.body.chat_text,
+            }
+            db.query("INSERT INTO hp_pitch_chat_tbl SET ?", sendMsg, function (
+                error,
+                results,
+                fields
+            ) {
+                if (results) {
+                    res.send({ success: "true", message: "Message Sent" });
+                } else {
+                    return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
+                }
+            });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static editPitchPage(req, res) {
+        db.query("SELECT info.pitch_info_id,master_tbl.share_times,analysis.pitch_view_counter as total_views ,info.average_view,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id WHERE master_tbl.pitch_id = ?", req.params.id, function (
+            error,
+            results,
+            fields
+        ) {
+            if (results) {
+                res.render('userViews/pitchModule/editPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, documents_viewer: 'true' });
+            } else {
+                console.log(error, results, fields);
+                return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
+            }
+        });
+    }
+
+    static async editPitch(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body, req.flies), {
+                pitch_id: Joi.any().required(),
+                company_name: Joi.allow(),
+                pitch_attachment_text: Joi.allow()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            var token = req.headers['access-token'];
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                }
+            });
+            let flag = 0;
+            if (req.body.company_name != '') {
+                db.query('UPDATE hp_pitch_master SET company_name=' + req.body.company_name + ' pitch_id id=' + req.body.pitch_id, function (error,
+                    results,
+                    fields) {
+                    if (error) {
+                        res.send({ success: false, message: 'Something went wrong in Company Name', error: error });
+                    }
+                });
+                flag = flag + 1;
+            }
+            if (req.body.pitch_attachment_text.length > 0) {
+                let pitch_attachment_text = req.body.pitch_attachment_text;
+                _.forEach(pitch_attachment_text, function (key, value) {
+                    db.query('UPDATE hp_pitch_info SET 	pitch_attachment_name=' + key.text + ' pitch_id id=' + key.pitch_info_id, function (error,
+                        results,
+                        fields) {
+                        if (error) {
+                            res.send({ success: false, message: 'Something went wrong in Pitch Text', error: error });
+                        }
+                    });
+                })
+            }
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static getConversation(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                pitch_id: Joi.string().required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            var token = req.headers['access-token'];
+            let userid = ''
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    userid = decoded.user;
+                }
+            });
+
+            db.query('SELECT hp_conversation.conversation_id,hp_pitch_chat_tbl.sender,COUNT(*) as messages FROM hp_conversation JOIN hp_pitch_chat_tbl ON hp_conversation.conversation_id = hp_pitch_chat_tbl.conversation_id WHERE hp_conversation.pitch_id=? GROUP BY hp_conversation.conversation_id', req.body.pitch_id, function (
+                error,
+                results,
+                fields
+            ) {
+                if (error) {
+                    res.send({ success: false, error });
+                }
+                if (results) {
+                    res.send({ success: true, data: results });
+                }
+            });
         }
         catch (error) {
             console.error(error);

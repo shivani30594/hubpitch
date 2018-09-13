@@ -64,7 +64,8 @@ router.post('/pitch-analytics', Controller.enduserController.pitchAnalytics)
 router.post('/pitch-page-view', Controller.enduserController.pitchPageView)
 router.post('/share-pitch', Controller.enduserController.sharePitch);
 router.post('/conversation-creater', Controller.enduserController.conversationCreater);
-router.post('/send-message',Controller.enduserController.sendMessage);
+router.post('/send-message', Controller.enduserController.sendMessage);
+router.post('/get_conversation_', Controller.enduserController.getConversation)
 
 /** 
  * 
@@ -104,6 +105,8 @@ router.post('/sharing_details', Controller.pitchController.sharingDetails)
 router.post('/edit_pitch', Controller.pitchController.editPitch)
 router.post('/get_conversation', Controller.pitchController.getConversation)
 router.post('/get_conversation_messages', Controller.pitchController.getPitchMessage)
+router.post('/mark_as_read_conversation', Controller.pitchController.markAsReadConversation)
+router.post('/reply_message', Controller.pitchController.replyPitchMessage)
 
 // SUPPORT 
 

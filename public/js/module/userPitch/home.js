@@ -63,7 +63,7 @@ function openConversation(id) {
                     data.forEach((obj) => {
                         dataHTML = ''
                         if (obj) {
-                            dataHTML = '<li><a href="" onclick=openChat(' + obj.conversation_id + ')><span>' + obj.messages + '</span> Messages From ' + obj.sender + ' </a></li>';
+                            dataHTML = '<li><a href="javascript:void(0)" onclick=openChat(' + obj.conversation_id + ',"' + obj.sender + '")><span>' + obj.messages + '</span> Messages From ' + obj.sender + ' </a></li>';
                             $('#conversation_list').append(dataHTML);
                         }
                     })
@@ -79,8 +79,98 @@ function openConversation(id) {
     }
 }
 
-function openChat(id) {
+function openChat(id, name) {
     if (id != undefined) {
+        let accesstoken = getCookie('accesstoken')
+        $.ajax({
+            url: 'http://localhost:3000/get_conversation_messages',
+            headers: {
+                'Accept': 'application/json',
+                "access-token": accesstoken
+            },
+            method: 'POST',
+            data: {
+                conversation_id: id
+            },
+            success: function (response) {
+                $('#message_body_p').html(' ');
+                if (response.success == 'true') {
+                    $('#conversation_box').modal('hide');
+                    $('#conversation_modal').modal('show');
+                    let data = response.data;
+                    let dataHTML = '';
+                    $('#name_place').html(name);
+                    data.forEach((obj) => {
+                        dataHTML = ''
+                        if (obj) {
+                            dataHTML = '<div class="msg-block' + (name != obj.sender ? " msg_reply" : "") + '"> <div class="m-name">' + (name != obj.sender ? "" : obj.sender) + '</div> <div class="m-time">' + moment(obj.created).format("MMM DD YYYY hh:mm A", 'en') + '</div> <div class="m-text"><p>' + obj.chat_text + '</p></div></div>';
+                            $('#message_body_p').append(dataHTML);
+                        }
+                    })
+                    let sendCreate = '<button type="submit" class="btn btn-warning btn-sm" id="btn-chat" onclick=reply(' + id + ',"' + name + '")> Send </button>';
+                    $('#btn_place').html(sendCreate);
+                    $.ajax({
+                        url: 'http://localhost:3000/mark_as_read_conversation',
+                        headers: {
+                            'Accept': 'application/json',
+                            "access-token": accesstoken
+                        },
+                        method: 'POST',
+                        data: {
+                            conversation_id: id
+                        },
+                        success: function (response) {
+                            if (response.success == true) {
+                                console.log('MARK AS UNREAD');
+                            } else {
+                                console.log('SOMETHING WENT WRONG IN MARK AS UNREAD');
+                            }
+                        },
+                        error: function (jqXHR, textStatus) {
+                            console.log("Request failed: " + textStatus);
+                        }
+                    })
+                }
 
+            },
+            error: function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            }
+
+        })
+    }
+}
+
+function reply(id, name) {
+    let chat_text = $('#chat_message').val();
+    let accesstoken = getCookie('accesstoken')
+    if (chat_text != '') {
+        $.ajax({
+            url: 'http://localhost:3000/reply_message',
+            headers: {
+                'Accept': 'application/json',
+                "access-token": accesstoken
+            },
+            method: 'POST',
+            data: {
+                conversation_id: id,
+                receiver: name,
+                chat_text: chat_text
+            },
+            success: function (response) {
+                if (response.success == "true") {
+                    console.log('Message Send');
+                    jQuery('#message_body_p').append('<div class="msg-block msg_reply"> <p>' + chat_text + '</p></div>');
+                    $('#chat_message').val('');
+                } else {
+                    console.log('SOMETHING WENT WRONG IN SENDING MESSAGE');
+                }
+            },
+            error: function (jqXHR, textStatus) {
+                console.log("Request failed: " + textStatus);
+            }
+        })
+    } else {
+        alert('Please Enter Chat Message First!');
     }
 }

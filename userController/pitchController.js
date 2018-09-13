@@ -408,9 +408,9 @@ class pitchController {
 
     static replyPitchMessage(req, res) {
         try {
+            var token = req.headers['access-token'];
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
                 conversation_id: Joi.string().required(),
-                sender: Joi.string().required(),
                 receiver: Joi.string().required(),
                 chat_text: Joi.string().required()
             });
@@ -549,5 +549,36 @@ class pitchController {
             res.send({ success: false, error });
         }
     }
+
+    static markAsReadConversation(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                conversation_id: Joi.string().required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+
+            db.query('UPDATE `hp_pitch_chat_tbl` SET `status`="read" WHERE conversation_id =?', req.body.conversation_id, function (
+                error,
+                results,
+                fields
+            ) {
+                if (error) {
+                    res.send({ success: false, error });
+                }
+                if (results) {
+                    res.send({ success: true });
+                }
+            });
+
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
 }
 module.exports = pitchController;

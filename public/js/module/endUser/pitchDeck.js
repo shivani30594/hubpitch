@@ -187,10 +187,45 @@ const pitchDeck = function () {
     const handleConversation = () => {
         $(document).on("click", '#conversation_', () => {
             let endUserName = getCookie('endUserName');
+            let conversation = getCookie('conversation');
+            let sender = 'Hareen Desai';
             if (endUserName == undefined) {
                 $('#add_name_model').modal('show');
             } else {
                 $('#chat-window').modal('show');
+                $('.loader_hp_').show();
+                $.ajax({
+                    url: 'http://localhost:3000/get_conversation_',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        conversation_id: conversation,
+                    },
+                    success: function (response) {
+                        if (response.success == 'true') {
+                            $('.loader_hp_').hide();
+                            let data = response.data;
+                            let dataHTML = '';
+                            data.forEach((obj) => {
+                                dataHTML = ''
+                                console.log(obj);
+                                if (obj) {
+                                    dataHTML = '<div class="msg-block' + (endUserName != obj.sender ? " msg_reply" : "") + '"><div class="msg-head"> <h5>' + (endUserName == obj.sender ? obj.sender : sender) + '</h5>  <span class="time-right">' + moment(obj.created).format("MMM DD YYYY hh:mm A", 'en') + '</span> </div> <div class="m-text"><p>' + obj.chat_text + '</p></div></div>';
+                                    $('#message_body').append(dataHTML);
+                                }
+                            })
+                        }
+                        else {
+                            alert('Something Went Wrong!');
+                        }
+                    },
+                    error: function (jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    }
+                });
             }
         })
     }
@@ -226,7 +261,7 @@ const pitchDeck = function () {
                     success: function (response) {
                         if (response.success == 'true') {
                             console.log(response);
-                            jQuery('#message_body').append('<div class="msg-block"> <div class="msg-head"> <h5>'+sender+'</h5> <!-- <span class="time-right">time</span> --> </div> <p>'+$('.chat_msg').val() +'</p></div>');
+                            jQuery('#message_body').append('<div class="msg-block"> <div class="msg-head"> <h5>' + sender + '</h5> <!-- <span class="time-right">time</span> --> </div> <p>' + $('.chat_msg').val() + '</p></div>');
                             $('.chat_msg').val('');
                             $('.loader_hp_').hide();
                         }
@@ -287,7 +322,7 @@ const pitchDeck = function () {
         });
     }
     const handleMutipleConversation = () => {
-        
+
     }
     return {
         //main function to initiate the module

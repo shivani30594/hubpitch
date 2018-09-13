@@ -251,15 +251,14 @@ class enduserController {
     static async getConversation(req, res) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
-                conversation_id: Joi.string().required(),
-                pitch_id: Joi.string().required(),
+                conversation_id: Joi.string().required()
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
                 return;
             }
 
-            db.query("SELECT * FROM hp_pitch_chat_tbl WHERE conversation_id=?", newConversation, function (
+            db.query("SELECT * FROM hp_pitch_chat_tbl WHERE conversation_id=?", req.body.conversation_id, function (
                 error,
                 results,
                 fields

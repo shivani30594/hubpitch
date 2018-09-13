@@ -110,42 +110,24 @@
 			</div>
 		</div>
 		
-		<div class="modal fade" id="messageModal" role="dialog">
+		<div class="modal fade" id="conversation_modal" role="dialog">
 			<div class="modal-dialog">
 				<!-- Modal content-->
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Kerry W.
-							<br> Skyline Software
-							<br> Director of Marketing</h4>
+						<h4 class="modal-title" id="name_place"> </h4>
 					</div>
-					<div class="modal-body">
-						<div class="msg-block">
-							<div class="m-name">Kerry Washington</div>
-							<div class="m-time">6.05 AM</div>
-							<div class="m-text">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem fugit sit eum aperiam consectetur, veritatis
-									quaerat cum, dolorem maxime doloremque.</p>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, ducimus.</p>
-							</div>
-						</div>
-						<div class="msg-block">
-							<div class="m-name">Dennis Smith</div>
-							<div class="m-time">6.15 AM</div>
-							<div class="m-text">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem fugit sit eum aperiam consectetur, veritatis
-									quaerat cum, dolorem maxime doloremque.</p>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, ducimus.</p>
-							</div>
-						</div>
+					<div class="modal-body" id="message_body_p">
+
 					</div>
-					<div class="modal-footer">
-						<div class="form-group">
-							<textarea cols="30" rows="10" placeholder="Type a message..."></textarea>
+					<div class="modal-footer modl_bottom_chat">
+						<div class="input-group input_chat">
+							<input id="chat_message" name="chat_msg" type="text" class="form-control input-sm chat_msg valid" placeholder="Type your message here..." aria-required="true" aria-invalid="false">
+							<span class="input-group-btn" id="btn_place">
+							
+							</span>
 						</div>
-						</form>
-						<button type="button" class="btn btn-default" data-dismiss="modal">Send</button>
 					</div>
 				</div>
 

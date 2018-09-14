@@ -12,7 +12,7 @@ var path = require('path');
 
 class pitchController {
 
-    static async addNewPitchView(res) {
+    static async addNewPitchView(req,res) {
         res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', documents_viewer: 'true' });
     }
 

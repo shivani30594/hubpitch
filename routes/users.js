@@ -66,6 +66,7 @@ router.post('/share-pitch', Controller.enduserController.sharePitch);
 router.post('/conversation-creater', Controller.enduserController.conversationCreater);
 router.post('/send-message', Controller.enduserController.sendMessage);
 router.post('/get_conversation_', Controller.enduserController.getConversation)
+router.post('/mark_as_read_conversation_end_user', Controller.enduserController.markAsReadConversation)
 
 /** 
  * 

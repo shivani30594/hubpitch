@@ -147,13 +147,17 @@
 <body>
     <div class="container">
         <input type="hidden" id="pitch_token" value="<%= pitch_token %>">
-
-        <div  class="slider-main-wrapper">
+        <div class="slider-main-wrapper">
             <div class="alert alert-success" id="success-alert">
                 <button type="button" class="close" data-dismiss="alert">x</button>
                 <strong>Email Sent Successfully</strong>
                 Thank You For Sharing Pitch.
             </div>
+            <div class="row">
+                    <div class="unread_count_wapper">
+                        <button class="unread_count" onclick="openChatModal()"></button>
+                    </div>
+                </div>
             <div class="gallery-wrap">
                 <div class="single-item">
                     <% for(var i=0; i < data.length; i++) { %>
@@ -256,7 +260,7 @@
                         <% } %>
                 </div>
             </div>
-            <a href="javascript:void(0)" class="send-message" id="conversation_"> Send Jonathan a Message </a>
+            <a href="javascript:void(0)" class="send-message" id="conversation_"> Send <%= user_name %> a Message </a>
             <input type="hidden" id="user_token" value="<%= user_token %>">
         </div>
     </div>

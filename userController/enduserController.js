@@ -16,7 +16,7 @@ class enduserController {
                 res.send({ success: "false", message: "Something went wrong" });
             }
             if (results.length > 0) {
-                db.query("SELECT info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id WHERE master_tbl.pitch_id = ?", results[0].pitch_id, function (
+                db.query("SELECT CONCAT(hp_users.first_name,' ',hp_users.last_name) as username,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id JOIN hp_users ON master_tbl.user_id = hp_users.user_id WHERE master_tbl.pitch_id = ?", results[0].pitch_id, function (
                     error,
                     results,
                     fields
@@ -25,7 +25,7 @@ class enduserController {
                         res.send({ success: "false", message: "Something went wrong" });
                     }
                     if (results.length > 0) {
-                        res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id });
+                        res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username });
                     } else {
                         res.send({ success: "false", message: "Something went wrong" });
                     }
@@ -257,8 +257,7 @@ class enduserController {
                 res.send({ success: false, error: pitchData.error });
                 return;
             }
-
-            db.query("SELECT * FROM hp_pitch_chat_tbl WHERE conversation_id=?", req.body.conversation_id, function (
+            db.query("SELECT *,( SELECT COUNT(*) FROM hp_pitch_chat_tbl WHERE conversation_id=" + req.body.conversation_id + " AND status='unread') as unread  FROM hp_pitch_chat_tbl WHERE conversation_id=?", req.body.conversation_id, function (
                 error,
                 results,
                 fields
@@ -267,8 +266,7 @@ class enduserController {
                     return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
                 }
                 if (results.length > 0) {
-
-                    res.send({ success: "true", data: results });
+                    res.send({ success: "true", data: results, unread: results[0].unread });
                 } else {
                     return res.status.send({ success: "true", message: 'No Message Found' });
                 }
@@ -381,5 +379,34 @@ class enduserController {
         }
     }
 
+    static markAsReadConversation(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                conversation_id: Joi.string().required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+
+            db.query('UPDATE `hp_pitch_chat_tbl` SET `status`="read" WHERE conversation_id =?', req.body.conversation_id, function (
+                error,
+                results,
+                fields
+            ) {
+                if (error) {
+                    res.send({ success: false, error });
+                }
+                if (results) {
+                    res.send({ success: true });
+                }
+            });
+
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
 }
 module.exports = enduserController;

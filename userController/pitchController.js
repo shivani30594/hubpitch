@@ -12,7 +12,7 @@ var path = require('path');
 
 class pitchController {
 
-    static async addNewPitchView(req,res) {
+    static async addNewPitchView(req, res) {
         res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', documents_viewer: 'true' });
     }
 
@@ -354,8 +354,7 @@ class pitchController {
     static sharingDetails(req, res) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
-                pitch_id: Joi.string()
-                    .required(),
+                pitch_id: Joi.string().required(),
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
@@ -382,8 +381,7 @@ class pitchController {
     static getPitchMessage(req, res) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
-                conversation_id: Joi.string()
-                    .required(),
+                conversation_id: Joi.string().required(),
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
@@ -580,5 +578,83 @@ class pitchController {
         }
     }
 
+    static addNewPitchInExiting(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                pitch_id: Joi.string().required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            var token = req.headers['access-token'];
+            let userid = '';
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    userid = decoded.user;
+                }
+            });
+            var fileExtension = '';
+            var filename = '';
+            var thisFile = [];
+            var saveAble = [];
+            if (_.size(req.files) == 1 && _.size(req.files['pitch_files']) == 7) {
+                fileExtension = '';
+                filename = '';
+                thisFile = [];
+
+                if (thisFile.mimetype == 'application/octet-stream') {
+                    fileExtension = thisFile.name.split(".");
+                    fileType = fileExtension
+                } else {
+                    fileExtension = thisFile.mimetype.split("/");
+                    fileType = fileExtension[0];
+                }
+
+                filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
+                req.files['pitch_files'].mv(dir + '/' + filename, async (err) => {
+                    if (err) {
+                        console.log("There was an issue in uploading cover image");
+                    } else {
+                        saveAble = {
+                            'pitch_attachment': {
+                                'pitch_attachment_type': fileType,
+                                'pitch_attachment_name': filename,
+                                'pitch_attachment_text': req.body.pitch_text
+                            }
+                        }
+                        let pitchID = req.body.pitch_id
+                        _.forEach(saveAble, function (key, value) {
+                            let newPitchInfo = {}
+                            newPitchInfo = {
+                                'pitch_id': pitchID,
+                                'pitch_attachment_type': key.pitch_attachment_type,
+                                'pitch_attachment_name': key.pitch_attachment_name,
+                                'pitch_attachment_text': key.pitch_attachment_text
+                            }
+                            db.query("INSERT INTO hp_pitch_info SET?", newPitchInfo, function (error,
+                                results,
+                                fields) {
+                                if (results.affectedRows) {
+                                    res.send({ success: "true", message: "New Pitch Added"});
+                                } else {
+                                    console.log(error,
+                                        results,
+                                        fields)
+                                    res.send({ success: "false", message: "Something went wrong || Info Table" });
+                                }
+                            })
+                        })
+                    }
+                });
+            }
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
 }
 module.exports = pitchController;

@@ -108,6 +108,7 @@ router.post('/get_conversation', Controller.pitchController.getConversation)
 router.post('/get_conversation_messages', Controller.pitchController.getPitchMessage)
 router.post('/mark_as_read_conversation', Controller.pitchController.markAsReadConversation)
 router.post('/reply_message', Controller.pitchController.replyPitchMessage)
+router.post('/add_new_file', Controller.pitchController.addNewPitchInExiting)
 
 // SUPPORT 
 

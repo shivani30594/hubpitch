@@ -580,8 +580,9 @@ class pitchController {
 
     static addNewPitchInExiting(req, res) {
         try {
-            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body, req.flies), {
                 pitch_id: Joi.string().required(),
+                pitch_text: Joi.any().required()
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
@@ -598,13 +599,15 @@ class pitchController {
             });
             var fileExtension = '';
             var filename = '';
+            var fileType = '';
             var thisFile = [];
             var saveAble = [];
+            let counter = 0;
             if (_.size(req.files) == 1 && _.size(req.files['pitch_files']) == 7) {
                 fileExtension = '';
                 filename = '';
                 thisFile = [];
-
+                thisFile = req.files['pitch_files'];
                 if (thisFile.mimetype == 'application/octet-stream') {
                     fileExtension = thisFile.name.split(".");
                     fileType = fileExtension
@@ -638,7 +641,7 @@ class pitchController {
                                 results,
                                 fields) {
                                 if (results.affectedRows) {
-                                    res.send({ success: "true", message: "New Pitch Added"});
+                                    res.send({ success: "true", message: "New Pitch Added" });
                                 } else {
                                     console.log(error,
                                         results,
@@ -650,6 +653,160 @@ class pitchController {
                     }
                 });
             }
+            else {
+                var temp = [];
+                var ext = '';
+                counter = 0;
+                async.eachSeries(req.files.pitch_files, function (value, each_callback) {
+                    fileExtension = '';
+                    filename = '';
+                    thisFile = [];
+                    thisFile = value;
+                    if (thisFile.mimetype == 'application/octet-stream') {
+                        fileExtension = thisFile.name.split(".");
+                        fileType = fileExtension[1];
+                        console.log('fileExtension', fileExtension);
+                    } else {
+                        fileExtension = thisFile.mimetype.split("/");
+                        fileType = fileExtension[0];
+                    }
+                    filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
+                    thisFile.mv(dir + '/' + filename, (err) => {
+                        if (err) {
+                            console.log("There was an issue in uploading cover image");
+                            each_callback();
+                        } else {
+                            temp = {
+                                'pitch_attachment': {
+                                    'pitch_attachment_type': fileType,
+                                    'pitch_attachment_name': filename,
+                                    'pitch_attachment_text': req.body.pitch_text[counter]
+                                }
+                            }
+                            saveAble.push(temp);
+                            counter++;
+                            each_callback();
+                        }
+                    });
+                }, function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    //savePinch(newPitch,saveAble);
+                    //console.log("saveAble:", saveAble);
+                    let pitchID = req.body.pitch_id;
+                    let counter_temp = 1;
+                    let newPitchInfo = {}
+                    async.forEachOf(saveAble, function (value, key, callback) {
+                        value['pitch_attachment']['pitch_id'] = pitchID;
+                        db.query("INSERT INTO hp_pitch_info SET?", value['pitch_attachment'], function (error,
+                            results,
+                            fields) {
+                            if (results) {
+                                console.log('ADDED')
+                            } else {
+                                console.log(error,
+                                    results,
+                                    fields)
+                                res.send({ success: "false", message: "Something went wrong || Info Table" });
+                            }
+                        })
+                        callback();
+                    }, function (err) {
+                        if (err) console.error(err.message);
+                        //configs is now a map of JSON 
+                        console.log('SaveABle LENGTH', saveAble.length);
+                        console.log('Counter', counter_temp);
+                        res.send({ success: "true", message: "New Pitch Added", pitch: pitchID });
+                    });
+                });
+            }
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static sharePitchWithEmail(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                email_id: Joi.string().required(),
+                sender_name: Joi.string().required(),
+                url: Joi.string().required(),
+                email_body: Joi.string().required(),
+                pitch_token: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            var smtpTransport = nodemailer.createTransport({
+                service: "Gmail",
+                auth: {
+                    user: "demo.narolainfotech@gmail.com",
+                    pass: "Password123#"
+                }
+            });
+
+            // -------------------------------mail sending-----------------------------
+            var tomail = "";
+            let share = '';
+            let newEmail = '';
+            let emailLog = {};
+            tomail = req.body.email_id;
+            // setup e-mail data with unicode symbols
+            // Email Body Builder 
+            newEmail = req.body.email_body + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+            var mailOptions = {
+                from: "demo.narolainfotech@gmail.com", // sender address
+                to: tomail, // list of receivers
+                subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
+                html: newEmail
+            };
+            // send mail with defined transport object
+            smtpTransport.sendMail(mailOptions, function (err, info) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("Message sent: " + info);
+                    db.query("SELECT share_times AS counter FROM hp_pitch_master where pitch_id=?", req.body.pitch_token, function (error,
+                        results,
+                        fields) {
+                        if (error) {
+                            res.send({ success: "SQL_ISSUE", message: "Something went wrong With SQL FETCH" });
+                        }
+                        if (results.length > 0) {
+                            share = results[0].counter + 1
+                            db.query("UPDATE hp_pitch_master SET share_times ='" + share + "' WHERE `pitch_id` = '" + req.body.pitch_token + "'", function (error1,
+                                results1,
+                                fields1) {
+                                if (error1) {
+                                    res.send({ success: "SQL_ISSUE", message: "Something went wrong Updating Share" });
+                                }
+                                emailLog = {
+                                    'pitch_id': req.body.pitch_token,
+                                    'sender_name': req.body.sender_name,
+                                    'receiver_email_address': req.body.email_id,
+                                    'email_body': req.body.email_body
+                                }
+                                db.query('INSERT into hp_email_log SET?', emailLog, function (error,
+                                    results,
+                                    fields) {
+                                    console.log(error,
+                                        results,
+                                        fields);
+                                    if (error) {
+                                        res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
+                                    }
+
+                                    res.send({ success: "true" });
+                                })
+                            })
+                        }
+                    })
+                }
+            });
         }
         catch (error) {
             console.error(error);

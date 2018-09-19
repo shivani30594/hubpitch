@@ -25,48 +25,10 @@ const pitchDetails = function () {
             }
         });
     }
-    const handleNewPitchFormUI = () => {
-        $('#final_section').hide();
-        $('#share_box').hide();
-        $('.placeholder').hide();
-        $('.preview_file').hide();
-        $('.preview_file_image').hide();
-        $('.preview_file_docs').hide();
-        $('.preview_docx').hide();
-        $('#main-box').addClass('active_one');
 
-        $('#continue_btn_main').on("click", function () {
-            if ($('#c-name').val() == '') {
-                Swal('Validation Error', 'Company Name Is Required!', 'error')
-            } else {
-                $('.active_one').hide();
-                $('#main-box').removeClass('active_one');
-                $('.active_one').hide();
-                $('div').removeClass('active_one');
-                $(".current_preview").show('200');
-            }
-        });
-
-        $(document).on("click", '.a_another_btn', function () {
-            $('.current_preview').hide();
-            $('.add_another_o').hide();
-            $("div").removeClass("active_one");
-            $(".another-page-blank").clone().appendTo(".add_box_here").addClass('add_another_o active_one').removeClass('another-page-blank');
-            $('.active_one').show('200');
-        })
-
-        $(document).on("click", '.continue_btn', function () {
-            $('.active_one').hide();
-            $('div').removeClass('active_one');
-            $(".current_preview").show('200');
-        })
-
-    }
     return {
-
         init: function () {
             pitchShareModule();
-            handleNewPitchFormUI();
         }
     }
 }();

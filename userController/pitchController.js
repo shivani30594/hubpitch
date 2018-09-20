@@ -9,6 +9,7 @@ var multer = require('multer');
 var upload = multer({ dest: 'uploads/' })
 var async = require('async')
 var path = require('path');
+const nodemailer = require("nodemailer");
 
 class pitchController {
 
@@ -731,11 +732,10 @@ class pitchController {
     static sharePitchWithEmail(req, res) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
-                email_id: Joi.string().required(),
-                sender_name: Joi.string().required(),
-                url: Joi.string().required(),
+                email_id: Joi.any().required(),
                 email_body: Joi.string().required(),
-                pitch_token: Joi.string().required()
+                pitch_token: Joi.string().required(),
+                sender_name: Joi.string().required()
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
@@ -748,22 +748,17 @@ class pitchController {
                     pass: "Password123#"
                 }
             });
-
-            // -------------------------------mail sending-----------------------------
-            var tomail = "";
-            let share = '';
             let newEmail = '';
-            let emailLog = {};
-            tomail = req.body.email_id;
-            // setup e-mail data with unicode symbols
-            // Email Body Builder 
+            
             newEmail = req.body.email_body + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+
             var mailOptions = {
                 from: "demo.narolainfotech@gmail.com", // sender address
                 to: tomail, // list of receivers
                 subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
                 html: newEmail
             };
+
             // send mail with defined transport object
             smtpTransport.sendMail(mailOptions, function (err, info) {
                 if (err) {
@@ -807,6 +802,38 @@ class pitchController {
                     })
                 }
             });
+            let emailAddress = JSON.parse(req.body.email_id)
+            console.log(emailAddress);
+            var tomail = "";
+            let share = '';
+            let newEmail = '';
+            let emailLog = {};
+            async.forEachOf(emailAddress, function (value, key, callback) {
+                console.log('value', value)
+                console.log('key', key)
+                // // -------------------------------mail sending-----------------------------
+                tomail = "";
+                share = '';
+                newEmail = '';
+                emailLog = {};
+                tomail = value;
+                // setup e-mail data with unicode symbols
+                // Email Body Builder 
+                newEmail = req.body.email_body + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                var mailOptions = {
+                    from: "demo.narolainfotech@gmail.com", // sender address
+                    to: tomail, // list of receivers
+                    subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
+                    html: newEmail
+                };
+
+                callback();
+            }, function (err) {
+                if (err) console.error(err.message);
+                // configs is now a map of JSON 
+                res.send({ success: "true", message: "New Pitch Added", pitch: pitchID });
+            });
+
         }
         catch (error) {
             console.error(error);

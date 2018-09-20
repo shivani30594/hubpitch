@@ -343,3 +343,49 @@ const newPitch = function () {
 jQuery(document).ready(function () {
     newPitch.init();
 });
+
+function checkEmail(email) {
+    var regExp = /(^[a-z]([a-z_\.]*)@([a-z_\.]*)([.][a-z]{3})$)|(^[a-z]([a-z_\.]*)@([a-z_\.]*)(\.[a-z]{3})(\.[a-z]{2})*$)/i;
+    return regExp.test(email);
+}
+
+function checkEmails() {
+    var emails = document.getElementById("emails").value;
+    var emailArray = emails.split(",");
+    let errorFlag = 0;
+    for (i = 0; i <= (emailArray.length - 1); i++) {
+        if (checkEmail(emailArray[i])) {
+            //Do what ever with the email.
+            console.log(emailArray);
+        } else {
+            errorFlag = errorFlag + 1
+            alert("invalid email: " + emailArray[i]);
+        }
+    }
+    if (errorFlag === 0) {
+        console.log('DO THE API CALL');
+        $.ajax({
+            url: 'http://localhost:3000/share_pitch_email',
+            headers: {
+                'Accept': 'application/json',
+            },
+            method: 'POST',
+            data: {
+                email_id: JSON.stringify(emailArray),
+                email_body: $('#email_body').val(),
+                pitch_token: $('#pitch_id').val(),
+                sender_name: $('#c_user_box').text(),
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (!response.success) {
+                    return alert(JSON.stringify(response.message));
+                }
+                console.log(response);
+            },
+            error: function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            }
+        });
+    }
+}

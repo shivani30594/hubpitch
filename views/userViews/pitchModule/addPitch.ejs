@@ -164,6 +164,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" value="" id="pitch_id_val" name="pitch_id_val">
             </form>
             <div class="col-md-12" id="final_section">
                 <form class="share_pitch">
@@ -219,10 +220,38 @@
                     </div>
                 </div>
                 <div class="bottom-action">
+                    <div class="open_share_action"> <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                            data-target="#addviewer">Open Modal</button> </div>
                     <div class="button-wapper">
                         <button class="cancel"> Cancel </button>
                         <button class="copy_link_btn"> Copy Link To Dashboard </button>
                     </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="addviewer" role="dialog">
+                <div class="modal-dialog">
+                    <form method="post" id="formEmail" name="formEmail">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add Viewers Email Address</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="emails" id="emails" placeholder="(eg:abc@incipio.com,xyz@ncpo.com,....)" />
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" id="email_body" name="email_body"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href=javascript:checkEmails(); class="btn btn-primary">Send</a>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

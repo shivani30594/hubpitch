@@ -109,6 +109,7 @@ router.post('/get_conversation_messages', Controller.pitchController.getPitchMes
 router.post('/mark_as_read_conversation', Controller.pitchController.markAsReadConversation)
 router.post('/reply_message', Controller.pitchController.replyPitchMessage)
 router.post('/add_new_file', Controller.pitchController.addNewPitchInExiting)
+router.post('/share_pitch_email', Controller.pitchController.sharePitchWithEmail)
 
 // SUPPORT 
 

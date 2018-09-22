@@ -270,13 +270,25 @@ const pitchEdit = function () {
                 if (!response.success) {
                     return alert(JSON.stringify(response.message));
                 }
-                console.log('response', response);
                 $('#add_new_pitch_form').hide('100');
                 let cName = $('#c-name').val();
                 $('#final_section').show('100');
                 $('#final_name').val(cName);
                 $('#pitch_id').val(response.pitch);
-                alert('Your Pages Are Added Please Reload This Page To See The Changes');
+                //alert('Your Pages Are Added Please Reload This Page To See The Changes');
+                if (response.viewers) {
+                    let emailAdressInput = '';
+                    response.viewers.forEach((obj) => {
+                        if (emailAdressInput === '') {
+                            emailAdressInput = obj.email_address;
+                        } else {
+                            emailAdressInput = emailAdressInput + ',' + obj.email_address;
+                        }
+                    })
+                    $('#pre_emails').val(emailAdressInput);
+                    $('#email_body').val(response.viewers[0].email_body);
+                    $('#viewers_emails').modal('show');
+                }
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
@@ -294,3 +306,86 @@ const pitchEdit = function () {
 jQuery(document).ready(function () {
     pitchEdit.init();
 });
+
+function checkEmail(email) {
+    var regExp = /(^[a-z]([a-z_\.]*)@([a-z_\.]*)([.][a-z]{3})$)|(^[a-z]([a-z_\.]*)@([a-z_\.]*)(\.[a-z]{3})(\.[a-z]{2})*$)/i;
+    return regExp.test(email);
+}
+
+function checkEmails() {
+    var emails = document.getElementById("emails").value;
+    var pre_emails = document.getElementById("pre_emails").value;
+    var url = $(location).attr('href'),
+        parts = url.split("/"),
+        pitch_id = parts[parts.length - 1];
+    if (emails == '') {
+        var pre_email_id_arr = pre_emails.split(',');
+        $.ajax({
+            url: 'http://localhost:3000/update_share_pitch_email',
+            headers: {
+                'Accept': 'application/json',
+            },
+            method: 'POST',
+            data: {
+                pre_email_id: JSON.stringify(pre_email_id_arr),
+                new_email_id: '',
+                email_body: $('#email_body').val(),
+                pitch_id: pitch_id,
+                sender_name: $('#c_user_box').text()
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (!response.success) {
+                    return alert(JSON.stringify(response.message));
+                }
+                $('#viewers_emails').modal('hide');
+                if (response.success == 'true') {
+                    alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
+                }
+            },
+            error: function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            }
+        });
+    } else {
+        var emailArray = emails.split(",");
+        var pre_email_id_arr = pre_emails.split(',');
+        let errorFlag = 0;
+        for (i = 0; i <= (emailArray.length - 1); i++) {
+            if (checkEmail(emailArray[i])) {
+                //Do what ever with the email.
+                console.log(emailArray);
+            } else {
+                errorFlag = errorFlag + 1
+                alert("invalid email: " + emailArray[i]);
+            }
+        }
+        if (errorFlag === 0) {
+            console.log('DO THE API CALL');
+            $.ajax({
+                url: 'http://localhost:3000/update_share_pitch_email',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                method: 'POST',
+                data: {
+                    pre_email_id: JSON.stringify(pre_email_id_arr),
+                    new_email_id: JSON.stringify(emailArray),
+                    email_body: $('#email_body').val(),
+                    pitch_id: pitch_id,
+                    sender_name: $('#c_user_box').text()
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (!response.success) {
+                        return alert(JSON.stringify(response.message));
+                    }
+                    alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
+                },
+                error: function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                }
+            });
+        }
+    }
+}

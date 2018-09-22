@@ -408,5 +408,21 @@ class enduserController {
             res.send({ success: false, error });
         }
     }
+
+    static checkforUpdate(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                pitch_token: Joi.string().required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
 }
 module.exports = enduserController;

@@ -110,6 +110,7 @@ router.post('/mark_as_read_conversation', Controller.pitchController.markAsReadC
 router.post('/reply_message', Controller.pitchController.replyPitchMessage)
 router.post('/add_new_file', Controller.pitchController.addNewPitchInExiting)
 router.post('/share_pitch_email', Controller.pitchController.sharePitchWithEmail)
+router.post('/update_share_pitch_email', Controller.pitchController.updateSharePitchWithEmail)
 
 // SUPPORT 
 

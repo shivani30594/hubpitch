@@ -363,7 +363,7 @@ function checkEmails() {
         }
     }
     if (errorFlag === 0) {
-        console.log('DO THE API CALL');
+        
         $.ajax({
             url: 'http://localhost:3000/share_pitch_email',
             headers: {
@@ -375,13 +375,14 @@ function checkEmails() {
                 email_body: $('#email_body').val(),
                 pitch_token: $('#pitch_id').val(),
                 sender_name: $('#c_user_box').text(),
+                pitch_url: $('#link_value').attr('href')
             },
             dataType: 'json',
             success: function (response) {
                 if (!response.success) {
                     return alert(JSON.stringify(response.message));
                 }
-                console.log(response);
+
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);

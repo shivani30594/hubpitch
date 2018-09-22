@@ -3,375 +3,414 @@
 
 <head>
     <% include ../component/headerFile.ejs %>
-        <link rel="stylesheet" href="/stylesheets/slider-page.css">
-        <link rel="stylesheet" href="/stylesheets/slick.css">
-        <link rel="stylesheet" href="/stylesheets/slick-theme.css">
+    <link rel="stylesheet" href="/stylesheets/slider-page.css">
+    <link rel="stylesheet" href="/stylesheets/slick.css">
+    <link rel="stylesheet" href="/stylesheets/slick-theme.css">
 </head>
 
 <body>
     <% include ../component/header.ejs %>
-        <script>
-            var instance = null;
-            function display_docx(params, i) {
-                var req = new XMLHttpRequest();
-                //Check File URL & domain origin
-                req.open("GET", "http://localhost:3000" + params, true);
-                //Response Type is Blob
-                req.responseType = "blob";
-                console.log('asda', req);
-                req.onload = function (e) {
-                    var blob = req.response;
-                    var docxJS = new DocxJS();
-                    docxJS.parse(
-                        blob,
-                        function () {
-                            //After Rendering
-                            docxJS.render($('#loaded-layout_' + i)[0], function (result) {
-                                if (result.isError) {
-                                    console.log(result.msg);
-                                } else {
-                                    console.log("Success Render");
-                                }
-                            });
-                        }, function (e) {
-                            console.log("Error!", e);
-                        }
-                    );
-                };
+    <script>
+        var instance = null;
+        function display_docx(params, i) {
+            var req = new XMLHttpRequest();
+            //Check File URL & domain origin
+            req.open("GET", "http://localhost:3000" + params, true);
+            //Response Type is Blob
+            req.responseType = "blob";
+            console.log('asda', req);
+            req.onload = function (e) {
+                var blob = req.response;
+                var docxJS = new DocxJS();
+                docxJS.parse(
+                    blob,
+                    function () {
+                        //After Rendering
+                        docxJS.render($('#loaded-layout_' + i)[0], function (result) {
+                            if (result.isError) {
+                                console.log(result.msg);
+                            } else {
+                                console.log("Success Render");
+                            }
+                        });
+                    }, function (e) {
+                        console.log("Error!", e);
+                    }
+                );
+            };
 
-                req.send();
-            }
+            req.send();
+        }
 
-            function display_pptx(params, i) {
-                var req = new XMLHttpRequest();
-                //Check File URL & domain origin
-                req.open("GET", "http://localhost:3000" + params, true);
-                //Response Type is Blob
-                req.responseType = "blob";
+        function display_pptx(params, i) {
+            var req = new XMLHttpRequest();
+            //Check File URL & domain origin
+            req.open("GET", "http://localhost:3000" + params, true);
+            //Response Type is Blob
+            req.responseType = "blob";
 
-                req.onload = function (e) {
-                    var blob = req.response;
-                    var slideJS = new SlideJS();
-                    slideJS.parse(
-                        blob,
-                        function () {
-                            //After Rendering
-                            slideJS.render($('#loaded-layout_' + i)[0], function (result) {
-                                if (result.isError) {
-                                    console.log(result.msg);
-                                } else {
-                                    console.log("Success Render");
-                                }
-                            });
-                        }, function (e) {
-                            console.log("Error!", e);
-                        }
-                    );
-                    instance = slideJS;
-                };
-                req.send();
-            }
-            $(document).on('click', '.slick-active .prev-btn', function () {
-                console.log('prev');
-                currentId = instance.getCurrentId();
-                instance.gotoPage(currentId - 1);
-                console.log('instance', instance);
-                return false;
-            });
-            $(document).on('click', '.slick-active .next-btn', function () {
-                console.log('next');
-                currentId = instance.getCurrentId();
-                instance.gotoPage(currentId + 1);
-                console.log('instance', instance);
-                return false;
-            });
-            function display_excel(params, i) {
-                var req = new XMLHttpRequest();
-                //Check File URL & domain origin
-                req.open("GET", "http://localhost:3000" + params, true);
-                //Response Type is Blob
-                req.responseType = "blob";
-                console.log('asda', req.response);
-                req.onload = function (e) {
-                    var blob = req.response;
-                    var cellJS = null;
-                    cellJS = new CellJS();
-                    console.log(req);
-                    cellJS.parse(
-                        blob,
-                        function () {
-                            //After Rendering
-                            cellJS.render($('#loaded-layout_' + i)[0], function (result) {
-                                if (result.isError) {
-                                    console.log(result.msg);
-                                } else {
-                                    console.log("Success Render");
-                                }
-                            });
-                        }, function (e) {
-                            console.log("Error!", e);
-                        }
-                    );
-                };
+            req.onload = function (e) {
+                var blob = req.response;
+                var slideJS = new SlideJS();
+                slideJS.parse(
+                    blob,
+                    function () {
+                        //After Rendering
+                        slideJS.render($('#loaded-layout_' + i)[0], function (result) {
+                            if (result.isError) {
+                                console.log(result.msg);
+                            } else {
+                                console.log("Success Render");
+                            }
+                        });
+                    }, function (e) {
+                        console.log("Error!", e);
+                    }
+                );
+                instance = slideJS;
+            };
+            req.send();
+        }
+        $(document).on('click', '.slick-active .prev-btn', function () {
+            console.log('prev');
+            currentId = instance.getCurrentId();
+            instance.gotoPage(currentId - 1);
+            console.log('instance', instance);
+            return false;
+        });
+        $(document).on('click', '.slick-active .next-btn', function () {
+            console.log('next');
+            currentId = instance.getCurrentId();
+            instance.gotoPage(currentId + 1);
+            console.log('instance', instance);
+            return false;
+        });
+        function display_excel(params, i) {
+            var req = new XMLHttpRequest();
+            //Check File URL & domain origin
+            req.open("GET", "http://localhost:3000" + params, true);
+            //Response Type is Blob
+            req.responseType = "blob";
+            console.log('asda', req.response);
+            req.onload = function (e) {
+                var blob = req.response;
+                var cellJS = null;
+                cellJS = new CellJS();
+                console.log(req);
+                cellJS.parse(
+                    blob,
+                    function () {
+                        //After Rendering
+                        cellJS.render($('#loaded-layout_' + i)[0], function (result) {
+                            if (result.isError) {
+                                console.log(result.msg);
+                            } else {
+                                console.log("Success Render");
+                            }
+                        });
+                    }, function (e) {
+                        console.log("Error!", e);
+                    }
+                );
+            };
 
-                req.send();
-            }
-        </script>
-        <div class="container">
-            <div class="row add-new-doc">
-                <div class="col-md-12 float-right">
-                    <a href="javascript:void(0)" class="btn btn-primary a_another_btn"> Add New Document In Pitch </a>
-                    <input type="hidden" value="<%= data[0].pitch_id %>" id="pitch_token" />
-                </div>
+            req.send();
+        }
+    </script>
+    <div class="container">
+        <div class="row add-new-doc">
+            <div class="col-md-12 float-right">
+                <a href="javascript:void(0)" class="btn btn-primary a_another_btn"> Add New Document In Pitch </a>
+                <input type="hidden" value="<%= data[0].pitch_id %>" id="pitch_token" />
             </div>
-            <div class="slider-main-wrapper user_pitch">
-                <div class="gallery-wrap">
-                    <div class="single-item">
-                        <% for(var i=0; i < data.length; i++) { %>
-                            <div class="slide">
-                                <div class="edit-wrap">
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <div class="top-area">
-                                                <h2>
-                                                    <%= data[i].company_name %>
-                                                </h2>
-                                                <input type="hidden" class="pitch_info_token <%= i+1 %>_token" value="<%= data[i].pitch_info_id %>">
-                                                <% if(data[i].pitch_attachment_type == 'image') { %>
-                                                    <input type="hidden" value="0" class="sliderViewer">
-                                                    <div class="preview">
-                                                        <img src="<%= dir_parth+data[i].pitch_attachment_name %>" class="img-responsive" alt="preview">
-                                                    </div>
-                                                    <% } %>
-                                                        <% if (data[i].pitch_attachment_type == 'video') { %>
-                                                            <div class="preview">
-                                                                <video width="400" controls>
-                                                                    <source src="<%= dir_parth+data[i].pitch_attachment_name %>" class="video_here">                                                                    Your
-                                                                    browser does not support HTML5 video.
-                                                                </video>
-                                                            </div>
-                                                            <% } %>
-                                                                <% if (data[i].pitch_attachment_type == 'application') { %>
-                                                                    <div class="preview">
-                                                                        <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e" width="500" height="600" />
-                                                                    </div>
-                                                                    <% } %>
-                                                                        <% if(data[i].pitch_attachment_type == 'docx') { %>
-                                                                            <input type="hidden" value="0" class="sliderViewer">
-                                                                            <div class="preview">
-                                                                                <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
-                                                                                <script>
-                                                                                    var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
-                                                                                    var i = '<%= i %>';
-                                                                                    display_docx(param, i);
-                                                                                </script>
-                                                                            </div>
-                                                                            <% } %>
-                                                                                <% if(data[i].pitch_attachment_type == 'pptx') { %>
-                                                                                    <input type="hidden" value="0" class="sliderViewer">
-                                                                                    <div class="preview pptx-view">
-                                                                                        <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
-                                                                                        <script>
-                                                                                            var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
-                                                                                            var i = '<%= i %>';
-                                                                                            display_pptx(param, i);
-                                                                                        </script>
-                                                                                        <div class="kuku-docx-controller">
-                                                                                            <button class="btn prev-btn">
-                                                                                                <i class="fa fa-arrow-left"></i>
-                                                                                                Prev</button>
-                                                                                            <button class="btn next-btn">
-                                                                                                Next
-                                                                                                <i class="fa fa-arrow-right"></i>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <% } %>
-                                                                                        <% if(data[i].pitch_attachment_type == 'xlsx') { %>
-                                                                                            <input type="hidden" value="0" class="sliderViewer">
-                                                                                            <div class="preview pptx-view">
-                                                                                                <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
-                                                                                                <script>
-                                                                                                    var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
-                                                                                                    var i = '<%= i %>';
-                                                                                                    display_excel(param, i);
-                                                                                                </script>
-                                                                                            </div>
-                                                                                            <% } %>
+        </div>
+        <div class="slider-main-wrapper user_pitch">
+            <div class="gallery-wrap">
+                <div class="single-item">
+                    <% for(var i=0; i < data.length; i++) { %>
+                    <div class="slide">
+                        <div class="edit-wrap">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="top-area">
+                                        <h2>
+                                            <%= data[i].company_name %>
+                                        </h2>
+                                        <input type="hidden" class="pitch_info_token <%= i+1 %>_token" value="<%= data[i].pitch_info_id %>">
+                                        <% if(data[i].pitch_attachment_type == 'image') { %>
+                                        <input type="hidden" value="0" class="sliderViewer">
+                                        <div class="preview">
+                                            <img src="<%= dir_parth+data[i].pitch_attachment_name %>" class="img-responsive"
+                                                alt="preview">
+                                        </div>
+                                        <% } %>
+                                        <% if (data[i].pitch_attachment_type == 'video') { %>
+                                        <div class="preview">
+                                            <video width="400" controls>
+                                                <source src="<%= dir_parth+data[i].pitch_attachment_name %>" class="video_here">
+                                                Your
+                                                browser does not support HTML5 video.
+                                            </video>
+                                        </div>
+                                        <% } %>
+                                        <% if (data[i].pitch_attachment_type == 'application') { %>
+                                        <div class="preview">
+                                            <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e"
+                                                width="500" height="600" />
+                                        </div>
+                                        <% } %>
+                                        <% if(data[i].pitch_attachment_type == 'docx') { %>
+                                        <input type="hidden" value="0" class="sliderViewer">
+                                        <div class="preview">
+                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                            <script>
+                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                var i = '<%= i %>';
+                                                display_docx(param, i);
+                                            </script>
+                                        </div>
+                                        <% } %>
+                                        <% if(data[i].pitch_attachment_type == 'pptx') { %>
+                                        <input type="hidden" value="0" class="sliderViewer">
+                                        <div class="preview pptx-view">
+                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                            <script>
+                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                var i = '<%= i %>';
+                                                display_pptx(param, i);
+                                            </script>
+                                            <div class="kuku-docx-controller">
+                                                <button class="btn prev-btn">
+                                                    <i class="fa fa-arrow-left"></i>
+                                                    Prev</button>
+                                                <button class="btn next-btn">
+                                                    Next
+                                                    <i class="fa fa-arrow-right"></i>
+                                                </button>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <div class="slider-text">
-                                                <p>
-                                                    <%= data[i].pitch_attachment_text %>
-                                                </p>
-                                            </div>
+                                        <% } %>
+                                        <% if(data[i].pitch_attachment_type == 'xlsx') { %>
+                                        <input type="hidden" value="0" class="sliderViewer">
+                                        <div class="preview pptx-view">
+                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                            <script>
+                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                var i = '<%= i %>';
+                                                display_excel(param, i);
+                                            </script>
                                         </div>
-                                    </div>
-                                    <div class="bottom-btn">
-                                        <a href="" class="a-another-btn">hubPitch</a>
-                                        <div class="slide-count-wrap">
-                                            <span>Page</span>
-                                            <span class="current"> </span> of
-                                            <span class="total_pitch"> <%= results_length %> </span>
-                                        </div>
+                                        <% } %>
                                     </div>
                                 </div>
-                            </div>
-                            <% } %>
-                    </div>
-                </div>
-            </div>
-            <form class="add_new_pitch_form" id="add_pitch" enctype="multipart/form-data" method="POST">
-                <div class="col-md-12 placeholder" id="placeholder-box">
-                    <div class="top-area">
-                        <div class="preview">
-                            <img src="/img/preview.jpg" class="img-responsive" alt="preview">
-                        </div>
-                    </div>
-                    <div class="bottom-btn">
-                        <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                        <a href="javascript:void(0)">Cancel</a>
-                        <a href="javascript:void(0)" class="continue_btn">Continue</a>
-                    </div>
-                </div>
-                <div class="add_preview">
-
-                </div>
-                <div class="add_box_here">
-
-                </div>
-                <div class="edit-wrap placeholder" id="placeholder-box-2">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="top-area">
-                                <div class="preview">
-                                    <img src="/img/preview.jpg" class="img-responsive" alt="preview">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <textarea rows="9" cols="" placeholder="Click to Edit"></textarea>
-                        </div>
-                        <div class="bottom-btn">
-                            <a href="">Cancel</a>
-                            <a href="">Continue</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row preview_file preview_box">
-                    <div class="col-md-12 top-area preview">
-                        <video width="400" controls>
-                            <source src="" class="video_here"> Your browser does not support HTML5 video.
-                        </video>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
-                        <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
-                    </div>
-                    <div class="bottom-btn">
-                        <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                        <a href="javascript:void(0)">Cancel</a>
-                        <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
-                    </div>
-                </div>
-                <div class="row preview_file_image image_priview preview_box">
-                    <div class="col-md-12 top-area preview">
-                        <img src="" alt="preview" class="preview_image" />
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
-                        <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
-                    </div>
-                    <div class="bottom-btn">
-                        <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                        <a href="javascript:void(0)">Cancel</a>
-                        <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
-                    </div>
-                </div>
-                <div class="row preview_file_docs docs_priview preview_box">
-                    <div class="col-md-12 top-area preview">
-                        <embed src="" class="docs_priview_e" width="500" height="600" />
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
-                        <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
-                    </div>
-                    <div class="bottom-btn">
-                        <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                        <a href="javascript:void(0)">Cancel</a>
-                        <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
-                    </div>
-                </div>
-                <div class="row preview_docx docs_priview preview_box">
-                    <div class="col-md-12 top-area preview">
-                        <!-- <button class="view-btn">view button</button> -->
-                        <div class="kuku-viewer-node" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
-                        <div class="kuku-docx-controller" style="display: none;">
-                            <button class="btn prev-btn">
-                                <i class="fa fa-arrow-left"></i> Prev</button>
-                            <button class="btn next-btn">
-                                Next
-                                <i class="fa fa-arrow-right"></i>
-                            </button>
-                        </div>
-                        <!--control button-->
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
-                        <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
-                    </div>
-                    <div class="bottom-btn">
-                        <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                        <a href="javascript:void(0)">Cancel</a>
-                        <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
-                    </div>
-                </div>
-                <div class="another-page-blank" style="display: none">
-                    <div class="col-md-12">
-                        <div class="add-page-box">
-                            <div class="top-area">
-                                <div class="js">
-                                    <div class="file col-md-12">
-                                        <div class="file-label">
-                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                            <br> Drag and Drop a File to Edit for your Pitch
-                                            <br>OR</br>
-                                            <button type="button" class="btn btn-default upld-btn">Upload a File</button>
-                                        </div>
-                                        <input type="file" name="drop_zone[]" class="drop_zone_input">
-                                        <div class="file-value" aria-hidden="true"></div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="slider-text">
+                                        <p>
+                                            <%= data[i].pitch_attachment_text %>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                             <div class="bottom-btn">
-                                <a href="javascript:void(0)">Cancel</a>
-                                <a href="javascript:void(0)" class="continue_btn">Continue</a>
+                                <a href="" class="a-another-btn">hubPitch</a>
+                                <div class="slide-count-wrap">
+                                    <span>Page</span>
+                                    <span class="current"> </span> of
+                                    <span class="total_pitch">
+                                        <%= results_length %> </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
-            <div class="modal fade" id="share_details" role="dialog">
-                <div class="modal-dialog">
-
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Pitch Sharing Information In Detail</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <ul class="ul_list_wapper_sharing">
-
-                            </ul>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-
+                    <% } %>
                 </div>
             </div>
         </div>
-        <script src="/js/module/endUser/pitchSliders.js"></script>
-        <script src="/js/module/userPitch/pitchEdit.js"></script>
+        <form class="add_new_pitch_form" id="add_pitch" enctype="multipart/form-data" method="POST">
+            <div class="col-md-12 placeholder" id="placeholder-box">
+                <div class="top-area">
+                    <div class="preview">
+                        <img src="/img/preview.jpg" class="img-responsive" alt="preview">
+                    </div>
+                </div>
+                <div class="bottom-btn">
+                    <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
+                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:void(0)" class="continue_btn">Continue</a>
+                </div>
+            </div>
+            <div class="add_preview">
+
+            </div>
+            <div class="add_box_here">
+
+            </div>
+            <div class="edit-wrap placeholder" id="placeholder-box-2">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="top-area">
+                            <div class="preview">
+                                <img src="/img/preview.jpg" class="img-responsive" alt="preview">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <textarea rows="9" cols="" placeholder="Click to Edit"></textarea>
+                    </div>
+                    <div class="bottom-btn">
+                        <a href="">Cancel</a>
+                        <a href="">Continue</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row preview_file preview_box">
+                <div class="col-md-12 top-area preview">
+                    <video width="400" controls>
+                        <source src="" class="video_here"> Your browser does not support HTML5 video.
+                    </video>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
+                    <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                </div>
+                <div class="bottom-btn">
+                    <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
+                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
+                </div>
+            </div>
+            <div class="row preview_file_image image_priview preview_box">
+                <div class="col-md-12 top-area preview">
+                    <img src="" alt="preview" class="preview_image" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
+                    <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                </div>
+                <div class="bottom-btn">
+                    <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
+                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
+                </div>
+            </div>
+            <div class="row preview_file_docs docs_priview preview_box">
+                <div class="col-md-12 top-area preview">
+                    <embed src="" class="docs_priview_e" width="500" height="600" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
+                    <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                </div>
+                <div class="bottom-btn">
+                    <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
+                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
+                </div>
+            </div>
+            <div class="row preview_docx docs_priview preview_box">
+                <div class="col-md-12 top-area preview">
+                    <!-- <button class="view-btn">view button</button> -->
+                    <div class="kuku-viewer-node" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                    <div class="kuku-docx-controller" style="display: none;">
+                        <button class="btn prev-btn">
+                            <i class="fa fa-arrow-left"></i> Prev</button>
+                        <button class="btn next-btn">
+                            Next
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <!--control button-->
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
+                    <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                </div>
+                <div class="bottom-btn">
+                    <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
+                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
+                </div>
+            </div>
+            <div class="another-page-blank" style="display: none">
+                <div class="col-md-12">
+                    <div class="add-page-box">
+                        <div class="top-area">
+                            <div class="js">
+                                <div class="file col-md-12">
+                                    <div class="file-label">
+                                        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                        <br> Drag and Drop a File to Edit for your Pitch
+                                        <br>OR</br>
+                                        <button type="button" class="btn btn-default upld-btn">Upload a File</button>
+                                    </div>
+                                    <input type="file" name="drop_zone[]" class="drop_zone_input">
+                                    <div class="file-value" aria-hidden="true"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-btn">
+                            <a href="javascript:void(0)">Cancel</a>
+                            <a href="javascript:void(0)" class="continue_btn">Continue</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="modal fade" id="share_details" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Pitch Sharing Information In Detail</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="ul_list_wapper_sharing">
+
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal fade" id="viewers_emails" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Pitch Sharing Information</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="user_emails"> </div>
+                        <div id="email_body_"> </div>
+                        <div class="new_section">
+                            <form method="post" id="formEmail" name="formEmail">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="pre_emails" id="pre_emails"
+                                        placeholder="(eg:abc@incipio.com,xyz@ncpo.com,....)" value="" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="emails" id="emails" placeholder="(eg:abc@incipio.com,xyz@ncpo.com,....)" />
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" id="email_body" name="email_body"> </textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href=javascript:checkEmails(); class="btn btn-primary">Send</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="/js/module/endUser/pitchSliders.js"></script>
+    <script src="/js/module/userPitch/pitchEdit.js"></script>
 </body>
 
 </html>

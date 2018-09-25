@@ -465,6 +465,33 @@ class pitchController {
         });
     }
 
+    static async editText(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body, req.flies), {
+                pitch_info_id: Joi.string().required(),
+                pitch_info_text: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            db.query('UPDATE hp_pitch_info SET pitch_attachment_text="' + req.body.pitch_info_text + '" WHERE pitch_info_id=' + req.body.pitch_info_id, function (error,
+                results,
+                fields) {
+                if (error) {
+                    console.log(error,
+                        results,
+                        fields);
+                    res.send({ success: false, message: 'Something went wrong in Pitch Text', error: error });
+                }
+                res.send({ success: true, message: 'Pitch Text Updated', error: error });
+            });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
     static async editPitch(req, res) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body, req.flies), {

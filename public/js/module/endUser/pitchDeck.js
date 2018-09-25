@@ -368,9 +368,41 @@ const pitchDeck = function () {
                 });
             }
         });
-    }
+    }44
+
     const handleMutipleConversation = () => {
 
+    }
+
+    const handleUpdatePitch = () => {
+        setInterval(function () {
+            $.ajax({
+                url: 'http://localhost:3000/check_for_update',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    pitch_token: $('#pitch_token').val(),
+                    counter: $('.total_pitch:first').text().trim(),
+                },
+                success: function (response) {
+                    if (response.success == 'true') {
+                        if (response.status == 'Updated') {
+                            alert('This Pitch Is just Update Please Reload The Page For See The New Updates')
+                        } else {
+                            console.log('No Update Found!');
+                        }
+                    } else {
+                        console.log('Something Went Wrong In Conversation')
+                    }
+                },
+                error: function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                }
+            });
+        }, 4000);
     }
     return {
         //main function to initiate the module
@@ -381,6 +413,7 @@ const pitchDeck = function () {
             handleConversation();
             handleNewUser();
             handleSendMsg();
+            handleUpdatePitch();
         }
     };
 }();
@@ -388,7 +421,7 @@ jQuery(document).ready(function () {
     pitchDeck.init();
 });
 
-function openChatModal(){
+function openChatModal() {
     $("#conversation_").click();
     $('.unread_count').html('<i class="glyphicon glyphicon-envelope"></i> You Have ' + 0 + ' Unread Messages');
 }

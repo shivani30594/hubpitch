@@ -3,6 +3,7 @@ const Joi = require("joi");
 var async = require('async');
 const dir = '/uploads/test';
 const nodemailer = require("nodemailer");
+const _ = require('lodash');
 
 class enduserController {
 
@@ -412,12 +413,46 @@ class enduserController {
     static checkforUpdate(req, res) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                // pitch_text_arr: Joi.any().required(),counter_r
                 pitch_token: Joi.string().required(),
+                counter: Joi.string().required()
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
                 return;
             }
+            db.query("SELECT info.pitch_info_id,info.pitch_attachment_text, TIMESTAMPDIFF(second,info.updated, NOW()) as time_dif FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id WHERE master_tbl.pitch_id = ?", req.body.pitch_token, function (
+                error,
+                results,
+                fields
+            ) {
+                if (error) {
+                    console.log(error, results, fields);
+                    res.send({ success: "false", message: "Something went wrong" });
+                }
+                if (results.length > 0) {
+                    let counter = req.body.counter
+                    let flag = 0;
+                    _.forEach(results, function (value, key) {
+                        if (value.time_dif < 5) {
+                            if (value.time_dif != null) {
+                                flag = flag + 1;
+                            }
+                        }
+                    });
+                    if (flag > 0) {
+                        res.send({ success: "true", status: "Updated" });
+                    } else {
+                        if (results.length == counter) {
+                            res.send({ success: "true", status: "No_Update" });
+                        } else {
+                            res.send({ success: "true", status: "Updated" });
+                        }
+                    }
+                } else {
+                    res.send({ success: "false", message: "Something went wrong" });
+                }
+            })
         }
         catch (error) {
             console.error(error);

@@ -67,6 +67,7 @@ router.post('/conversation-creater', Controller.enduserController.conversationCr
 router.post('/send-message', Controller.enduserController.sendMessage);
 router.post('/get_conversation_', Controller.enduserController.getConversation)
 router.post('/mark_as_read_conversation_end_user', Controller.enduserController.markAsReadConversation)
+router.post('/check_for_update', Controller.enduserController.checkforUpdate)
 
 /** 
  * 
@@ -111,6 +112,7 @@ router.post('/reply_message', Controller.pitchController.replyPitchMessage)
 router.post('/add_new_file', Controller.pitchController.addNewPitchInExiting)
 router.post('/share_pitch_email', Controller.pitchController.sharePitchWithEmail)
 router.post('/update_share_pitch_email', Controller.pitchController.updateSharePitchWithEmail)
+router.post('/edit_pitch_text', Controller.pitchController.editText)
 
 // SUPPORT 
 

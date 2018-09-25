@@ -389,3 +389,49 @@ function checkEmails() {
         }
     }
 }
+
+const editText = (id) => {
+    $('#pitch_text').val('');
+    $('#pitch_info_token').val('');
+    let text = $('#textof_' + id).html();
+    $('#pitch_text').val(text);
+    $('#pitch_info_token').val(id);
+    $('#edit_text_modal').modal('show');
+}
+
+const editTextCall = () => {
+    let pitch_info_id = $('#pitch_info_token').val();
+    let pitcht_text = $('#pitch_text').val();
+    if (pitch_info_id == undefined || pitch_info_id == '') {
+        alert('Something Went Wrong Please Reload The Page');
+    } else {
+        if (pitcht_text == '') {
+            alert('Please Add Some Text Contain First');
+        } else {
+            $.ajax({
+                url: 'http://localhost:3000/edit_pitch_text',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                method: 'POST',
+                data: {
+                    pitch_info_id: pitch_info_id,
+                    pitch_info_text: pitcht_text,
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (!response.success) {
+                        return alert(JSON.stringify(response.message));
+                    }
+                    $('#edit_text_modal').modal('hide');
+                    if (response.success == true) {
+                        alert("Text Contains Are Updated Please Reload The Page To See Changes");
+                    }
+                },
+                error: function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                }
+            });
+        }
+    }
+}

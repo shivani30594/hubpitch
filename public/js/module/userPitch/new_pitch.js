@@ -382,7 +382,7 @@ function checkEmails() {
                 if (!response.success) {
                     return alert(JSON.stringify(response.message));
                 }
-
+                alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);

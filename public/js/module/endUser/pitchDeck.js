@@ -368,7 +368,7 @@ const pitchDeck = function () {
                 });
             }
         });
-    }44
+    }
 
     const handleMutipleConversation = () => {
 
@@ -404,6 +404,26 @@ const pitchDeck = function () {
             });
         }, 4000);
     }
+
+    const addEndUserName = () => {
+        $(".add_name_form").validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'error-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
+                end_user_name: {
+                    required: true
+                },
+            },
+            submitHandler: function (form) {
+                $('.loader_hp_').show();
+                document.cookie = "endUserName=" + $('#end_user_name_').val();
+                $('.loader_hp_').hide();
+                submitNote($('#active_info').val())
+            }
+        });
+    }
     return {
         //main function to initiate the module
         init: function () {
@@ -414,6 +434,7 @@ const pitchDeck = function () {
             handleNewUser();
             handleSendMsg();
             handleUpdatePitch();
+            addEndUserName();
         }
     };
 }();
@@ -424,4 +445,72 @@ jQuery(document).ready(function () {
 function openChatModal() {
     $("#conversation_").click();
     $('.unread_count').html('<i class="glyphicon glyphicon-envelope"></i> You Have ' + 0 + ' Unread Messages');
+}
+
+function addNote(id) {
+    $('.notesection_' + id).toggle('200');
+    $('#note_icon_button_' + id).toggleClass("glyphicon glyphicon-remove");
+    $('#note_icon_button_' + id).toggleClass("glyphicon glyphicon-plus");
+}
+function submitNote(id) {
+    let textValue = $('#note_' + id).val()
+    $('#active_info').val(id);
+    if (textValue == '') {
+        $('#note_' + id).addClass('error-custom');
+        $('.error_custom_error_' + id).show();
+    } else {
+        let endUserName = getCookie('endUserName');
+        if (endUserName == undefined) {
+            $('#add_name_model_simple').modal('show');
+            $('.error_custom_error_' + id).hide('100');
+            $('#note_' + id).removeClass('error-custom');
+        }
+        else {
+            $('.loader_hp_').show();
+            let token = makeToken();
+            $.ajax({
+                url: 'http://localhost:3000/note-creater',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    pitch_info_id: id,
+                    end_user_name: endUserName,
+                    text: textValue,
+                    token: token
+                },
+                success: function (response) {
+                    if (response.success == 'true') {
+                        document.cookie = "endUserName=" + $('#end_user_name').val();
+                        document.cookie = "endUsertoken=" + token;
+                        $('#note_' + id).prop('disabled', true);
+                        $('.loader_hp_').hide();
+                    }
+                    else {
+                        alert('Something Went Wrong!');
+                    }
+                },
+                error: function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                }
+            });
+        }
+    }
+}
+const makeToken = () => {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
+const getCookie = (name) => {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
 }

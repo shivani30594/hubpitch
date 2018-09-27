@@ -532,7 +532,8 @@ ul#conversation_list li span {
 ul#conversation_list li a {
     display: inline-block;
 }
-.float-right a.btn.btn-primary {float: right;margin: 10px;} 
+.float-right a.btn.btn-primary {float: right;margin: 10px;}
+a.btn.btn-primary.float-right {float: right;}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

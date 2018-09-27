@@ -68,6 +68,7 @@ router.post('/send-message', Controller.enduserController.sendMessage);
 router.post('/get_conversation_', Controller.enduserController.getConversation)
 router.post('/mark_as_read_conversation_end_user', Controller.enduserController.markAsReadConversation)
 router.post('/check_for_update', Controller.enduserController.checkforUpdate)
+router.post('/note-creater', Controller.enduserController.noteCreater)
 
 /** 
  * 

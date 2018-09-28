@@ -68,7 +68,15 @@
                                 </div>
                             </div>
                             <div class="bottom-btn">
-                                <a href="" class="a-another-btn">hubPitch</a>
+                                <div class="">
+                                    <a href="javascript:noteDetail('<%= data[i].pitch_info_id %>')">
+                                        <label class="pitch_notes">Notes On This Page:
+                                            <span> <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+                                                <%= data[i].note_count %>
+                                            </span>
+                                        </label>
+                                    </a>
+                                </div>
                                 <div class="slide-count-wrap">
                                     <span>Page</span>
                                     <span class="current"> </span> of
@@ -103,6 +111,31 @@
 
             </div>
         </div>
+        <div class="modal fade" id="note_details" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Pitch Notes Created By Users In Details</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="ul_list_wapper_note">
+
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- LOADER  -->
+    <div class="loader_hp_">
+        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
     </div>
     <script src="/js/module/endUser/pitchSliders.js"></script>
     <script src="/js/module/userPitch/pitchDetails.js"></script>

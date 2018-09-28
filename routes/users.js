@@ -69,6 +69,7 @@ router.post('/get_conversation_', Controller.enduserController.getConversation)
 router.post('/mark_as_read_conversation_end_user', Controller.enduserController.markAsReadConversation)
 router.post('/check_for_update', Controller.enduserController.checkforUpdate)
 router.post('/note-creater', Controller.enduserController.noteCreater)
+router.post('/get-notes', Controller.enduserController.getNotes)
 
 /** 
  * 
@@ -114,6 +115,7 @@ router.post('/add_new_file', Controller.pitchController.addNewPitchInExiting)
 router.post('/share_pitch_email', Controller.pitchController.sharePitchWithEmail)
 router.post('/update_share_pitch_email', Controller.pitchController.updateSharePitchWithEmail)
 router.post('/edit_pitch_text', Controller.pitchController.editText)
+router.post('/get_notes', Controller.pitchController.getNotes)
 
 // SUPPORT 
 

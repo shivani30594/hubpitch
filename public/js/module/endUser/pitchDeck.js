@@ -375,34 +375,34 @@ const pitchDeck = function () {
     }
 
     const handleUpdatePitch = () => {
-        setInterval(function () {
-            $.ajax({
-                url: 'http://localhost:3000/check_for_update',
-                headers: {
-                    'Accept': 'application/json',
-                },
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    pitch_token: $('#pitch_token').val(),
-                    counter: $('.total_pitch:first').text().trim(),
-                },
-                success: function (response) {
-                    if (response.success == 'true') {
-                        if (response.status == 'Updated') {
-                            alert('This Pitch Is just Update Please Reload The Page For See The New Updates')
-                        } else {
-                            console.log('No Update Found!');
-                        }
-                    } else {
-                        console.log('Something Went Wrong In Conversation')
-                    }
-                },
-                error: function (jqXHR, textStatus) {
-                    alert("Request failed: " + textStatus);
-                }
-            });
-        }, 4000);
+        // setInterval(function () {
+        //     $.ajax({
+        //         url: 'http://localhost:3000/check_for_update',
+        //         headers: {
+        //             'Accept': 'application/json',
+        //         },
+        //         method: 'POST',
+        //         dataType: 'json',
+        //         data: {
+        //             pitch_token: $('#pitch_token').val(),
+        //             counter: $('.total_pitch:first').text().trim(),
+        //         },
+        //         success: function (response) {
+        //             if (response.success == 'true') {
+        //                 if (response.status == 'Updated') {
+        //                     alert('This Pitch Is just Update Please Reload The Page For See The New Updates')
+        //                 } else {
+        //                     console.log('No Update Found!');
+        //                 }
+        //             } else {
+        //                 console.log('Something Went Wrong In Conversation')
+        //             }
+        //         },
+        //         error: function (jqXHR, textStatus) {
+        //             alert("Request failed: " + textStatus);
+        //         }
+        //     });
+        // }, 4000);
     }
 
     const addEndUserName = () => {
@@ -420,9 +420,50 @@ const pitchDeck = function () {
                 $('.loader_hp_').show();
                 document.cookie = "endUserName=" + $('#end_user_name_').val();
                 $('.loader_hp_').hide();
+                $('#add_name_model_simple').modal('hide');
                 submitNote($('#active_info').val())
             }
         });
+    }
+    const getNotes = () => {
+        let token = getCookie('endUsertoken');
+        if (token != undefined && token != '') {
+            $('.loader_hp_').show();
+            $.ajax({
+                url: 'http://localhost:3000/get-notes',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    token: token,
+                },
+                success: function (response) {
+                    if (response.success == 'true') {
+                        console.log(response);
+                        response.data.forEach((obj) => {
+                            if (obj) {
+                                $('.notesection_' + obj.pitch_info_id).show();
+                                $('#submit_btn_note_' + obj.pitch_info_id).hide();
+                                $('#note_' + obj.pitch_info_id).val(obj.text);
+                                $('#note_' + obj.pitch_info_id).prop('disabled', true);
+                                $('#note_icon_button_' + obj.pitch_info_id).removeClass('glyphicon-plus');
+                                $('#note_icon_button_' + obj.pitch_info_id).addClass('glyphicon-remove');
+                            }
+                            $('.loader_hp_').hide();
+                        })
+
+                    }
+                    else {
+                        alert('Something Went Wrong!');
+                    }
+                },
+                error: function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                }
+            });
+        }
     }
     return {
         //main function to initiate the module
@@ -435,6 +476,7 @@ const pitchDeck = function () {
             handleSendMsg();
             handleUpdatePitch();
             addEndUserName();
+            getNotes();
         }
     };
 }();
@@ -467,7 +509,10 @@ function submitNote(id) {
         }
         else {
             $('.loader_hp_').show();
-            let token = makeToken();
+            let token = getCookie('endUsertoken');
+            if (token == undefined || token == '') {
+                token = makeToken();
+            }
             $.ajax({
                 url: 'http://localhost:3000/note-creater',
                 headers: {
@@ -483,9 +528,10 @@ function submitNote(id) {
                 },
                 success: function (response) {
                     if (response.success == 'true') {
-                        document.cookie = "endUserName=" + $('#end_user_name').val();
+                        document.cookie = "endUserName=" + $('#end_user_name_').val();
                         document.cookie = "endUsertoken=" + token;
                         $('#note_' + id).prop('disabled', true);
+                        $('#submit_btn_note_' + id).hide();
                         $('.loader_hp_').hide();
                     }
                     else {

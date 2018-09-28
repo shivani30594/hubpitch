@@ -496,5 +496,41 @@ class enduserController {
             res.send({ success: false, error });
         }
     }
+
+    static getNotes(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                token: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+
+            db.query("SELECT * FROM hp_pitch_page_notes WHERE token='" + req.body.token + "'", function (
+                error,
+                results,
+                fields
+            ) {
+                if (error) {
+                    console.log(error,
+                        results,
+                        fields);
+                    console.log(req.body.token);
+                    return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
+                }
+                if (results.length > 0) {
+                    res.send({ success: "true", data: results });
+                } else {
+                    return res.status.send({ success: "true", message: 'No Message Found' });
+                }
+            });
+
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
 }
 module.exports = enduserController;

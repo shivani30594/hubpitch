@@ -257,7 +257,8 @@
                                                         Please Note Text Are Required
                                                     </label>
                                                 </div>
-                                                <button type="button" class="btn btn-default btn-sm" onclick="submitNote('<%= data[i].pitch_info_id %>')">
+                                                <button type="button" id="submit_btn_note_<%= data[i].pitch_info_id %>"
+                                                    class="btn btn-default btn-sm" onclick="submitNote('<%= data[i].pitch_info_id %>')">
                                                     Submit Note
                                                 </button>
                                             </form>

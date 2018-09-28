@@ -282,7 +282,7 @@ class pitchController {
     }
 
     static async viewPitchDetails(req, res) {
-        db.query("SELECT master_tbl.share_times,analysis.pitch_view_counter as total_views ,info.average_view,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id WHERE master_tbl.pitch_id = ?", req.params.id, function (
+        db.query("SELECT master_tbl.share_times,analysis.pitch_view_counter as total_views ,info.average_view,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text,(SELECT COUNT(*) FROM hp_pitch_page_notes WHERE hp_pitch_page_notes.pitch_info_id = info.pitch_info_id) as note_count FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id WHERE master_tbl.pitch_id = ?", req.params.id, function (
             error,
             results,
             fields
@@ -955,6 +955,41 @@ class pitchController {
                     }
                 });
             });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+    static getNotes(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                pitch_info_id: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+
+            db.query("SELECT * FROM hp_pitch_page_notes WHERE pitch_info_id='" + req.body.pitch_info_id + "'", function (
+                error,
+                results,
+                fields
+            ) {
+                if (error) {
+                    console.log(error,
+                        results,
+                        fields);
+                    console.log(req.body.pitch_info_id);
+                    return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
+                }
+                if (results.length > 0) {
+                    res.send({ success: "true", data: results });
+                } else {
+                    return res.status.send({ success: "false", message: 'No Message Found' });
+                }
+            });
+
         }
         catch (error) {
             console.error(error);

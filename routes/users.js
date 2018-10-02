@@ -120,4 +120,11 @@ router.post('/get_notes', Controller.pitchController.getNotes)
 // SUPPORT 
 
 router.post('/send_support_message', Controller.supportController.send_support);
+
+// VIDEO 
+
+router.post('/video_test', Controller.videoController.test);
+router.post('/video_test2', Controller.videoController.test2);
+router.post('/marge_video', Controller.videoController.margeVideo);
+
 module.exports = router;

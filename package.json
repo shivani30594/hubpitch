@@ -13,6 +13,7 @@
     "ejs": "~2.5.7",
     "express": "~4.16.0",
     "express-fileupload": "^0.4.0",
+    "fluent-ffmpeg-extended": "^1.5.2",
     "http-errors": "~1.6.2",
     "joi": "^13.4.0",
     "jsonwebtoken": "^8.3.0",
@@ -27,6 +28,8 @@
     "nodemailer": "^4.6.7",
     "nodemon": "^1.18.0",
     "paypal-express-checkout": "^1.6.3",
-    "uuid": "^3.3.2"
+    "stripe": "^6.12.1",
+    "uuid": "^3.3.2",
+    "video-stitch": "^1.5.0"
   }
 }

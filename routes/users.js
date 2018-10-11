@@ -124,8 +124,9 @@ router.post('/send_support_message', Controller.supportController.send_support);
 // VIDEO 
 
 router.post('/video_test', Controller.videoController.test);
-router.post('/video_test2', Controller.videoController.test2);
+router.post('/video_test2', Controller.videoController.testfluentFFMPEG2);
 router.post('/marge_video', Controller.videoController.margeVideo);
 router.post('/cut_video', Controller.videoController.cutVideoWithTime);
+router.post('/test_stripe',Controller.stripePaymentController.testStripe);
 
 module.exports = router;

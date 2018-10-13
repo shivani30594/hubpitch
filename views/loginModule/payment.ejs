@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        <%= title %>
+    </title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <!-- Optional theme -->
+
+    <script src="/js/jquery.min.js"></script>
+    <!--jquery js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- bootstrap js -->
+    <script src="https://use.fontawesome.com/8a22b161e0.js"></script>
+    <!-- font awesome -->
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/payment.css' />
+    <!-- custom css -->
+
+    <!-- Validation.Js -->
+    <script src="/js/jquery.validate.min.js"></script>
+    <script src="/js/additional-methods.min.js"></script>
+</head>
+
+<body>
+    <section class="signup-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="logo-wrap">
+                        <a href="#">
+                            <img src="/img/logo.png" alt="Logo">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="signup-wrapper">
+        <div class="container">
+            <div class="columns">
+                <ul class="price">
+                    <li class="header">Basic</li>
+                    <li class="grey">$ 5 / year</li>
+                    <li>10GB Storage</li>
+                    <li>10 Emails</li>
+                    <li>10 Domains</li>
+                    <li>1GB Bandwidth</li>
+                    <li class="grey"><a href="javascript:handlePaymentTable(5)" class="button">Sign Up</a></li>
+                </ul>
+            </div>
+
+            <div class="columns">
+                <ul class="price">
+                    <li class="header">Pro</li>
+                    <li class="grey">$ 10 / year</li>
+                    <li>25GB Storage</li>
+                    <li>25 Emails</li>
+                    <li>25 Domains</li>
+                    <li>2GB Bandwidth</li>
+                    <li class="grey"><a href="javascript:handlePaymentTable(10)" class="button">Sign Up</a></li>
+                </ul>
+            </div>
+
+            <div class="columns">
+                <ul class="price">
+                    <li class="header">Premium</li>
+                    <li class="grey">$ 15 / year</li>
+                    <li>50GB Storage</li>
+                    <li>50 Emails</li>
+                    <li>50 Domains</li>
+                    <li>5GB Bandwidth</li>
+                    <li class="grey"><a href="javascript:handlePaymentTable(15)" class="button">Sign Up</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- Modal -->
+    <div class="modal fade" id="stripe_confi" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Please Confirm Your Membership Plan </h4>
+                </div>
+                <div class="modal-body">
+                        <div class="columns">
+                            <ul class="price">
+                                <li class="header">Basic</li>
+                                <li class="grey">$ 5 / year</li>
+                                <li>10GB Storage</li>
+                                <li>10 Emails</li>
+                                <li>10 Domains</li>
+                                <li>1GB Bandwidth</li>
+                                <li id="submmiting"> 
+                                </li>
+                            </ul>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modal -->
+
+    <script src="/js/module/payment.js"></script>
+    <!-- LOADER  -->
+    <div class="loader_hp_">
+        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </div>
+</body>
+
+</html>

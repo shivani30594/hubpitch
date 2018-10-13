@@ -19,9 +19,7 @@ router.get('/', function (req, res, next) {
 router.get('/signup', function (req, res, next) {
     res.render('loginModule/signup', { title: 'SignUp || Hub Pitch' });
 });
-router.get('/payment', function (req, res, next) {
-    res.render('loginModule/', { title: 'Payment Page || Hub Pitch' });
-});
+router.get('/payment', Controller.stripePaymentController.paymentPage);
 router.get('/forgot-password', function (req, res, next) {
     res.render('loginModule/forget', { title: 'Forgot Password || Hub Pitch' });
 });
@@ -127,6 +125,7 @@ router.post('/video_test', Controller.videoController.test);
 router.post('/video_test2', Controller.videoController.testfluentFFMPEG2);
 router.post('/marge_video', Controller.videoController.margeVideo);
 router.post('/cut_video', Controller.videoController.cutVideoWithTime);
-router.post('/test_stripe',Controller.stripePaymentController.testStripe);
+router.post('/test_stripe', Controller.stripePaymentController.testStripe);
+router.post('/payment_status', Controller.stripePaymentController.payment);
 
 module.exports = router;

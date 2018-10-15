@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../adminComponents/headerFile.ejs %>
+</head>
+
+<body>
+    <% include ../adminComponents/header.ejs %>
+    <div class="container">
+        <div class="card-box">
+            <h2>Add New Membership Plan</h2>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="plan_name">
+                        Plan Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="plan_name" placeholder="Plan Name" name="plan_name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="plan_price">Plan Price</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="plan_price" placeholder="Plan Price" name="plan_price">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="chatting_features"> Chatting Features</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="exampleFormControlTextarea1">Large textarea</label>
+                    <textarea class="col-sm-10 form-control rounded-1" id="exampleFormControlTextarea1" rows="10"></textarea>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </div>
+        </form>
+    </div>
+    </div>
+</body>
+<style>
+textarea#exampleFormControlTextarea1 {
+    width: 83.33333333%!important;
+    margin-top: 0;
+}</style>
+</html>

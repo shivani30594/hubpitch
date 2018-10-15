@@ -19,7 +19,7 @@ jQuery(document).ready(function () {
 });
 
 function handlePaymentTable(amount) {
-    console.log(amount)
+    
     let payableamount = amount * 100
     $('.loader_hp_').show(); 
     let script = '<form action="/payment_status" method="POST"> <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_wAUwirtoVTeDYL0nEAvhKNjP" data-name="Hub Pitch Membership" data-amount="' + payableamount + '">  </form>';

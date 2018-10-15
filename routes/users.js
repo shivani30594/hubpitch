@@ -47,6 +47,9 @@ router.get('/user/pitch/edit/:id', Controller.pitchController.editPitchPage)
 router.get('/admin/dashboard', adminController.dashboardController.dashboard);
 router.get('/admin/profile', adminController.dashboardController.profile);
 router.get('/admin/manage-pitch', adminController.pitchController.allUsersPitchView)
+router.get('/admin/manage-subscription', adminController.subscriptionController.manageSubscription)
+router.get('/admin/stripe-managment', adminController.subscriptionController.manageStripeSetting)
+router.get('/admin/add-plan', adminController.subscriptionController.addPlanPage)
 
 
 /**

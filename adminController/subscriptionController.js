@@ -16,7 +16,7 @@ class subscriptionController {
     }
 
     static async addPlanPage(req, res) {
-        res.render('adminViews/subscriptionModule/addPlan', { title: 'Admin Add Plan || Hub Pitch' })
+        res.render('adminViews/subscriptionModule/addPlan', { title: 'Admin Add Plan || Hub Pitch', datatable: 'FALSE' })
     }
     static async addStripeSetting(req, res) {
         try {
@@ -61,6 +61,77 @@ class subscriptionController {
                 }
             });
 
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async addMembershipPlan(req, res) {
+        try {
+            console.log('------------------', req.body);
+            const StripeSetting = Joi.validate(Object.assign(req.params, req.body, req.flies), {
+                plan_name: Joi.string()
+                    .min(3)
+                    .required(),
+                plan_price: Joi.string()
+                    .min(2).required(),
+                unlimited_customer_pitches: Joi.string().required(),
+                video_upload_editing: Joi.string().required(),
+                pdf_upload: Joi.string().required(),
+                pitch_customization: Joi.string().required(),
+                powerpoint_upload: Joi.string().required(),
+                excel_upload: Joi.string().required(),
+                word_upload: Joi.string().required(),
+                pitch_analytics: Joi.string().required(),
+                pitch_notifications: Joi.string().required(),
+                user_to_customer_messaging: Joi.string().required(),
+                other_details: Joi.allow()
+            });
+            if (StripeSetting.error) {
+                res.send({ success: false, error: StripeSetting.error });
+                return;
+            }
+
+            var token = req.headers['access-token'];
+            let userid = '';
+            var membershipArr = []
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    userid = decoded.user;
+                }
+            });
+            membershipArr = {
+                'plan_name': req.body.plan_name,
+                'plan_price': req.body.plan_price,
+                'unlimited_customer_pitches': req.body.unlimited_customer_pitches,
+                'video_upload_editing': req.body.video_upload_editing,
+                'pdf_upload': req.body.pdf_upload,
+                'pitch_customization': req.body.pitch_customization,
+                'powerpoint_upload': req.body.powerpoint_upload,
+                'excel_upload': req.body.excel_upload,
+                'word_upload': req.body.word_upload,
+                'pitch_analytics': req.body.pitch_analytics,
+                'pitch_notifications': req.body.pitch_notifications,
+                'user_to_customer_messaging': req.body.user_to_customer_messaging,
+                'other_details': req.body.other_details,
+                'user_id': userid
+            }
+            db.query("INSERT INTO hp_membership_plan SET?", membershipArr, function (
+                error,
+                results,
+                fields
+            ) {
+                console.log(error,
+                    results,
+                    fields);
+                if (results) {
+                    res.send({ success: true, message: "membership plan added" });
+                }
+            });
         }
         catch (error) {
             console.error(error);

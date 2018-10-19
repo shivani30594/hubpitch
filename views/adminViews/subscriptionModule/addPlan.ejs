@@ -8,47 +8,191 @@
 <body>
     <% include ../adminComponents/header.ejs %>
     <div class="container">
-        <div class="card-box">
+        <div class="row">
             <h2>Add New Membership Plan</h2>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="plan_name">
-                        Plan Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="plan_name" placeholder="Plan Name" name="plan_name">
+        </div>
+        <div class="card-box">
+            <form class="form-horizontal" id="membership_plan" method="post">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-4" for="plan_name">
+                            Plan Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="plan_name" placeholder="Plan Name" name="plan_name">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-4" for="plan_price">Plan Price</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="plan_price" placeholder="Plan Price" name="plan_price">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="unlimited_customer_pitches">
+                            Unlimited Pitches</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="unlimited_customer_pitches" type="checkbox" id="unlimited_customer_pitches">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="plan_price">Plan Price</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="plan_price" placeholder="Plan Price" name="plan_price">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="video_upload_editing">
+                            Video Editing & Upload</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="video_upload_editing" type="checkbox" id="video_upload_editing">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="pdf_upload">
+                            PDF Upload</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="pdf_upload" type="checkbox" id="pdf_upload">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="pitch_customization">
+                            Pitch Customization</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="pitch_customization" type="checkbox" id="pitch_customization">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="powerpoint_upload">
+                            Powerpoint Upload</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="powerpoint_upload" type="checkbox" id="powerpoint_upload">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="excel_upload">
+                            Excel Doc Upload</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="excel_upload" type="checkbox" id="excel_upload">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="word_upload">
+                            Word Doc Upload</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="word_upload" type="checkbox" id="word_upload">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="pitch_analytics">
+                            Pitch Analytics</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="pitch_analytics" type="checkbox" id="pitch_analytics">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="pitch_notifications">
+                            Pitch Notifications</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="pitch_notifications" type="checkbox" id="pitch_notifications">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="recipient_sharing_tracking">
+                            Recipient Sharing & Tracking</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="recipient_sharing_tracking" type="checkbox" id="recipient_sharing_tracking">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="user_to_customer_messaging">
+                            User to Customer Messaging</label>
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="user_to_customer_messaging" type="checkbox" id="user_to_customer_messaging">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label class="control-label col-sm-2" for="exampleFormControlTextarea1">Other Details</label>
+                        <textarea class="col-sm-10 form-control rounded-1" id="exampleFormControlTextarea1" name="other_details"
+                            placeholder="Other Details About Plan ( IF ANY )" rows="10"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <div class="checkbox">
-                            <label><input type="checkbox" name="chatting_features"> Chatting Features</label>
-                        </div>
+                        <button type="submit" class="btn btn-primary" name="add_plan">Submit</button>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="exampleFormControlTextarea1">Large textarea</label>
-                    <textarea class="col-sm-10 form-control rounded-1" id="exampleFormControlTextarea1" rows="10"></textarea>
-                </div>
+            </form>
         </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Submit</button>
-            </div>
-        </div>
-        </form>
     </div>
     </div>
+    <!-- LOADER  -->
+    <!-- <div class="loader_hp_">
+        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </div> -->
+    <script src="/js/module/admin/subscriptionModule/addMembership.js"></script>
 </body>
 <style>
-textarea#exampleFormControlTextarea1 {
-    width: 83.33333333%!important;
-    margin-top: 0;
-}</style>
+    textarea#exampleFormControlTextarea1 {
+        width: 83.33333333% !important;
+        margin-top: 0;
+    }
+</style>
+
 </html>

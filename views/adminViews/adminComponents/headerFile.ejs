@@ -22,6 +22,8 @@
 <link rel='stylesheet' href='/stylesheets/style.css' />
 <!-- custom css -->
 
+<!-- ADMIN CSS -->
+<link rel='stylesheet' href='/stylesheets/adminStyle.css' />
 <link rel="shortcut icon" type="/img/logo.png" href="/favicon.png" />
 <link rel="shortcut icon" type="/img/logo.png" href="http://example.com/favicon.png" />
 
@@ -29,10 +31,12 @@
 <script src="/js/jquery.validate.min.js"></script>
 <script src="/js/additional-methods.min.js"></script>
 
+<% if (datatable == 'true'){ %>
 <!-- Datatable.Js -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/datatables.min.css" />
 
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/datatables.min.js"></script>
 
+<% } %>
 <!-- CORE APPLICATION METHODS -->
 <script src="/js/module/core/admin.js"></script>

@@ -101,6 +101,10 @@ router.post('/admin/get_single_support_message', adminController.dashboardContro
 
 // USER API METHOD
 
+// Subscription
+
+router.post('/admin/add_stripe_setting', adminController.subscriptionController.addStripeSetting);
+router.post('/admin/add_membership_plan', adminController.subscriptionController.addMembershipPlan);
 // PITCH
 router.post('/add_pitch', Controller.pitchController.addPitch);
 router.post('/get_user_pitchs', Controller.pitchController.getPitch)

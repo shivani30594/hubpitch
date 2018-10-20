@@ -8,11 +8,22 @@ const async = require('async');
 class subscriptionController {
 
     static async  manageSubscription(req, res) {
-        res.render('adminViews/profileModule/profile', { title: 'Admin Profile || Hub Pitch' })
+        db.query("SELECT plan_id,plan_name,plan_price, DATE_FORMAT(created,'%d/%m/%Y') AS niceDate FROM hp_membership_plan ORDER BY created DESC", function (
+            error,
+            results,
+            fields
+        ) {
+            if (results) {
+                res.render('adminViews/subscriptionModule/manageSubscription', { title: 'Admin Subscription Plan || Hub Pitch', data: results, datatable: 'TRUE' })
+            } else {
+                console.log(error, results, fields);
+                return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
+            }
+        });
     }
 
     static async  manageStripeSetting(req, res) {
-        res.render('adminViews/subscriptionModule/manageStripe', { title: 'Admin Manage Stripe Account || Hub Pitch' })
+        res.render('adminViews/subscriptionModule/manageStripe', { title: 'Admin Manage Stripe Account || Hub Pitch', datatable: 'FALSE' })
     }
 
     static async addPlanPage(req, res) {
@@ -57,7 +68,7 @@ class subscriptionController {
                     results,
                     fields);
                 if (results) {
-
+                    res.send({ success: true, message: "Stripe Setting Added" });
                 }
             });
 

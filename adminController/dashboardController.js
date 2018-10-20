@@ -8,10 +8,10 @@ const jwtsecret = "Narola123";
 
 class dashboardController {
     static async dashboard(req, res, next) {
-        res.render('adminViews/dashboardModule/dashboard', { title: 'Admin Dashboard || Hub Pitch' });
+        res.render('adminViews/dashboardModule/dashboard', { title: 'Admin Dashboard || Hub Pitch', datatable: 'FALSE' });
     }
-    static async profile (req, res, next) {
-        res.render('adminViews/profileModule/profile', { title: 'Admin Profile || Hub Pitch' });
+    static async profile(req, res, next) {
+        res.render('adminViews/profileModule/profile', { title: 'Admin Profile || Hub Pitch', datatable: 'FALSE' });
     }
 }
 module.exports = dashboardController;

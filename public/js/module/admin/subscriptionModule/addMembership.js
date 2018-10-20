@@ -8,6 +8,7 @@ const addMembership = function () {
             rules: {
                 plan_name: {
                     required: true,
+                    minlength: 3,
                 },
                 plan_price: {
                     required: true,
@@ -24,7 +25,7 @@ const addMembership = function () {
                     type: 'POST',
                     data: {
                         plan_name: $('#plan_name').val(),
-                        plan_price: $('#plan_price').val(), 
+                        plan_price: $('#plan_price').val(),
                         unlimited_customer_pitches: $('#unlimited_customer_pitches').is(":checked"),
                         video_upload_editing: $('#video_upload_editing').is(":checked"),
                         pdf_upload: $('#pdf_upload').is(":checked"),
@@ -35,13 +36,15 @@ const addMembership = function () {
                         pitch_analytics: $('#pitch_analytics').is(":checked"),
                         pitch_notifications: $('#pitch_notifications').is(":checked"),
                         user_to_customer_messaging: $('#user_to_customer_messaging').is(":checked"),
-                        other_details: $('#other_details').val()
+                        other_details: $('#exampleFormControlTextarea1').val()
                     },
                     success: function (response) {
                         if (!response.success) {
                             return alert(JSON.stringify(response.error));
                         }
                         console.log(response)
+                        form.trigger("reset");
+                        alert(response.message);
                     },
                     error: function (jqXHR, textStatus) {
                         alert("Request failed: " + textStatus);

@@ -50,6 +50,7 @@ router.get('/admin/manage-pitch', adminController.pitchController.allUsersPitchV
 router.get('/admin/manage-subscription', adminController.subscriptionController.manageSubscription)
 router.get('/admin/stripe-managment', adminController.subscriptionController.manageStripeSetting)
 router.get('/admin/add-plan', adminController.subscriptionController.addPlanPage)
+router.get('/admin/edit-plan/:id', adminController.subscriptionController.editPlanPage)
 
 
 /**
@@ -105,6 +106,9 @@ router.post('/admin/get_single_support_message', adminController.dashboardContro
 
 router.post('/admin/add_stripe_setting', adminController.subscriptionController.addStripeSetting);
 router.post('/admin/add_membership_plan', adminController.subscriptionController.addMembershipPlan);
+router.post('/admin/view_membership_plan', adminController.subscriptionController.getPlanByID);
+router.post('/admin/edit_membership_plan', adminController.subscriptionController.editPlan);
+
 // PITCH
 router.post('/add_pitch', Controller.pitchController.addPitch);
 router.post('/get_user_pitchs', Controller.pitchController.getPitch)

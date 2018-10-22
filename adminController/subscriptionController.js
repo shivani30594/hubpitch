@@ -26,6 +26,29 @@ class subscriptionController {
         res.render('adminViews/subscriptionModule/manageStripe', { title: 'Admin Manage Stripe Account || Hub Pitch', datatable: 'FALSE' })
     }
 
+    static async editPlanPage(req, res) {
+        db.query("SELECT * FROM hp_membership_plan WHERE plan_id=?", req.params.id, function (
+            error,
+            results,
+            fields
+        ) {
+            if (results) {
+                res.render('adminViews/subscriptionModule/editPlan', { title: 'Admin Edit Plan || Hub Pitch', data: results, datatable: 'FALSE' })
+            }
+            else if (error) {
+                console.log(error,
+                    results,
+                    fields);
+                res.send({ success: false, message: 'SQL ISSUES', error: error });
+            } else {
+                console.log(error,
+                    results,
+                    fields);
+                res.send({ success: false, message: 'Something Went Wrong' });
+            }
+        });
+    }
+
     static async addPlanPage(req, res) {
         res.render('adminViews/subscriptionModule/addPlan', { title: 'Admin Add Plan || Hub Pitch', datatable: 'FALSE' })
     }
@@ -81,7 +104,7 @@ class subscriptionController {
 
     static async addMembershipPlan(req, res) {
         try {
-            console.log('------------------', req.body);
+
             const StripeSetting = Joi.validate(Object.assign(req.params, req.body, req.flies), {
                 plan_name: Joi.string()
                     .min(3)
@@ -143,6 +166,91 @@ class subscriptionController {
                     res.send({ success: true, message: "membership plan added" });
                 }
             });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async getPlanByID(req, res) {
+        try {
+            const StripeSetting = Joi.validate(Object.assign(req.params, req.body, req.flies), {
+                plan_id: Joi.string().required(),
+            });
+            if (StripeSetting.error) {
+                res.send({ success: false, error: StripeSetting.error });
+                return;
+            }
+
+            db.query("SELECT * FROM hp_membership_plan WHERE plan_id=?", req.body.plan_id, function (
+                error,
+                results,
+                fields
+            ) {
+                if (results) {
+                    res.send({ success: true, data: results });
+                }
+                else if (error) {
+                    console.log(error,
+                        results,
+                        fields);
+                    res.send({ success: false, message: 'SQL ISSUES', error: error });
+                } else {
+                    console.log(error,
+                        results,
+                        fields);
+                    res.send({ success: false, message: 'Something Went Wrong' });
+                }
+            });
+
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async editPlan(req, res) {
+        try {
+
+            const StripeSetting = Joi.validate(Object.assign(req.params, req.body, req.flies), {
+                plan_id: Joi.string().required(),
+                plan_name: Joi.string()
+                    .min(3)
+                    .required(),
+                plan_price: Joi.string()
+                    .min(2).required(),
+                unlimited_customer_pitches: Joi.string().required(),
+                video_upload_editing: Joi.string().required(),
+                pdf_upload: Joi.string().required(),
+                pitch_customization: Joi.string().required(),
+                powerpoint_upload: Joi.string().required(),
+                excel_upload: Joi.string().required(),
+                word_upload: Joi.string().required(),
+                pitch_analytics: Joi.string().required(),
+                pitch_notifications: Joi.string().required(),
+                user_to_customer_messaging: Joi.string().required(),
+                other_details: Joi.allow()
+            });
+
+            if (StripeSetting.error) {
+                res.send({ success: false, error: StripeSetting.error });
+                return;
+            }
+
+            db.query('UPDATE hp_membership_plan SET plan_name="' + req.body.plan_name + '",	plan_price="' + req.body.plan_price + '",unlimited_customer_pitches="' + req.body.unlimited_customer_pitches + '", video_upload_editing="' + req.body.video_upload_editing + '", pdf_upload="' + req.body.pdf_upload + '", pitch_customization="' + req.body.pitch_customization + '" , powerpoint_upload="' + req.body.powerpoint_upload + '" , excel_upload="' + req.body.excel_upload + '" , word_upload="' + req.body.word_upload + '" , pitch_analytics="' + req.body.pitch_analytics + '" , pitch_notifications="' + req.body.pitch_notifications + '" , user_to_customer_messaging="' + req.body.user_to_customer_messaging + '", other_details="' + req.body.other_details + '" WHERE plan_id=' + req.body.plan_id, function (error,
+                results,
+                fields) {
+                if (error) {
+                    console.log(error,
+                        results,
+                        fields);
+                    res.send({ success: false, message: 'SQL ISSUES', error: error });
+                }
+                res.send({ success: true, message: 'Plan Updated Successfully' });
+            });
+
         }
         catch (error) {
             console.error(error);

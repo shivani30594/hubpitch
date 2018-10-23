@@ -562,6 +562,14 @@ a.btn.btn-primary.float-right {float: right;}
     height: 100%;
     background-color: rgba(0,0,0,0.3);
     }
+.custom-right.right {
+        float: right;
+}
+span.memberpship_icon.glyphicon {
+        margin-left: 10px;
+        font-size: 15px;
+        color: #4caf50;
+}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

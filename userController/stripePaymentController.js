@@ -8,6 +8,9 @@ const jwtsecret = "Narola123";
 const _ = require('lodash');
 const async = require('async');
 const stripe = require("stripe")(keySecret);
+var btoa = require('btoa');
+var atob = require('atob');
+const nodemailer = require("nodemailer");
 
 class stripePaymentController {
 
@@ -30,12 +33,52 @@ class stripePaymentController {
             });
     }
     static async paymentPage(req, res) {
-        res.render('loginModule/payment', { title: 'Payment Page || Hub Pitch', documents_viewer: 'false' });
+        // var encodedData = window.btoa('Hello, world'); // encode a string
+        // var decodedData = window.atob(encodedData); // decode the string
+        // console.log('encodedData========', encodedData, 'decodedData=========', decodedData);
+        let bin = ('11, 18e1c619-2e99-4146-81dd-3567829d2acf')
+        var b64 = btoa(bin)
+        console.log('b64-------------', b64)
+        var bin1 = atob(b64);
+        console.log('bin1---------sssswss----', bin1[0])
+
+        db.query("SELECT * FROM hp_membership_plan", function (
+            error,
+            results,
+            fields
+        ) {
+            if (results) {
+                res.render('loginModule/payment', { title: 'Payment Page || Hub Pitch', data: results, documents_viewer: 'false' });
+            }
+            else if (error) {
+                console.log(error,
+                    results,
+                    fields);
+                res.send({ success: false, message: 'SQL ISSUES', error: error });
+            } else {
+                console.log(error,
+                    results,
+                    fields);
+                res.send({ success: false, message: 'Something Went Wrong' });
+            }
+        });
     }
     static async payment(req, res) {
-        console.log('payment---------');
-        let amount = 5 * 100; // 500 cents means $5 
-
+        var smtpTransport = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+                user: "demo.narolainfotech@gmail.com",
+                pass: "Password123#"
+            }
+        });
+        console.log('payment---------', req.body);
+        console.log('payment---------', req.params.id);
+        var bin1 = atob(req.params.id);
+        console.log('Layo Baki', bin1[0]);
+        console.log('TYPE OF', typeof (bin1));
+        var array = bin1.split(',');
+        let amount = array[0];
+        console.log(array);
         // create a customer 
         stripe.customers.create({
             email: req.body.stripeEmail, // customer email, which user need to enter while making payment
@@ -48,10 +91,44 @@ class stripePaymentController {
                     currency: "usd",
                     customer: customer.id
                 }))
-            .then(charge =>{
+            .then(charge => {
                 console.log('====================');
-                console.log(charge);
-                res.render("loginModule/welcome",{ title: 'Payment Page || Hub Pitch', documents_viewer: 'false' })
+                console.log(charge.id);
+                db.query('UPDATE hp_users SET is_payment="yes",	plan_id="' + array[2] + '",	transaction_id="' + charge.id + '" WHERE user_id="' + array[1] + '"', function (error,
+                    results,
+                    fields) {
+                    if (error) {
+                        console.log(error,
+                            results,
+                            fields);
+                        res.send({ success: false, message: 'SQL ISSUES', error: error });
+                    }
+                    if (results) {
+                        db.query('SELECT hp_users.email,hp_users_tmp.token_value,hp_users_tmp.randompassword FROM hp_users_tmp JOIN hp_users ON hp_users_tmp.user_id = hp_users.user_id WHERE hp_users_tmp.user_id=?', array[1], function (error1,
+                            results1,
+                            field1) {
+                            // -------------------------------mail sending-----------------------------
+                            var tomail = "";
+                            tomail = results1[0].email;
+                            // setup e-mail data with unicode symbols
+                            var mailOptions = {
+                                from: "demo.narolainfotech@gmail.com", // sender address
+                                to: tomail, // list of receivers
+                                subject: "Random password for login", // Subject line
+                                html: "<h1> Your rendom password is:- " + results1[0].randompassword + "</h1> <br/> Reset Link: <a href=" + 'http://localhost:3000/reset-password/' + results1[0].token_value + "> Click Here</a>"
+                            };
+                            // send mail with defined transport object
+                            smtpTransport.sendMail(mailOptions, function (err, info) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log("Message sent: " + info);
+                                    res.render("loginModule/welcome", { title: 'Payment Page || Hub Pitch', documents_viewer: 'false' })
+                                }
+                            });
+                        });
+                    }
+                });
             })
             .catch(err => {
                 console.log("Error:", err);

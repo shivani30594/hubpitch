@@ -12,6 +12,7 @@ const editMembership = function () {
                 },
                 plan_price: {
                     required: true,
+                    number: true
                 }
             },
             submitHandler: function (form) {
@@ -36,6 +37,7 @@ const editMembership = function () {
                         word_upload: $('#word_upload').is(":checked"),
                         pitch_analytics: $('#pitch_analytics').is(":checked"),
                         pitch_notifications: $('#pitch_notifications').is(":checked"),
+                        sharing_tracking: $('#recipient_sharing_tracking').is(":checked"),
                         user_to_customer_messaging: $('#user_to_customer_messaging').is(":checked"),
                         other_details: $('#exampleFormControlTextarea1').val()
                     },
@@ -43,8 +45,9 @@ const editMembership = function () {
                         if (!response.success) {
                             return alert(JSON.stringify(response.error));
                         }
-                        if(response.success == 'true') {
-                            window.location.reload();
+                        if(response.success) {
+                            alert(response.message);
+                            location.reload();
                         }
                     },
                     error: function (jqXHR, textStatus) {

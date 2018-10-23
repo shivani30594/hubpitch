@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const jwtsecret = "Narola123";
 const expiresIn = 86400; // expires in 24 hours
 class authController {
-  
+
   static async singup(req, res, next) {
     try {
       const userData = Joi.validate(Object.assign(req.params, req.body), {
@@ -89,24 +89,41 @@ class authController {
                   }
                   if (results) {
                     // -------------------------------mail sending-----------------------------
-                    var tomail = "";
-                    tomail = req.body.email;
-                    // setup e-mail data with unicode symbols
-                    var mailOptions = {
-                      from: "demo.narolainfotech@gmail.com", // sender address
-                      to: tomail, // list of receivers
-                      subject: "Random password for login", // Subject line
-                      html: "<h1> Your rendom password is:- " + randompassword + "</h1> <br/> Reset Link: " + 'http:/localhost:3000/reset-password/' + token
-                    };
-                    // send mail with defined transport object
-                    smtpTransport.sendMail(mailOptions, function (err, info) {
-                      if (err) {
-                        console.log(err);
-                      } else {
-                        console.log("Message sent: " + info);
+                    // var tomail = "";
+                    // tomail = req.body.email;
+                    // // setup e-mail data with unicode symbols
+                    // var mailOptions = {
+                    //   from: "demo.narolainfotech@gmail.com", // sender address
+                    //   to: tomail, // list of receivers
+                    //   subject: "Random password for login", // Subject line
+                    //   html: "<h1> Your rendom password is:- " + randompassword + "</h1> <br/> Reset Link: " + 'http://localhost:3000/reset-password/' + token
+                    // };
+                    // // send mail with defined transport object
+                    // smtpTransport.sendMail(mailOptions, function (err, info) {
+                    //   if (err) {
+                    //     console.log(err);
+                    //   } else {
+                    //     console.log("Message sent: " + info);
+                    //   }
+                    // });
+                    let tempData = {
+                      user_id: newUser.user_id,
+                      token_value: token,
+                      randompassword: randompassword
+                    }
+                    db.query("INSERT INTO hp_users_tmp SET?", tempData, function (
+                      error,
+                      results,
+                      fields
+                    ) {
+                      if (error) {
+                        console.log(error);
+                        res.send({ success: "false", message: "Something went wrong at Temp Data" });
+                      }
+                      if (results) {
+                        res.send({ success: true, token: newUser.user_id });
                       }
                     });
-                    res.send({ success: true });
                   }
                 }
                 )
@@ -249,13 +266,17 @@ class authController {
       let user_id = "";
       user_id = req.body.token;
       let sqlUpdatePassword = '';
-      sqlUpdatePassword = "UPDATE hp_users SET password ='"+md5(req.body.password)+"' WHERE `user_id` = '" + user_id + "'"
+      sqlUpdatePassword = "UPDATE hp_users SET password ='" + md5(req.body.password) + "' WHERE `user_id` = '" + user_id + "'"
       db.query(sqlUpdatePassword,
         function (error, results, fields) {
           if (results.affectedRows > 0) {
             db.query('DELETE FROM hp_users_reset_token WHERE `user_id` = ?', user_id, function (error, results, fields) {
-            if (results.affectedRows > 0) {
-                res.send({ success: true, message: 'Password Reset Successfuly' });
+              if (results.affectedRows > 0) {
+                db.query('DELETE FROM hp_users_tmp WHERE `user_id` = ?', user_id, function (error1, results1, fields1) {
+                  if (results1.affectedRows > 0) {
+                    res.send({ success: true, message: 'Password Reset Successfuly' });
+                  }
+                });
               }
             })
           } else {

@@ -108,6 +108,7 @@ router.post('/admin/add_stripe_setting', adminController.subscriptionController.
 router.post('/admin/add_membership_plan', adminController.subscriptionController.addMembershipPlan);
 router.post('/admin/view_membership_plan', adminController.subscriptionController.getPlanByID);
 router.post('/admin/edit_membership_plan', adminController.subscriptionController.editPlan);
+router.post('/admin/remove_membership_plan', adminController.subscriptionController.removePlan);
 
 // PITCH
 router.post('/add_pitch', Controller.pitchController.addPitch);
@@ -137,6 +138,6 @@ router.post('/video_test2', Controller.videoController.testfluentFFMPEG2);
 router.post('/marge_video', Controller.videoController.margeVideo);
 router.post('/cut_video', Controller.videoController.cutVideoWithTime);
 router.post('/test_stripe', Controller.stripePaymentController.testStripe);
-router.post('/payment_status', Controller.stripePaymentController.payment);
+router.post('/payment_status/:id', Controller.stripePaymentController.payment);
 
 module.exports = router;

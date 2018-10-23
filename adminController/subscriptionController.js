@@ -120,6 +120,7 @@ class subscriptionController {
                 word_upload: Joi.string().required(),
                 pitch_analytics: Joi.string().required(),
                 pitch_notifications: Joi.string().required(),
+                sharing_tracking: Joi.string().required(),
                 user_to_customer_messaging: Joi.string().required(),
                 other_details: Joi.allow()
             });
@@ -150,6 +151,7 @@ class subscriptionController {
                 'word_upload': req.body.word_upload,
                 'pitch_analytics': req.body.pitch_analytics,
                 'pitch_notifications': req.body.pitch_notifications,
+                'sharing_tracking': req.body.sharing_tracking,
                 'user_to_customer_messaging': req.body.user_to_customer_messaging,
                 'other_details': req.body.other_details,
                 'user_id': userid
@@ -230,6 +232,7 @@ class subscriptionController {
                 word_upload: Joi.string().required(),
                 pitch_analytics: Joi.string().required(),
                 pitch_notifications: Joi.string().required(),
+                sharing_tracking: Joi.string().required(),
                 user_to_customer_messaging: Joi.string().required(),
                 other_details: Joi.allow()
             });
@@ -239,7 +242,7 @@ class subscriptionController {
                 return;
             }
 
-            db.query('UPDATE hp_membership_plan SET plan_name="' + req.body.plan_name + '",	plan_price="' + req.body.plan_price + '",unlimited_customer_pitches="' + req.body.unlimited_customer_pitches + '", video_upload_editing="' + req.body.video_upload_editing + '", pdf_upload="' + req.body.pdf_upload + '", pitch_customization="' + req.body.pitch_customization + '" , powerpoint_upload="' + req.body.powerpoint_upload + '" , excel_upload="' + req.body.excel_upload + '" , word_upload="' + req.body.word_upload + '" , pitch_analytics="' + req.body.pitch_analytics + '" , pitch_notifications="' + req.body.pitch_notifications + '" , user_to_customer_messaging="' + req.body.user_to_customer_messaging + '", other_details="' + req.body.other_details + '" WHERE plan_id=' + req.body.plan_id, function (error,
+            db.query('UPDATE hp_membership_plan SET plan_name="' + req.body.plan_name + '",	plan_price="' + req.body.plan_price + '",unlimited_customer_pitches="' + req.body.unlimited_customer_pitches + '", video_upload_editing="' + req.body.video_upload_editing + '", pdf_upload="' + req.body.pdf_upload + '", pitch_customization="' + req.body.pitch_customization + '" , powerpoint_upload="' + req.body.powerpoint_upload + '" , excel_upload="' + req.body.excel_upload + '" , word_upload="' + req.body.word_upload + '" , pitch_analytics="' + req.body.pitch_analytics + '" , pitch_notifications="' + req.body.pitch_notifications + '" , sharing_tracking="' + req.body.sharing_tracking + '" , user_to_customer_messaging="' + req.body.user_to_customer_messaging + '", other_details="' + req.body.other_details + '" WHERE plan_id=' + req.body.plan_id, function (error,
                 results,
                 fields) {
                 if (error) {
@@ -252,6 +255,43 @@ class subscriptionController {
             });
 
         }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async removePlan(req, res) {
+        try {
+            const StripeSetting = Joi.validate(Object.assign(req.params, req.body, req.flies), {
+                plan_id: Joi.string().required(),
+            });
+            if (StripeSetting.error) {
+                res.send({ success: false, error: StripeSetting.error });
+                return;
+            }
+            db.query("DELETE FROM hp_membership_plan WHERE plan_id=?", req.body.plan_id, function (
+                error,
+                results,
+                fields
+            ) {
+                if (results) {
+                    res.send({ success: true, message: 'Plan Has Deleted!' });
+                }
+                else if (error) {
+                    console.log(error,
+                        results,
+                        fields);
+                    res.send({ success: false, message: 'SQL ISSUES', error: error });
+                } else {
+                    console.log(error,
+                        results,
+                        fields);
+                    res.send({ success: false, message: 'Something Went Wrong' });
+                }
+            });
+        }
+
         catch (error) {
             console.error(error);
             res.send({ success: false, error });

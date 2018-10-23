@@ -1,5 +1,6 @@
 const Login = function () {
     const handleSignUp = () => {
+        $('.loader_hp_').hide('50');
         $("#sign_up_form").validate({
             errorElement: 'span', //default input error message container
             errorClass: 'error-block', // default input error message class
@@ -18,6 +19,7 @@ const Login = function () {
                 }
             },
             submitHandler: function (form) {
+                $('.loader_hp_').show('50');
                 $.ajax({
                     url: 'http://localhost:3000/signup',
                     type: 'POST',
@@ -31,7 +33,12 @@ const Login = function () {
                         if (!response.success) {
                             return alert(JSON.stringify(response.error));
                         }
-                        console.log(response)
+                        if (response.success) {
+                            document.cookie = "newtoken=" + response.token;
+                            $('.loader_hp_').hide('50');
+                            alert("You will be redirected to a new page in 5 seconds");
+                            setTimeout(window.location = "/payment", 5000);
+                        }
                     },
                     error: function (jqXHR, textStatus) {
                         alert("Request failed: " + textStatus);

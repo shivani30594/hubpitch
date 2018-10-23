@@ -47,45 +47,37 @@
     </section>
     <section class="signup-wrapper">
         <div class="container">
+            <% for(var i=0; i < data.length; i++) { %>
             <div class="columns">
                 <ul class="price">
-                    <li class="header">Basic</li>
-                    <li class="grey">$ 5 / year</li>
-                    <li>10GB Storage</li>
-                    <li>10 Emails</li>
-                    <li>10 Domains</li>
-                    <li>1GB Bandwidth</li>
-                    <li class="grey"><a href="javascript:handlePaymentTable(5)" class="button">Sign Up</a></li>
+                    <li class="header">
+                        <%= data[i].plan_name %>
+                    </li>
+                    <li class="grey">$
+                        <%= data[i].plan_price %> / Month</li>
+                    <li>Unlimited Customer Pitches <span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                        </span></li>
+                    <li>Video Upload Editing <span class="memberpship_icon <%= (data[i].video_upload_editing=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                        </span></li>
+                    <li>Pitch Customization <span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                        </span></li>
+                    <li>Pitch Analytics <span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                        </span></li>
+                    <li>Sharing Tracking <span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                        </span></li>
+                    <li>User to Customer Messaging<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                        </span></li>
+                    <li class="grey"><a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)" class="button">Sign
+                            Up</a></li>
                 </ul>
             </div>
-
-            <div class="columns">
-                <ul class="price">
-                    <li class="header">Pro</li>
-                    <li class="grey">$ 10 / year</li>
-                    <li>25GB Storage</li>
-                    <li>25 Emails</li>
-                    <li>25 Domains</li>
-                    <li>2GB Bandwidth</li>
-                    <li class="grey"><a href="javascript:handlePaymentTable(10)" class="button">Sign Up</a></li>
-                </ul>
-            </div>
-
-            <div class="columns">
-                <ul class="price">
-                    <li class="header">Premium</li>
-                    <li class="grey">$ 15 / year</li>
-                    <li>50GB Storage</li>
-                    <li>50 Emails</li>
-                    <li>50 Domains</li>
-                    <li>5GB Bandwidth</li>
-                    <li class="grey"><a href="javascript:handlePaymentTable(15)" class="button">Sign Up</a></li>
-                </ul>
-            </div>
+            <% } %>
         </div>
     </section>
+    <!-- BUILD MODEL FOR DETAILS -->
     <!-- Modal -->
-    <div class="modal fade" id="stripe_confi" role="dialog">
+    <% for(var i=0; i < data.length; i++) { %>
+    <div class="modal fade" id="<%= data[i].plan_id %>_stripe_confi" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -94,18 +86,43 @@
                     <h4 class="modal-title">Please Confirm Your Membership Plan </h4>
                 </div>
                 <div class="modal-body">
-                        <div class="columns">
-                            <ul class="price">
-                                <li class="header">Basic</li>
-                                <li class="grey">$ 5 / year</li>
-                                <li>10GB Storage</li>
-                                <li>10 Emails</li>
-                                <li>10 Domains</li>
-                                <li>1GB Bandwidth</li>
-                                <li id="submmiting"> 
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="columns">
+                        <ul class="price">
+                            <li class="header">
+                                <%= data[i].plan_name %>
+                            </li>
+                            <li class="grey">$
+                                <%= data[i].plan_price %> / Month</li>
+                            <li>Unlimited Customer Pitches <span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>Video Upload Editing <span class="memberpship_icon <%= (data[i].video_upload_editing=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>Pdf Upload <span class="memberpship_icon <%= (data[i].pdf_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>Pitch Customization <span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>Powerpoint Upload <span class="memberpship_icon <%= (data[i].powerpoint_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>Excel Upload<span class="memberpship_icon <%= (data[i].excel_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>Word Upload <span class="memberpship_icon <%= (data[i].word_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>Pitch Analytics <span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>Pitch Notifications <span class="memberpship_icon <%= (data[i].pitch_notifications=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>Sharing Tracking <span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>User to Customer Messaging<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                                </span></li>
+                            <li>
+                                <p class="other_details">
+                                    <%= data[i].other_details %>
+                                </p>
+                            </li>
+                            <li id="<%= data[i].plan_id %>_submmiting"> 
+                        </ul>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -114,6 +131,7 @@
 
         </div>
     </div>
+    <% } %>
     <!-- Modal -->
 
     <script src="/js/module/payment.js"></script>

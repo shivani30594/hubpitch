@@ -1,5 +1,4 @@
 const newPitch = function () {
-
     let accesstoken = getCookie('accesstoken');
 
     const handleNewPitchFormUI = () => {
@@ -48,162 +47,167 @@ const newPitch = function () {
             var $value = $(this).parent('.file').find('.file-value');
             // Get the value of the input
             var val = $input.val();
-            // Normalize strings    
-            val = val.replace(/\\/g, "/");
-            // Remove the path
-            val = val.substring(val.lastIndexOf("/") + 1);
-            // Toggle the 'active' class based
-            // on whether or not there is a value
-            $element.toggleClass('active', !!val.length);
-            // Set the value text accordingly
-            $value.text(val);
-            $(this).parent('.file').find('.file-label').html(val);
-            $(this).addClass('focus');
-            // $(this).closest('div.file-label').hide();
-            // $(this).closest("div.file-value").show();
-            var fileExtensionVideo = ['avi', 'wmv', 'mov', '3gp', 'mp4'];
-            var fileExtensionImage = ['png', 'jpeg', 'jpg', 'bmp'];
-            var fileExtensionDocs = ['pdf', 'txt'];
-            var fileExtensionDocsViewer = ['docx', 'xlsx', 'pptx'];
-            var filename = val;
-            if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionVideo) != -1) {
-                // Video Preview
-                $('div').removeClass('current_preview');
-                $(".preview_file").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_file');
-                let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
-                $(".current_preview .video_here").attr("src", fileUrl);
-            }
-            else if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionImage) != -1) {
-                // Image Preview
-                $('div').removeClass('current_preview');
-                $(".preview_file_image").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_file_image');
-                let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
-                $(".current_preview .preview_image").attr("src", fileUrl);
-            }
-            else if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionDocs) != -1) {
-                // PDF Preview
-                $('div').removeClass('current_preview');
-                $(".preview_file_docs").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_file_docs');
-                let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
-                $(".current_preview .docs_priview_e").attr("src", fileUrl);
-            }
-            else if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionDocsViewer) != -1) {
-                $('div').removeClass('current_preview');
-                $(".preview_docx").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_docx');
-                $(".current_preview").show();
+            let checkFileTypeWithPlanM = checkFileTypeWithPlan(val);
+            if (checkFileTypeWithPlanM == true) {
+                // Normalize strings    
+                val = val.replace(/\\/g, "/");
+                // Remove the path
+                val = val.substring(val.lastIndexOf("/") + 1);
+                // Toggle the 'active' class based
+                // on whether or not there is a value
+                $element.toggleClass('active', !!val.length);
+                // Set the value text accordingly
+                $value.text(val);
+                $(this).parent('.file').find('.file-label').html(val);
+                $(this).addClass('focus');
+                // $(this).closest('div.file-label').hide();
+                // $(this).closest("div.file-value").show();
+                var fileExtensionVideo = ['avi', 'wmv', 'mov', '3gp', 'mp4'];
+                var fileExtensionImage = ['png', 'jpeg', 'jpg', 'bmp'];
+                var fileExtensionDocs = ['pdf', 'txt'];
+                var fileExtensionDocsViewer = ['docx', 'xlsx', 'pptx'];
+                var filename = val;
+                if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionVideo) != -1) {
+                    // Video Preview
+                    $('div').removeClass('current_preview');
+                    $(".preview_file").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_file');
+                    let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
+                    $(".current_preview .video_here").attr("src", fileUrl);
+                }
+                else if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionImage) != -1) {
+                    // Image Preview
+                    $('div').removeClass('current_preview');
+                    $(".preview_file_image").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_file_image');
+                    let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
+                    $(".current_preview .preview_image").attr("src", fileUrl);
+                }
+                else if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionDocs) != -1) {
+                    // PDF Preview
+                    $('div').removeClass('current_preview');
+                    $(".preview_file_docs").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_file_docs');
+                    let fileUrl = $(this)[0].src = URL.createObjectURL(this.files[0]);
+                    $(".current_preview .docs_priview_e").attr("src", fileUrl);
+                }
+                else if (jQuery.inArray(jQuery.trim(filename.split('.').pop().toLowerCase()), fileExtensionDocsViewer) != -1) {
+                    $('div').removeClass('current_preview');
+                    $(".preview_docx").clone().appendTo(".add_preview").addClass('current_preview active_one display_box_d').removeClass('preview_docx');
+                    $(".current_preview").show();
 
-                var $kukuNode = $(".current_preview .kuku-viewer-node");
-                var $files = this.files[0];
-                var $prevbutton = $(".current_preview .prev-btn");
-                var $nextbutton = $(".current_preview .next-btn");
+                    var $kukuNode = $(".current_preview .kuku-viewer-node");
+                    var $files = this.files[0];
+                    var $prevbutton = $(".current_preview .prev-btn");
+                    var $nextbutton = $(".current_preview .next-btn");
 
-                var instance = null, fileType = null;
-                var docxJS = null, cellJS = null, slideJS = null, pdfJS = null;
+                    var instance = null, fileType = null;
+                    var docxJS = null, cellJS = null, slideJS = null, pdfJS = null;
 
-                var documentParser = function (file) {
-                    fileType = getInstanceOfFileType(file);
-                    if (fileType) {
-                        if (instance) {
-                            /** destroy API
-                             *  structure : destory(callback) **/
-                            instance.destroy();
-                        }
-
-                        if (fileType === 'docx') {
-                            if (!docxJS) {
-                                docxJS = new DocxJS();
+                    var documentParser = function (file) {
+                        fileType = getInstanceOfFileType(file);
+                        if (fileType) {
+                            if (instance) {
+                                /** destroy API
+                                 *  structure : destory(callback) **/
+                                instance.destroy();
                             }
-                            instance = docxJS;
-                        } else if (fileType === 'xlsx') {
-                            if (!cellJS) {
-                                cellJS = new CellJS();
-                            }
-                            instance = cellJS;
-                        } else if (fileType === 'pptx') {
-                            if (!slideJS) {
-                                slideJS = new SlideJS();
-                                $('.kuku-docx-controller').show();
-                                $('.current_preview').addClass('pptx_file_type');
-                            }
-                            instance = slideJS;
-                        } else if (fileType === 'pdf') {
-                            if (!pdfJS) {
-                                pdfJS = new PdfJS();
-                            }
-                            instance = pdfJS;
 
-                            instance.setCMapUrl('cmaps/');
-                        }
+                            if (fileType === 'docx') {
+                                if (!docxJS) {
+                                    docxJS = new DocxJS();
+                                }
+                                instance = docxJS;
+                            } else if (fileType === 'xlsx') {
+                                if (!cellJS) {
+                                    cellJS = new CellJS();
+                                }
+                                instance = cellJS;
+                            } else if (fileType === 'pptx') {
+                                if (!slideJS) {
+                                    slideJS = new SlideJS();
+                                    $('.kuku-docx-controller').show();
+                                    $('.current_preview').addClass('pptx_file_type');
+                                }
+                                instance = slideJS;
+                            } else if (fileType === 'pdf') {
+                                if (!pdfJS) {
+                                    pdfJS = new PdfJS();
+                                }
+                                instance = pdfJS;
 
-                        if (instance) {
-                            /** parse API
-                             *  structure : parse(file, successCallbackFn, errorCallbackFn) **/
-                            console.log(instance);
-                            instance.parse(file,
-                                function () {
-                                    /** render API
-                                     *  structure : render(element, callbackFn, pageId) **/
-                                    console.log(file);
-                                    instance.render($kukuNode[0], function () {
-                                        $(".current_preview").hide();
+                                instance.setCMapUrl('cmaps/');
+                            }
+
+                            if (instance) {
+                                /** parse API
+                                 *  structure : parse(file, successCallbackFn, errorCallbackFn) **/
+                                console.log(instance);
+                                instance.parse(file,
+                                    function () {
+                                        /** render API
+                                         *  structure : render(element, callbackFn, pageId) **/
+                                        console.log(file);
+                                        instance.render($kukuNode[0], function () {
+                                            $(".current_preview").hide();
+                                        });
+                                    },
+                                    function () {
+                                        console.log('document js viewer parsing error');
                                     });
-                                },
-                                function () {
-                                    console.log('document js viewer parsing error');
-                                });
+                            } else {
+                                console.log('no support files');
+                            }
                         } else {
                             console.log('no support files');
                         }
+                    };
+
+
+                    //Utils
+                    var stopEvent = function (e) {
+                        if (e.preventDefault) e.preventDefault();
+                        if (e.stopPropagation) e.stopPropagation();
+                        e.returnValue = false;
+                        e.cancelBubble = true;
+                        e.stopped = true;
+                    };
+
+                    var getInstanceOfFileType = function (file) {
+                        var fileExtension = null;
+                        if (file) {
+                            var fileName = file.name;
+                            fileExtension = fileName.split('.').pop();
+                        }
+                        return fileExtension;
+                    };
+
+                    //Event
+                    var selectFile = null, currentId = null;
+                    selectFile = this.files[0];
+                    stopEvent = function (e) {
+                        stopEvent(e);
+                    }
+                    if (selectFile) {
+                        documentParser(selectFile);
                     } else {
-                        console.log('no support files');
+                        alert('no selected file');
                     }
-                };
-
-
-                //Utils
-                var stopEvent = function (e) {
-                    if (e.preventDefault) e.preventDefault();
-                    if (e.stopPropagation) e.stopPropagation();
-                    e.returnValue = false;
-                    e.cancelBubble = true;
-                    e.stopped = true;
-                };
-
-                var getInstanceOfFileType = function (file) {
-                    var fileExtension = null;
-                    if (file) {
-                        var fileName = file.name;
-                        fileExtension = fileName.split('.').pop();
-                    }
-                    return fileExtension;
-                };
-
-                //Event
-                var selectFile = null, currentId = null;
-                selectFile = this.files[0];
-                stopEvent = function (e) {
-                    stopEvent(e);
+                    $(document).on('click', '.current_preview .prev-btn', function () {
+                        currentId = instance.getCurrentId();
+                        instance.gotoPage(currentId - 1);
+                        return false;
+                    });
+                    $(document).on('click', '.current_preview .next-btn', function () {
+                        currentId = instance.getCurrentId();
+                        instance.gotoPage(currentId + 1);
+                        return false;
+                    });
                 }
-                if (selectFile) {
-                    documentParser(selectFile);
-                } else {
-                    alert('no selected file');
+                else {
+                    alert('FILE TYPE NOT SUPPORTED');
                 }
-                $(document).on('click', '.current_preview .prev-btn', function () {
-                    currentId = instance.getCurrentId();
-                    instance.gotoPage(currentId - 1);
-                    return false;
-                });
-                $(document).on('click', '.current_preview .next-btn', function () {
-                    currentId = instance.getCurrentId();
-                    instance.gotoPage(currentId + 1);
-                    return false;
-                });
+            } else {
+                $('#add_pitch').trigger("reset");
+                alert('This File Type Is Not Supported With Your Subscription');
             }
-            else {
-                alert('FILE TYPE NOT SUPPORTED');
-            }
-
         })
     }
     const handleContinue_final = () => {
@@ -288,7 +292,7 @@ const newPitch = function () {
             var allow_notification = $('#allow_notification').is(":checked")
             var allow_messaging = $('#allow_messaging').is(":checked")
             var allow_share = $('#allow_share').is(":checked")
-
+            
             $.ajax({
                 url: 'http://localhost:3000/manage_pitch',
                 headers: {
@@ -363,7 +367,7 @@ function checkEmails() {
         }
     }
     if (errorFlag === 0) {
-        
+
         $.ajax({
             url: 'http://localhost:3000/share_pitch_email',
             headers: {
@@ -388,5 +392,35 @@ function checkEmails() {
                 alert("Request failed: " + textStatus);
             }
         });
+    }
+}
+
+function checkFileTypeWithPlan(file) {
+    let plan_type = $('.plan_').val();
+    // inArray(jQuery.trim(file.split('.').pop().toLowerCase()), fileExtensionImage)
+    // jQuery.trim(file.split('.').pop().toLowerCase()), fileExtensionVideo
+    let plan_support = JSON.parse(plan_type);
+    console.log(plan_support.img_support);
+    file_type = jQuery.trim(file.split('.').pop().toLowerCase())
+    if (file_type == 'jpg' || file_type == 'jpeg' || file_type == 'png' || file_type == 'bmp') {
+        return (plan_support.img_support == 'true') ? true : false
+    }
+    if (file_type == 'pdf') {
+        return (plan_support.pdf == 'true') ? true : false
+    }
+    if (file_type == 'txt') {
+        return (plan_support.text_file == 'true') ? true : false
+    }
+    if (file_type == 'docx') {
+        return (plan_support.word_upload == 'true') ? true : false
+    }
+    if (file_type == 'xlsx') {
+        return (plan_support.excel_upload == 'true') ? true : false
+    }
+    if (file_type == 'pptx') {
+        return (plan_support.powerpoint_upload == 'true') ? true : false
+    }
+    if (file_type == 'mp4' || file_type == 'mkv' || file_type == 'mov' || file_type == 'mpeg') {
+        return (plan_support.video == 'true') ? true : false
     }
 }

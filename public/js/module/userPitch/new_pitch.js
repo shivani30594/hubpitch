@@ -13,7 +13,7 @@ const newPitch = function () {
 
         $('#continue_btn_main').on("click", function () {
             if ($('#c-name').val() == '') {
-                Swal('Validation Error', 'Company Name Is Required!', 'error')
+                alert('Company Name Is Required!');
             } else {
                 $('.active_one').hide();
                 $('#main-box').removeClass('active_one');
@@ -292,7 +292,11 @@ const newPitch = function () {
             var allow_notification = $('#allow_notification').is(":checked")
             var allow_messaging = $('#allow_messaging').is(":checked")
             var allow_share = $('#allow_share').is(":checked")
-            
+
+            if (allow_notification == undefined && allow_messaging == undefined && allow_share == undefined) {
+                allow_notification, allow_messaging, allow_share = false
+            }
+
             $.ajax({
                 url: 'http://localhost:3000/manage_pitch',
                 headers: {

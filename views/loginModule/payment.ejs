@@ -47,37 +47,40 @@
     </section>
     <section class="signup-wrapper">
         <div class="container">
-            <% for(var i=0; i < data.length; i++) { %>
-            <div class="columns">
-                <ul class="price">
-                    <li class="header">
-                        <%= data[i].plan_name %>
-                    </li>
-                    <li class="grey">$
-                        <%= data[i].plan_price %> / Month</li>
-                    <li>Unlimited Customer Pitches <span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                        </span></li>
-                    <li>Video Upload Editing <span class="memberpship_icon <%= (data[i].video_upload_editing=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                        </span></li>
-                    <li>Pitch Customization <span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                        </span></li>
-                    <li>Pitch Analytics <span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                        </span></li>
-                    <li>Sharing Tracking <span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                        </span></li>
-                    <li>User to Customer Messaging<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                        </span></li>
-                    <li class="grey"><a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)" class="button">Sign
-                            Up</a></li>
-                </ul>
+            <div class="payment_box">
+                <% for(var i=0; i < data.length; i++) { %>
+                <div class="columns">
+                    <ul class="price">
+                        <li class="header">
+                            <%= data[i].plan_name %>
+                        </li>
+                        <li class="grey">$
+                            <%= data[i].plan_price %> / Month</li>
+                        <li>Unlimited Customer Pitches <span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            </span></li>
+                        <li>Video Upload Editing <span class="memberpship_icon <%= (data[i].video_upload_editing=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            </span></li>
+                        <li>Pitch Customization <span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            </span></li>
+                        <li>Pitch Analytics <span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            </span></li>
+                        <li>Sharing Tracking <span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            </span></li>
+                        <li>User to Customer Messaging<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            </span></li>
+                        <li class="grey"><a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)"
+                                class="button">Sign
+                                Up</a></li>
+                    </ul>
+                </div>
+                <% } %>
             </div>
-            <% } %>
         </div>
     </section>
     <!-- BUILD MODEL FOR DETAILS -->
     <!-- Modal -->
     <% for(var i=0; i < data.length; i++) { %>
-    <div class="modal fade" id="<%= data[i].plan_id %>_stripe_confi" role="dialog">
+    <div class="modal fade payment_details" id="<%= data[i].plan_id %>_stripe_confi" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -120,7 +123,7 @@
                                     <%= data[i].other_details %>
                                 </p>
                             </li>
-                            <li id="<%= data[i].plan_id %>_submmiting"> 
+                            <li id="<%= data[i].plan_id %>_submmiting">
                         </ul>
                     </div>
                 </div>

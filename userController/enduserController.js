@@ -17,7 +17,7 @@ class enduserController {
                 res.send({ success: "false", message: "Something went wrong" });
             }
             if (results.length > 0) {
-                db.query("SELECT CONCAT(hp_users.first_name,' ',hp_users.last_name) as username,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id JOIN hp_users ON master_tbl.user_id = hp_users.user_id WHERE master_tbl.pitch_id = ?", results[0].pitch_id, function (
+                db.query("SELECT CONCAT(hp_users.first_name,' ',hp_users.last_name) as username,hp_users.email,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id JOIN hp_users ON master_tbl.user_id = hp_users.user_id WHERE master_tbl.pitch_id = ?", results[0].pitch_id, function (
                     error,
                     results,
                     fields
@@ -26,7 +26,76 @@ class enduserController {
                         res.send({ success: "false", message: "Something went wrong" });
                     }
                     if (results.length > 0) {
-                        res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username });
+                        db.query("SELECT pitch_analytics,sharing_tracking,user_to_customer_messaging FROM hp_membership_plan JOIN hp_users on hp_users.plan_id = hp_membership_plan.plan_id WHERE hp_users.user_id=?", results[0].user_id, function (
+                            error1,
+                            results1,
+                            fields1
+                        ) {
+                            if (error1) {
+                                console.log(error,
+                                    results,
+                                    fields)
+                                res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: false });
+                            }
+                            if (results1) {
+                                let pitch_analytics = results1[0].pitch_analytics
+                                let plan_data = {
+                                    sharing_tracking: results1[0].sharing_tracking,
+                                    user_to_customer_messaging: results1[0].user_to_customer_messaging,
+                                }
+                                console.log('PLAN_DATA', plan_data)
+                                db.query("SELECT ( select `notification_1` from hp_users_info where user_id = '" + results[0].user_id + "') AS user_setting,( select allow_notification from hp_pitch_manager where pitch_id ='" + results[0].pitch_id + "') AS pitch_setting", function (error2,
+                                    results2,
+                                    fields2) {
+                                    if (error2) {
+                                        res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
+                                    }
+                                    if (results2) {
+                                        console.log(results2[0], 'user_setting')
+                                        if (results2[0].user_setting == 'true' && results2[0].pitch_setting == 'true') {
+                                            var smtpTransport = nodemailer.createTransport({
+                                                service: "Gmail",
+                                                auth: {
+                                                    user: "demo.narolainfotech@gmail.com",
+                                                    pass: "Password123#"
+                                                }
+                                            });
+                                            // -------------------------------mail sending-----------------------------
+                                            var tomail = "";
+                                            let share = '';
+                                            let newEmail = '';
+                                            let emailLog = {};
+                                            tomail = results[0].email;
+                                            // setup e-mail data with unicode symbols
+                                            // Email Body Builder 
+                                            newEmail = 'Your Pitch :- ' + results[0].company_name + ' Is Visited By Your Invitee' + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                                            var mailOptions = {
+                                                from: "demo.narolainfotech@gmail.com", // sender address
+                                                to: tomail, // list of receivers
+                                                subject: "Your Pitch Is Visited " + results[0].company_name, // Subject line
+                                                html: newEmail
+                                            };
+                                            // send mail with defined transport object
+                                            smtpTransport.sendMail(mailOptions, function (err, info) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
+                                                } else {
+                                                    console.log('EMAIL SENT');
+                                                    console.log('tomail SENT', tomail);
+                                                    console.log('EMAIL SENT');
+                                                    res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
+                                                }
+                                            });
+
+                                        } else {
+                                            res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
                     } else {
                         res.send({ success: "false", message: "Something went wrong" });
                     }
@@ -170,7 +239,9 @@ class enduserController {
                 sender_name: Joi.string().required(),
                 url: Joi.string().required(),
                 email_body: Joi.string().required(),
-                pitch_token: Joi.string().required()
+                pitch_token: Joi.string().required(),
+                user_token: Joi.strict().required(),
+                user_email: Joi.strict().required(),
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
@@ -204,7 +275,43 @@ class enduserController {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log("Message sent: " + info);
+                    db.query("SELECT ( select `notification_3` from hp_users_info where user_id = '" + req.body.user_token + "') AS user_setting,( select allow_share from hp_pitch_manager where pitch_id ='" + req.body.pitch_token + "') AS pitch_setting", function (error2,
+                        results2,
+                        fields2) {
+                        if (error2) {
+                            console.log(error2,
+                                results2,
+                                fields2);
+                        }
+                        if (results2) {
+                            console.log(results2)
+                            if (results2[0].user_setting == 'true' && results2[0].pitch_setting == 'true') {
+                                // -------------------------------mail sending-----------------------------
+                                var tomail = "";
+                                let share = '';
+                                let newEmail = '';
+                                let emailLog = {};
+                                tomail = req.body.user_email;
+                                // setup e-mail data with unicode symbols
+                                // Email Body Builder 
+                                newEmail = 'Your Pitch Shared By ' + req.body.sender_name + 'To ' + req.body.email_id + ' <br /> With Below Email Text <br />' + req.body.email_body + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                                var mailOptions = {
+                                    from: "demo.narolainfotech@gmail.com", // sender address
+                                    to: tomail, // list of receivers
+                                    subject: "Your Pitch Shared By " + req.body.sender_name, // Subject line
+                                    html: newEmail
+                                };
+                                // send mail with defined transport object
+                                smtpTransport.sendMail(mailOptions, function (err, info) {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log('EMAIL SEND TO PITCH USER')
+                                    }
+                                });
+                            }
+                        }
+                    });
                     db.query("SELECT share_times AS counter FROM hp_pitch_master where pitch_id=?", req.body.pitch_token, function (error,
                         results,
                         fields) {
@@ -234,8 +341,7 @@ class enduserController {
                                     if (error) {
                                         res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
                                     }
-
-                                    res.send({ success: "true" });
+                                    res.send({ success: "true", message: 'Share Notification Issus' });
                                 })
                             })
                         }
@@ -350,7 +456,10 @@ class enduserController {
                 conversation_id: Joi.string().required(),
                 sender: Joi.string().required(),
                 receiver: Joi.string().required(),
-                chat_text: Joi.string().required()
+                chat_text: Joi.string().required(),
+                pitch_token: Joi.string().required(),
+                company_name: Joi.string().required(),
+                user_email: Joi.string().required()
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
@@ -362,6 +471,52 @@ class enduserController {
                 receiver: req.body.receiver,
                 chat_text: req.body.chat_text,
             }
+            var smtpTransport = nodemailer.createTransport({
+                service: "Gmail",
+                auth: {
+                    user: "demo.narolainfotech@gmail.com",
+                    pass: "Password123#"
+                }
+            });
+
+            db.query("SELECT ( select `notification_2` from hp_users_info where user_id = '" + req.body.receiver + "') AS user_setting,( select allow_messaging from hp_pitch_manager where pitch_id ='" + req.body.pitch_token + "') AS pitch_setting", function (error2,
+                results2,
+                fields2) {
+                if (error2) {
+                    console.log(error2,
+                        results2,
+                        fields2);
+                }
+                if (results2) {
+                    console.log(results2)
+                    if (results2[0].user_setting == 'true' && results2[0].pitch_setting == 'true') {
+                        // -------------------------------mail sending-----------------------------
+                        var tomail = "";
+                        let share = '';
+                        let newEmail = '';
+                        let emailLog = {};
+                        tomail = req.body.user_email;
+                        // setup e-mail data with unicode symbols
+                        // Email Body Builder 
+                        newEmail = 'You received message by ' + req.body.sender_name + ' On ' + req.body.company_name + ' Pitch  <br /> With Below Text <br />' + req.body.chat_text + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                        var mailOptions = {
+                            from: "demo.narolainfotech@gmail.com", // sender address
+                            to: tomail, // list of receivers
+                            subject: 'You received message by ' + req.body.sender + ' On ' + req.body.company_name + ' Pitch', // Subject line
+                            html: newEmail
+                        };
+                        // send mail with defined transport object
+                        smtpTransport.sendMail(mailOptions, function (err, info) {
+                            if (err) {
+                                console.log(err)
+                                console.log('SMTP')
+                            } else {
+                                console.log('EMAIL SEND TO PITCH USER')
+                            }
+                        });
+                    }
+                }
+            });
             db.query("INSERT INTO hp_pitch_chat_tbl SET ?", sendMsg, function (
                 error,
                 results,

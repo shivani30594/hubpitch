@@ -217,6 +217,7 @@ ul.account-sub-menu {
     border-radius: 10px;
     width: 160px;
     position: absolute;
+    z-index: 99;
     background: #fff;
     text-align: center;
     right: 0;
@@ -423,7 +424,7 @@ input[type=range] {width: 100% !important;}
 .form_inner_data input.form-control::-moz-placeholder {color: #8a8a8a;font-weight: 400;}
 .form_inner_data input.form-control:-ms-input-placeholder {color: #8a8a8a;font-weight: 400;}
 .form_inner_data input.form-control:-moz-placeholder {color: #8a8a8a;font-weight: 400;}
-.a_change_pass {position: absolute;right: -100px;font-size: 13px;top: 3px;font-weight: 400;color: #4a90e2;}
+.a_change_pass {right: -100px;font-size: 13px;top: 3px;font-weight: 400}
 .form_inner_data .form-check {margin-bottom: 10px;}
 .form_inner_data .form-check input {margin: 0;position: relative;top: 2px;}
 .form_inner_data .form-check label {padding: 0 0 0 8px !important;}
@@ -570,6 +571,27 @@ span.memberpship_icon.glyphicon {
         font-size: 15px;
         color: #4caf50;
 }
+.payment_box {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.signup-wrapper {
+    margin-bottom: 50px;
+}
+.payment_details .modal-body .columns{
+    width: 350px !important;
+}
+.payment_details .modal-body .columns .price li{padding: 10px;}
+.payment_details .modal-body .columns .price .header{font-size: 20px;}
+.payment_details .modal-body .columns .price .grey{font-size: 16px;}
+#membership_plan button.btn-primary {margin-top: 40px;}
+form#membership_plan .row:nth-child(3){margin: 30px 0;}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }
@@ -632,7 +654,8 @@ span.memberpship_icon.glyphicon {
 @media screen and (max-width: 600px){
 	.mobile-menu{width: 33%;}
 	.logged-user {width: 25%;}
-	.search-box {width: 40%;}
+    .search-box {width: 40%;}
+    .payment_details .modal-body .columns{width: 100% !important;}
 }
 @media screen and (max-width: 480px){
 	.list-left, .list-right{width: 100%;}

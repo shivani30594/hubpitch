@@ -86,6 +86,8 @@ router.post('/signin', Controller.authController.signin);
 router.post('/forgot_password', Controller.authController.forgotPassword);
 router.post('/reset_password', Controller.authController.resetPassword);
 router.post('/me', Controller.usersController.me)
+router.post('/user/update_profile', Controller.usersController.updateProfile)
+router.post('/user/change_password', Controller.authController.changePassword)
 
 // ADMIN API METHOD
 

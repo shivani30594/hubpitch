@@ -14,7 +14,6 @@ const nodemailer = require("nodemailer");
 class pitchController {
 
     static async addNewPitchView(req, res) {
-        console.log(req.cookies);
         var token = req.cookies.accesstoken;
         let userid = '';
         jwt.verify(token, jwtsecret, function (err, decoded) {
@@ -52,7 +51,8 @@ class pitchController {
                     img_support: 'true',
                     text_file: 'true'
                 }
-                res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', plan: JSON.stringify(plan_data), documents_viewer: 'true' });
+                console.log(plan_data);
+                res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', plan: JSON.stringify(plan_data), documents_viewer: 'true', plan_type: results[0].pitch_customization });
             }
         });
 
@@ -93,8 +93,7 @@ class pitchController {
             if (_.size(req.files) == 1 && _.size(req.files['pitch_files']) == 7) {
                 fileExtension = '';
                 filename = '';
-                thisFile = [];
-
+                thisFile = req.files['pitch_files'];
                 if (thisFile.mimetype == 'application/octet-stream') {
                     fileExtension = thisFile.name.split(".");
                     fileType = fileExtension

@@ -18,7 +18,7 @@ const editMembership = function () {
             submitHandler: function (form) {
                 let accesstoken = getCookie('accesstoken');
                 $.ajax({
-                    url: 'http://localhost:3000/admin/edit_membership_plan',
+                    url: '/admin/edit_membership_plan',
                     headers: {
                         'Accept': 'application/json',
                         "access-token": accesstoken

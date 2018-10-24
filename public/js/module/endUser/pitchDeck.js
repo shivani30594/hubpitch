@@ -1,6 +1,8 @@
 const pitchDeck = function () {
     var seconds = 0;
 
+    let pitch_analytics = $('.pitch_analytics').val();
+
     const getCookie = (name) => {
         var value = "; " + document.cookie;
         var parts = value.split("; " + name + "=");
@@ -41,84 +43,89 @@ const pitchDeck = function () {
     }
 
     const handlePitchDeckAnalytics = () => {
-        let currentPage = '';
-        let counterSeconds = '';
-        let lastValue = '';
-        let lastViewCount = '';
-        let lastToken = '';
-        $(document).on("click", '.btn-prev', function () {
-            currentPage = $('.slick-active .current').text();
-            console.log('currentPage', currentPage);
-        });
-        $(document).on("click", '.btn-next', function () {
-            seconds = 0;
-            currentPage = $('.slick-active .current').text();
-            if (currentPage > 1) {
-                $('.slick-active .sliderViewer').addClass(currentPage + '_page');
-                lastValue = currentPage - 1;
-                lastViewCount = $('.' + lastValue + '_page').val();
-                lastToken = $('.' + lastValue + '_token').val();
-                console.log(lastViewCount, 'lastViewCount');
-                console.log(lastValue, 'lastValue');
-                console.log(lastToken, 'lastToken');
-                $.ajax({
-                    url: 'http://localhost:3000/pitch-page-view',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                    method: 'POST',
-                    dataType: 'json',
-                    data: {
-                        pitch_token: $('#pitch_token').val(),
-                        pitch_info_token: lastToken,
-                        page: lastValue,
-                        view: lastViewCount
-                    },
-                    success: function (response) {
-                        if (!response.success) {
-                            return alert(JSON.stringify(response.message));
+        if (pitch_analytics == 'true') {
+            let currentPage = '';
+            let counterSeconds = '';
+            let lastValue = '';
+            let lastViewCount = '';
+            let lastToken = '';
+            $(document).on("click", '.btn-prev', function () {
+                currentPage = $('.slick-active .current').text();
+                console.log('currentPage', currentPage);
+            });
+            $(document).on("click", '.btn-next', function () {
+                seconds = 0;
+                currentPage = $('.slick-active .current').text();
+                if (currentPage > 1) {
+                    $('.slick-active .sliderViewer').addClass(currentPage + '_page');
+                    lastValue = currentPage - 1;
+                    lastViewCount = $('.' + lastValue + '_page').val();
+                    lastToken = $('.' + lastValue + '_token').val();
+                    console.log(lastViewCount, 'lastViewCount');
+                    console.log(lastValue, 'lastValue');
+                    console.log(lastToken, 'lastToken');
+                    $.ajax({
+                        url: 'http://localhost:3000/pitch-page-view',
+                        headers: {
+                            'Accept': 'application/json',
+                        },
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            pitch_token: $('#pitch_token').val(),
+                            pitch_info_token: lastToken,
+                            page: lastValue,
+                            view: lastViewCount
+                        },
+                        success: function (response) {
+                            if (!response.success) {
+                                return alert(JSON.stringify(response.message));
+                            }
+                        },
+                        error: function (jqXHR, textStatus) {
+                            alert("Request failed: " + textStatus);
                         }
-                    },
-                    error: function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
-                    }
-                });
-            } else if (currentPage == 1) {
-                lastValue = $('.total_pitch:first').text().trim();
-                console.log('LAST', lastValue);
-                lastViewCount = $('.' + lastValue + '_page').val();
-                lastToken = $('.' + lastValue + '_token').val();
-                console.log(lastViewCount, 'lastViewCount');
-                console.log(lastValue, 'lastValue');
-                console.log(lastToken, 'lastToken');
-                //lastViewCount = $('.' + lastValue + '_page').val();
-                $.ajax({
-                    url: 'http://localhost:3000/pitch-page-view',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                    method: 'POST',
-                    dataType: 'json',
-                    data: {
-                        pitch_token: $('#pitch_token').val(),
-                        pitch_info_token: lastToken,
-                        page: lastValue,
-                        view: lastViewCount
-                    },
-                    success: function (response) {
-                        if (!response.success) {
-                            return alert(JSON.stringify(response.message));
+                    });
+                } else if (currentPage == 1) {
+                    lastValue = $('.total_pitch:first').text().trim();
+                    console.log('LAST', lastValue);
+                    lastViewCount = $('.' + lastValue + '_page').val();
+                    lastToken = $('.' + lastValue + '_token').val();
+                    console.log(lastViewCount, 'lastViewCount');
+                    console.log(lastValue, 'lastValue');
+                    console.log(lastToken, 'lastToken');
+                    //lastViewCount = $('.' + lastValue + '_page').val();
+                    $.ajax({
+                        url: 'http://localhost:3000/pitch-page-view',
+                        headers: {
+                            'Accept': 'application/json',
+                        },
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            pitch_token: $('#pitch_token').val(),
+                            pitch_info_token: lastToken,
+                            page: lastValue,
+                            view: lastViewCount
+                        },
+                        success: function (response) {
+                            if (!response.success) {
+                                return alert(JSON.stringify(response.message));
+                            }
+                        },
+                        error: function (jqXHR, textStatus) {
+                            alert("Request failed: " + textStatus);
                         }
-                    },
-                    error: function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
-                    }
-                });
-            } else {
-                alert('SomethingWent Wrong!');
-            }
-            setInterval(incrementSeconds, 1000);
-        });
+                    });
+                } else {
+                    alert('SomethingWent Wrong!');
+                }
+                setInterval(incrementSeconds, 1000);
+            });
+        } else {
+            console.log('Pitch Analytics Is Supported')
+        }
+
     }
 
     const incrementSeconds = () => {
@@ -160,7 +167,9 @@ const pitchDeck = function () {
                         sender_name: $('input[name="sender_name"]').val(),
                         url: window.location.href,
                         email_body: $('textarea[name="email_body"]').val(),
-                        pitch_token: $('#pitch_token').val()
+                        pitch_token: $('#pitch_token').val(),
+                        user_token: $('#user_token').val(),
+                        user_email: $('#user_email').val()
                     },
                     success: function (response) {
                         if (!response.success) {
@@ -305,6 +314,9 @@ const pitchDeck = function () {
                         sender: sender,
                         receiver: $('#user_token').val(),
                         chat_text: $('.chat_msg').val(),
+                        pitch_token: $('#pitch_token').val(),
+                        company_name: $('#company_name').val(),
+                        user_email: $('#user_email').val(),
                     },
                     success: function (response) {
                         if (response.success == 'true') {
@@ -375,6 +387,7 @@ const pitchDeck = function () {
     }
 
     const handleUpdatePitch = () => {
+
         // setInterval(function () {
         //     $.ajax({
         //         url: 'http://localhost:3000/check_for_update',

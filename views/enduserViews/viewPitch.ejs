@@ -159,6 +159,7 @@
                 </div>
             </div>
             <div class="gallery-wrap">
+                    <input type="hidden" class="pitch_analytics" value="<%= pitch_analytics %>">
                 <div class="single-item">
                     <% for(var i=0; i < data.length; i++) { %>
                     <div class="slide">
@@ -274,23 +275,30 @@
                                     <span class="total_pitch">
                                         <%= results_length %> </span>
                                 </div>
+                                <% if(plan.sharing_tracking == 'true') { %>
                                 <a href="javascript:void(0)" class="share-btn" data-toggle="modal" data-target="#name-window">
                                     Share
                                     <i class="fa fa-share-alt" aria-hidden="true"></i>
                                 </a>
+                                <% } %>
                             </div>
                         </div>
                     </div>
                     <% } %>
                 </div>
             </div>
+            <% if(plan.user_to_customer_messaging == 'true') { %>
             <a href="javascript:void(0)" class="send-message" id="conversation_"> Send
                 <%= user_name %> a Message </a>
+            <% } %>
             <input type="hidden" id="user_token" value="<%= user_token %>">
+            <input type="hidden" id="user_email" value="<%= data[0].email %>">
+            <input type="hidden" id="company_name" value="<%= data[0].company_name %>">
         </div>
     </div>
 
     <!-- Modal -->
+    <% if(plan.user_to_customer_messaging == 'true') { %>
     <div class="modal fade" id="chat-window" role="dialog">
         <div class="modal-dialog modal-lg">
             <form class="send_message_form" name="send_message_form">
@@ -332,6 +340,7 @@
             </form>
         </div>
     </div>
+    <% } %>
     <!-- Modal -->
     <!-- Modal -->
     <div class="modal fade" id="chat-window-dummy" role="dialog">
@@ -380,6 +389,7 @@
     </div>
     <!-- Modal -->
     <!-- Modal -->
+    <% if(plan.sharing_tracking == 'true') { %>
     <div class="modal fade" id="name-window" role="dialog">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -416,6 +426,7 @@
             </div>
         </div>
     </div>
+    <% } %>
     </div>
     <!-- Modal -->
 

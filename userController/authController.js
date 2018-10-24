@@ -308,5 +308,43 @@ class authController {
       }
     })
   }
+
+  static async changePassword(req, res) {
+    try {
+      const userData = Joi.validate(Object.assign(req.params, req.body), {
+        password: Joi.string()
+          .required()
+      });
+      if (userData.error) {
+        res.send({ success: false, error: userData.error });
+        return;
+      }
+      var token = req.cookies.accesstoken;
+      let userid = '';
+      jwt.verify(token, jwtsecret, function (err, decoded) {
+        if (err) {
+          return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+        } else {
+          userid = decoded.user;
+        }
+      });
+      db.query("UPDATE hp_users SET password='" + md5(req.body.password) + "' WHERE user_id='" + userid + "'", function (error,
+        results,
+        fields) {
+        console.log(error, results, fields)
+        if (error) {
+          console.log(error, results, fields)
+          return res.send({ success: false, message: 'Something Went Wrong!' });
+        }
+        if (results.affectedRows > 0) {
+          console.log(error, results, fields)
+          return res.send({ success: true, message: 'Password Updated Successfully' });
+        }
+      });
+    }
+    catch (error) {
+      res.send({ success: false, error });
+    }
+  }
 }
 module.exports = authController;

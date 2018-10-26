@@ -48,9 +48,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Payment Made Successfully</h3>
+                    <% if(free == 'false'){ %>
+                    <h3>Your Payment was Successful</h3>
+                    <% } %>
                     <a href="#">
-                        <h4> Your Login Details Has Sent On Your Registrar Email Address </h4>
+                        <h4> Your Login Details have been Emailed to Registered Email Address </h4>
                     </a>
                 </div>
             </div>

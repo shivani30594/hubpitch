@@ -71,11 +71,7 @@ class stripePaymentController {
                 pass: "Password123#"
             }
         });
-        console.log('payment---------', req.body);
-        console.log('payment---------', req.params.id);
         var bin1 = atob(req.params.id);
-        console.log('Layo Baki', bin1[0]);
-        console.log('TYPE OF', typeof (bin1));
         var array = bin1.split(',');
         let amount = array[0];
         console.log(array);
@@ -92,8 +88,6 @@ class stripePaymentController {
                     customer: customer.id
                 }))
             .then(charge => {
-                console.log('====================');
-                console.log(charge.id);
                 db.query('UPDATE hp_users SET is_payment="yes",	plan_id="' + array[2] + '",	transaction_id="' + charge.id + '" WHERE user_id="' + array[1] + '"', function (error,
                     results,
                     fields) {
@@ -115,7 +109,7 @@ class stripePaymentController {
                                 from: "demo.narolainfotech@gmail.com", // sender address
                                 to: tomail, // list of receivers
                                 subject: "Random password for login", // Subject line
-                                html: "<h1> Your rendom password is:- " + results1[0].randompassword + "</h1> <br/> Reset Link: <a href=" + 'http://localhost:3000/reset-password/' + results1[0].token_value + "> Click Here</a>"
+                                html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + 'http://localhost:3000/reset-password/' + results1[0].token_value + "> Click Here</a>"
                             };
                             // send mail with defined transport object
                             smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -123,7 +117,7 @@ class stripePaymentController {
                                     console.log(err);
                                 } else {
                                     console.log("Message sent: " + info);
-                                    res.render("loginModule/welcome", { title: 'Payment Page || Hub Pitch', documents_viewer: 'false' })
+                                    res.render("loginModule/welcome", { title: 'Payment Page || Hub Pitch', documents_viewer: 'false', free: 'false' })
                                 }
                             });
                         });
@@ -135,6 +129,53 @@ class stripePaymentController {
                 res.status(500).send({ error: "Purchase Failed" })
             }); // render the charge view: views/charge.pug
 
+    }
+
+    static async signUpFree(req, res) {
+        var bin1 = atob(req.params.id);
+        var array = bin1.split(',');
+        console.log(array);
+        var smtpTransport = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+                user: "demo.narolainfotech@gmail.com",
+                pass: "Password123#"
+            }
+        });
+        db.query('UPDATE hp_users SET is_payment="free",plan_id="' + array[1] + '",	transaction_id="free_plan_transaction_id_" WHERE user_id="' + array[0] + '"', function (error,
+            results,
+            fields) {
+            if (error) {
+                console.log(error,
+                    results,
+                    fields);
+                res.send({ success: false, message: 'SQL ISSUES', error: error });
+            }
+            if (results) {
+                db.query('SELECT hp_users.email,hp_users_tmp.token_value,hp_users_tmp.randompassword FROM hp_users_tmp JOIN hp_users ON hp_users_tmp.user_id = hp_users.user_id WHERE hp_users_tmp.user_id=?', array[0], function (error1,
+                    results1,
+                    field1) {
+                    // -------------------------------mail sending-----------------------------
+                    var tomail = "";
+                    tomail = results1[0].email;
+                    // setup e-mail data with unicode symbols
+                    var mailOptions = {
+                        from: "demo.narolainfotech@gmail.com", // sender address
+                        to: tomail, // list of receivers
+                        subject: "Random password for login", // Subject line
+                        html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + 'http://localhost:3000/reset-password/' + results1[0].token_value + "> Click Here</a>"
+                    };
+                    // send mail with defined transport object
+                    smtpTransport.sendMail(mailOptions, function (err, info) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            res.status(200).send({ success: "true" })
+                        }
+                    });
+                });
+            }
+        });
     }
 }
 module.exports = stripePaymentController;

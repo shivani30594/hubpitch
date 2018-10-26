@@ -28,14 +28,19 @@
 					<div class="search-box">
 						<form>
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Search...">
+								<input type="text" class="form-control" id="search_box"  data-live-search="true" placeholder="Search..." value="" onkeyup="search()">
+								<div class="search_res"> 
+									<ul class="search_res_display">
+
+									</ul>
+								</div>
 							</div>
 						</form>
 					</div>
 					<div class="logged-user" onload="meUser()">
 						<ul>
 							<li class="account">
-								<a href="javascript:(void)"><label id="c_user_box"> </label> 
+								<a href="javascript:(void)"><label id="c_user_box"> </label>
 									<span>hubPitch</span>
 								</a>
 								<ul class="account-sub-menu">
@@ -59,5 +64,9 @@
 				<!-- /.navbar-collapse -->
 			</nav>
 		</div>
+	</div>
+	<!-- LOADER  -->
+	<div class="loader_header_">
+		<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
 	</div>
 </header>

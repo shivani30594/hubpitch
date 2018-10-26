@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
     res.render('loginModule/index', { title: 'SignIn || Hub Pitch' });
 });
 router.get('/signup', function (req, res, next) {
-    res.render('loginModule/signup', { title: 'SignUp || Hub Pitch' });
+    res.render('loginModule/signup', { title: 'hubPitch Sign Up' });
 });
 router.get('/payment', Controller.stripePaymentController.paymentPage);
 router.get('/forgot-password', function (req, res, next) {
@@ -60,6 +60,9 @@ router.get('/admin/edit-plan/:id', adminController.subscriptionController.editPl
  */
 
 router.get('/viewer/:id', Controller.enduserController.viewPitch)
+router.get('/welcome', function (req, res, next) {
+    res.render("loginModule/welcome", { title: 'Free SignUp || Hub Pitch', documents_viewer: 'false', free: 'true' });
+});
 
 // Pitch Analytics
 router.post('/pitch-analytics', Controller.enduserController.pitchAnalytics)
@@ -128,6 +131,7 @@ router.post('/share_pitch_email', Controller.pitchController.sharePitchWithEmail
 router.post('/update_share_pitch_email', Controller.pitchController.updateSharePitchWithEmail)
 router.post('/edit_pitch_text', Controller.pitchController.editText)
 router.post('/get_notes', Controller.pitchController.getNotes)
+router.post('/user/search_pitch', Controller.pitchController.searchPitch)
 
 // SUPPORT 
 
@@ -141,5 +145,6 @@ router.post('/marge_video', Controller.videoController.margeVideo);
 router.post('/cut_video', Controller.videoController.cutVideoWithTime);
 router.post('/test_stripe', Controller.stripePaymentController.testStripe);
 router.post('/payment_status/:id', Controller.stripePaymentController.payment);
+router.post('/sign_up_free/:id', Controller.stripePaymentController.signUpFree);
 
 module.exports = router;

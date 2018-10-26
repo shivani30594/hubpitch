@@ -68,9 +68,14 @@
                             </span></li>
                         <li>User to Customer Messaging<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
                             </span></li>
+                        <% if(data[i].plan_price > 0){ %>
                         <li class="grey"><a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)"
                                 class="button">Sign
                                 Up</a></li>
+                        <%  } else { %>
+                        <li class="grey"><a href="javascript:handlePaymentTableFree(<%= data[i].plan_id %>)" class="button">Sign
+                                Up</a></li>
+                        <% } %>
                     </ul>
                 </div>
                 <% } %>
@@ -102,19 +107,19 @@
                                 </span></li>
                             <li>Pdf Upload <span class="memberpship_icon <%= (data[i].pdf_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
                                 </span></li>
-                            <li>Pitch Customization <span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            <li>Pitch Customization <span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %>">
                                 </span></li>
-                            <li>Powerpoint Upload <span class="memberpship_icon <%= (data[i].powerpoint_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            <li>Powerpoint Upload <span class="memberpship_icon <%= (data[i].powerpoint_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %>">
                                 </span></li>
-                            <li>Excel Upload<span class="memberpship_icon <%= (data[i].excel_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            <li>Excel Upload<span class="memberpship_icon <%= (data[i].excel_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %>">
                                 </span></li>
-                            <li>Word Upload <span class="memberpship_icon <%= (data[i].word_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            <li>Word Upload <span class="memberpship_icon <%= (data[i].word_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %>">
                                 </span></li>
-                            <li>Pitch Analytics <span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            <li>Pitch Analytics <span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %>">
                                 </span></li>
-                            <li>Pitch Notifications <span class="memberpship_icon <%= (data[i].pitch_notifications=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            <li>Pitch Notifications <span class="memberpship_icon <%= (data[i].pitch_notifications=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %>">
                                 </span></li>
-                            <li>Sharing Tracking <span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+                            <li>Tracking Pitch Shares <span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %>">
                                 </span></li>
                             <li>User to Customer Messaging<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
                                 </span></li>
@@ -123,7 +128,12 @@
                                     <%= data[i].other_details %>
                                 </p>
                             </li>
+
+                            <% if(data[i].plan_price > 0){ %>
                             <li id="<%= data[i].plan_id %>_submmiting">
+                                <%  } else { %>
+                            <li class="grey"><a href="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign Up Free</a></li>
+                            <% } %>
                         </ul>
                     </div>
                 </div>

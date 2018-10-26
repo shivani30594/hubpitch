@@ -59,6 +59,7 @@ $(function () {
 const sendSupport = () => {
     let userName = getCookie('cuser');
     let accesstoken = getCookie('accesstoken')
+    $('.loader_header_').show('20');
     $.ajax({
         url: 'http://localhost:3000/send_support_message',
         type: 'POST',
@@ -74,10 +75,63 @@ const sendSupport = () => {
             if (!response.success) {
                 return alert(JSON.stringify(response.message));
             }
-
+            if (response.success == "true") {
+                $('.loader_header_').hide('70');
+                alert(response.message);
+                location.reload();
+            }
         },
         error: function (jqXHR, textStatus) {
             alert("Request failed: " + textStatus);
         }
     });
 }
+
+function search(id) {
+    $('.search_res_display').html(' ')
+    if ($('#search_box').val().length >= 3) {
+        $('.loader_header_').show('20');
+        $.ajax({
+            url: '/user/search_pitch',
+            type: 'POST',
+            headers: {
+                'Accept': 'application/json',
+            },
+            data: {
+                search_key: $('#search_box').val()
+            },
+            success: function (response) {
+                if (!response.success) {
+                    return alert(JSON.stringify(response.message));
+                }
+                if (response.success == "true") {
+                    $('.loader_header_').hide('70');
+                    console.log(response);
+                    let dataHTML = '';
+                    response.data.forEach((obj) => {
+                        dataHTML = ''
+                        if (obj) {
+                            dataHTML = '<li> <a class="search_link" href="/user/pitch/viewer/' + obj.pitch_id + '"> ' + obj.company_name + ' </a> </li>';
+                            $('.search_res_display').append(dataHTML);
+                        }
+                    })
+                }
+                else if (response.success == "search_fail") {
+                    $('.loader_header_').hide('70');
+                    alert(response.message);
+                    return
+                }
+            },
+            error: function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            }
+        });
+    }
+}
+
+$(document).on("click", '.search_link', () => {
+    jQuery('.loader_header_').show('20');
+})
+jQuery(document).ready(function () {
+    jQuery('.loader_header_').hide('50');
+});

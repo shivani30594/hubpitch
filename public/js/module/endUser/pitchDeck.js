@@ -210,7 +210,12 @@ const pitchDeck = function () {
                     if (response.success == 'true') {
                         $('.unread_count_wapper').show();
                         $('#message_body').html('');
-                        $('.unread_count').html('<i class="glyphicon glyphicon-envelope"></i> You Have ' + response.unread + ' Unread Messages');
+                        if (response.unread == undefined) {
+                            $('.unread_count').hide();
+                        } else {
+                            $('.unread_count').show('20');
+                            $('.unread_count').html('<i class="glyphicon glyphicon-envelope"></i> You Have ' + response.unread + ' Unread Messages');
+                        }
                     } else {
                         console.log('Something Went Wrong In Conversation')
                     }
@@ -243,37 +248,42 @@ const pitchDeck = function () {
                         if (response.success == 'true') {
                             $('#message_body').html('');
                             $('.loader_hp_').hide();
-                            $('.unread_count_wapper').show();
-                            $('.unread_count').html('<i class="glyphicon glyphicon-envelope"></i> You Have ' + response.unread + ' Unread Messages');
-                            let data = response.data;
-                            let dataHTML = '';
-                            data.forEach((obj) => {
-                                dataHTML = ''
-                                if (obj) {
-                                    dataHTML = '<div class="msg-block' + (endUserName != obj.sender ? " msg_reply" : "") + '"><div class="msg-head"> <h5>' + (endUserName == obj.sender ? obj.sender : sender) + '</h5>  <span class="time-right">' + moment(obj.created).format("MMM DD YYYY hh:mm A", 'en') + '</span> </div> <div class="m-text"><p>' + obj.chat_text + '</p></div></div>';
-                                    $('#message_body').append(dataHTML);
-                                }
-                            })
-                            $.ajax({
-                                url: 'http://localhost:3000/mark_as_read_conversation_end_user',
-                                headers: {
-                                    'Accept': 'application/json',
-                                },
-                                method: 'POST',
-                                data: {
-                                    conversation_id: conversation
-                                },
-                                success: function (response) {
-                                    if (response.success == true) {
-                                        console.log('MARK AS UNREAD');
-                                    } else {
-                                        console.log('SOMETHING WENT WRONG IN MARK AS UNREAD');
+                            if (response.new_conversation == 'true') {
+                                console.log('new conversation');
+                                return
+                            } else {
+                                $('.unread_count_wapper').show();
+                                $('.unread_count').html('<i class="glyphicon glyphicon-envelope"></i> You Have ' + response.unread + ' Unread Messages');
+                                let data = response.data;
+                                let dataHTML = '';
+                                data.forEach((obj) => {
+                                    dataHTML = ''
+                                    if (obj) {
+                                        dataHTML = '<div class="msg-block' + (endUserName != obj.sender ? " msg_reply" : "") + '"><div class="msg-head"> <h5>' + (endUserName == obj.sender ? obj.sender : sender) + '</h5>  <span class="time-right">' + moment(obj.created).format("MMM DD YYYY hh:mm A", 'en') + '</span> </div> <div class="m-text"><p>' + obj.chat_text + '</p></div></div>';
+                                        $('#message_body').append(dataHTML);
                                     }
-                                },
-                                error: function (jqXHR, textStatus) {
-                                    console.log("Request failed: " + textStatus);
-                                }
-                            })
+                                })
+                                $.ajax({
+                                    url: 'http://localhost:3000/mark_as_read_conversation_end_user',
+                                    headers: {
+                                        'Accept': 'application/json',
+                                    },
+                                    method: 'POST',
+                                    data: {
+                                        conversation_id: conversation
+                                    },
+                                    success: function (response) {
+                                        if (response.success == true) {
+                                            console.log('MARK AS UNREAD');
+                                        } else {
+                                            console.log('SOMETHING WENT WRONG IN MARK AS UNREAD');
+                                        }
+                                    },
+                                    error: function (jqXHR, textStatus) {
+                                        console.log("Request failed: " + textStatus);
+                                    }
+                                })
+                            }
                         }
                         else {
                             alert('Something Went Wrong!');

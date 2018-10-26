@@ -375,7 +375,7 @@ class enduserController {
                 if (results.length > 0) {
                     res.send({ success: "true", data: results, unread: results[0].unread });
                 } else {
-                    return res.status.send({ success: "true", message: 'No Message Found' });
+                    return res.status(200).send({ success: "true", new_conversation: 'true', message: 'No Message Found' });
                 }
             });
         }

@@ -1036,5 +1036,48 @@ class pitchController {
             res.send({ success: false, error });
         }
     }
+
+    static async searchPitch(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                search_key: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            var token = req.cookies.accesstoken;
+            let userid = '';
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    userid = decoded.user;
+                }
+            });
+            db.query("SELECT company_name,pitch_id FROM hp_pitch_master WHERE user_id='" + userid + "' AND  company_name LIKE '%" + req.body.search_key + "%' ", function (
+                error,
+                results,
+                fields
+            ) {
+                if (error) {
+                    console.log(error,
+                        results,
+                        fields);
+                    console.log(req.body.pitch_info_id);
+                    return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
+                }
+                if (results.length > 0) {
+                    res.send({ success: "true", data: results });
+                } else {
+                    return res.status(200).send({ success: "search_fail", message: 'No Pitch Found' });
+                }
+            });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
 }
 module.exports = pitchController;

@@ -10,6 +10,7 @@ var upload = multer({ dest: 'uploads/' })
 var async = require('async')
 var path = require('path');
 const nodemailer = require("nodemailer");
+require('dotenv').config()
 
 class pitchController {
 
@@ -328,6 +329,7 @@ class pitchController {
             fields
         ) {
             if (results) {
+                console.log(results)
                 res.render('userViews/pitchModule/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, documents_viewer: 'true' });
             } else {
                 console.log(error, results, fields);
@@ -927,7 +929,7 @@ class pitchController {
                     tomail = value;
                     // setup e-mail data with unicode symbols
                     // Email Body Builder 
-                    newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="http://localhost:3000/viewer/' + pitch_url + '" target="blank"> http://localhost:3000/viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                    newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + process.env.SITE_URL + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                     var mailOptions = {
                         from: "demo.narolainfotech@gmail.com", // sender address
                         to: tomail, // list of receivers
@@ -957,7 +959,7 @@ class pitchController {
                             tomail = value;
                             // setup e-mail data with unicode symbols
                             // Email Body Builder 
-                            newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="http://localhost:3000/viewer/' + pitch_url + '" target="blank"> http://localhost:3000/viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                            newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + process.env.SITE_URL + 'viewer/' + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                             var mailOptions = {
                                 from: "demo.narolainfotech@gmail.com", // sender address
                                 to: tomail, // list of receivers

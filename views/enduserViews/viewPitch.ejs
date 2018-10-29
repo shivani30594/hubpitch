@@ -36,11 +36,12 @@
     <script src="/js/additional-methods.min.js"></script>
     <script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
     <script>
+        const site_url = "http://localhost:3000/";
         var instance = null;
         function display_docx(params, i) {
             var req = new XMLHttpRequest();
             //Check File URL & domain origin
-            req.open("GET", "http://localhost:3000" + params, true);
+            req.open("GET", site_url + params, true);
             //Response Type is Blob
             req.responseType = "blob";
             console.log('asda', req);
@@ -70,7 +71,7 @@
         function display_pptx(params, i) {
             var req = new XMLHttpRequest();
             //Check File URL & domain origin
-            req.open("GET", "http://localhost:3000" + params, true);
+            req.open("GET", site_url + params, true);
             //Response Type is Blob
             req.responseType = "blob";
 
@@ -113,7 +114,7 @@
         function display_excel(params, i) {
             var req = new XMLHttpRequest();
             //Check File URL & domain origin
-            req.open("GET", "http://localhost:3000" + params, true);
+            req.open("GET", site_url + params, true);
             //Response Type is Blob
             req.responseType = "blob";
             console.log('asda', req.response);

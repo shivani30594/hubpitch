@@ -10,6 +10,113 @@
 
 <body>
     <% include ../component/header.ejs %>
+    <script>
+        var instance = null;
+        function display_docx(params, i) {
+            var req = new XMLHttpRequest();
+            //Check File URL & domain origin
+            req.open("GET", site_url + params, true);
+            //Response Type is Blob
+            req.responseType = "blob";
+            console.log('asda', req);
+            req.onload = function (e) {
+                var blob = req.response;
+                var docxJS = new DocxJS();
+                docxJS.parse(
+                    blob,
+                    function () {
+                        //After Rendering
+                        docxJS.render($('#loaded-layout_' + i)[0], function (result) {
+                            if (result.isError) {
+                                console.log(result.msg);
+                            } else {
+                                console.log("Success Render");
+                            }
+                        });
+                    }, function (e) {
+                        console.log("Error!", e);
+                    }
+                );
+            };
+
+            req.send();
+        }
+
+        function display_pptx(params, i) {
+            var req = new XMLHttpRequest();
+            //Check File URL & domain origin
+            req.open("GET", site_url + params, true);
+            //Response Type is Blob
+            req.responseType = "blob";
+
+            req.onload = function (e) {
+                var blob = req.response;
+                var slideJS = new SlideJS();
+                slideJS.parse(
+                    blob,
+                    function () {
+                        //After Rendering
+                        slideJS.render($('#loaded-layout_' + i)[0], function (result) {
+                            if (result.isError) {
+                                console.log(result.msg);
+                            } else {
+                                console.log("Success Render");
+                            }
+                        });
+                    }, function (e) {
+                        console.log("Error!", e);
+                    }
+                );
+                instance = slideJS;
+            };
+            req.send();
+        }
+        $(document).on('click', '.slick-active .prev-btn', function () {
+            console.log('prev');
+            currentId = instance.getCurrentId();
+            instance.gotoPage(currentId - 1);
+            console.log('instance', instance);
+            return false;
+        });
+        $(document).on('click', '.slick-active .next-btn', function () {
+            console.log('next');
+            currentId = instance.getCurrentId();
+            instance.gotoPage(currentId + 1);
+            console.log('instance', instance);
+            return false;
+        });
+        function display_excel(params, i) {
+            var req = new XMLHttpRequest();
+            //Check File URL & domain origin
+            req.open("GET", site_url + params, true);
+            //Response Type is Blob
+            req.responseType = "blob";
+            console.log('asda', req.response);
+            req.onload = function (e) {
+                var blob = req.response;
+                var cellJS = null;
+                cellJS = new CellJS();
+                console.log(req);
+                cellJS.parse(
+                    blob,
+                    function () {
+                        //After Rendering
+                        cellJS.render($('#loaded-layout_' + i)[0], function (result) {
+                            if (result.isError) {
+                                console.log(result.msg);
+                            } else {
+                                console.log("Success Render");
+                            }
+                        });
+                    }, function (e) {
+                        console.log("Error!", e);
+                    }
+                );
+            };
+
+            req.send();
+        }
+    </script>
     <div class="container">
         <div class="slider-main-wrapper user_pitch">
             <div class="gallery-wrap">
@@ -17,7 +124,7 @@
                     <% for(var i=0; i < data.length; i++) { %>
                     <div class="slide">
                         <div class="edit-wrap">
-                            <div class="row"><a href="" class="btn btn-primary float-right">Edit</a></div>
+                            <div class="row"><a href="/user/pitch/edit/<%= data[i].pitch_id %>" class="btn btn-primary float-right">Edit</a></div>
                             <div class="row">
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="top-area">
@@ -55,6 +162,48 @@
                                         <div class="preview">
                                             <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e"
                                                 width="500" height="600" />
+                                        </div>
+                                        <% } %>
+                                        <% if(data[i].pitch_attachment_type == 'docx') { %>
+                                        <input type="hidden" value="0" class="sliderViewer">
+                                        <div class="preview">
+                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                            <script>
+                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                var i = '<%= i %>';
+                                                display_docx(param, i);
+                                            </script>
+                                        </div>
+                                        <% } %>
+                                        <% if(data[i].pitch_attachment_type == 'pptx') { %>
+                                        <input type="hidden" value="0" class="sliderViewer">
+                                        <div class="preview pptx-view">
+                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                            <script>
+                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                var i = '<%= i %>';
+                                                display_pptx(param, i);
+                                            </script>
+                                            <div class="kuku-docx-controller">
+                                                <button class="btn prev-btn">
+                                                    <i class="fa fa-arrow-left"></i>
+                                                    Prev</button>
+                                                <button class="btn next-btn">
+                                                    Next
+                                                    <i class="fa fa-arrow-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <% if(data[i].pitch_attachment_type == 'xlsx') { %>
+                                        <input type="hidden" value="0" class="sliderViewer">
+                                        <div class="preview pptx-view">
+                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                            <script>
+                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                var i = '<%= i %>';
+                                                display_excel(param, i);
+                                            </script>
                                         </div>
                                         <% } %>
                                     </div>

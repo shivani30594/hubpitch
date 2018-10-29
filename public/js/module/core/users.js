@@ -1,3 +1,4 @@
+const site_url = "http://localhost:3000/";
 const getCookie = (name) => {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
@@ -22,7 +23,7 @@ const meUser = () => {
         let accesstoken = getCookie('accesstoken')
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:3000/me',
+            url: site_url + 'me',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken
@@ -61,7 +62,7 @@ const sendSupport = () => {
     let accesstoken = getCookie('accesstoken')
     $('.loader_header_').show('20');
     $.ajax({
-        url: 'http://localhost:3000/send_support_message',
+        url: site_url+'send_support_message',
         type: 'POST',
         headers: {
             'Accept': 'application/json',

@@ -261,7 +261,7 @@ const newPitch = function () {
             }
         })
         $.ajax({
-            url: 'http://localhost:3000/add_pitch',
+            url: site_url+'add_pitch',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken
@@ -298,7 +298,7 @@ const newPitch = function () {
             }
 
             $.ajax({
-                url: 'http://localhost:3000/manage_pitch',
+                url: site_url+'manage_pitch',
                 headers: {
                     'Accept': 'application/json',
                     "access-token": accesstoken
@@ -316,7 +316,7 @@ const newPitch = function () {
                         return alert(JSON.stringify(response.message));
                     }
                     console.log(response);
-                    let linkValue = 'http://localhost:3000/viewer/' + response.data
+                    let linkValue = site_url+'viewer/' + response.data
                     $('#link_value').attr("href", linkValue);
                     $('#link_value').html(linkValue);
                     $('#final_section').hide();
@@ -373,7 +373,7 @@ function checkEmails() {
     if (errorFlag === 0) {
 
         $.ajax({
-            url: 'http://localhost:3000/share_pitch_email',
+            url: site_url+'share_pitch_email',
             headers: {
                 'Accept': 'application/json',
             },

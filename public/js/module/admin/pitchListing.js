@@ -1,7 +1,8 @@
+const site_url = "http://localhost:3000/";
 $(document).ready(function () {
     let accesstoken = getCookie('accesstoken')
     $.ajax({
-        url: 'http://localhost:3000/admin/get_pitch',
+        url: site_url + 'admin/get_pitch',
         headers: {
             'Accept': 'application/json',
             "access-token": accesstoken

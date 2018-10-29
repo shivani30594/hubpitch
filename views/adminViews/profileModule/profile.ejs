@@ -1,121 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<title>
-		<%= title %>
-	</title>
-	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"><!-- bootstrap CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"><!-- Optional theme -->
-
-	<script src="/js/jquery.min.js"></script><!--jquery js-->	
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><!-- bootstrap js -->
-	<script src="https://use.fontawesome.com/8a22b161e0.js"></script> <!-- font awesome -->
-	<script src="/js/custom.js"></script>
-
-	<link rel='stylesheet' href='/stylesheets/style.css' /> <!-- custom css -->
-
-	<link rel="shortcut icon" type="/img/logo.png" href="/favicon.png"/>
-	<link rel="shortcut icon" type="/img/logo.png" href="http://example.com/favicon.png"/>
-
-    <!-- Validation.Js -->
-	<script src="/js/jquery.validate.min.js"></script>
-	<script src="/js/additional-methods.min.js"></script>
+	<% include ../adminComponents/headerFile.ejs %>
 </head>
+
 <body>
-	<header class="custom-header dashboard-header">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3">
-					<div class="logo-wrapper">
-						<div class="logo"><a href="#"><img src="/img/white-logo.png" alt="Logo"></a></div>
-					</div>
-				</div>
-				<div class="col-md-9">
-					<nav class="navigation">
-				    <div class="menu-items">
-				    	<div class="mobile-menu">
-				     	<a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
-				    </div>
-				      <ul>
-				        <li class="active"><a href="javascript:(void)">Dashboard</a></li>
-				        <li><a href="javascript:(void)">Manage Subscription Plans</a></li>
-				        <li><a href="javascript:(void)">Manage User Activities</a></li>
-				      </ul>
-			        <div class="logged-user ">
-			        	<ul>
-			        		<li class="account">
-			        			<a href="javascript:(void)">System Admin</a>
-			        			<ul class="account-sub-menu">
-									<li><a href="#">My Profile </a></li>
-			        				<li><a href="#">My Settings</a></li>
-			        				<li><a href="#">Support</a></li>
-			        				<li><a href="/">Sign Out</a></li>
-			        			</ul>
-			        		</li>
-			        	</ul>
-			        </div>
-				    </div><!-- /.navbar-collapse -->
-				</nav>
-				</div>
-				
-			</div>
-		</div>
-    </header>
-    <div class="form-wrapper">
+	<% include ../adminComponents/header.ejs %>
+	<div class="form-wrapper">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
 					<div class="card-box">
-                        <div class="setting_wrapper">
-                            <div class="container">
-                                <div class="setting_inner_wrapper">
-                                    <h2 class="head_global primary_color">Setting</h2>
-                                    <div class="form_inner_data">
-                                        <form>
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Name</label>
-                                                <div class="col-sm-9">
-                                                    <div class="row">
-                                                        <div class="col-sm-6">
-                                                            <input type="text" class="form-control" id="" placeholder="Denish">
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <input type="text" class="form-control" id="" placeholder="Smith">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Email Address</label>
-                                                <div class="col-sm-9">
-                                                    <input type="email" class="form-control" id="" placeholder="denish@hubpitch.com">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Password</label>
-                                                <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="" placeholder="password1234">
-                                                    <a class="a_change_pass" href="#">change password</a>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <div class="btn_dicard">
-                                            <button class="btn_form">Discard</button>
-                                            <button class="btn_form">Save</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+						<div class="setting_wrapper">
+							<div class="container">
+								<div class="setting_inner_wrapper">
+									<h2 class="head_global primary_color">Setting</h2>
+									<div class="form_inner_data">
+										<form method="post" id="profile_form" name="profile">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Name</label>
+												<div class="col-sm-9">
+													<div class="row">
+														<div class="col-sm-6">
+															<input type="text" class="form-control" id="fname" name="fname" placeholder="Denish" value="<%=data.first_name %>">
+														</div>
+														<div class="col-sm-6">
+															<input type="text" class="form-control" id="lname" name="lname" placeholder="Smith" value="<%=data.last_name %>">
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Email Address</label>
+												<div class="col-sm-9">
+													<input type="email" class="form-control" id="" placeholder="denish@hubpitch.com" value="<%=data.email %>"
+													 disabled>
+												</div>
+											</div>
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Password</label>
+												<div class="col-sm-9">
+													<a class="a_change_pass btn btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#changePassword"><span
+														 class="glyphicon glyphicon-lock"></span> Change Password</a>
+												</div>
+											</div>
+											<div class="btn_dicard">
+												<button class="btn_form">Discard</button>
+												<button type="submit" name="submit" value="submit" class="btn_form">Save</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div><!-- end card-box -->
 				</div>
 			</div>
 		</div>
-    </div>
-</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="changePassword" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Change Password</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Password:</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="password" name="password">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Confirm Password</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="confirm_password" name="confirm_password">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default" onclick="changePassword()">Update</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- LOADER  -->
+	<div class="loader_hp_">
+		<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+	</div>
+
+	<script src="/js/module/admin/profile.js"></script>
+	</div>
 </body>
+
 </html>

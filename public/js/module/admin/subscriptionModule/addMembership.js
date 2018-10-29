@@ -1,3 +1,4 @@
+const site_url = "http://localhost:3000/";
 const addMembership = function () {
     const addMambershipForm = () => {
         $("#membership_plan").validate({
@@ -18,7 +19,7 @@ const addMembership = function () {
             submitHandler: function (form) {
                 let accesstoken = getCookie('accesstoken');
                 $.ajax({
-                    url: 'http://localhost:3000/admin/add_membership_plan',
+                    url:  site_url+'admin/add_membership_plan',
                     headers: {
                         'Accept': 'application/json',
                         "access-token": accesstoken

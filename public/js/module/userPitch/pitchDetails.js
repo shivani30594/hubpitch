@@ -2,7 +2,7 @@ const pitchDetails = function () {
     $(".loader_hp_").hide();
     const pitchShareModule = () => {
         $.ajax({
-            url: 'http://localhost:3000/sharing_details',
+            url: site_url+'sharing_details',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -40,7 +40,7 @@ const noteDetail = (id) => {
     if (id > 0) {
         $(".loader_hp_").show();
         $.ajax({
-            url: 'http://localhost:3000/get_notes',
+            url: site_url+'get_notes',
             type: 'POST',
             dataType: 'json',
             data: {

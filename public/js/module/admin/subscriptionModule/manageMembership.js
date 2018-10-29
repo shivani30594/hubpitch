@@ -1,3 +1,4 @@
+const site_url = "http://localhost:3000/";
 $(document).ready(function () {
     $('#example').DataTable();
     $('.loader_hp_').hide('50');
@@ -13,7 +14,7 @@ function ConfirmDelete(id) {
         $('.loader_hp_').show('50');
         let accesstoken = getCookie('accesstoken');
         $.ajax({
-            url: 'http://localhost:3000/admin/remove_membership_plan',
+            url: site_url+'admin/remove_membership_plan',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken

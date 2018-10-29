@@ -43,7 +43,6 @@ class enduserController {
                                     sharing_tracking: results1[0].sharing_tracking,
                                     user_to_customer_messaging: results1[0].user_to_customer_messaging,
                                 }
-                                console.log('PLAN_DATA', plan_data)
                                 db.query("SELECT ( select `notification_1` from hp_users_info where user_id = '" + results[0].user_id + "') AS user_setting,( select allow_notification from hp_pitch_manager where pitch_id ='" + results[0].pitch_id + "') AS pitch_setting", function (error2,
                                     results2,
                                     fields2) {
@@ -51,7 +50,6 @@ class enduserController {
                                         res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
                                     }
                                     if (results2) {
-                                        console.log(results2[0], 'user_setting')
                                         if (results2[0].user_setting == 'true' && results2[0].pitch_setting == 'true') {
                                             var smtpTransport = nodemailer.createTransport({
                                                 service: "Gmail",
@@ -78,16 +76,14 @@ class enduserController {
                                             // send mail with defined transport object
                                             smtpTransport.sendMail(mailOptions, function (err, info) {
                                                 if (err) {
-                                                    console.log(err);
-                                                    res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
+                                                    console.log(err)
                                                 } else {
                                                     console.log('EMAIL SENT');
                                                     console.log('tomail SENT', tomail);
                                                     console.log('EMAIL SENT');
-                                                    res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
                                                 }
                                             });
-
+                                            res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
                                         } else {
                                             res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
                                         }
@@ -275,6 +271,40 @@ class enduserController {
                 if (err) {
                     console.log(err);
                 } else {
+                    db.query("SELECT share_times AS counter FROM hp_pitch_master where pitch_id=?", req.body.pitch_token, function (error,
+                        results,
+                        fields) {
+                        if (error) {
+                            res.send({ success: "SQL_ISSUE", message: "Something went wrong With SQL FETCH" });
+                        }
+                        if (results.length > 0) {
+                            share = results[0].counter + 1
+                            db.query("UPDATE hp_pitch_master SET share_times ='" + share + "' WHERE `pitch_id` = '" + req.body.pitch_token + "'", function (error1,
+                                results1,
+                                fields1) {
+                                if (error1) {
+                                    res.send({ success: "SQL_ISSUE", message: "Something went wrong Updating Share" });
+                                }
+                                emailLog = {
+                                    'pitch_id': req.body.pitch_token,
+                                    'sender_name': req.body.sender_name,
+                                    'receiver_email_address': req.body.email_id,
+                                    'email_body': req.body.email_body
+                                }
+                                db.query('INSERT into hp_email_log SET?', emailLog, function (error,
+                                    results,
+                                    fields) {
+                                    console.log(error,
+                                        results,
+                                        fields);
+                                    if (error) {
+                                        console.log(error)
+                                    }
+                                    console.log('DataBase Logged')
+                                })
+                            })
+                        }
+                    })
                     db.query("SELECT ( select `notification_3` from hp_users_info where user_id = '" + req.body.user_token + "') AS user_setting,( select allow_share from hp_pitch_manager where pitch_id ='" + req.body.pitch_token + "') AS pitch_setting", function (error2,
                         results2,
                         fields2) {
@@ -312,40 +342,7 @@ class enduserController {
                             }
                         }
                     });
-                    db.query("SELECT share_times AS counter FROM hp_pitch_master where pitch_id=?", req.body.pitch_token, function (error,
-                        results,
-                        fields) {
-                        if (error) {
-                            res.send({ success: "SQL_ISSUE", message: "Something went wrong With SQL FETCH" });
-                        }
-                        if (results.length > 0) {
-                            share = results[0].counter + 1
-                            db.query("UPDATE hp_pitch_master SET share_times ='" + share + "' WHERE `pitch_id` = '" + req.body.pitch_token + "'", function (error1,
-                                results1,
-                                fields1) {
-                                if (error1) {
-                                    res.send({ success: "SQL_ISSUE", message: "Something went wrong Updating Share" });
-                                }
-                                emailLog = {
-                                    'pitch_id': req.body.pitch_token,
-                                    'sender_name': req.body.sender_name,
-                                    'receiver_email_address': req.body.email_id,
-                                    'email_body': req.body.email_body
-                                }
-                                db.query('INSERT into hp_email_log SET?', emailLog, function (error,
-                                    results,
-                                    fields) {
-                                    console.log(error,
-                                        results,
-                                        fields);
-                                    if (error) {
-                                        res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
-                                    }
-                                    res.send({ success: "true", message: 'Share Notification Issus' });
-                                })
-                            })
-                        }
-                    })
+                    res.send({ success: "true", message: 'Email Send' });
                 }
             });
         }

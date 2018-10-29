@@ -6,6 +6,8 @@ const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const jwtsecret = "Narola123";
 const expiresIn = 86400; // expires in 24 hours
+require('dotenv').config()
+
 class authController {
 
   static async singup(req, res, next) {
@@ -96,7 +98,7 @@ class authController {
                     //   from: "demo.narolainfotech@gmail.com", // sender address
                     //   to: tomail, // list of receivers
                     //   subject: "Random password for login", // Subject line
-                    //   html: "<h1> Your rendom password is:- " + randompassword + "</h1> <br/> Reset Link: " + 'http://localhost:3000/reset-password/' + token
+                    //   html: "<h1> Your rendom password is:- " + randompassword + "</h1> <br/> Reset Link: " + process.env.SITE_URL + token
                     // };
                     // // send mail with defined transport object
                     // smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -227,7 +229,7 @@ class authController {
                   from: "demo.narolainfotech@gmail.com", // sender address
                   to: tomail, // list of receivers
                   subject: "Password Reset Link", // Subject line
-                  html: "Here is Reset Password Link: " + 'http:/localhost:3000/reset-password/' + token
+                  html: "Here is Reset Password Link: " + process.env.SITE_URL + token
                 };
                 // send mail with defined transport object
                 smtpTransport.sendMail(mailOptions, function (err, info) {

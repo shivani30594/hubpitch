@@ -11,6 +11,7 @@ const stripe = require("stripe")(keySecret);
 var btoa = require('btoa');
 var atob = require('atob');
 const nodemailer = require("nodemailer");
+require('dotenv').config()
 
 class stripePaymentController {
 
@@ -32,6 +33,7 @@ class stripePaymentController {
                 res.status(500).send({ error: "Purchase Failed" });
             });
     }
+
     static async paymentPage(req, res) {
         // var encodedData = window.btoa('Hello, world'); // encode a string
         // var decodedData = window.atob(encodedData); // decode the string
@@ -63,6 +65,7 @@ class stripePaymentController {
             }
         });
     }
+
     static async payment(req, res) {
         var smtpTransport = nodemailer.createTransport({
             service: "Gmail",
@@ -109,7 +112,7 @@ class stripePaymentController {
                                 from: "demo.narolainfotech@gmail.com", // sender address
                                 to: tomail, // list of receivers
                                 subject: "Random password for login", // Subject line
-                                html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + 'http://localhost:3000/reset-password/' + results1[0].token_value + "> Click Here</a>"
+                                html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + process.env.SITE_URL + 'reset-password/' + results1[0].token_value + "> Click Here</a>"
                             };
                             // send mail with defined transport object
                             smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -163,7 +166,7 @@ class stripePaymentController {
                         from: "demo.narolainfotech@gmail.com", // sender address
                         to: tomail, // list of receivers
                         subject: "Random password for login", // Subject line
-                        html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + 'http://localhost:3000/reset-password/' + results1[0].token_value + "> Click Here</a>"
+                        html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + process.env.SITE_URL + 'reset-password/' + results1[0].token_value + "> Click Here</a>"
                     };
                     // send mail with defined transport object
                     smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -177,5 +180,6 @@ class stripePaymentController {
             }
         });
     }
+
 }
 module.exports = stripePaymentController;

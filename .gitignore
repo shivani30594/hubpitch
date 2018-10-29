@@ -6,3 +6,5 @@ foo
 node_modules
 package-lock.json
 uploads
+#ENV
+.env

@@ -3,7 +3,7 @@ const userPitch = function () {
     const handledashboardUI = () => {
         let accesstoken = getCookie('accesstoken')
         $.ajax({
-            url: 'http://localhost:3000/get_user_pitchs',
+            url: site_url + 'get_user_pitchs',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken
@@ -14,15 +14,21 @@ const userPitch = function () {
                 if (!response.success) {
                     return alert(JSON.stringify(response.message));
                 }
-                let data = response.data;
                 let dataHTML = '';
-                data.forEach((obj) => {
-                    dataHTML = ''
-                    if (obj) {
-                        dataHTML = '<li> <a href="/user/pitch/viewer/' + obj.pitch_id + '"> <div class="list-left"> <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <div class="message" onclick="openConversation(' + obj.pitch_id + ')">' + obj.messages + ' New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> </div> </li>';
-                        $('.ul_list_wapper').append(dataHTML);
-                    }
-                })
+                let data = response.data;
+                if (data == '') {
+                    dataHTML = "<li> <h3> You haven't Created Pitch Yet ! </h3> </li>"
+                    $('.ul_list_wapper').append(dataHTML);
+                } else {
+                    data.forEach((obj) => {
+                        dataHTML = ''
+                        if (obj) {
+                            dataHTML = '<li> <a href="/user/pitch/viewer/' + obj.pitch_id + '"> <div class="list-left"> <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <div class="message" onclick="openConversation(' + obj.pitch_id + ')">' + obj.messages + ' New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> </div> </li>';
+                            $('.ul_list_wapper').append(dataHTML);
+                        }
+                    })
+                }
+
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
@@ -45,7 +51,7 @@ function openConversation(id) {
     if (id != undefined) {
         let accesstoken = getCookie('accesstoken')
         $.ajax({
-            url: 'http://localhost:3000/get_conversation',
+            url: site_url + 'get_conversation',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken
@@ -83,7 +89,7 @@ function openChat(id, name) {
     if (id != undefined) {
         let accesstoken = getCookie('accesstoken')
         $.ajax({
-            url: 'http://localhost:3000/get_conversation_messages',
+            url: site_url + 'get_conversation_messages',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken
@@ -110,7 +116,7 @@ function openChat(id, name) {
                     let sendCreate = '<button type="submit" class="btn btn-warning btn-sm" id="btn-chat" onclick=reply(' + id + ',"' + name + '")> Send </button>';
                     $('#btn_place').html(sendCreate);
                     $.ajax({
-                        url: 'http://localhost:3000/mark_as_read_conversation',
+                        url: site_url + 'mark_as_read_conversation',
                         headers: {
                             'Accept': 'application/json',
                             "access-token": accesstoken
@@ -146,7 +152,7 @@ function reply(id, name) {
     let accesstoken = getCookie('accesstoken')
     if (chat_text != '') {
         $.ajax({
-            url: 'http://localhost:3000/reply_message',
+            url: site_url + 'reply_message',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken

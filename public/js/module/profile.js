@@ -1,3 +1,4 @@
+const site_url = "http://localhost:3000/";
 const Login = function () {
     const handleUserProfile = () => {
         $("#forgot_form").validate({
@@ -18,7 +19,7 @@ const Login = function () {
             },
             submitHandler: function (form) {
                 $.ajax({
-                    url: 'http://localhost:3000/update_user_details',
+                    url: site_url + 'update_user_details',
                     type: 'POST',
                     dataType: 'json',
                     data: {

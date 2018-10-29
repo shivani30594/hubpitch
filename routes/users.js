@@ -99,6 +99,7 @@ router.post('/user/change_password', Controller.authController.changePassword)
 
 router.post('/admin/get_pitch', adminController.pitchController.getPitch);
 router.post('/admin/get_user_pitch', adminController.pitchController.viewPitchDetails);
+router.post('/admin/update_profile', adminController.dashboardController.updateProfile)
 
 // SUPPORT METHOD
 

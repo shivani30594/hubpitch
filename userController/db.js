@@ -1,15 +1,16 @@
 var mysql = require('mysql');
 var dbconfig = require('../dbconfig/config');
+require('dotenv').config()
 
 // Database setup
 //var pool = mysql.createPool(dbconfig.connection.connection);
 
 var pool  = mysql.createPool({
   //connectionLimit : 10,
-  host            : 'localhost',
-  user            : 'root',
-  password        : '',
-  database        : 'hubpitch_db'
+  host            : process.env.DB_HOST,
+  user            : process.env.DB_USER,
+  password        : process.env.DB_PASS,
+  database        : process.env.DB_NAME
 });
 pool.getConnection(function(err, conn) {
   conn.query('USE ' + dbconfig.database, function() {

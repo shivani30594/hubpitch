@@ -257,7 +257,7 @@ const pitchEdit = function () {
         })
         console.log(formData);
         $.ajax({
-            url: 'http://localhost:3000/add_new_file',
+            url: site_url+'add_new_file',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken
@@ -321,7 +321,7 @@ function checkEmails() {
     if (emails == '') {
         var pre_email_id_arr = pre_emails.split(',');
         $.ajax({
-            url: 'http://localhost:3000/update_share_pitch_email',
+            url: site_url+'update_share_pitch_email',
             headers: {
                 'Accept': 'application/json',
             },
@@ -363,7 +363,7 @@ function checkEmails() {
         if (errorFlag === 0) {
             console.log('DO THE API CALL');
             $.ajax({
-                url: 'http://localhost:3000/update_share_pitch_email',
+                url: site_url+'update_share_pitch_email',
                 headers: {
                     'Accept': 'application/json',
                 },
@@ -409,7 +409,7 @@ const editTextCall = () => {
             alert('Please Add Some Text Contain First');
         } else {
             $.ajax({
-                url: 'http://localhost:3000/edit_pitch_text',
+                url: site_url+'edit_pitch_text',
                 headers: {
                     'Accept': 'application/json',
                 },

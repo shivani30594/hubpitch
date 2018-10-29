@@ -21,7 +21,7 @@ const Login = function () {
             submitHandler: function (form) {
                 $('.loader_hp_').show('50');
                 $.ajax({
-                    url: 'http://localhost:3000/signup',
+                    url: '/signup',
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -62,7 +62,7 @@ const Login = function () {
             },
             submitHandler: function (form) {
                 $.ajax({
-                    url: 'http://localhost:3000/forgot_password',
+                    url: '/forgot_password',
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -100,7 +100,7 @@ const Login = function () {
             },
             submitHandler: function (form) {
                 $.ajax({
-                    url: 'http://localhost:3000/reset_password',
+                    url: '/reset_password',
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -137,7 +137,7 @@ const Login = function () {
             },
             submitHandler: function (form) {
                 $.ajax({
-                    url: 'http://localhost:3000/signin',
+                    url: '/signin',
                     type: 'POST',
                     dataType: 'json',
                     data: {

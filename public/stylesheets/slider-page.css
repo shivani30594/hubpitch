@@ -147,6 +147,38 @@ a.add_note.btn.btn-primary {background: #cbe7b2;float: right !important;}
 .add-note   label.error_custom {font-size: 10px;color: #f76262;}
 .add_name_form .btn.btn-primary { margin-top: 23px;}
 
+.edit-wrap-toggled .col-md-6 , .edit-wrap-toggled .col-sm-6{width:100%;}
+.edit-wrap-toggled .preview embed.docs_priview_e{width:100%;}
+.edit-wrap-toggled  .docxjs-wrapper{width:100% !important;
+/* transform: initial !important;
+margin: 0 auto !important;
+transform-origin: initial !important;
+position: unset !important; */
+}
+.edit-wrap-toggled div#docxjs-container{width:100% !important;}
+.gallery-wrap .zoom-wapper {margin-top: 10px;text-align: right;}
+.gallery-wrap .zoom-wapper button.full_screen_ {
+padding: 3px 10px;
+background-color: #4a4a4a !important;
+border-radius: 2px;
+font-size: 13px;
+color: #fff;
+border: none;
+}
+.gallery-wrap .zoom-wapper button.full_screen_ span {
+margin-left: 3px;
+line-height: 1.3;
+}
+.edit-wrap .kuku-docx-controller .btn {
+  padding: 3px 10px;
+  background-color: #4a4a4a !important;
+  border-radius: 2px;
+  font-size: 13px;
+  color: #fff;
+  border: none;
+}
+.edit-wrap .kuku-docx-controller {bottom: 0px;}
+button.full_screen_ i {margin-left: 7px;}
 @media (max-width: 991px){
   .gallery-wrap .edit-wrap .slider-text {padding: 0;}
 }

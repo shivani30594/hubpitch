@@ -43,11 +43,14 @@ class enduserController {
                                     sharing_tracking: results1[0].sharing_tracking,
                                     user_to_customer_messaging: results1[0].user_to_customer_messaging,
                                 }
+                                res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
                                 db.query("SELECT ( select `notification_1` from hp_users_info where user_id = '" + results[0].user_id + "') AS user_setting,( select allow_notification from hp_pitch_manager where pitch_id ='" + results[0].pitch_id + "') AS pitch_setting", function (error2,
                                     results2,
                                     fields2) {
                                     if (error2) {
-                                        res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
+                                        console.log(error2,
+                                            results2,
+                                            fields2)
                                     }
                                     if (results2) {
                                         if (results2[0].user_setting == 'true' && results2[0].pitch_setting == 'true') {
@@ -83,9 +86,6 @@ class enduserController {
                                                     console.log('EMAIL SENT');
                                                 }
                                             });
-                                            res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
-                                        } else {
-                                            res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
                                         }
                                     }
                                 });

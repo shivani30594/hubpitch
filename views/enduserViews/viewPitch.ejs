@@ -68,6 +68,45 @@
             req.send();
         }
 
+        // function full_screen_test(params, i, id, e) {
+        //     debugger;
+        //     console.log(params)
+        //     console.log(e.text());
+        //     let currentText = e.text();
+        //     if (currentText == 'Zoom In') {
+        //         e.html('Zoom Out<i class="glyphicon glyphicon-minus-sign">');
+        //     } else {
+        //         e.html('Zoom In<i class="glyphicon glyphicon-plus-sign">');
+        //     }
+        //     $("." + id + "_edit-wrap").toggleClass("edit-wrap-toggled");
+        //     var req = new XMLHttpRequest();
+        //     //Check File URL & domain origin
+        //     req.open("GET", site_url + params, true);
+        //     //Response Type is Blob
+        //     req.responseType = "blob";
+
+        //     req.onload = function (e) {
+        //         var blob = req.response;
+        //         var slideJS = new SlideJS();
+        //         slideJS.parse(
+        //             blob,
+        //             function () {
+        //                 //After Rendering
+        //                 slideJS.render($('#loaded-layout_' + i)[0], function (result) {
+        //                     if (result.isError) {
+        //                         console.log(result.msg);
+        //                     } else {
+        //                         console.log("Success Render");
+        //                     }
+        //                 });
+        //             }, function (e) {
+        //                 console.log("Error!", e);
+        //             }
+        //         );
+        //         instance = slideJS;
+        //     };
+        //     req.send();
+        // }
         function display_pptx(params, i) {
             var req = new XMLHttpRequest();
             //Check File URL & domain origin
@@ -109,6 +148,23 @@
             currentId = instance.getCurrentId();
             instance.gotoPage(currentId + 1);
             console.log('instance', instance);
+            return false;
+        });
+        $(document).on('click', '.slick-active .zoomInbutton', function () {
+            currentId = instance.getCurrentId();
+            /** getZoom API
+                *  structure : getZoom() **/
+            var currentZoom = instance.getZoom();
+
+            /** setZoom API
+             *  structure : setZoom(zoomVal) **/
+            instance.setZoom(currentZoom + 0.5);
+            return false;
+        });
+        $(document).on('click', '.slick-active .zoomOutbutton', function () {
+            currentId = instance.getCurrentId();
+            var currentZoom = instance.getZoom();
+            instance.setZoom(currentZoom - 0.5);
             return false;
         });
         function display_excel(params, i) {
@@ -160,17 +216,18 @@
                 </div>
             </div>
             <div class="gallery-wrap">
-                    <input type="hidden" class="pitch_analytics" value="<%= pitch_analytics %>">
+                <input type="hidden" class="pitch_analytics" value="<%= pitch_analytics %>">
                 <div class="single-item">
                     <% for(var i=0; i < data.length; i++) { %>
                     <div class="slide">
-                        <div class="edit-wrap">
+                        <div class="edit-wrap <%= data[i].pitch_info_id %>_edit-wrap">
                             <div class="row">
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="top-area">
                                         <h2>
                                             <%= data[i].company_name %>
                                         </h2>
+
                                         <input type="hidden" class="pitch_info_token <%= i+1 %>_token" value="<%= data[i].pitch_info_id %>">
                                         <% if(data[i].pitch_attachment_type == 'image') { %>
                                         <input type="hidden" value="0" class="sliderViewer">
@@ -224,6 +281,20 @@
                                                     Next
                                                     <i class="fa fa-arrow-right"></i>
                                                 </button>
+                                                <button class="btn zoomInbutton">
+                                                    Zoom In
+                                                    <i class="glyphicon glyphicon-zoom-in"></i>
+                                                </button>
+                                                <button class="btn zoomOutbutton">
+                                                    Zoom Out
+                                                    <i class="glyphicon glyphicon-zoom-out"></i>
+                                                </button>
+
+                                                <button class="btn full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Full Screen<i class="glyphicon glyphicon-resize-full"></i></button>
+                                                <!-- <button class="btn" onclick="full_screen_test(param,'<%= i %>','<%= data[i].pitch_info_id %>',$(this))">
+                                                    Full Screen
+                                                    <i class="glyphicon glyphicon-zoom-out"></i>
+                                                </button> -->
                                             </div>
                                         </div>
                                         <% } %>
@@ -238,6 +309,16 @@
                                             </script>
                                         </div>
                                         <% } %>
+                                        <% if(data[i].pitch_attachment_type != 'pptx' && data[i].pitch_attachment_type != 'video') { %>
+                                        <div class="zoom-wapper">
+                                            <button class="full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Full Screen<i class="glyphicon glyphicon-resize-full"></i></button>
+                                        </div>
+                                        <% } %>
+                                        <!-- <% if(data[i].pitch_attachment_type != 'video') { %>
+                                        <div class="zoom-wapper">
+                                            <button class="full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Zoom In<i class="glyphicon glyphicon-plus-sign"></i></button>
+                                        </div>
+                                        <% } %> -->
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">

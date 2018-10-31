@@ -21,7 +21,7 @@ const pitchDeck = function () {
         setTimeout(function () {
             firstPitchPage();
             $.ajax({
-                url: site_url+'pitch-analytics',
+                url: site_url + 'pitch-analytics',
                 headers: {
                     'Accept': 'application/json',
                 },
@@ -65,7 +65,7 @@ const pitchDeck = function () {
                     console.log(lastValue, 'lastValue');
                     console.log(lastToken, 'lastToken');
                     $.ajax({
-                        url: site_url+'pitch-page-view',
+                        url: site_url + 'pitch-page-view',
                         headers: {
                             'Accept': 'application/json',
                         },
@@ -96,7 +96,7 @@ const pitchDeck = function () {
                     console.log(lastToken, 'lastToken');
                     //lastViewCount = $('.' + lastValue + '_page').val();
                     $.ajax({
-                        url: site_url+'pitch-page-view',
+                        url: site_url + 'pitch-page-view',
                         headers: {
                             'Accept': 'application/json',
                         },
@@ -159,7 +159,7 @@ const pitchDeck = function () {
             submitHandler: function (form) {
                 $('.loader_hp_').show();
                 $.ajax({
-                    url: site_url+'share-pitch',
+                    url: site_url + 'share-pitch',
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -197,7 +197,7 @@ const pitchDeck = function () {
         let conversation = getCookie('conversation');
         if (conversation != undefined) {
             $.ajax({
-                url: site_url+'get_conversation_',
+                url: site_url + 'get_conversation_',
                 headers: {
                     'Accept': 'application/json',
                 },
@@ -235,7 +235,7 @@ const pitchDeck = function () {
                 $('#chat-window').modal('show');
                 $('.loader_hp_').show();
                 $.ajax({
-                    url: site_url+'get_conversation_',
+                    url: site_url + 'get_conversation_',
                     headers: {
                         'Accept': 'application/json',
                     },
@@ -264,7 +264,7 @@ const pitchDeck = function () {
                                     }
                                 })
                                 $.ajax({
-                                    url: site_url+'mark_as_read_conversation_end_user',
+                                    url: site_url + 'mark_as_read_conversation_end_user',
                                     headers: {
                                         'Accept': 'application/json',
                                     },
@@ -313,7 +313,7 @@ const pitchDeck = function () {
                 let sender = getCookie('endUserName');
 
                 $.ajax({
-                    url: site_url+'send-message',
+                    url: site_url + 'send-message',
                     headers: {
                         'Accept': 'application/json',
                     },
@@ -362,7 +362,7 @@ const pitchDeck = function () {
                 $('.loader_hp_').show();
                 let pitchTokenVl = $(location).attr("href").split('/').pop();
                 $.ajax({
-                    url: site_url+'conversation-creater',
+                    url: site_url + 'conversation-creater',
                     headers: {
                         'Accept': 'application/json',
                     },
@@ -398,34 +398,34 @@ const pitchDeck = function () {
 
     const handleUpdatePitch = () => {
 
-        setInterval(function () {
-            $.ajax({
-                url: site_url+'check_for_update',
-                headers: {
-                    'Accept': 'application/json',
-                },
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    pitch_token: $('#pitch_token').val(),
-                    counter: $('.total_pitch:first').text().trim(),
-                },
-                success: function (response) {
-                    if (response.success == 'true') {
-                        if (response.status == 'Updated') {
-                            alert('This Pitch Is just Update Please Reload The Page For See The New Updates')
-                        } else {
-                            console.log('No Update Found!');
-                        }
-                    } else {
-                        console.log('Something Went Wrong In Conversation')
-                    }
-                },
-                error: function (jqXHR, textStatus) {
-                    alert("Request failed: " + textStatus);
-                }
-            });
-        }, 10000);
+        // setInterval(function () {
+        //     $.ajax({
+        //         url: site_url+'check_for_update',
+        //         headers: {
+        //             'Accept': 'application/json',
+        //         },
+        //         method: 'POST',
+        //         dataType: 'json',
+        //         data: {
+        //             pitch_token: $('#pitch_token').val(),
+        //             counter: $('.total_pitch:first').text().trim(),
+        //         },
+        //         success: function (response) {
+        //             if (response.success == 'true') {
+        //                 if (response.status == 'Updated') {
+        //                     alert('This Pitch Is just Update Please Reload The Page For See The New Updates')
+        //                 } else {
+        //                     console.log('No Update Found!');
+        //                 }
+        //             } else {
+        //                 console.log('Something Went Wrong In Conversation')
+        //             }
+        //         },
+        //         error: function (jqXHR, textStatus) {
+        //             alert("Request failed: " + textStatus);
+        //         }
+        //     });
+        // }, 10000);
     }
 
     const addEndUserName = () => {
@@ -453,7 +453,7 @@ const pitchDeck = function () {
         if (token != undefined && token != '') {
             $('.loader_hp_').show();
             $.ajax({
-                url: site_url+'get-notes',
+                url: site_url + 'get-notes',
                 headers: {
                     'Accept': 'application/json',
                 },
@@ -537,7 +537,7 @@ function submitNote(id) {
                 token = makeToken();
             }
             $.ajax({
-                url: site_url+'note-creater',
+                url: site_url + 'note-creater',
                 headers: {
                     'Accept': 'application/json',
                 },
@@ -582,4 +582,15 @@ const getCookie = (name) => {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
+}
+const full_sceen_zoom = (id, e, loop) => {
+    console.log(e.text());
+    let currentText = e.text();
+    if (currentText == 'Full Screen') {
+        e.html('Normal Screen<i class="glyphicon glyphicon-resize-small">');
+    } else {
+        e.html('Full Screen<i class="glyphicon glyphicon-resize-full">');
+    }
+    $("." + id + "_edit-wrap").toggleClass("edit-wrap-toggled");
+    $("#loaded-layout_" + loop).resize();
 }

@@ -1,5 +1,6 @@
 const newPitch = function () {
     let accesstoken = getCookie('accesstoken');
+    $('.loader_hp_').hide('50');
 
     const handleNewPitchFormUI = () => {
         $('#final_section').hide();
@@ -260,8 +261,9 @@ const newPitch = function () {
                 formData.append('pitch_text', obj);
             }
         })
+        $('.loader_hp_').show('50');
         $.ajax({
-            url: site_url+'add_pitch',
+            url: site_url + 'add_pitch',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken
@@ -280,6 +282,7 @@ const newPitch = function () {
                 $('#final_section').show('100');
                 $('#final_name').val(cName);
                 $('#pitch_id').val(response.pitch);
+                $('.loader_hp_').hide('50');
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
@@ -298,7 +301,7 @@ const newPitch = function () {
             }
 
             $.ajax({
-                url: site_url+'manage_pitch',
+                url: site_url + 'manage_pitch',
                 headers: {
                     'Accept': 'application/json',
                     "access-token": accesstoken
@@ -316,7 +319,7 @@ const newPitch = function () {
                         return alert(JSON.stringify(response.message));
                     }
                     console.log(response);
-                    let linkValue = site_url+'viewer/' + response.data
+                    let linkValue = site_url + 'viewer/' + response.data
                     $('#link_value').attr("href", linkValue);
                     $('#link_value').html(linkValue);
                     $('#final_section').hide();
@@ -364,7 +367,7 @@ function checkEmails() {
     for (i = 0; i <= (emailArray.length - 1); i++) {
         if (checkEmail(emailArray[i])) {
             //Do what ever with the email.
-            console.log(emailArray);
+            //console.log(emailArray);
         } else {
             errorFlag = errorFlag + 1
             alert("invalid email: " + emailArray[i]);
@@ -372,8 +375,9 @@ function checkEmails() {
     }
     if (errorFlag === 0) {
 
+        $('.loader_hp_').show('50');
         $.ajax({
-            url: site_url+'share_pitch_email',
+            url: site_url + 'share_pitch_email',
             headers: {
                 'Accept': 'application/json',
             },
@@ -390,7 +394,9 @@ function checkEmails() {
                 if (!response.success) {
                     return alert(JSON.stringify(response.message));
                 }
+                $('.loader_hp_').hide('50');
                 alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
+                window.location.href = "/user/dashboard";
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
@@ -427,4 +433,13 @@ function checkFileTypeWithPlan(file) {
     if (file_type == 'mp4' || file_type == 'mkv' || file_type == 'mov' || file_type == 'mpeg') {
         return (plan_support.video == 'true') ? true : false
     }
+}
+
+function copyToClipboard(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+    alert('Link Coppied In ClipBoard!')
 }

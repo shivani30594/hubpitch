@@ -228,7 +228,7 @@
                         Link Via Email</button> </div>
                 <div class="button-wapper">
                     <button class="cancel"> Cancel </button>
-                    <button class="copy_link_btn"> Copy Link To Dashboard </button>
+                    <button id="copy_link_btn" onclick="copyToClipboard('#link_value')"> Copy Link To Dashboard </button>
                 </div>
             </div>
         </div>
@@ -260,6 +260,10 @@
         </div>
     </div>
     <input type="hidden" class="plan_" value="<%= plan %>">
+    <!-- LOADER  -->
+	<div class="loader_hp_">
+		<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+	</div>
     <script src="/js/module/userPitch/new_pitch.js"></script>
 </body>
 

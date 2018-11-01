@@ -1,5 +1,5 @@
-const keyPublishable = 'pk_test_wAUwirtoVTeDYL0nEAvhKNjP';
-const keySecret = 'sk_test_GNiGN2IGCEQIWk2cTooIGhwJ';
+const keyPublishable = 'pk_test_nN2AAsg2jHlJxmCky4QOiuPe';
+const keySecret = 'sk_test_1lBmrGdD8351UCKd8BIcHbZh';
 
 const db = require("../dbconfig/db");
 const Joi = require("joi");
@@ -43,7 +43,6 @@ class stripePaymentController {
         console.log('b64-------------', b64)
         var bin1 = atob(b64);
         console.log('bin1---------sssswss----', bin1[0])
-
         db.query("SELECT * FROM hp_membership_plan", function (
             error,
             results,
@@ -77,7 +76,6 @@ class stripePaymentController {
         var bin1 = atob(req.params.id);
         var array = bin1.split(',');
         let amount = array[0];
-        console.log(array);
         // create a customer 
         stripe.customers.create({
             email: req.body.stripeEmail, // customer email, which user need to enter while making payment
@@ -86,7 +84,7 @@ class stripePaymentController {
             .then(customer =>
                 stripe.charges.create({ // charge the customer
                     amount,
-                    description: "Sample Charge",
+                    description: "hubPitch Membership",
                     currency: "usd",
                     customer: customer.id
                 }))

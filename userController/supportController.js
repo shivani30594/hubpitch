@@ -47,10 +47,10 @@ class supportController {
                     fields);
                 if (results) {
                     var smtpTransport = nodemailer.createTransport({
-                        service: "Gmail",
+                        service: process.env.SERVICE,
                         auth: {
-                            user: "demo.narolainfotech@gmail.com",
-                            pass: "Password123#"
+                            user: process.env.USERNAME,
+                            pass: process.env.PASSWORD
                         }
                     });
                     // -------------------------------mail sending-----------------------------
@@ -58,7 +58,7 @@ class supportController {
                     tomail = 'local.hubpitch@mailinator.com';
                     // setup e-mail data with unicode symbols
                     var mailOptions = {
-                        from: "demo.narolainfotech@gmail.com", // sender address
+                        from: process.env.USERNAME, // sender address
                         to: tomail, // list of receivers
                         subject: "Support Request", // Subject line
                         html: "<strong>" + userName + " need support for following issue.</strong> <br/> " + support_message + " <br/> Thank You <br/> hubPitch."

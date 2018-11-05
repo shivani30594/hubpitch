@@ -619,6 +619,9 @@ nav.navigation .search-box .form-group{margin-bottom: 0 !important;position: rel
 .search-box .search_res ul li {padding: 6px 10px 0 10px;cursor: pointer;}
 .search-box .search_res ul li:hover{background: #eee;}
 
+.placeholder-screenshot img {
+    width: 100%;
+}
 
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}

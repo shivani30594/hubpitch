@@ -50,10 +50,10 @@ class authController {
               .toString(36)
               .slice(-8);
             var smtpTransport = nodemailer.createTransport({
-              service: "Gmail",
+              service: process.env.SERVICE,
               auth: {
-                user: "demo.narolainfotech@gmail.com",
-                pass: "Password123#"
+                user: process.env.USERNAME,
+                pass: process.env.PASSWORD
               }
             });
             //------------------------preparing user object----------------------
@@ -95,7 +95,7 @@ class authController {
                     // tomail = req.body.email;
                     // // setup e-mail data with unicode symbols
                     // var mailOptions = {
-                    //   from: "demo.narolainfotech@gmail.com", // sender address
+                    //   from: process.env.USERNAME, // sender address
                     //   to: tomail, // list of receivers
                     //   subject: "Random password for login", // Subject line
                     //   html: "<h1> Your rendom password is:- " + randompassword + "</h1> <br/> Reset Link: " + process.env.SITE_URL + token
@@ -196,10 +196,10 @@ class authController {
         return;
       }
       var smtpTransport = nodemailer.createTransport({
-        service: "Gmail",
+        service: process.env.SERVICE,
         auth: {
-          user: "demo.narolainfotech@gmail.com",
-          pass: "Password123#"
+          user: process.env.USERNAME,
+          pass: process.env.PASSWORD
         }
       });
       db.query(
@@ -226,7 +226,7 @@ class authController {
                 tomail = req.body.email;
                 // setup e-mail data with unicode symbols
                 var mailOptions = {
-                  from: "demo.narolainfotech@gmail.com", // sender address
+                  from: process.env.USERNAME, // sender address
                   to: tomail, // list of receivers
                   subject: "Password Reset Link", // Subject line
                   html: "Here is Reset Password Link: " + process.env.SITE_URL + token

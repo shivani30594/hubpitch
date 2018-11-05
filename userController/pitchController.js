@@ -825,10 +825,10 @@ class pitchController {
                 return;
             }
             var smtpTransport = nodemailer.createTransport({
-                service: "Gmail",
+                service: process.env.SERVICE,
                 auth: {
-                    user: "demo.narolainfotech@gmail.com",
-                    pass: "Password123#"
+                    user: process.env.USERNAME,
+                    pass: process.env.PASSWORD
                 }
             });
 
@@ -850,7 +850,7 @@ class pitchController {
                 // Email Body Builder 
                 newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '" target="blank"> ' + req.body.pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                 var mailOptions = {
-                    from: "demo.narolainfotech@gmail.com", // sender address
+                    from: process.env.USERNAME, // sender address
                     to: tomail, // list of receivers
                     subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
                     html: newEmail
@@ -902,10 +902,10 @@ class pitchController {
                 return;
             }
             var smtpTransport = nodemailer.createTransport({
-                service: "Gmail",
+                service: process.env.SERVICE,
                 auth: {
-                    user: "demo.narolainfotech@gmail.com",
-                    pass: "Password123#"
+                    user: process.env.USERNAME,
+                    pass: process.env.PASSWORD
                 }
             });
 
@@ -931,7 +931,7 @@ class pitchController {
                     // Email Body Builder 
                     newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + process.env.SITE_URL + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                     var mailOptions = {
-                        from: "demo.narolainfotech@gmail.com", // sender address
+                        from: process.env.USERNAME, // sender address
                         to: tomail, // list of receivers
                         subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
                         html: newEmail
@@ -961,7 +961,7 @@ class pitchController {
                             // Email Body Builder 
                             newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + process.env.SITE_URL + 'viewer/' + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                             var mailOptions = {
-                                from: "demo.narolainfotech@gmail.com", // sender address
+                                from: process.env.USERNAME, // sender address
                                 to: tomail, // list of receivers
                                 subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
                                 html: newEmail

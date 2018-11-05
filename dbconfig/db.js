@@ -6,7 +6,7 @@ require('dotenv').config()
 //var pool = mysql.createPool(dbconfig.connection.connection);
 
 var pool  = mysql.createPool({
-  //connectionLimit : 10,
+  connectionLimit : 1000,
   host            : process.env.DB_HOST,
   user            : process.env.DB_USER,
   password        : process.env.DB_PASS,
@@ -31,15 +31,23 @@ var getConnection = function(callback) {
 // Helper function for querying the db; releases the db connection
 // callback(err, rows)
 var query = function(queryString, params, callback) {
-  getConnection(function(err, conn) {
-    conn.query(queryString, params, function(err, rows) {
-      conn.release();
-
-      if (err)
-        return callback(err);
-
-      return callback(err, rows);
-    });
+  getConnection(function(err1, conn) {
+    if(!err1){
+      conn.query(queryString, params, function(err, rows) {
+        conn.release();
+  
+        if (err)
+        {
+          console.log("Err < = > ",err);
+          return callback(err);
+        } else {
+        return callback(err, rows);
+        }
+      });
+    } else {
+      console.log("Err : ",err1);
+    }
+    
   });
 };
 

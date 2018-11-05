@@ -226,6 +226,15 @@ const newPitch = function () {
             }
             $this.addClass('display_current');
             $this.show('100');
+            ClassicEditor
+            .create(document.querySelector('.text_box_ta'))
+            .then( editor => {
+                console.log( 'Editor was initialized', editor );
+                myEditor = editor;
+            } )
+            .catch(error => {
+                console.error(error);
+            });
             $this.find('.a_another_btn').html(' ');
             $this.find('.top-area').removeClass('col-md-12').addClass('col-md-6');
             $this.find('.text-box').show('100');

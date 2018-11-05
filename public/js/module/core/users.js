@@ -19,7 +19,8 @@ const signout = () => {
 // ME AJAX CALL
 const meUser = () => {
     let userName = getCookie('cuser');
-    if (userName == undefined) {
+    let company_name = getCookie('company_name');
+    if (userName == undefined || company_name == undefined) {
         let accesstoken = getCookie('accesstoken')
         $.ajax({
             type: 'POST',
@@ -36,9 +37,12 @@ const meUser = () => {
                 }
                 let data = response.data[0];
                 let name = data.first_name + ' ' + data.last_name;
+                let company_name = data.company_name;
                 document.cookie = "cuser=" + name;
+                document.cookie = "ucompany=" + company_name;
                 let userName = getCookie('cuser');
                 $('#c_user_box').text(userName);
+                $('#company_name_user').text(company_name);
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
@@ -46,6 +50,7 @@ const meUser = () => {
         });
     } else {
         $('#c_user_box').text(userName);
+        $('#company_name_user').text(company_name);
     }
 };
 
@@ -62,7 +67,7 @@ const sendSupport = () => {
     let accesstoken = getCookie('accesstoken')
     $('.loader_header_').show('20');
     $.ajax({
-        url: site_url+'send_support_message',
+        url: site_url + 'send_support_message',
         type: 'POST',
         headers: {
             'Accept': 'application/json',

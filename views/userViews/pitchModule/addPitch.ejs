@@ -3,6 +3,7 @@
 
 <head>
     <% include ../component/headerFile.ejs %>
+    <script src="https://cdn.ckeditor.com/ckeditor5/11.1.1/classic/ckeditor.js"></script>
 </head>
 
 <body>
@@ -43,7 +44,7 @@
             <div class="col-md-12 placeholder" id="placeholder-box">
                 <div class="top-area">
                     <div class="preview">
-                        <img src="/img/preview.jpg" class="img-responsive" alt="preview">
+                        <img src="/img/preview.png" class="img-responsive" alt="preview">
                     </div>
                 </div>
                 <div class="bottom-btn">
@@ -63,7 +64,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="top-area">
                             <div class="preview">
-                                <img src="/img/preview.jpg" class="img-responsive" alt="preview">
+                                <img src="/img/preview.png" class="img-responsive" alt="preview">
                             </div>
                         </div>
                     </div>
@@ -217,7 +218,7 @@
                     <input type="hidden" name="pitch_" id="pitch_id" value="">
                 </div>
                 <div class="placeholder-screenshot">
-                    <img src="/img/preview.jpg" />
+                    <img src="/img/preview.png" />
                 </div>
                 <div class="link-place">
                     <a id="link_value" href="" class="link_value"> </a>
@@ -228,7 +229,8 @@
                         Link Via Email</button> </div>
                 <div class="button-wapper">
                     <button class="cancel"> Cancel </button>
-                    <button id="copy_link_btn" onclick="copyToClipboard('#link_value')"> Copy Link To Dashboard </button>
+                    <button id="copy_link_btn" onclick="copyToClipboard('#link_value')"> Copy Link To Dashboard
+                    </button>
                 </div>
             </div>
         </div>
@@ -261,9 +263,9 @@
     </div>
     <input type="hidden" class="plan_" value="<%= plan %>">
     <!-- LOADER  -->
-	<div class="loader_hp_">
-		<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-	</div>
+    <div class="loader_hp_">
+        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </div>
     <script src="/js/module/userPitch/new_pitch.js"></script>
 </body>
 

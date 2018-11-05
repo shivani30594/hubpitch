@@ -67,10 +67,10 @@ class stripePaymentController {
 
     static async payment(req, res) {
         var smtpTransport = nodemailer.createTransport({
-            service: "Gmail",
+            service: process.env.SERVICE,
             auth: {
-                user: "demo.narolainfotech@gmail.com",
-                pass: "Password123#"
+                user: process.env.USERNAME,
+                pass: process.env.PASSWORD
             }
         });
         var bin1 = atob(req.params.id);
@@ -107,7 +107,7 @@ class stripePaymentController {
                             tomail = results1[0].email;
                             // setup e-mail data with unicode symbols
                             var mailOptions = {
-                                from: "demo.narolainfotech@gmail.com", // sender address
+                                from: process.env.USERNAME, // sender address
                                 to: tomail, // list of receivers
                                 subject: "Random password for login", // Subject line
                                 html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + process.env.SITE_URL + 'reset-password/' + results1[0].token_value + "> Click Here</a>"
@@ -137,12 +137,13 @@ class stripePaymentController {
         var array = bin1.split(',');
         console.log(array);
         var smtpTransport = nodemailer.createTransport({
-            service: "Gmail",
+            service: process.env.SERVICE,
             auth: {
-                user: "demo.narolainfotech@gmail.com",
-                pass: "Password123#"
+                user: process.env.MAIL,
+                pass: process.env.PASSWORD
             }
         });
+        console.log(smtpTransport);
         db.query('UPDATE hp_users SET is_payment="free",plan_id="' + array[1] + '",	transaction_id="free_plan_transaction_id_" WHERE user_id="' + array[0] + '"', function (error,
             results,
             fields) {
@@ -161,7 +162,7 @@ class stripePaymentController {
                     tomail = results1[0].email;
                     // setup e-mail data with unicode symbols
                     var mailOptions = {
-                        from: "demo.narolainfotech@gmail.com", // sender address
+                        from: process.env.USERNAME, // sender address
                         to: tomail, // list of receivers
                         subject: "Random password for login", // Subject line
                         html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + process.env.SITE_URL + 'reset-password/' + results1[0].token_value + "> Click Here</a>"

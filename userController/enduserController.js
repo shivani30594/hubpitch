@@ -43,7 +43,7 @@ class enduserController {
                                     sharing_tracking: results1[0].sharing_tracking,
                                     user_to_customer_messaging: results1[0].user_to_customer_messaging,
                                 }
-                                res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
+                                res.render('enduserViews/viewPitch', { title: 'View Pitch || hubPitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
                                 db.query("SELECT ( select `notification_1` from hp_users_info where user_id = '" + results[0].user_id + "') AS user_setting,( select allow_notification from hp_pitch_manager where pitch_id ='" + results[0].pitch_id + "') AS pitch_setting", function (error2,
                                     results2,
                                     fields2) {
@@ -55,10 +55,10 @@ class enduserController {
                                     if (results2) {
                                         if (results2[0].user_setting == 'true' && results2[0].pitch_setting == 'true') {
                                             var smtpTransport = nodemailer.createTransport({
-                                                service: "Gmail",
+                                                service: process.env.SERVICE,
                                                 auth: {
-                                                    user: "demo.narolainfotech@gmail.com",
-                                                    pass: "Password123#"
+                                                    user: process.env.USERNAME,
+                                                    pass: process.env.PASSWORD
                                                 }
                                             });
                                             // -------------------------------mail sending-----------------------------
@@ -71,7 +71,7 @@ class enduserController {
                                             // Email Body Builder 
                                             newEmail = 'Your Pitch :- ' + results[0].company_name + ' Is Visited By Your Invitee' + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                                             var mailOptions = {
-                                                from: "demo.narolainfotech@gmail.com", // sender address
+                                                from: process.env.USERNAME, // sender address
                                                 to: tomail, // list of receivers
                                                 subject: "Your Pitch Is Visited " + results[0].company_name, // Subject line
                                                 html: newEmail
@@ -244,10 +244,10 @@ class enduserController {
                 return;
             }
             var smtpTransport = nodemailer.createTransport({
-                service: "Gmail",
+                service: process.env.SERVICE,
                 auth: {
-                    user: "demo.narolainfotech@gmail.com",
-                    pass: "Password123#"
+                    user: process.env.USERNAME,
+                    pass: process.env.PASSWORD
                 }
             });
 
@@ -261,7 +261,7 @@ class enduserController {
             // Email Body Builder 
             newEmail = req.body.email_body + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
             var mailOptions = {
-                from: "demo.narolainfotech@gmail.com", // sender address
+                from: process.env.USERNAME, // sender address
                 to: tomail, // list of receivers
                 subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
                 html: newEmail
@@ -326,7 +326,7 @@ class enduserController {
                                 // Email Body Builder 
                                 newEmail = 'Your Pitch Shared By ' + req.body.sender_name + 'To ' + req.body.email_id + ' <br /> With Below Email Text <br />' + req.body.email_body + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                                 var mailOptions = {
-                                    from: "demo.narolainfotech@gmail.com", // sender address
+                                    from: process.env.USERNAME, // sender address
                                     to: tomail, // list of receivers
                                     subject: "Your Pitch Shared By " + req.body.sender_name, // Subject line
                                     html: newEmail
@@ -469,10 +469,10 @@ class enduserController {
                 chat_text: req.body.chat_text,
             }
             var smtpTransport = nodemailer.createTransport({
-                service: "Gmail",
+                service: process.env.SERVICE,
                 auth: {
-                    user: "demo.narolainfotech@gmail.com",
-                    pass: "Password123#"
+                    user: process.env.USERNAME,
+                    pass: process.env.PASSWORD
                 }
             });
 
@@ -497,7 +497,7 @@ class enduserController {
                         // Email Body Builder 
                         newEmail = 'You received message by ' + req.body.sender_name + ' On ' + req.body.company_name + ' Pitch  <br /> With Below Text <br />' + req.body.chat_text + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                         var mailOptions = {
-                            from: "demo.narolainfotech@gmail.com", // sender address
+                            from: process.env.USERNAME, // sender address
                             to: tomail, // list of receivers
                             subject: 'You received message by ' + req.body.sender + ' On ' + req.body.company_name + ' Pitch', // Subject line
                             html: newEmail

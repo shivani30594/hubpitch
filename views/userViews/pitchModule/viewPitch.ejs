@@ -124,7 +124,11 @@
                     <% for(var i=0; i < data.length; i++) { %>
                     <div class="slide">
                         <div class="edit-wrap">
-                            <div class="row"><a href="/user/pitch/edit/<%= data[i].pitch_id %>" class="btn btn-primary float-right">Edit</a></div>
+                            <div class="row">
+                                <button type="button" class="share btn btn-primary float-right" data-toggle="modal"
+                                    data-target="#share_pitch">Share</button>
+                                <a href="/user/pitch/edit/<%= data[i].pitch_id %>" class="btn btn-primary float-right">Edit</a>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="top-area">
@@ -282,6 +286,42 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="share_pitch" role="dialog">
+        <input type="hidden" name="username" id="username_" value="<%= username %>" />
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Share Pitch</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="user_emails"> </div>
+                    <div id="email_body_"> </div>
+                    <div class="new_section">
+                        <form method="post" id="formEmail" name="formEmail">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="emails" id="emails" placeholder="(eg:abc@incipio.com,xyz@ncpo.com,....)" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="public_link" id="public_link" placeholder="/viewer/xt9odt1n"
+                                    value="<%= view_pitch %>" disabled />
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" id="email_body" name="email_body"> </textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href=javascript:checkEmails(); class="btn btn-primary">Send</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <!-- LOADER  -->
     <div class="loader_hp_">
         <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>

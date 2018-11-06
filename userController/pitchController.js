@@ -95,14 +95,33 @@ class pitchController {
                 fileExtension = '';
                 filename = '';
                 thisFile = req.files['pitch_files'];
-                if (thisFile.mimetype == 'application/octet-stream') {
-                    fileExtension = thisFile.name.split(".");
-                    fileType = fileExtension
+                console.log('thisFile===========>', thisFile)
+                if (thisFile.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+                    console.log('--------mimetype-------', thisFile.mimetype)
+                    fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                    console.log('--------> fileExtension', fileExtension);
+                    fileType = fileExtension[1]
+                    console.log('fileType', '===========', fileType);
+                } else if (thisFile.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                    console.log('--------mimetype-------', thisFile.mimetype)
+                    fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                    console.log('--------> fileExtension', fileExtension);
+                    fileType = fileExtension[1]
+                    console.log('fileType', '===========', fileType);
                 } else {
-                    fileExtension = thisFile.mimetype.split("/");
-                    fileType = fileExtension[0];
+                    if (thisFile.mimetype == 'application/octet-stream') {
+                        console.log('--------mimetype-------', thisFile.mimetype)
+                        fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                        fileType = fileExtension[1]
+                    } else {
+                        console.log('--------mimetype-------', thisFile.mimetype)
+                        fileExtension = thisFile.mimetype.split("/");
+                        fileType = fileExtension[0];
+                        console.log('fileType --------- NON-octet-stream', fileType)
+                    }
+                    console.log('thisFile-------->', fileType);
+                    console.log('TYPE OF-------->', typeof fileType);
                 }
-
                 filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
                 req.files['pitch_files'].mv(dir + '/' + filename, async (err) => {
                     if (err) {
@@ -123,6 +142,7 @@ class pitchController {
                         ) {
                             if (results.insertId) {
                                 pitchID = results.insertId;
+                                console.log('saveAble=====>', saveAble);
                                 _.forEach(saveAble, function (key, value) {
                                     let newPitchInfo = {}
                                     newPitchInfo = {
@@ -164,13 +184,29 @@ class pitchController {
                     filename = '';
                     thisFile = [];
                     thisFile = value;
-                    if (thisFile.mimetype == 'application/octet-stream') {
-                        fileExtension = thisFile.name.split(".");
-                        fileType = fileExtension[1];
-                        //console.log('fileExtension', fileExtension);
+                    if (thisFile.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+                        console.log('--------mimetype-------', thisFile.mimetype)
+                        fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                        console.log('--------> fileExtension', fileExtension);
+                        fileType = fileExtension[1]
+                        console.log('fileType', '===========', fileType);
+                    } else if (thisFile.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                        console.log('--------mimetype-------', thisFile.mimetype)
+                        fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                        console.log('--------> fileExtension', fileExtension);
+                        fileType = fileExtension[1]
+                        console.log('fileType', '===========', fileType);
                     } else {
-                        fileExtension = thisFile.mimetype.split("/");
-                        fileType = fileExtension[0];
+                        if (thisFile.mimetype == 'application/octet-stream') {
+                            console.log('--------mimetype-------', thisFile.mimetype)
+                            fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                            fileType = fileExtension[1];
+                            //console.log('fileExtension', fileExtension);
+                        } else {
+                            console.log('--------mimetype-------', thisFile.mimetype)
+                            fileExtension = thisFile.mimetype.split("/");
+                            fileType = fileExtension[0];
+                        }
                     }
                     filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
                     // console.log(filename);
@@ -323,14 +359,14 @@ class pitchController {
     }
 
     static async viewPitchDetails(req, res) {
-        db.query("SELECT master_tbl.share_times,analysis.pitch_view_counter as total_views ,info.average_view,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text,(SELECT COUNT(*) FROM hp_pitch_page_notes WHERE hp_pitch_page_notes.pitch_info_id = info.pitch_info_id) as note_count FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id WHERE master_tbl.pitch_id = ?", req.params.id, function (
+        db.query("SELECT CONCAT(users.first_name,' ',users.last_name) AS username,manager.url_token,master_tbl.share_times,analysis.pitch_view_counter as total_views ,info.average_view,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text,(SELECT COUNT(*) FROM hp_pitch_page_notes WHERE hp_pitch_page_notes.pitch_info_id = info.pitch_info_id) as note_count FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id JOIN hp_pitch_manager as manager ON master_tbl.pitch_id = manager.pitch_id JOIN hp_users as users ON master_tbl.user_id = users.user_id WHERE master_tbl.pitch_id =  ?", req.params.id, function (
             error,
             results,
             fields
         ) {
             if (results) {
                 console.log(results)
-                res.render('userViews/pitchModule/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, documents_viewer: 'true' });
+                res.render('userViews/pitchModule/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, documents_viewer: 'true', view_pitch: process.env.SITE_URL + 'viewer/' + results[0].url_token, username: results[0].username });
             } else {
                 console.log(error, results, fields);
                 return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
@@ -679,14 +715,27 @@ class pitchController {
                 filename = '';
                 thisFile = [];
                 thisFile = req.files['pitch_files'];
-                if (thisFile.mimetype == 'application/octet-stream') {
-                    fileExtension = thisFile.name.split(".");
-                    fileType = fileExtension
+                if (thisFile.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+                    console.log(thisFile.mimetype)
+                    fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                    console.log('--------> fileExtension', fileExtension);
+                    fileType = fileExtension[1]
+                    console.log('fileType', '===========', fileType);
+                } else if (thisFile.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                    console.log(thisFile.mimetype)
+                    fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                    console.log('--------> fileExtension', fileExtension);
+                    fileType = fileExtension[1]
+                    console.log('fileType', '===========', fileType);
                 } else {
-                    fileExtension = thisFile.mimetype.split("/");
-                    fileType = fileExtension[0];
+                    if (thisFile.mimetype == 'application/octet-stream') {
+                        fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                        fileType = fileExtension[1];
+                    } else {
+                        fileExtension = thisFile.mimetype.split("/");
+                        fileType = fileExtension[0];
+                    }
                 }
-
                 filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
                 req.files['pitch_files'].mv(dir + '/' + filename, async (err) => {
                     if (err) {
@@ -739,13 +788,27 @@ class pitchController {
                     filename = '';
                     thisFile = [];
                     thisFile = value;
-                    if (thisFile.mimetype == 'application/octet-stream') {
-                        fileExtension = thisFile.name.split(".");
-                        fileType = fileExtension[1];
-                        //console.log('fileExtension', fileExtension);
+                    if (thisFile.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+                        console.log(thisFile.mimetype)
+                        fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                        console.log('--------> fileExtension', fileExtension);
+                        fileType = fileExtension[1]
+                        console.log('fileType', '===========', fileType);
+                    } else if (thisFile.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                        console.log(thisFile.mimetype)
+                        fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                        console.log('--------> fileExtension', fileExtension);
+                        fileType = fileExtension[1]
+                        console.log('fileType', '===========', fileType);
                     } else {
-                        fileExtension = thisFile.mimetype.split("/");
-                        fileType = fileExtension[0];
+                        if (thisFile.mimetype == 'application/octet-stream') {
+                            fileExtension = thisFile.name.split(/\.(?=[^\.]+$)/);
+                            fileType = fileExtension[1];
+                            //console.log('fileExtension', fileExtension);
+                        } else {
+                            fileExtension = thisFile.mimetype.split("/");
+                            fileType = fileExtension[0];
+                        }
                     }
                     filename = "pitch_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.' + fileExtension[1];
                     thisFile.mv(dir + '/' + filename, (err) => {
@@ -827,7 +890,7 @@ class pitchController {
             var smtpTransport = nodemailer.createTransport({
                 service: process.env.SERVICE,
                 auth: {
-                    user: process.env.USERNAME,
+                    user: process.env.MAIL,
                     pass: process.env.PASSWORD
                 }
             });
@@ -850,7 +913,7 @@ class pitchController {
                 // Email Body Builder 
                 newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '" target="blank"> ' + req.body.pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                 var mailOptions = {
-                    from: process.env.USERNAME, // sender address
+                    from: process.env.MAIL, // sender address
                     to: tomail, // list of receivers
                     subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
                     html: newEmail
@@ -904,7 +967,7 @@ class pitchController {
             var smtpTransport = nodemailer.createTransport({
                 service: process.env.SERVICE,
                 auth: {
-                    user: process.env.USERNAME,
+                    user: process.env.MAIL,
                     pass: process.env.PASSWORD
                 }
             });
@@ -931,7 +994,7 @@ class pitchController {
                     // Email Body Builder 
                     newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + process.env.SITE_URL + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                     var mailOptions = {
-                        from: process.env.USERNAME, // sender address
+                        from: process.env.MAIL, // sender address
                         to: tomail, // list of receivers
                         subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
                         html: newEmail
@@ -961,7 +1024,7 @@ class pitchController {
                             // Email Body Builder 
                             newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + process.env.SITE_URL + 'viewer/' + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                             var mailOptions = {
-                                from: process.env.USERNAME, // sender address
+                                from: process.env.MAIL, // sender address
                                 to: tomail, // list of receivers
                                 subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
                                 html: newEmail
@@ -1074,6 +1137,92 @@ class pitchController {
                 } else {
                     return res.status(200).send({ success: "search_fail", message: 'No Pitch Found' });
                 }
+            });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async sharePitchU(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                email_id: Joi.any().required(),
+                email_body: Joi.string().required(),
+                pitch_id: Joi.string().required(),
+                pitch_url: Joi.string().required(),
+                sender_name: Joi.string().required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            var token = req.headers['access-token'];
+            let userid = '';
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    userid = decoded.user;
+                }
+            });
+            var smtpTransport = nodemailer.createTransport({
+                service: process.env.SERVICE,
+                auth: {
+                    user: process.env.MAIL,
+                    pass: process.env.PASSWORD
+                }
+            });
+
+            let emailAddress = JSON.parse(req.body.email_id)
+            var tomail = "";
+            let share = '';
+            let newEmail = '';
+            let emailLog = {};
+            let pitch_url = req.body.pitch_url;
+            async.forEachOf(emailAddress, function (value, key, callback) {
+                // // -------------------------------mail sending-----------------------------
+                tomail = "";
+                share = '';
+                newEmail = '';
+                tomail = value;
+                // setup e-mail data with unicode symbols
+                // Email Body Builder 
+                newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + pitch_url + '" target="blank">' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                var mailOptions = {
+                    from: process.env.MAIL, // sender address
+                    to: tomail, // list of receivers
+                    subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
+                    html: newEmail
+                };
+                smtpTransport.sendMail(mailOptions, function (err, info) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        emailLog = {
+                            'pitch_id': req.body.pitch_id,
+                            'email_body': req.body.email_body,
+                            'email_address': value
+                        }
+
+                        db.query('INSERT into hp_pitch_viewers SET?', emailLog, function (error,
+                            results,
+                            fields) {
+                            console.log(error,
+                                results,
+                                fields);
+                            if (error) {
+                                res.send({ success: "false", message: "Email Sent || SOMETHING WENT WRONG WITH DATABASE LOG" });
+                            }
+                        })
+                        callback();
+                    }
+                })
+            }, function (err) {
+                if (err) console.error(err.message);
+                // configs is now a map of JSON 
+                res.send({ success: "true", message: 'Email Sent' });
             });
         }
         catch (error) {

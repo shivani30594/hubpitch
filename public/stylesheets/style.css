@@ -620,7 +620,12 @@ nav.navigation .search-box .form-group{margin-bottom: 0 !important;position: rel
 .search-box .search_res ul li:hover{background: #eee;}
 
 .placeholder-screenshot img {
-    width: 100%;
+    width: 50%;
+}
+
+button.share.btn.btn-primary.float-right {
+    margin-left: 11px;
+    float: right;
 }
 
 @media screen and (max-width: 1199px){

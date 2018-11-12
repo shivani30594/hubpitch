@@ -221,8 +221,7 @@ class subscriptionController {
                 plan_name: Joi.string()
                     .min(3)
                     .required(),
-                plan_price: Joi.string()
-                    .min(2).required(),
+                plan_price: Joi.string().required(),
                 unlimited_customer_pitches: Joi.string().required(),
                 video_upload_editing: Joi.string().required(),
                 pdf_upload: Joi.string().required(),

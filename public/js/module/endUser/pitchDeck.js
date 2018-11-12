@@ -232,67 +232,98 @@ const pitchDeck = function () {
             if (endUserName == undefined) {
                 $('#add_name_model').modal('show');
             } else {
-                $('#chat-window').modal('show');
-                $('.loader_hp_').show();
-                $.ajax({
-                    url: site_url + 'get_conversation_',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                    method: 'POST',
-                    dataType: 'json',
-                    data: {
-                        conversation_id: conversation,
-                    },
-                    success: function (response) {
-                        if (response.success == 'true') {
-                            $('#message_body').html('');
-                            $('.loader_hp_').hide();
-                            if (response.new_conversation == 'true') {
-                                console.log('new conversation');
-                                return
-                            } else {
-                                $('.unread_count_wapper').show();
-                                $('.unread_count').html('<i class="glyphicon glyphicon-envelope"></i> You Have ' + response.unread + ' Unread Messages');
-                                let data = response.data;
-                                let dataHTML = '';
-                                data.forEach((obj) => {
-                                    dataHTML = ''
-                                    if (obj) {
-                                        dataHTML = '<div class="msg-block' + (endUserName != obj.sender ? " msg_reply" : "") + '"><div class="msg-head"> <h5>' + (endUserName == obj.sender ? obj.sender : sender) + '</h5>  <span class="time-right">' + moment(obj.created).format("MMM DD YYYY hh:mm A", 'en') + '</span> </div> <div class="m-text"><p>' + obj.chat_text + '</p></div></div>';
-                                        $('#message_body').append(dataHTML);
-                                    }
-                                })
-                                $.ajax({
-                                    url: site_url + 'mark_as_read_conversation_end_user',
-                                    headers: {
-                                        'Accept': 'application/json',
-                                    },
-                                    method: 'POST',
-                                    data: {
-                                        conversation_id: conversation
-                                    },
-                                    success: function (response) {
-                                        if (response.success == true) {
-                                            console.log('MARK AS UNREAD');
-                                        } else {
-                                            console.log('SOMETHING WENT WRONG IN MARK AS UNREAD');
+                if (conversation != undefined) {
+                    $('#chat-window').modal('show');
+                    $('.loader_hp_').show();
+                    $.ajax({
+                        url: site_url + 'get_conversation_',
+                        headers: {
+                            'Accept': 'application/json',
+                        },
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            conversation_id: conversation,
+                        },
+                        success: function (response) {
+                            if (response.success == 'true') {
+                                $('#message_body').html('');
+                                $('.loader_hp_').hide();
+                                if (response.new_conversation == 'true') {
+                                    console.log('new conversation');
+                                    return
+                                } else {
+                                    $('.unread_count_wapper').show();
+                                    $('.unread_count').html('<i class="glyphicon glyphicon-envelope"></i> You Have ' + response.unread + ' Unread Messages');
+                                    let data = response.data;
+                                    let dataHTML = '';
+                                    data.forEach((obj) => {
+                                        dataHTML = ''
+                                        if (obj) {
+                                            dataHTML = '<div class="msg-block' + (endUserName != obj.sender ? " msg_reply" : "") + '"><div class="msg-head"> <h5>' + (endUserName == obj.sender ? obj.sender : sender) + '</h5>  <span class="time-right">' + moment(obj.created).format("MMM DD YYYY hh:mm A", 'en') + '</span> </div> <div class="m-text"><p>' + obj.chat_text + '</p></div></div>';
+                                            $('#message_body').append(dataHTML);
                                         }
-                                    },
-                                    error: function (jqXHR, textStatus) {
-                                        console.log("Request failed: " + textStatus);
-                                    }
-                                })
+                                    })
+                                    $.ajax({
+                                        url: site_url + 'mark_as_read_conversation_end_user',
+                                        headers: {
+                                            'Accept': 'application/json',
+                                        },
+                                        method: 'POST',
+                                        data: {
+                                            conversation_id: conversation
+                                        },
+                                        success: function (response) {
+                                            if (response.success == true) {
+                                                console.log('MARK AS UNREAD');
+                                            } else {
+                                                console.log('SOMETHING WENT WRONG IN MARK AS UNREAD');
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus) {
+                                            console.log("Request failed: " + textStatus);
+                                        }
+                                    })
+                                }
                             }
+                            else {
+                                alert('Something Went Wrong!');
+                            }
+                        },
+                        error: function (jqXHR, textStatus) {
+                            alert("Request failed: " + textStatus);
                         }
-                        else {
-                            alert('Something Went Wrong!');
+                    });
+                } else {
+                    $('.loader_hp_').show();
+                    let pitchTokenVl = $(location).attr("href").split('/').pop();
+                    $.ajax({
+                        url: site_url + 'conversation-creater',
+                        headers: {
+                            'Accept': 'application/json',
+                        },
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            pitch_token: $('#pitch_token').val(),
+                            pitch_token: $('#pitch_token').val(),
+                        },
+                        success: function (response) {
+                            if (response.success == 'true') {
+                                document.cookie = "conversation=" + response.data;
+                                $('.loader_hp_').hide();
+                                jQuery('#add_name_model').modal('hide');
+                                jQuery('#chat-window').modal('show');
+                            }
+                            else {
+                                alert('Something Went Wrong!');
+                            }
+                        },
+                        error: function (jqXHR, textStatus) {
+                            alert("Request failed: " + textStatus);
                         }
-                    },
-                    error: function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
-                    }
-                });
+                    });
+                }
             }
         })
     }

@@ -57,7 +57,7 @@ class enduserController {
                                             var smtpTransport = nodemailer.createTransport({
                                                 service: process.env.SERVICE,
                                                 auth: {
-                                                    user: process.env.USERNAME,
+                                                    user: process.env.MAIL,
                                                     pass: process.env.PASSWORD
                                                 }
                                             });

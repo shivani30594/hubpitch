@@ -23,7 +23,7 @@ const userPitch = function () {
                     data.forEach((obj) => {
                         dataHTML = ''
                         if (obj) {
-                            dataHTML = '<li> <a href="/user/pitch/viewer/' + obj.pitch_id + '"> <div class="list-left"> <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <div class="message" onclick="openConversation(' + obj.pitch_id + ')">' + obj.messages + ' New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> </div> </li>';
+                            dataHTML = '<li><div class="list-left"> <a href="/user/pitch/viewer/' + obj.pitch_id + '">  <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <div class="message" onclick="openConversation(' + obj.pitch_id + ')">' + obj.messages + ' New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> <div class="delete-pitch"> <span onclick="deletePitch('+obj.pitch_id+')"> <i class="glyphicon glyphicon-trash"> </i> </span> </div> </div> </li>';
                             $('.ul_list_wapper').append(dataHTML);
                         }
                     })
@@ -178,5 +178,38 @@ function reply(id, name) {
         })
     } else {
         alert('Please Enter Chat Message First!');
+    }
+}
+
+function deletePitch(id) {
+    var x = confirm("Are you sure you want to delete?");
+    if (x) {
+        let accesstoken = getCookie('accesstoken')
+        console.log('id__________',id); 
+        $.ajax({
+            url: site_url + 'detele_pitch',
+            headers: {
+                'Accept': 'application/json',
+                "access-token": accesstoken
+            },
+            method: 'POST',
+            data: {
+                pitch_delete_type: 'full',
+                pitch_id: id,
+            },
+            success: function (response) {
+                if (response.success == "true") {
+                    alert(response.message);
+                    location.reload();
+                } else {
+                    console.log(response.message);
+                    alert('SOMETHING WENT WRONG IN SENDING MESSAGE');
+
+                }
+            },
+            error: function (jqXHR, textStatus) {
+                console.log("Request failed: " + textStatus);
+            }
+        })
     }
 }

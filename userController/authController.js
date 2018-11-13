@@ -198,7 +198,7 @@ class authController {
       var smtpTransport = nodemailer.createTransport({
         service: process.env.SERVICE,
         auth: {
-          user: process.env.USERNAME,
+          user: process.env.MAIL,
           pass: process.env.PASSWORD
         }
       });
@@ -229,7 +229,7 @@ class authController {
                   from: process.env.USERNAME, // sender address
                   to: tomail, // list of receivers
                   subject: "Password Reset Link", // Subject line
-                  html: "Here is Reset Password Link: " + process.env.SITE_URL + token
+                  html: "Here is Reset Password Link: " + process.env.SITE_URL+'reset-password/' + token
                 };
                 // send mail with defined transport object
                 smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -263,19 +263,27 @@ class authController {
       });
       if (userData.error) {
         res.send({ success: false, error: userData.error });
-        return;
       }
       let user_id = "";
       user_id = req.body.token;
-      let sqlUpdatePassword = '';
-      sqlUpdatePassword = "UPDATE hp_users SET password ='" + md5(req.body.password) + "' WHERE `user_id` = '" + user_id + "'"
-      db.query(sqlUpdatePassword,
+      db.query("UPDATE hp_users SET password ='" + md5(req.body.password) + "' WHERE `user_id` = '" + user_id + "'",
         function (error, results, fields) {
+          if(error){
+            res.send({ success: false, error: error });
+          }
+          console.log('UPDATE PASSWORD------>',error, results, fields)
           if (results.affectedRows > 0) {
-            db.query('DELETE FROM hp_users_reset_token WHERE `user_id` = ?', user_id, function (error, results, fields) {
-              if (results.affectedRows > 0) {
+            db.query('DELETE FROM hp_users_reset_token WHERE `user_id` = ?', user_id, function (error2, results2, fields2) {
+              console.log('DELETE reset_token------>',error2, results2, fields2)
+              if (results2) {                
                 db.query('DELETE FROM hp_users_tmp WHERE `user_id` = ?', user_id, function (error1, results1, fields1) {
-                  if (results1.affectedRows > 0) {
+                  console.log('DELETE users_tmp------>',error1, results1, fields1)
+                  if(error1){
+                    res.send({ success: false, error: error1 });
+                  }
+                  if (results1.affectedRows=0) {
+                    res.send({ success: true, message: 'Password Reset Successfuly' });
+                  } else {
                     res.send({ success: true, message: 'Password Reset Successfuly' });
                   }
                 });

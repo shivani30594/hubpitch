@@ -143,7 +143,6 @@ class stripePaymentController {
                 pass: process.env.PASSWORD
             }
         });
-        console.log(smtpTransport);
         db.query('UPDATE hp_users SET is_payment="free",plan_id="' + array[1] + '",	transaction_id="free_plan_transaction_id_" WHERE user_id="' + array[0] + '"', function (error,
             results,
             fields) {
@@ -170,8 +169,9 @@ class stripePaymentController {
                     // send mail with defined transport object
                     smtpTransport.sendMail(mailOptions, function (err, info) {
                         if (err) {
-                            console.log(err);
+                            console.log('ERORR_____________ MAIL',err);
                         } else {
+                            console.log('SENT')
                             res.status(200).send({ success: "true" })
                         }
                     });

@@ -72,6 +72,7 @@ const Login = function () {
                         if (!response.success) {
                             return alert(JSON.stringify(response.message));
                         }
+                        alert(response.message)
                         window.location.href = "/";
                     },
                     error: function (jqXHR, textStatus) {
@@ -111,6 +112,7 @@ const Login = function () {
                         if (!response.success) {
                             return alert(JSON.stringify(response.message));
                         }
+                        alert(response.message)
                         window.location.href = "/";
                     },
                     error: function (jqXHR, textStatus) {

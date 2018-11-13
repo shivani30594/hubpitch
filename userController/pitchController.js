@@ -287,16 +287,22 @@ class pitchController {
         if (req.body.pitch_delete_type = 'full') {
             try {
                 const pitchData = Joi.validate(Object.assign(req.params, req.body), {
-                    pitch_id: Joi.string()
-                        .required()
+                    pitch_delete_type: Joi.string().required(),
+                    pitch_id: Joi.string().required()
                 });
                 if (pitchData.error) {
                     res.send({ success: false, error: pitchData.error });
                     return;
                 }
+                var token = req.headers['access-token'];
+                jwt.verify(token, jwtsecret, function (err, decoded) {
+                    if (err) {
+                        return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                    }
+                });
                 db.query("DELETE FROM hp_pitch_master WHERE pitch_id=?", req.body.pitch_id, function (error, results, fields) {
                     if (results.affectedRows) {
-                        res.send({ success: "true", message: "Delete Pitch!" });
+                        res.send({ success: "true", message: "Pitch Deleted!" });
                     } else {
                         console.log(error, results, fields)
                         res.send({ success: "false", message: "Something went wrong || Master Table" });
@@ -310,16 +316,22 @@ class pitchController {
         } else {
             try {
                 const pitchData = Joi.validate(Object.assign(req.params, req.body), {
-                    att_pitch_id: Joi.string()
-                        .required()
+                    pitch_delete_type: Joi.string().required(),
+                    att_pitch_id: Joi.string().required(),
                 });
                 if (pitchData.error) {
                     res.send({ success: false, error: pitchData.error });
                     return;
                 }
+                var token = req.headers['access-token'];
+                jwt.verify(token, jwtsecret, function (err, decoded) {
+                    if (err) {
+                        return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                    }
+                });
                 db.query("DELETE FROM hp_pitch_info WHERE pitch_info_id=?", req.body.att_pitch_id, function (error, results, fields) {
                     if (results.affectedRows) {
-                        res.send({ success: "true", message: "Delete Pitch!" });
+                        res.send({ success: "true", message: "Pitch Page Deleted!" });
                     } else {
                         console.log(error, results, fields)
                         res.send({ success: "false", message: "Something went wrong || Info Table" });

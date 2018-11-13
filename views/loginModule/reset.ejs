@@ -52,16 +52,17 @@
                         <div class="head">Enter Your New Password</div>
                         <div class="sign-up-form">
                             <% if(expired == 'true'){ %>
-                                <div class="alert alert-danger">
-                                        <strong>Token Expired:</strong> Your Given Reset Token Expired
-                                </div>
+                            <div class="alert alert-danger">
+                                <strong>Token Expired:</strong> Your Given Reset Token Expired
+                            </div>
                             <% } else { %>
                             <form method="post" name="reset" class="reset_from" id="reset_form">
-                                <input type="hidden" name="reset-token" id='reset_token' value=<%= reset_id %>
+                                <input type="hidden" name="reset-token" id='reset_token' value=<%=reset_id %>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="input-group">
-                                            <input type="password" class="form-control" name="password" id="password" placeholder="New Password">
+                                            <input type="password" class="form-control" name="password" id="password"
+                                                placeholder="New Password">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -70,16 +71,17 @@
                                         </div>
                                     </div>
                                     <div class="form-bottom">
+                                        <div class="col-md-6 col-sm-6 col-xs-5">
+                                            <a href="/" class="continue-btn"><i class="glyphicon glyphicon-arrow-left"></i>
+                                                Back To Login</a>
+                                        </div>
                                         <div class="col-md-6 col-sm-6">
                                             <button type="submit" class="continue-btn" id="reset_btn">Continue</a>
                                         </div>
-                                        <div class="col-md-6 col-sm-6 col-xs-5">
-											<a href="/" class="continue-btn"><i class="glyphicon glyphicon-arrow-left"></i> Back To Login</a>
-										</div>
                                     </div>
                                 </div>
                             </form>
-                            <% } %> 
+                            <% } %>
                         </div>
                     </div>
                 </div>

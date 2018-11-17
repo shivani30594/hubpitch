@@ -3,7 +3,6 @@
 
 <head>
     <% include ../component/headerFile.ejs %>
-    <script src="https://cdn.ckeditor.com/ckeditor5/11.1.1/classic/ckeditor.js"></script>
 </head>
 
 <body>
@@ -35,7 +34,7 @@
                     </div>
                     <div class="action_btn">
                         <div class="bottom-btn">
-                            <a href="javascript:void(0)" id="cancel_btn">Cancel</a>
+                            <a href="javascript:resetForm()" id="cancel_btn">Cancel</a>
                             <a href="javascript:void(0)" id="continue_btn_main" class="first_box_btn">Continue</a>
                         </div>
                     </div>
@@ -49,7 +48,7 @@
                 </div>
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:resetForm()">Cancel</a>
                     <a href="javascript:void(0)" class="continue_btn">Continue</a>
                 </div>
             </div>
@@ -72,72 +71,80 @@
                         <textarea rows="9" cols="" placeholder="Click to Edit"></textarea>
                     </div>
                     <div class="bottom-btn">
-                        <a href="">Cancel</a>
+                        <a href="javascript:resetForm()">Cancel</a>
                         <a href="">Continue</a>
                     </div>
                 </div>
             </div>
             <div class="row preview_file preview_box">
-                <div class="col-md-12 top-area preview">
-                    <video width="400" controls>
-                        <source src="" class="video_here"> Your browser does not support HTML5 video.
-                    </video>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
-                    <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                <div class="preview-inner-wrap">
+                    <div class="col-md-12 top-area preview">
+                        <video width="400" controls>
+                            <source src="" class="video_here"> Your browser does not support HTML5 video.
+                        </video>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
+                        <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                    </div>
                 </div>
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:resetForm()">Cancel</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
             <div class="row preview_file_image image_priview preview_box">
-                <div class="col-md-12 top-area preview">
-                    <img src="" alt="preview" class="preview_image" />
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
-                    <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                <div class="preview-inner-wrap">
+                    <div class="col-md-12 top-area preview">
+                        <img src="" alt="preview" class="preview_image" />
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
+                        <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                    </div>
                 </div>
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:resetForm()">Cancel</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
             <div class="row preview_file_docs docs_priview preview_box">
-                <div class="col-md-12 top-area preview">
-                    <embed src="" class="docs_priview_e" width="500" height="600" />
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
-                    <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                <div class="preview-inner-wrap">
+                    <div class="col-md-12 top-area preview">
+                        <embed src="" class="docs_priview_e" width="500" height="600" />
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
+                        <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                    </div>
                 </div>
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:resetForm()">Cancel</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
             <div class="row preview_docx docs_priview preview_box">
-                <div class="col-md-12 top-area preview">
-                    <!-- <button class="view-btn">view button</button> -->
-                    <div class="kuku-viewer-node" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
-                    <div class="kuku-docx-controller" style="display: none;">
-                        <button class="btn prev-btn">
-                            <i class="fa fa-arrow-left"></i> Prev</button>
-                        <button class="btn next-btn">
-                            Next
-                            <i class="fa fa-arrow-right"></i>
-                        </button>
+                <div class="preview-inner-wrap">
+                    <div class="col-md-12 top-area preview">
+                        <!-- <button class="view-btn">view button</button> -->
+                        <div class="kuku-viewer-node" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                        <div class="kuku-docx-controller" style="display: none;">
+                            <button class="btn prev-btn">
+                                <i class="fa fa-arrow-left"></i> Prev</button>
+                            <button class="btn next-btn">
+                                Next
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <!--control button-->
                     </div>
-                    <!--control button-->
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
-                    <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                    <div class="col-md-6 col-sm-6 col-xs-12 text-box" style="display: none">
+                        <textarea rows="9" cols="" class="text_box_ta" name="pitch_text[]" placeholder="Click to Edit"></textarea>
+                    </div>
                 </div>
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:resetForm()">Cancel</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
@@ -159,7 +166,7 @@
                             </div>
                         </div>
                         <div class="bottom-btn">
-                            <a href="javascript:void(0)">Cancel</a>
+                            <a href="javascript:resetForm()">Cancel</a>
                             <a href="javascript:void(0)" class="continue_btn">Continue</a>
                         </div>
                     </div>
@@ -228,7 +235,7 @@
                 <div class="open_share_action"> <button type="button" data-toggle="modal" data-target="#addviewer">Send
                         Link Via Email</button> </div>
                 <div class="button-wapper">
-                    <button class="cancel"> Cancel </button>
+                    <button class="cancel" onclick="discardPitch()"> Cancel </button>
                     <button id="copy_link_btn" onclick="copyToClipboard('#link_value')"> Copy Link To Dashboard
                     </button>
                 </div>
@@ -267,6 +274,7 @@
         <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
     </div>
     <script src="/js/module/userPitch/new_pitch.js"></script>
+    <script src="/js/libraries/tinymce/tinymce.min.js"></script>
 </body>
 
 </html>

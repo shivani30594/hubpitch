@@ -226,15 +226,36 @@ const newPitch = function () {
             }
             $this.addClass('display_current');
             $this.show('100');
-                // ClassicEditor
-                // .create(document.querySelector('.current_preview .text_box_ta'))
-                // .then( editor => {
-                //     console.log( 'Editor was initialized', editor );
-                //     myEditor = editor;
-                // })
-                // .catch(error => {
-                //     console.error(error);
-                // });
+            // ClassicEditor
+            // .create(document.querySelector('.current_preview .text_box_ta'))
+            // .then( editor => {
+            //     console.log( 'Editor was initialized', editor );
+            //     myEditor = editor;
+            // })
+            // .catch(error => {
+            //     console.error(error);
+            // });
+            tinymce.init({
+                selector: ".text_box_ta",
+                theme: "modern",
+                height: 300,
+                plugins: [
+                    "searchreplace",
+                    "save table contextmenu directionality emoticons template paste textcolor"
+                ],
+                toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent | forecolor backcolor emoticons",
+
+                style_formats: [
+                    { title: 'Bold text', inline: 'b' },
+                    { title: 'Red text', inline: 'span', styles: { color: '#ff0000' } },
+                    { title: 'Red header', block: 'h1', styles: { color: '#ff0000' } },
+                    { title: 'Example 1', inline: 'span', classes: 'example1' },
+                    { title: 'Example 2', inline: 'span', classes: 'example2' },
+                    { title: 'Table styles' },
+                    { title: 'Table row 1', selector: 'tr', classes: 'tablerow1' }
+                ]
+            });
+
             $this.find('.a_another_btn').html(' ');
             $this.find('.top-area').removeClass('col-md-12').addClass('col-md-6');
             $this.find('.text-box').show('100');
@@ -253,6 +274,7 @@ const newPitch = function () {
         var cnt2 = 1;
         var ad_text_array = [];
         jQuery(".display_box_d .text_box_ta").each(function () {
+            tinyMCE.triggerSave();
             ad_text_array.push(jQuery(this).val());
             cnt2++;
         });
@@ -383,12 +405,14 @@ function checkEmails() {
         }
     }
     if (errorFlag === 0) {
-
+        
+        let accesstoken = getCookie('accesstoken');
         $('.loader_hp_').show('50');
         $.ajax({
             url: site_url + 'share_pitch_email',
             headers: {
                 'Accept': 'application/json',
+                "access-token": accesstoken
             },
             method: 'POST',
             data: {
@@ -451,4 +475,44 @@ function copyToClipboard(element) {
     document.execCommand("copy");
     $temp.remove();
     alert('Link Coppied In ClipBoard!')
+}
+
+function discardPitch() {
+    var x = confirm("Are You Sure You Want To Discard This Pitch?");
+    if (x) {
+        let accesstoken = getCookie('accesstoken')
+        let id = $('#pitch_id').val();
+        $.ajax({
+            url: site_url + 'detele_pitch',
+            headers: {
+                'Accept': 'application/json',
+                "access-token": accesstoken
+            },
+            method: 'POST',
+            data: {
+                pitch_delete_type: 'full',
+                pitch_id: id,
+            },
+            success: function (response) {
+                if (response.success == "true") {
+                    alert('Pitch Discard Successfully!');
+                    location.reload();
+                } else {
+                    console.log(response.message);
+                    alert('SOMETHING WENT WRONG IN SENDING MESSAGE');
+
+                }
+            },
+            error: function (jqXHR, textStatus) {
+                console.log("Request failed: " + textStatus);
+            }
+        })
+    }
+}
+function resetForm() {
+    var x = confirm("Are You Sure You Want To Discard This Pitch?");
+    if (x) {
+        $('#add_pitch').trigger("reset");
+        location.reload();
+    }
 }

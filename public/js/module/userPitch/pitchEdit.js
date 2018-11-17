@@ -1,5 +1,6 @@
 const pitchEdit = function () {
     let accesstoken = getCookie('accesstoken');
+    $('.loader_hp_').hide('50');
     const handleNewPitchFormUI = () => {
         $('#final_section').hide();
         $('#share_box').hide();
@@ -219,6 +220,27 @@ const pitchEdit = function () {
             }
             $this.addClass('display_current');
             $this.show('100');
+            $('.display_current .text_box_ta').addClass('tinymce')
+            tinymce.init({
+                selector: ".text_box_ta",
+                theme: "modern",
+                height: 300,
+                plugins: [
+                    "searchreplace",
+                    "save table contextmenu directionality emoticons template paste textcolor"
+                ],
+                toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent | forecolor backcolor emoticons",
+        
+                style_formats: [
+                    { title: 'Bold text', inline: 'b' },
+                    { title: 'Red text', inline: 'span', styles: { color: '#ff0000' } },
+                    { title: 'Red header', block: 'h1', styles: { color: '#ff0000' } },
+                    { title: 'Example 1', inline: 'span', classes: 'example1' },
+                    { title: 'Example 2', inline: 'span', classes: 'example2' },
+                    { title: 'Table styles' },
+                    { title: 'Table row 1', selector: 'tr', classes: 'tablerow1' }
+                ]
+            });
             $this.find('.a_another_btn').html(' ');
             $this.find('.top-area').removeClass('col-md-12').addClass('col-md-6');
             $this.find('.text-box').show('100');
@@ -234,6 +256,7 @@ const pitchEdit = function () {
         });
 
         // TEXT CODE 
+        tinyMCE.triggerSave();
         var cnt2 = 1;
         var ad_text_array = [];
         jQuery(".display_box_d .text_box_ta").each(function () {
@@ -257,7 +280,7 @@ const pitchEdit = function () {
         })
         console.log(formData);
         $.ajax({
-            url: site_url+'add_new_file',
+            url: site_url + 'add_new_file',
             headers: {
                 'Accept': 'application/json',
                 "access-token": accesstoken
@@ -319,11 +342,13 @@ function checkEmails() {
         parts = url.split("/"),
         pitch_id = parts[parts.length - 1];
     if (emails == '') {
+        let accesstoken = getCookie('accesstoken');
         var pre_email_id_arr = pre_emails.split(',');
         $.ajax({
-            url: site_url+'update_share_pitch_email',
+            url: site_url + 'update_share_pitch_email',
             headers: {
                 'Accept': 'application/json',
+                "access-token": accesstoken
             },
             method: 'POST',
             data: {
@@ -362,10 +387,12 @@ function checkEmails() {
         }
         if (errorFlag === 0) {
             console.log('DO THE API CALL');
+            let accesstoken = getCookie('accesstoken');
             $.ajax({
-                url: site_url+'update_share_pitch_email',
+                url: site_url + 'update_share_pitch_email',
                 headers: {
                     'Accept': 'application/json',
+                    "access-token": accesstoken
                 },
                 method: 'POST',
                 data: {
@@ -391,34 +418,62 @@ function checkEmails() {
 }
 
 const editText = (id) => {
+    $('.loader_hp_').show('50');
+    $('#edit_text_modal').modal('show');
     $('#pitch_text').val('');
     $('#pitch_info_token').val('');
     let text = $('#textof_' + id).html();
+    console.log('text====',$('#textof_' + id));
     $('#pitch_text').val(text);
     $('#pitch_info_token').val(id);
-    $('#edit_text_modal').modal('show');
+    tinymce.init({
+        selector: "#pitch_text",
+        theme: "modern",
+        height: 300,
+        plugins: [
+            "searchreplace",
+            "save table contextmenu directionality emoticons template paste textcolor"
+        ],
+        toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent | forecolor backcolor emoticons",
+
+        style_formats: [
+            { title: 'Bold text', inline: 'b' },
+            { title: 'Red text', inline: 'span', styles: { color: '#ff0000' } },
+            { title: 'Red header', block: 'h1', styles: { color: '#ff0000' } },
+            { title: 'Example 1', inline: 'span', classes: 'example1' },
+            { title: 'Example 2', inline: 'span', classes: 'example2' },
+            { title: 'Table styles' },
+            { title: 'Table row 1', selector: 'tr', classes: 'tablerow1' }
+        ]
+    });
+    // var content =  tinyMCE.getContent('pitch_text');
+    // console.log(content)
+    $('.loader_hp_').hide('50');
 }
 
 const editTextCall = () => {
+    tinyMCE.triggerSave();
     let pitch_info_id = $('#pitch_info_token').val();
     let pitcht_text = $('#pitch_text').val();
+    var formData = new FormData();
+    formData.append('pitch_info_id', pitch_info_id);
+    formData.append('pitch_info_text', pitcht_text);
     if (pitch_info_id == undefined || pitch_info_id == '') {
         alert('Something Went Wrong Please Reload The Page');
     } else {
         if (pitcht_text == '') {
             alert('Please Add Some Text Contain First');
         } else {
+
             $.ajax({
                 url: site_url+'edit_pitch_text',
                 headers: {
                     'Accept': 'application/json',
                 },
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
                 method: 'POST',
-                data: {
-                    pitch_info_id: pitch_info_id,
-                    pitch_info_text: pitcht_text,
-                },
-                dataType: 'json',
+                data: formData,
                 success: function (response) {
                     if (!response.success) {
                         return alert(JSON.stringify(response.message));
@@ -435,3 +490,14 @@ const editTextCall = () => {
         }
     }
 }
+$('#edit_text_modal').on('hidden.bs.modal', function () {
+    // do something…
+    //alert('HERE');
+    tinymce.execCommand('mceRemoveControl', true, 'pitch_text');
+})
+$(document).on("click", '.btn-prev', function () {
+    tinymce.execCommand('mceRemoveEditor', true, 'pitch_text');
+});
+$(document).on("click", '.btn-next', function () {
+    tinymce.execCommand('mceRemoveEditor', true, 'pitch_text');
+});

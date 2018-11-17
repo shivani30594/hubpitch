@@ -14,7 +14,7 @@ class subscriptionController {
             fields
         ) {
             if (results) {
-                res.render('adminViews/subscriptionModule/manageSubscription', { title: 'Admin Subscription Plan || Hub Pitch', data: results, datatable: 'TRUE' })
+                res.render('adminViews/subscriptionModule/manageSubscription', { title: 'Admin Subscription Plan || hubPitch', data: results, datatable: 'TRUE' })
             } else {
                 console.log(error, results, fields);
                 return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
@@ -23,7 +23,7 @@ class subscriptionController {
     }
 
     static async  manageStripeSetting(req, res) {
-        res.render('adminViews/subscriptionModule/manageStripe', { title: 'Admin Manage Stripe Account || Hub Pitch', datatable: 'FALSE' })
+        res.render('adminViews/subscriptionModule/manageStripe', { title: 'Admin Manage Stripe Account || hubPitch', datatable: 'FALSE' })
     }
 
     static async editPlanPage(req, res) {
@@ -33,7 +33,7 @@ class subscriptionController {
             fields
         ) {
             if (results) {
-                res.render('adminViews/subscriptionModule/editPlan', { title: 'Admin Edit Plan || Hub Pitch', data: results, datatable: 'FALSE' })
+                res.render('adminViews/subscriptionModule/editPlan', { title: 'Admin Edit Plan || hubPitch', data: results, datatable: 'FALSE' })
             }
             else if (error) {
                 console.log(error,
@@ -50,7 +50,7 @@ class subscriptionController {
     }
 
     static async addPlanPage(req, res) {
-        res.render('adminViews/subscriptionModule/addPlan', { title: 'Admin Add Plan || Hub Pitch', datatable: 'FALSE' })
+        res.render('adminViews/subscriptionModule/addPlan', { title: 'Admin Edit Plan || hubPitch', datatable: 'FALSE' })
     }
     static async addStripeSetting(req, res) {
         try {

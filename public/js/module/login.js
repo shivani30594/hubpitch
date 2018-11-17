@@ -8,10 +8,12 @@ const Login = function () {
             ignore: "",
             rules: {
                 firstName: {
-                    required: true
+                    required: true,
+                    minlength: 3
                 },
                 lastName: {
-                    required: true
+                    required: true,
+                    minlength: 3
                 },
                 email: {
                     required: true,
@@ -30,8 +32,14 @@ const Login = function () {
                         email: $('#sign_up_form input[name="email"]').val()
                     },
                     success: function (response) {
-                        if (!response.success) {
-                            return alert(JSON.stringify(response.error));
+                        if(response.error){
+                            console.log(response.error);
+                            alert(response.error.details[0].message);
+                        }
+                        if (response.success == false) {
+                            alert(response.message);
+                            $('#sign_up_form').trigger("reset");
+                            $('.loader_hp_').hide('50');
                         }
                         if (response.success) {
                             document.cookie = "newtoken=" + response.token;

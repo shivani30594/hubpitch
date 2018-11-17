@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="/stylesheets/slick.css">
     <link rel="stylesheet" href="/stylesheets/slick-theme.css">
     <!-- custom css -->
-
+    
     <!-- Validation.Js -->
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/js/additional-methods.min.js"></script>
@@ -289,7 +289,8 @@
                                                     <i class="glyphicon glyphicon-zoom-out"></i>
                                                 </button>
 
-                                                <button class="btn full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Full Screen<i class="glyphicon glyphicon-resize-full"></i></button>
+                                                <button class="btn full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Full
+                                                    Screen<i class="glyphicon glyphicon-resize-full"></i></button>
                                                 <!-- <button class="btn" onclick="full_screen_test(param,'<%= i %>','<%= data[i].pitch_info_id %>',$(this))">
                                                     Full Screen
                                                     <i class="glyphicon glyphicon-zoom-out"></i>
@@ -310,7 +311,8 @@
                                         <% } %>
                                         <% if(data[i].pitch_attachment_type != 'pptx' && data[i].pitch_attachment_type != 'video') { %>
                                         <div class="zoom-wapper">
-                                            <button class="full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Full Screen<i class="glyphicon glyphicon-resize-full"></i></button>
+                                            <button class="full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Full
+                                                Screen<i class="glyphicon glyphicon-resize-full"></i></button>
                                         </div>
                                         <% } %>
                                         <!-- <% if(data[i].pitch_attachment_type != 'video') { %>
@@ -322,14 +324,12 @@
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="slider-text">
-                                        <p class="pitch_text">
-                                            <%= data[i].pitch_attachment_text %>
-                                        </p>
+                                        <%- data[i].pitch_attachment_text %>
                                         <a href="javascript:addNote(<%= data[i].pitch_info_id %>)" class="add_note btn btn-primary"><i
                                                 class="glyphicon glyphicon-plus" id="note_icon_button_<%= data[i].pitch_info_id %>"></i>
                                             Add Note
                                         </a>
-                                        <div class="notesection_<%= data[i].pitch_info_id %>" style="display: none">
+                                        <div class="notesection_<%= data[i].pitch_info_id %> note_section" style="display: none">
                                             <form name="add_note" method="post" class="add-note" id="add_note_form_<%= data[i].pitch_info_id %>">
                                                 <div class="input-group">
                                                     <textarea rows="4" cols="50" class="form-control" id="note_<%= data[i].pitch_info_id %>"
@@ -529,7 +529,8 @@
                                     <input type="text" class="form-control" name="end_user_name" id="end_user_name">
                                 </div>
                             </div>
-                            <button type="submit" name="add_name_" class="btn btn-primary" id="add_name_to_user"> Send a Message </button>
+                            <button type="submit" name="add_name_" class="btn btn-primary" id="add_name_to_user"> Send
+                                a Message </button>
                         </div>
                     </form>
                 </div>

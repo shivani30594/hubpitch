@@ -177,6 +177,10 @@ line-height: 1.3;
   color: #fff;
   border: none;
 }
+.slider-text .note_section {margin-top: 10px;}
+.slider-text a.add_note.btn.btn-primary{margin: 10px 0 0 10px;}
+
+
 .edit-wrap .kuku-docx-controller {bottom: 0px;}
 button.full_screen_ i {margin-left: 7px;}
 @media (max-width: 991px){

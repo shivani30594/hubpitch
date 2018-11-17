@@ -205,9 +205,9 @@
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="slider-text">
-                                        <p id="textof_<%= data[i].pitch_info_id %>">
-                                            <%= data[i].pitch_attachment_text %>
-                                        </p>
+                                        <div id="textof_<%= data[i].pitch_info_id %>">
+                                            <%- data[i].pitch_attachment_text %>
+                                        </div>
                                         <button type="button" class="btn btn-primary" onclick="editText('<%= data[i].pitch_info_id %>')">
                                             <i class="glyphicon glyphicon-pencil"></i>
                                             Edit Text </button>
@@ -425,7 +425,7 @@
                             <form method="post" id="formEmail" name="formEmail">
                                 <input type="hidden" id="pitch_info_token" name="pitch_info_token" value="">
                                 <div class="form-group">
-                                    <textarea class="form-control" id="pitch_text" name="pitch_text"></textarea>
+                                    <textarea class="form-control pitch_txt_" id="pitch_text" name="pitch_text"></textarea>
                                 </div>
                             </form>
                         </div>
@@ -439,8 +439,13 @@
             </div>
         </div>
     </div>
+    <!-- LOADER  -->
+    <div class="loader_hp_">
+        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </div>
     <script src="/js/module/endUser/pitchSliders.js"></script>
     <script src="/js/module/userPitch/pitchEdit.js"></script>
+    <script src="/js/libraries/tinymce/tinymce.min.js"></script>
 </body>
 
 </html>

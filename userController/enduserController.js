@@ -8,7 +8,7 @@ const _ = require('lodash');
 class enduserController {
 
     static async viewPitch(req, res) {
-        db.query("SELECT pitch_id from hp_pitch_manager where url_token=? ", req.params.id, function (
+        db.query("SELECT pitch_id,(SELECT email FROM hp_pitch_user_viewer where view_token='" + req.params.viewer_id + "') as viewer_email from hp_pitch_manager where url_token=? ", req.params.pitch_id, function (
             error,
             results,
             fields
@@ -16,6 +16,7 @@ class enduserController {
             if (error) {
                 res.send({ success: "false", message: "Something went wrong" });
             }
+            let view_email = results[0].viewer_email
             if (results.length > 0) {
                 db.query("SELECT CONCAT(hp_users.first_name,' ',hp_users.last_name) as username,hp_users.email,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id JOIN hp_users ON master_tbl.user_id = hp_users.user_id WHERE master_tbl.pitch_id = ?", results[0].pitch_id, function (
                     error,
@@ -35,7 +36,7 @@ class enduserController {
                                 console.log(error,
                                     results,
                                     fields)
-                                res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: false });
+                                res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: false, view_email: view_email });
                             }
                             if (results1) {
                                 let pitch_analytics = results1[0].pitch_analytics
@@ -43,7 +44,7 @@ class enduserController {
                                     sharing_tracking: results1[0].sharing_tracking,
                                     user_to_customer_messaging: results1[0].user_to_customer_messaging,
                                 }
-                                res.render('enduserViews/viewPitch', { title: 'View Pitch || hubPitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics });
+                                res.render('enduserViews/viewPitch', { title: 'View Pitch || hubPitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics, view_email: view_email });
                                 db.query("SELECT ( select `notification_1` from hp_users_info where user_id = '" + results[0].user_id + "') AS user_setting,( select allow_notification from hp_pitch_manager where pitch_id ='" + results[0].pitch_id + "') AS pitch_setting", function (error2,
                                     results2,
                                     fields2) {
@@ -678,6 +679,74 @@ class enduserController {
                 }
             });
 
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+    static async getViewerFromToken(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                token: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            db.query("SELECT * FROM hp_pitch_user_viewer WHERE view_token='" + req.body.token + "'", function (
+                error,
+                results,
+                fields
+            ) {
+                if (error) {
+                    console.log(error,
+                        results,
+                        fields);
+                    console.log('ERROR-->TOKEN', req.body.token);
+                    return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
+                }
+                if (results.length > 0) {
+                    res.send({ success: "true", data: results });
+                } else {
+                    return res.status.send({ success: 'AuthERROR', message: 'No User Found On This Token Please Check Your Email Or Contact hubPitch Support' });
+                }
+            });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async viewerLogin(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                token: Joi.string().required(),
+                password: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+
+            db.query(
+                'SELECT * FROM hp_users WHERE email = ? AND password = ?',
+                [req.body.email, md5(req.body.password)],
+                function (error, results, fields) {
+                    if (results.length) {
+                        res.send({
+                            success: true,
+                            message: "Successfully signin.",
+                            access: results[0].viewer_id
+                        });
+                    } else {
+                        res.send({
+                            success: false,
+                            message: "email or password is incorrect"
+                        });
+                    }
+                });
         }
         catch (error) {
             console.error(error);

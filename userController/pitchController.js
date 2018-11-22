@@ -11,6 +11,8 @@ var async = require('async')
 var path = require('path');
 const nodemailer = require("nodemailer");
 require('dotenv').config()
+const uuidV4 = require("uuid/v4");
+const md5 = require("md5");
 
 class pitchController {
 
@@ -933,43 +935,89 @@ class pitchController {
                 subject = subject + results[0].company_name != '' ? 'You are invited to view a presentation pitch by ' + req.body.sender_name + ' at ' + results[0].company_name : 'You are invited to view a presentation pitch by ' + req.body.sender_name + ' '
                 async.forEachOf(emailAddress, function (value, key, callback) {
 
-                    // // -------------------------------mail sending-----------------------------
-                    tomail = "";
-                    share = '';
-                    newEmail = '';
-                    emailLog = {};
-                    tomail = value;
-                    // setup e-mail data with unicode symbols
-                    // Email Body Builder 
-                    newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '" target="blank"> ' + req.body.pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
-                    var mailOptions = {
-                        from: process.env.MAIL, // sender address
-                        to: tomail, // list of receivers
-                        subject: subject, // Subject line
-                        html: newEmail
+                    // CREATE END USER
+                    var randompassword = Math.random()
+                        .toString(36)
+                        .slice(-8);
+
+                    var randomToken = Math.random()
+                        .toString(36)
+                        .slice(-8);
+                    var newViewer = {
+                        viewer_id: uuidV4(),
+                        pitch_id: req.body.pitch_token,
+                        user_id: userid,
+                        view_token: randomToken,
+                        email: value,
+                        password: md5(randompassword)
                     };
-                    smtpTransport.sendMail(mailOptions, function (err, info) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            emailLog = {
-                                'pitch_id': req.body.pitch_token,
-                                'email_body': req.body.email_body,
-                                'email_address': value
-                            }
-                            db.query('INSERT into hp_pitch_viewers SET?', emailLog, function (error,
-                                results,
-                                fields) {
-                                console.log(error,
-                                    results,
-                                    fields);
-                                if (error) {
-                                    res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
-                                }
-                                callback();
-                            })
+
+                    db.query("INSERT INTO hp_pitch_user_viewer SET ?", newViewer, function (
+                        error,
+                        results,
+                        fields
+                    ) {
+                        if (error) {
+                            console.log(error);
+                            res.send({ success: "false", message: "Something went wrong" });
                         }
-                    })
+
+                        let tempData = {
+                            user_id: newViewer.viewer_id,
+                            token_value: ' ',
+                            randompassword: randompassword
+                        }
+                        db.query("INSERT INTO hp_users_tmp SET?", tempData, function (
+                            error1,
+                            results1,
+                            fields1
+                        ) {
+                            if (error1) {
+                                console.log(error);
+                                console.log("Something went wrong at Temp Data");
+                            }
+                            if (results1) {
+                                console.log('Viewer Added In Temp!')
+                            }
+                        });
+                        // // -------------------------------mail sending-----------------------------
+                        tomail = "";
+                        share = '';
+                        newEmail = '';
+                        emailLog = {};
+                        tomail = value;
+                        // setup e-mail data with unicode symbols
+                        // Email Body Builder 
+                        newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '&' + randomToken + '" target="blank"> ' + req.body.pitch_url + '&' + randomToken + '</p><br /><p> Here is your password to access presentation: ' + randompassword + '</p><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                        var mailOptions = {
+                            from: process.env.MAIL, // sender address
+                            to: tomail, // list of receivers
+                            subject: subject, // Subject line
+                            html: newEmail
+                        };
+                        smtpTransport.sendMail(mailOptions, function (err, info) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                emailLog = {
+                                    'pitch_id': req.body.pitch_token,
+                                    'email_body': req.body.email_body,
+                                    'email_address': value
+                                }
+                                db.query('INSERT into hp_pitch_viewers SET?', emailLog, function (error,
+                                    results,
+                                    fields) {
+                                    console.log(error,
+                                        results,
+                                        fields);
+                                    if (error) {
+                                        res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
+                                    }
+                                    callback();
+                                })
+                            }
+                        })
+                    });
                 }, function (err) {
                     if (err) console.error(err.message);
                     // configs is now a map of JSON 

@@ -179,14 +179,30 @@ line-height: 1.3;
 }
 .slider-text .note_section {margin-top: 10px;}
 .slider-text a.add_note.btn.btn-primary{margin: 10px 0 0 10px;}
-
-
 .edit-wrap .kuku-docx-controller {bottom: 0px;}
 button.full_screen_ i {margin-left: 7px;}
+
+.view-presentation-model form {max-width: 370px;margin: 60px auto;}
+.view-presentation-model .modal-header {background: #fff !important;border: none;}
+.view-presentation-model .modal-body p {color: #4a90e2;margin: 50px 0;}
+.view-presentation-model .btn-default{background-color: #4a90e2;padding: 6px 40px;background: #4a90e2;color: #ffffff;letter-spacing: 1px;}
+.view-presentation-model .modal-title img{width: 130px;margin-top: 30px;}
+.view-presentation-model .modal-content {border-top: 4px solid #a3dc64;}
+
+.row.err-404-row {margin: 60px 0;}
+.err-404-row h1.fa {font-size: 100px !important;line-height: 106px !important;color: #a3dc64;}
+.err-404-row h2 {font-size: 40px;line-height: 40px;}
+.err-404-row  p{text-shadow: rgba(0,0,0,0.16) 1px 1px 1px;margin-bottom: 30px;}
+
+.dark-modal .modal-backdrop.in {filter: alpha(opacity=50);opacity: .9;}
 @media (max-width: 991px){
   .gallery-wrap .edit-wrap .slider-text {padding: 0;}
 }
 
+@media screen and (min-width: 768px){
+  .view-presentation-model .modal-content {width: 580px;margin: 0 auto;}
+
+}
 @media(max-width: 767px){
 .gallery-wrap .edit-wrap .row {padding: 0px 38px;}
 button.slick-prev.slick-arrow:before , button.slick-next.slick-arrow:before{width: 25px;height: 25px;font-size: 14px;line-height: 1.8;}

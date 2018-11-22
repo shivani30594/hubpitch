@@ -663,6 +663,10 @@ button.share.btn.btn-primary.float-right {
 
 } */
 
+.row.err-404-row {margin: 60px 0;}
+.err-404-row h1.fa {font-size: 100px !important;line-height: 106px !important;color: #a3dc64;}
+.err-404-row h2 {font-size: 40px;line-height: 40px;}
+.err-404-row  p{text-shadow: rgba(0,0,0,0.16) 1px 1px 1px;margin-bottom: 30px;}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

@@ -3,6 +3,10 @@ const pitchDeck = function () {
 
     let pitch_analytics = $('.pitch_analytics').val();
 
+    const loginCheck = () => {
+        $('#login').modal('show');
+        $('body').addClass('dark-modal');
+    }
     const getCookie = (name) => {
         var value = "; " + document.cookie;
         var parts = value.split("; " + name + "=");
@@ -519,6 +523,58 @@ const pitchDeck = function () {
             });
         }
     }
+    const handleSignUp = () => {
+        $('.loader_hp_').hide('50');
+        $("#login_popup").validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'error-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                    email: true
+                }
+            },
+            submitHandler: function (form) {
+                $('.loader_hp_').show('50');
+                $('body').removeClass('dark-modal')
+                $.ajax({
+                    url: '/signup',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        token: $('#login input[name="firstName"]').val(),
+                        password: $('#login input[name="password"]').val()
+                    },
+                    success: function (response) {
+                        if(response.error){
+                            console.log(response.error);
+                            alert(response.error.details[0].message);
+                        }
+                        if (response.success == false) {
+                            alert(response.message);
+                            $('#sign_up_form').trigger("reset");
+                            $('.loader_hp_').hide('50');
+                        }
+                        if (response.success) {
+                            document.cookie = "newtoken=" + response.token;
+                            $('.loader_hp_').hide('50');
+                            location.reload();
+                        }
+                    },
+                    error: function (jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    }
+                });
+                //form.submit();
+            }
+        });
+    }
     return {
         //main function to initiate the module
         init: function () {
@@ -531,6 +587,8 @@ const pitchDeck = function () {
             handleUpdatePitch();
             addEndUserName();
             getNotes();
+            loginCheck();
+            handleSignUp();
         }
     };
 }();
@@ -625,3 +683,8 @@ const full_sceen_zoom = (id, e, loop) => {
     $("." + id + "_edit-wrap").toggleClass("edit-wrap-toggled");
     $("#loaded-layout_" + loop).resize();
 }
+$('#login').on('hide.bs.modal', function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return false;
+});

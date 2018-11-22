@@ -69,7 +69,7 @@ function openConversation(id) {
                     data.forEach((obj) => {
                         dataHTML = ''
                         if (obj) {
-                            dataHTML = '<li><a href="javascript:void(0)" onclick=openChat(' + obj.conversation_id + ',"' + obj.sender + '")><span>' + obj.messages + '</span> Messages From ' + obj.sender + ' </a></li>';
+                            dataHTML = `<li><a href="javascript:openChat(${obj.conversation_id},'${obj.sender}')"><span>${ obj.messages}</span> Messages From ${obj.sender}</a></li>`;
                             $('#conversation_list').append(dataHTML);
                         }
                     })

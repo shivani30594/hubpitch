@@ -49,7 +49,7 @@ class supportController {
                     var smtpTransport = nodemailer.createTransport({
                         service: process.env.SERVICE,
                         auth: {
-                            user: process.env.MAIL,
+                            user: process.env.HPEMAILUSER,
                             pass: process.env.PASSWORD
                         }
                     });
@@ -58,7 +58,7 @@ class supportController {
                     tomail = process.env.ADMINEMAIL;
                     // setup e-mail data with unicode symbols
                     var mailOptions = {
-                        from: process.env.MAIL, // sender address
+                        from: process.env.HPEMAILUSER, // sender address
                         to: tomail, // list of receivers
                         subject: "Support Request", // Subject line
                         html: "<strong>" + userName + " need support for following issue.</strong> <br/> " + support_message + " <br/> Thank You <br/> hubPitch."

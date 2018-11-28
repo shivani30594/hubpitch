@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="/stylesheets/slick.css">
     <link rel="stylesheet" href="/stylesheets/slick-theme.css">
     <!-- custom css -->
-    
+
     <!-- Validation.Js -->
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/js/additional-methods.min.js"></script>
@@ -579,69 +579,66 @@
     <div class="loader_hp_">
         <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
     </div>
-      <!-- Modal-01 -->
-  <div class="modal fade view-presentation-model" id="myModal01" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">
-            <img src="img/logo.png" alt="Logo">
-          </h4>
+    <!-- Modal-01 -->
+    <div class="modal fade view-presentation-model" id="view_name" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center">
+                        <img src="/img/logo.png" alt="Logo">
+                    </h4>
+                </div>
+                <div class="modal-body text-center">
+                    <p>You're Invited to View a Presentation</p>
+                    <form method="POST" name="add_name" id="add_name">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="view_name" name="view_name" placeholder="Enter Your Name">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="job_title" name="job_title" placeholder="Enter Your Job Title">
+                        </div>
+                        <button type="submit" name="submit" value="submit" class="btn btn-default"> View the
+                            Material </button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-          <p>You're Invited to View a Presentation</p>
-         
-          <form action="/action_page.php">
-              <div class="form-group">
-                <input type="text" class="form-control" id="name" placeholder="Enter Your Name">
-              </div>
-
-              <div class="form-group">
-                <input type="text" class="form-control" id="Job title" placeholder="Enter Your Job Title">
-              </div>
-          </form>
-
-
-          <button type="button" class="btn btn-default">View the Material</button>
-        </div>
-        <div class="modal-footer">
-        </div>
-      </div>
     </div>
-  </div>
-  <!-- /Modal-01 -->
+    <!-- /Modal-01 -->
 
 
-  <!-- Modal-02 -->
-  <div class="modal fade view-presentation-model" id="login">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title text-center">
-            <img src="/img/logo.png" alt="Logo">
-          </h4>
+    <!-- Modal-02 -->
+    <div class="modal fade view-presentation-model" id="login">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center">
+                        <img src="/img/logo.png" alt="Logo">
+                    </h4>
+                </div>
+                <div class="modal-body text-center">
+                    <p>You're Invited to View a Presentation</p>
+
+                    <form method="POST" name="login" id="login_popup">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email" name="email" disabled="disabled"
+                                placeholder="Enter Your Email" value="<%=view_email %>">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="pwd" name="password" placeholder="Your Password">
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" name="submit" value="submit" class="btn btn-default"> View the
+                                Material </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="modal-body text-center">
-          <p>You're Invited to View a Presentation</p>
-
-          <form method="POST" name="login" id="login_popup">
-              <div class="form-group">
-                <input type="email" class="form-control" id="email" name="email" disabled="disabled" placeholder="Enter Your Email" value="<%=view_email %>">
-              </div>
-
-              <div class="form-group">
-                <input type="password" class="form-control" id="pwd" name="password" placeholder="Your Password">
-              </div>
-
-              <div class="form-group">
-                <button type="submit" name="submit" value="submit" class="btn btn-default"> View the Material </button>
-              </div>              
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
-  <!-- /Modal-02 -->
+    <!-- /Modal-02 -->
     <script src="/js/module/endUser/pitchSliders.js"></script>
     <script src="/js/module/endUser/pitchDeck.js"></script>
 </body>

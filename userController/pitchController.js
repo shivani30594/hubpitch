@@ -914,7 +914,7 @@ class pitchController {
             var smtpTransport = nodemailer.createTransport({
                 service: process.env.SERVICE,
                 auth: {
-                    user: process.env.MAIL,
+                    user: process.env.HPEMAILUSER,
                     pass: process.env.PASSWORD
                 }
             });
@@ -988,9 +988,9 @@ class pitchController {
                         tomail = value;
                         // setup e-mail data with unicode symbols
                         // Email Body Builder 
-                        newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '&' + randomToken + '" target="blank"> ' + req.body.pitch_url + '&' + randomToken + '</p><br /><p> Here is your password to access presentation: ' + randompassword + '</p><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                        newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '?viewer=' + randomToken + '" target="blank"> ' + req.body.pitch_url + '?viewer=' + randomToken + '</p><br /><p> Here is your password to access presentation: ' + randompassword + '</p><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                         var mailOptions = {
-                            from: process.env.MAIL, // sender address
+                            from: process.env.HPEMAILUSER, // sender address
                             to: tomail, // list of receivers
                             subject: subject, // Subject line
                             html: newEmail
@@ -1056,7 +1056,7 @@ class pitchController {
             var smtpTransport = nodemailer.createTransport({
                 service: process.env.SERVICE,
                 auth: {
-                    user: process.env.MAIL,
+                    user: process.env.HPEMAILUSER,
                     pass: process.env.PASSWORD
                 }
             });
@@ -1092,7 +1092,7 @@ class pitchController {
                         // Email Body Builder 
                         newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + process.env.SITE_URL + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                         var mailOptions = {
-                            from: process.env.MAIL, // sender address
+                            from: process.env.HPEMAILUSER, // sender address
                             to: tomail, // list of receivers
                             subject: subject, // Subject line
                             html: newEmail
@@ -1122,7 +1122,7 @@ class pitchController {
                                 // Email Body Builder 
                                 newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + process.env.SITE_URL + 'viewer/' + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                                 var mailOptions = {
-                                    from: process.env.MAIL, // sender address
+                                    from: process.env.HPEMAILUSER, // sender address
                                     to: tomail, // list of receivers
                                     subject: subject, // Subject line
                                     html: newEmail
@@ -1269,7 +1269,7 @@ class pitchController {
             var smtpTransport = nodemailer.createTransport({
                 service: process.env.SERVICE,
                 auth: {
-                    user: process.env.MAIL,
+                    user: process.env.HPEMAILUSER,
                     pass: process.env.PASSWORD
                 }
             });
@@ -1290,7 +1290,7 @@ class pitchController {
                 // Email Body Builder 
                 newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + pitch_url + '" target="blank">' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                 var mailOptions = {
-                    from: process.env.MAIL, // sender address
+                    from: process.env.HPEMAILUSER, // sender address
                     to: tomail, // list of receivers
                     subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
                     html: newEmail

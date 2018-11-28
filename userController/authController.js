@@ -198,7 +198,7 @@ class authController {
       var smtpTransport = nodemailer.createTransport({
         service: process.env.SERVICE,
         auth: {
-          user: process.env.MAIL,
+          user: process.env.HPEMAILUSER,
           pass: process.env.PASSWORD
         }
       });

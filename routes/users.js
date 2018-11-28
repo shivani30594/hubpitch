@@ -59,7 +59,7 @@ router.get('/admin/edit-plan/:id', adminController.subscriptionController.editPl
  * 
  */
 
-router.get('/viewer/:pitch_id&:viewer_id', Controller.enduserController.viewPitch)
+router.get('/viewer/:pitch_id', Controller.enduserController.viewPitch)
 router.get('/welcome', function (req, res, next) {
     res.render("loginModule/welcome", { title: 'Free SignUp || Hub Pitch', documents_viewer: 'false', free: 'true' });
 });
@@ -77,6 +77,7 @@ router.post('/note-creater', Controller.enduserController.noteCreater)
 router.post('/get-notes', Controller.enduserController.getNotes)
 router.post('/get-viewer', Controller.enduserController.getViewerFromToken)
 router.post('/end-user-login',Controller.enduserController.viewerLogin)
+router.post('/viewer-add-name',Controller.enduserController.viewerNameAdding)
 
 /** 
  * 

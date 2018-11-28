@@ -3,9 +3,32 @@ const pitchDeck = function () {
 
     let pitch_analytics = $('.pitch_analytics').val();
 
+    const getQuery = () => {
+        var pattern = /[?&]viewer=/;
+        var URL = location.search;
+        if (pattern.test(URL)) {
+            return true
+        } else {
+            return false
+        }
+    }
     const loginCheck = () => {
-        $('#login').modal('show');
-        $('body').addClass('dark-modal');
+        let viewertoken = getCookie('viewertoken')
+        let viewerName = getCookie('viewerName')
+        let tokenW = getQuery();
+        if (tokenW == true) {
+            if (viewertoken == undefined) {
+                $('#login').modal('show');
+                $('body').addClass('dark-modal');
+            }
+            else if (viewerName == undefined) {
+                $('#view_name').modal('show');
+                $('body').addClass('dark-modal')
+            }
+            else {
+                return false
+            }
+        }
     }
     const getCookie = (name) => {
         var value = "; " + document.cookie;
@@ -162,6 +185,7 @@ const pitchDeck = function () {
             },
             submitHandler: function (form) {
                 $('.loader_hp_').show();
+                let view_token = getCookie('viewertoken')
                 $.ajax({
                     url: site_url + 'share-pitch',
                     type: 'POST',
@@ -179,8 +203,9 @@ const pitchDeck = function () {
                         if (!response.success) {
                             return alert(JSON.stringify(response.error));
                         }
-                        console.log(response)
+
                         $('.loader_hp_').hide();
+                        console.log(response);
                         if (JSON.stringify(response.success == 'true')) {
                             $('input[name="sender_name"]').val('');
                             $('input[name="email_id"]').val('');
@@ -230,7 +255,7 @@ const pitchDeck = function () {
             });
         }
         $(document).on("click", '#conversation_', () => {
-            let endUserName = getCookie('endUserName');
+            let endUserName = getCookie('viewerName');
             let conversation = getCookie('conversation');
             let sender = 'Hareen Desai';
             if (endUserName == undefined) {
@@ -345,8 +370,7 @@ const pitchDeck = function () {
             submitHandler: function (form) {
                 $('.loader_hp_').show();
                 let conversation_id = getCookie('conversation');
-                let sender = getCookie('endUserName');
-
+                let sender = getCookie('viewerName');
                 $.ajax({
                     url: site_url + 'send-message',
                     headers: {
@@ -365,7 +389,6 @@ const pitchDeck = function () {
                     },
                     success: function (response) {
                         if (response.success == 'true') {
-                            console.log(response);
                             jQuery('#message_body').append('<div class="msg-block"> <div class="msg-head"> <h5>' + sender + '</h5> <!-- <span class="time-right">time</span> --> </div> <p>' + $('.chat_msg').val() + '</p></div>');
                             $('.chat_msg').val('');
                             $('.loader_hp_').hide();
@@ -531,29 +554,24 @@ const pitchDeck = function () {
             focusInvalid: false, // do not focus the last invalid input
             ignore: "",
             rules: {
-                email: {
-                    required: true,
-                    email: true
-                },
                 password: {
-                    required: true,
-                    email: true
+                    required: true
                 }
             },
             submitHandler: function (form) {
                 $('.loader_hp_').show('50');
                 $('body').removeClass('dark-modal')
+                let tokenW = window.location.href.split('?viewer=').pop();
                 $.ajax({
-                    url: '/signup',
+                    url: '/end-user-login',
                     type: 'POST',
                     dataType: 'json',
                     data: {
-                        token: $('#login input[name="firstName"]').val(),
+                        token: tokenW,
                         password: $('#login input[name="password"]').val()
                     },
                     success: function (response) {
-                        if(response.error){
-                            console.log(response.error);
+                        if (response.error) {
                             alert(response.error.details[0].message);
                         }
                         if (response.success == false) {
@@ -562,9 +580,83 @@ const pitchDeck = function () {
                             $('.loader_hp_').hide('50');
                         }
                         if (response.success) {
-                            document.cookie = "newtoken=" + response.token;
+                            document.cookie = "viewertoken=" + response.token;
                             $('.loader_hp_').hide('50');
                             location.reload();
+                        }
+                    },
+                    error: function (jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    }
+                });
+                //form.submit();
+            }
+        });
+    }
+    const handleName = () => {
+        $("#add_name").validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'error-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
+                view_name: {
+                    required: true
+                },
+                job_title: {
+                    required: true
+                }
+            },
+            submitHandler: function (form) {
+                $('.loader_hp_').show('50');
+                $('body').removeClass('dark-modal')
+                let viewertoken = getCookie('viewertoken')
+                $.ajax({
+                    url: '/viewer-add-name',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        view_token: viewertoken,
+                        name: $('#add_name input[name="view_name"]').val(),
+                        job_title: $('#add_name input[name="job_title"]').val(),
+                    },
+                    success: function (response) {
+                        if (response.error) {
+                            alert(response.error.details[0].message);
+                        }
+                        if (response.success == false) {
+                            alert(response.message);
+                            $('#add_name').trigger("reset");
+                            $('.loader_hp_').hide('50');
+                        }
+                        if (response.success) {
+                            alert('Update Successfully!')
+                            document.cookie = "viewerName=" + $('#add_name input[name="view_name"]').val();
+                            $.ajax({
+                                url: site_url + 'conversation-creater',
+                                headers: {
+                                    'Accept': 'application/json',
+                                },
+                                method: 'POST',
+                                dataType: 'json',
+                                data: {
+                                    pitch_token: $('#pitch_token').val(),
+                                    viewer_id: viewertoken
+                                },
+                                success: function (response) {
+                                    if (response.success == 'true') {
+                                        document.cookie = "conversation=" + response.data;
+                                        $('.loader_hp_').hide();
+                                        location.reload();
+                                    }
+                                    else {
+                                        alert('Something Went Wrong!');
+                                    }
+                                },
+                                error: function (jqXHR, textStatus) {
+                                    alert("Request failed: " + textStatus);
+                                }
+                            });
                         }
                     },
                     error: function (jqXHR, textStatus) {
@@ -589,6 +681,7 @@ const pitchDeck = function () {
             getNotes();
             loginCheck();
             handleSignUp();
+            handleName();
         }
     };
 }();
@@ -688,3 +781,13 @@ $('#login').on('hide.bs.modal', function (e) {
     e.stopImmediatePropagation();
     return false;
 });
+$('#view_name').on('hide.bs.modal', function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return false;
+});
+
+const getToken = () => {
+    let urlToken = window.location.pathname
+    console.log(urlToken);
+}

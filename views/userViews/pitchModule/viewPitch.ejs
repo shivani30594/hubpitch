@@ -141,9 +141,7 @@
                                             <label class="total_share" data-toggle="modal" data-target="#share_details">Share:
                                                 <span> <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                     <%= data[i].share_times %> </span></label>
-                                            <label class="pitch_views_time"> Average Viewing Time: <span> <i class="fa fa-clock-o"
-                                                        aria-hidden="true"></i>
-                                                    <%= data[i].average_view %> Secords </span> </label>
+                                            <label class="pitch_views_time pitch_viewers"> <span onclick="pitchViewerDetails('<%= data[i].pitch_info_id %>')"> Page Details <i class="glyphicon glyphicon-stats" aria-hidden="true"> </i></span> </label>
                                         </div>
                                         <input type="hidden" class="pitch_info_token <%= i+1 %>_token" value="<%= data[i].pitch_info_id %>">
                                         <% if(data[i].pitch_attachment_type == 'image') { %>
@@ -316,6 +314,120 @@
                 <div class="modal-footer">
                     <a href=javascript:checkEmails(); class="btn btn-primary">Send</a>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade viewers-list" id="viewer_analysis" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Viewers</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="viewer_details" class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="viewer-info text-center">
+
+                                <div class="primary">
+                                    <p class="lable">Person A</p>
+                                    <P>job title</P>
+                                </div>
+
+                                <p class="total-view"><span class="lable">Views:</span> 2</p>
+
+                                <div class="viewer-time">
+                                    <p class="lable">viewing Time:</p>
+                                    <P>250 Seconds</P>
+                                </div>
+
+                                <div class="last-view-time">
+                                    <p class="lable">last View:</p>
+                                    <P>8:00 PM PST</P>
+                                    <p>11/9/2018</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="viewer-info text-center">
+
+                                <div class="primary">
+                                    <p class="lable">Person A</p>
+                                    <P>job title</P>
+                                </div>
+
+                                <p class="total-view"><span class="lable">Views:</span> 2</p>
+
+                                <div class="viewer-time">
+                                    <p class="lable">viewing Time:</p>
+                                    <P>250 Seconds</P>
+                                </div>
+
+                                <div class="last-view-time">
+                                    <p class="lable">last View:</p>
+                                    <P>8:00 PM PST</P>
+                                    <p>11/9/2018</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="viewer-info text-center">
+
+                                <div class="primary">
+                                    <p class="lable">Person A</p>
+                                    <P>job title</P>
+                                </div>
+
+                                <p class="total-view"><span class="lable">Views:</span> 2</p>
+
+                                <div class="viewer-time">
+                                    <p class="lable">viewing Time:</p>
+                                    <P>250 Seconds</P>
+                                </div>
+
+                                <div class="last-view-time">
+                                    <p class="lable">last View:</p>
+                                    <P>8:00 PM PST</P>
+                                    <p>11/9/2018</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="viewer-info text-center">
+
+                                <div class="primary">
+                                    <p class="lable">Person A</p>
+                                    <P>job title</P>
+                                </div>
+
+                                <p class="total-view"><span class="lable">Views:</span> 2</p>
+
+                                <div class="viewer-time">
+                                    <p class="lable">viewing Time:</p>
+                                    <P>250 Seconds</P>
+                                </div>
+
+                                <div class="last-view-time">
+                                    <p class="lable">last View:</p>
+                                    <P>8:00 PM PST</P>
+                                    <p>11/9/2018</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 

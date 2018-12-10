@@ -41,7 +41,7 @@ class enduserController {
                                 console.log(error,
                                     results,
                                     fields)
-                                res.render('enduserViews/viewPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: false, view_email: view_email });
+                                res.render('enduserViews/viewPitch', { title: 'View Pitch || hubPitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: false, view_email: view_email });
                             }
                             if (results1) {
                                 let pitch_analytics = results1[0].pitch_analytics
@@ -832,6 +832,218 @@ class enduserController {
                     }
                 });
 
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async viewerAnalysis(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                viewer_id: Joi.string().required(),
+                pitch_info_id: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            db.query('SELECT COUNT(*) as counter,views as views FROM hp_pitch_viewer_analytics WHERE viewer_id = ?', [req.body.viewer_id],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log(error);
+                        res.send({ success: false, error });
+                    }
+                    if (results) {
+                        if (results[0].counter == 0) {
+                            console.log('counter', results[0].counter, 'results', results)
+                            db.query(
+                                'INSERT INTO hp_pitch_viewer_analytics SET viewer_id = ?, pitch_info_id = ?,views = ?',
+                                [req.body.viewer_id, req.body.pitch_info_id, 1],
+                                function (error1, results1, fields) {
+                                    if (error1) {
+                                        console.log(error1);
+                                    }
+                                    if (results1) {
+                                        res.send({
+                                            success: true,
+                                            message: "View Added Successfully!"
+                                        });
+                                    } else {
+                                        res.send({
+                                            success: false,
+                                            message: "Something Went Wrong!"
+                                        });
+                                    }
+                                });
+                        }
+                        else {
+                            let newView = results[0].views + 1
+                            db.query(
+                                'UPDATE hp_pitch_viewer_analytics SET views = ? WHERE viewer_id = ? AND pitch_info_id = ?',
+                                [newView,req.body.viewer_id,req.body.pitch_info_id],
+                                function (error1, results1, fields1) {
+                                    if (error1) {
+                                        console.log(error);
+                                    }
+                                    if (results1.affectedRows > 0) {
+                                        res.send({
+                                            success: true,
+                                            message: "View Update Successfully!"
+                                        });
+                                    } else {
+                                        res.send({
+                                            success: false,
+                                            message: "Something Went Wrong!"
+                                        });
+                                    }
+                                });
+                        }
+                    } else {
+                        res.send({ success: false, message: 'Something Went Wrong!' });
+                    }
+                })
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async viewerAnalysisUpdateViews(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                viewer_id: Joi.string().required(),
+                viewing_time: Joi.string().required(),
+                pitch_info_id: Joi.string().required(),
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            db.query('SELECT viewing_time FROM hp_pitch_viewer_analytics WHERE viewer_id = ? AND pitch_info_id = ?', [req.body.viewer_id, req.body.pitch_info_id],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log(error);
+                        res.send({ success: false, error });
+                    }
+                    if (results.length > 0) {
+                        if (results[0].viewing_time == null) {
+                            // GET VIEWS AND UPDATES
+                            db.query(
+                                'UPDATE hp_pitch_viewer_analytics SET viewing_time = ? WHERE viewer_id = ? AND pitch_info_id = ?',
+                                [req.body.viewing_time,req.body.viewer_id,req.body.pitch_info_id],
+                                function (error, results, fields) {
+                                    if (error) {
+                                        console.log(error);
+                                        res.send({
+                                            success: false,
+                                            message: "Something Went Wrong!"
+                                        });
+                                    }
+                                    console.log(error, results, fields);
+                                    if (results.affectedRows > 0) {
+                                        res.send({
+                                            success: true,
+                                            message: "Insert Successfully!"
+                                        });
+                                    } else {
+                                        res.send({
+                                            success: false,
+                                            message: "Something Went Wrong!"
+                                        });
+                                    }
+                                });
+                        } else {
+                            let updateView = results[0].viewing_time + parseInt(req.body.viewing_time)
+                            db.query(
+                                'UPDATE hp_pitch_viewer_analytics SET viewing_time = ? WHERE viewer_id = ? AND pitch_info_id = ?',
+                                [updateView,req.body.viewer_id,req.body.pitch_info_id],
+                                function (error, results, fields) {
+                                    if (error) {
+                                        console.log(error);
+                                        res.send({
+                                            success: false,
+                                            message: "Something Went Wrong!"
+                                        });
+                                    }
+                                    if (results.affectedRows > 0) {
+                                        res.send({
+                                            success: true,
+                                            message: "Update Successfully!"
+                                        });
+                                    } else {
+                                        console.log(error, results, fields)
+                                        res.send({
+                                            success: false,
+                                            message: "Something Went Wrong!"
+                                        });
+                                    }
+                                });
+                        }
+                    } else {
+                        db.query(
+                            'INSERT INTO hp_pitch_viewer_analytics SET viewer_id = ?, pitch_info_id = ?,views = ?',
+                            [req.body.viewer_id, req.body.pitch_info_id, 1],
+                            function (error1, results1, fields) {
+                                if (error1) {
+                                    console.log(error1);
+                                    res.send({
+                                        success: false,
+                                        message: "Something Went Wrong!"
+                                    });
+                                }
+                                if (results1) {
+                                    res.send({
+                                        success: true,
+                                        message: "View Added Successfully!"
+                                    });
+                                } else {
+                                    res.send({
+                                        success: false,
+                                        message: "Something Went Wrong!"
+                                    });
+                                }
+                            });
+                    }
+                });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async viewUpdater(req,res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                viewer_id: Joi.string().required(),
+                pitch_info_id: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            db.query(
+                'INSERT INTO hp_pitch_viewer_analytics SET viewer_id = ?, pitch_info_id = ?,views = ?',
+                [req.body.viewer_id, req.body.pitch_info_id, 1],
+                function (error1, results1, fields) {
+                    if (error1) {
+                        console.log(error1);
+                    }
+                    if (results1) {
+                        res.send({
+                            success: true,
+                            message: "View Added Successfully!"
+                        });
+                    } else {
+                        res.send({
+                            success: false,
+                            message: "Something Went Wrong!"
+                        });
+                    }
+                });
         }
         catch (error) {
             console.error(error);

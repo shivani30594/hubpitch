@@ -373,7 +373,7 @@ class pitchController {
     }
 
     static async viewPitchDetails(req, res) {
-        db.query("SELECT CONCAT(users.first_name,' ',users.last_name) AS username,manager.url_token,master_tbl.share_times,analysis.pitch_view_counter as total_views ,info.average_view,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text,(SELECT COUNT(*) FROM hp_pitch_page_notes WHERE hp_pitch_page_notes.pitch_info_id = info.pitch_info_id) as note_count FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id JOIN hp_pitch_manager as manager ON master_tbl.pitch_id = manager.pitch_id JOIN hp_users as users ON master_tbl.user_id = users.user_id WHERE master_tbl.pitch_id =  ?", req.params.id, function (
+        db.query("SELECT CONCAT(users.first_name,' ',users.last_name) AS username,manager.url_token,master_tbl.share_times,(SELECT SUM(hp_pitch_viewer_analytics.views) FROM hp_pitch_viewer_analytics WHERE hp_pitch_viewer_analytics.pitch_info_id = info.pitch_info_id) as total_views,info.pitch_info_id,master_tbl.company_name,master_tbl.user_id,master_tbl.pitch_id,master_tbl.created,info.pitch_attachment_type,info.pitch_attachment_name,info.pitch_attachment_text,(SELECT COUNT(*) FROM hp_pitch_page_notes WHERE hp_pitch_page_notes.pitch_info_id = info.pitch_info_id) as note_count FROM hp_pitch_info as info LEFT JOIN hp_pitch_master as master_tbl ON info.pitch_id=master_tbl.pitch_id LEFT JOIN hp_pitch_analytics as analysis ON master_tbl.pitch_id = analysis.pitch_id JOIN hp_pitch_manager as manager ON master_tbl.pitch_id = manager.pitch_id JOIN hp_users as users ON master_tbl.user_id = users.user_id WHERE master_tbl.pitch_id =  ?", req.params.id, function (
             error,
             results,
             fields
@@ -1323,6 +1323,40 @@ class pitchController {
                 // configs is now a map of JSON 
                 res.send({ success: "true", message: 'Email Sent' });
             });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async getViewerAnalysis(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                pitch_info_id: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            db.query(
+                'SELECT hp_pitch_viewer_analytics.views,CONVERT_TZ(hp_pitch_viewer_analytics.created, @@session.time_zone, "+00:00") AS `utc_datetime`,hp_pitch_user_viewer.full_name,hp_pitch_user_viewer.job_title,hp_pitch_viewer_analytics.viewing_time FROM hp_pitch_viewer_analytics LEFT JOIN hp_pitch_user_viewer ON hp_pitch_viewer_analytics.viewer_id = hp_pitch_user_viewer.viewer_id WHERE hp_pitch_viewer_analytics.pitch_info_id ="' + req.body.pitch_info_id + '"',
+                function (error1, results1, fields1) {
+                    if (error1) {
+                        console.log(error1);
+                    }
+                    if (results1) {
+                        res.send({
+                            success: true,
+                            data: results1
+                        });
+                    } else {
+                        res.send({
+                            success: false,
+                            message: "Something Went Wrong!"
+                        });
+                    }
+                });
         }
         catch (error) {
             console.error(error);

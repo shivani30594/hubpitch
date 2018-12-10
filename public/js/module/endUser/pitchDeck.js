@@ -40,7 +40,8 @@ const pitchDeck = function () {
         console.log('HubPitch :) ');
         $('.unread_count_wapper').hide();
         $('.loader_hp_').hide();
-        let pitchToken = $(location).attr("href").split('/').pop();
+        let url = $(location).attr("href").split('?').pop();
+        let pitchToken = url.split('/').pop()
         if (pitchToken == '') {
             alert('SOME THING WENT WRONG');
             return false;
@@ -667,6 +668,59 @@ const pitchDeck = function () {
             }
         });
     }
+
+    const handleViewerAnalysis = () => {
+        let viewer_id = getCookie('viewertoken')
+        if (viewer_id != undefined) {
+            $.ajax({
+                url: '/viewer-analysis',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    viewer_id: viewer_id,
+                    pitch_info_id: $('.slick-current .pitch_info_token_c').val(),
+                },
+                success: function (response) {
+                    console.log(response)
+                },
+                error: function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                }
+            });
+        } else {
+            console.log('viewer token is', viewer_id);
+        }
+    }
+
+    const handleVieweringTime = () => {
+        let viewer_id = getCookie('viewertoken')
+        if (viewer_id != undefined) {
+            setInterval(function () {
+                console.log('viewer_id', viewer_id)
+                console.log('viewing_time', $('.slick-active .sliderViewer').val())
+                console.log('pitch_info_id', $('.slick-current .pitch_info_token_c').val())
+                $.ajax({
+                    url: site_url + 'viewer/analysis-update',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        viewer_id: viewer_id,
+                        viewing_time: $('.slick-active .sliderViewer').val(),
+                        pitch_info_id: $('.slick-current .pitch_info_token_c').val(),
+                    },
+                    success: function (response) {
+                        console.log(response)
+                    }
+                });
+            }, 10000);
+        }
+        else {
+            console.log('viewer token is', viewer_id);
+        }
+    }
     return {
         //main function to initiate the module
         init: function () {
@@ -682,6 +736,8 @@ const pitchDeck = function () {
             loginCheck();
             handleSignUp();
             handleName();
+            handleViewerAnalysis();
+            handleVieweringTime();
         }
     };
 }();

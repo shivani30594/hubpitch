@@ -132,3 +132,33 @@ function checkEmails() {
         });
     }
 }
+
+function pitchViewerDetails(id) {
+    $(".loader_hp_").show('50');
+    $.ajax({
+        url: site_url + 'viewer/analysis',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            pitch_info_id: id,
+        },
+        success: function (response) {
+            let data = response.data;
+            let dataHTML = '';
+            $('#viewer_details').html(' ');
+            data.forEach((obj) => {
+                dataHTML = ''
+                if (obj) {
+                    dataHTML = '<div class="col-md-4 col-sm-4 col-xs-12"> <div class="viewer-info text-center"> <div class="primary"> <p class="lable">' + obj.full_name + '</p> <p>' + obj.job_title + '</p> </div> <p class="total-view"><span class="lable">Views:</span>' + obj.views + '</p><div class="viewer-time"> <p class="lable">viewing Time:</p> <p>' +  moment.utc(obj.viewing_time*1000).format('HH:mm:ss')+ '</p> </div> <div class="last-view-time"> <p class="lable">last View:</p> <p> ' + moment(obj.utc_datetime).format("MMM DD YYYY hh:mm A", 'en')+ '</p> </div> </div> </div>';
+                    $('#viewer_details').append(dataHTML);
+                }
+            })
+            $('#viewer_analysis').modal('show');
+            $(".loader_hp_").hide('50');
+        },
+        error: function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+            $("#sign_in").reset();
+        }
+    });
+}

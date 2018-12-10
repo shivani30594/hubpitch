@@ -63,7 +63,7 @@
                     }
                 );
             };
-
+ 
             req.send();
         }
 
@@ -219,6 +219,7 @@
                 <div class="single-item">
                     <% for(var i=0; i < data.length; i++) { %>
                     <div class="slide">
+                        <input type="hidden" class="pitch_info_token_c" value="<%= data[i].pitch_info_id %>">
                         <div class="edit-wrap <%= data[i].pitch_info_id %>_edit-wrap">
                             <div class="row">
                                 <div class="col-md-6 col-sm-6 col-xs-12">

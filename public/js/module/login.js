@@ -1,5 +1,5 @@
 const Login = function () {
-    const handleSignUp = () => {
+    const handleSignUp = () => { 
         $('.loader_hp_').hide('50');
         $("#sign_up_form").validate({
             errorElement: 'span', //default input error message container

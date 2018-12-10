@@ -667,6 +667,16 @@ button.share.btn.btn-primary.float-right {
 .err-404-row h1.fa {font-size: 100px !important;line-height: 106px !important;color: #a3dc64;}
 .err-404-row h2 {font-size: 40px;line-height: 40px;}
 .err-404-row  p{text-shadow: rgba(0,0,0,0.16) 1px 1px 1px;margin-bottom: 30px;}
+.viewers-list .modal-content {border-top: 4px solid #a3dc64;}
+.viewers-list  .modal-header {border-bottom: none;text-align: center;padding: 25px 15px;}
+.viewers-list p {margin-bottom: 2px;}
+.viewers-list .total-view{margin: 12px 0;}
+.viewers-list .lable{font-weight: 600;color: #4a4a4a;}
+.viewers-list .last-view-time{margin-top: 12px;}
+.viewers-list .viewer-info {padding-bottom: 40px;}
+.viewers-list .primary p.lable{font-size: 15px;}
+.viewers-list .modal-body{max-height: 595px;overflow: auto;}
+label.pitch_views_time.pitch_viewers {cursor: pointer;}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

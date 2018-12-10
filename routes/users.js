@@ -76,8 +76,10 @@ router.post('/check_for_update', Controller.enduserController.checkforUpdate)
 router.post('/note-creater', Controller.enduserController.noteCreater)
 router.post('/get-notes', Controller.enduserController.getNotes)
 router.post('/get-viewer', Controller.enduserController.getViewerFromToken)
-router.post('/end-user-login',Controller.enduserController.viewerLogin)
-router.post('/viewer-add-name',Controller.enduserController.viewerNameAdding)
+router.post('/end-user-login', Controller.enduserController.viewerLogin)
+router.post('/viewer-add-name', Controller.enduserController.viewerNameAdding)
+router.post('/viewer-analysis', Controller.enduserController.viewerAnalysis)
+router.post('/viewer/analysis-update', Controller.enduserController.viewerAnalysisUpdateViews)
 
 /** 
  * 
@@ -137,6 +139,7 @@ router.post('/share_pitch_user', Controller.pitchController.sharePitchU)
 router.post('/edit_pitch_text', Controller.pitchController.editText)
 router.post('/get_notes', Controller.pitchController.getNotes)
 router.post('/user/search_pitch', Controller.pitchController.searchPitch)
+router.post('/viewer/analysis', Controller.pitchController.getViewerAnalysis)
 
 // SUPPORT 
 

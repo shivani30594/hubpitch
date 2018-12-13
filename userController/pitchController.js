@@ -988,7 +988,7 @@ class pitchController {
                         tomail = value;
                         // setup e-mail data with unicode symbols
                         // Email Body Builder 
-                        newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '?viewer=' + randomToken + '" target="blank"> ' + req.body.pitch_url + '?viewer=' + randomToken + '</p><br /><p> Here is your password to access presentation: ' + randompassword + '</p><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                        newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '?viewer=' + randomToken + '" target="blank"> ' + req.body.pitch_url + '?viewer=' + randomToken + '</p><br /><p> <strong> Here is your password to access presentation: ' + randompassword + '</strong> </p><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                         var mailOptions = {
                             from: process.env.HPEMAILUSER, // sender address
                             to: tomail, // list of receivers

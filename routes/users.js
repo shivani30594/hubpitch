@@ -80,6 +80,7 @@ router.post('/end-user-login', Controller.enduserController.viewerLogin)
 router.post('/viewer-add-name', Controller.enduserController.viewerNameAdding)
 router.post('/viewer-analysis', Controller.enduserController.viewerAnalysis)
 router.post('/viewer/analysis-update', Controller.enduserController.viewerAnalysisUpdateViews)
+router.post('/view-mail', Controller.enduserController.viewMail)
 
 /** 
  * 

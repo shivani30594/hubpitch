@@ -50,51 +50,6 @@ class enduserController {
                                     user_to_customer_messaging: results1[0].user_to_customer_messaging,
                                 }
                                 res.render('enduserViews/viewPitch', { title: 'View Pitch || hubPitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, pitch_token: results[0].pitch_id, user_token: results[0].user_id, user_name: results[0].username, plan: plan_data, pitch_analytics: pitch_analytics, view_email: view_email });
-                                db.query("SELECT ( select `notification_1` from hp_users_info where user_id = '" + results[0].user_id + "') AS user_setting,( select allow_notification from hp_pitch_manager where pitch_id ='" + results[0].pitch_id + "') AS pitch_setting", function (error2,
-                                    results2,
-                                    fields2) {
-                                    if (error2) {
-                                        console.log(error2,
-                                            results2,
-                                            fields2)
-                                    }
-                                    if (results2) {
-                                        if (results2[0].user_setting == 'true' && results2[0].pitch_setting == 'true') {
-                                            var smtpTransport = nodemailer.createTransport({
-                                                service: process.env.SERVICE,
-                                                auth: {
-                                                    user: process.env.HPEMAILUSER,
-                                                    pass: process.env.PASSWORD
-                                                }
-                                            });
-                                            // -------------------------------mail sending-----------------------------
-                                            var tomail = "";
-                                            let share = '';
-                                            let newEmail = '';
-                                            let emailLog = {};
-                                            tomail = results[0].email;
-                                            // setup e-mail data with unicode symbols
-                                            // Email Body Builder 
-                                            newEmail = 'Your Pitch :- ' + results[0].company_name + ' Is Visited By Your Invitee' + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
-                                            var mailOptions = {
-                                                from: process.env.USERNAME, // sender address
-                                                to: tomail, // list of receivers
-                                                subject: "Your Pitch Is Visited " + results[0].company_name, // Subject line
-                                                html: newEmail
-                                            };
-                                            // send mail with defined transport object
-                                            smtpTransport.sendMail(mailOptions, function (err, info) {
-                                                if (err) {
-                                                    console.log(err)
-                                                } else {
-                                                    console.log('EMAIL SENT');
-                                                    console.log('tomail SENT', tomail);
-                                                    console.log('EMAIL SENT');
-                                                }
-                                            });
-                                        }
-                                    }
-                                });
                             }
                         });
 
@@ -291,7 +246,7 @@ class enduserController {
                 tomail = req.body.email_id;
                 // setup e-mail data with unicode symbols
                 // Email Body Builder
-                newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.url + '?viewer=' + randomToken + '" target="blank"> ' + req.body.url + '?viewer=' + randomToken + '</p><br /><p> Here is your password to access presentation: ' + randompassword + '</p><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.url + '?viewer=' + randomToken + '" target="blank"> ' + req.body.url + '?viewer=' + randomToken + '</p><br /><p> <strong> Here is your password to access presentation: ' + randompassword + ' <strong></p><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                 var mailOptions = {
                     from: process.env.USERNAME, // sender address
                     to: tomail, // list of receivers
@@ -515,7 +470,7 @@ class enduserController {
             var smtpTransport = nodemailer.createTransport({
                 service: process.env.SERVICE,
                 auth: {
-                    user: process.env.USERNAME,
+                    user: process.env.HPEMAILUSER,
                     pass: process.env.PASSWORD
                 }
             });
@@ -539,7 +494,7 @@ class enduserController {
                         tomail = req.body.user_email;
                         // setup e-mail data with unicode symbols
                         // Email Body Builder 
-                        newEmail = 'You received message by ' + req.body.sender_name + ' On ' + req.body.company_name + ' Pitch  <br /> With Below Text <br />' + req.body.chat_text + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                        newEmail = 'You received message by ' + req.body.sender + ' On ' + req.body.company_name + ' Pitch  <br /> With Below Text <br />' + req.body.chat_text + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                         var mailOptions = {
                             from: process.env.USERNAME, // sender address
                             to: tomail, // list of receivers
@@ -882,7 +837,7 @@ class enduserController {
                             let newView = results[0].views + 1
                             db.query(
                                 'UPDATE hp_pitch_viewer_analytics SET views = ? WHERE viewer_id = ? AND pitch_info_id = ?',
-                                [newView,req.body.viewer_id,req.body.pitch_info_id],
+                                [newView, req.body.viewer_id, req.body.pitch_info_id],
                                 function (error1, results1, fields1) {
                                     if (error1) {
                                         console.log(error);
@@ -892,6 +847,7 @@ class enduserController {
                                             success: true,
                                             message: "View Update Successfully!"
                                         });
+
                                     } else {
                                         res.send({
                                             success: false,
@@ -933,7 +889,7 @@ class enduserController {
                             // GET VIEWS AND UPDATES
                             db.query(
                                 'UPDATE hp_pitch_viewer_analytics SET viewing_time = ? WHERE viewer_id = ? AND pitch_info_id = ?',
-                                [req.body.viewing_time,req.body.viewer_id,req.body.pitch_info_id],
+                                [req.body.viewing_time, req.body.viewer_id, req.body.pitch_info_id],
                                 function (error, results, fields) {
                                     if (error) {
                                         console.log(error);
@@ -959,7 +915,7 @@ class enduserController {
                             let updateView = results[0].viewing_time + parseInt(req.body.viewing_time)
                             db.query(
                                 'UPDATE hp_pitch_viewer_analytics SET viewing_time = ? WHERE viewer_id = ? AND pitch_info_id = ?',
-                                [updateView,req.body.viewer_id,req.body.pitch_info_id],
+                                [updateView, req.body.viewer_id, req.body.pitch_info_id],
                                 function (error, results, fields) {
                                     if (error) {
                                         console.log(error);
@@ -1015,7 +971,7 @@ class enduserController {
         }
     }
 
-    static async viewUpdater(req,res) {
+    static async viewUpdater(req, res) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
                 viewer_id: Joi.string().required(),
@@ -1044,6 +1000,89 @@ class enduserController {
                         });
                     }
                 });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+    static async viewMail(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                user_token: Joi.string().required(),
+                pitch_token: Joi.string().required(),
+                company_name: Joi.string().required(),
+                user_email: Joi.string().required(),
+                viewer_name: Joi.string().required()
+            });
+            if (pitchData.error) {
+                res.send({ success: false, error: pitchData.error });
+                return;
+            }
+            db.query("SELECT ( select `notification_1` from hp_users_info where user_id = '" + req.body.user_token + "') AS user_setting,( select allow_notification from hp_pitch_manager where pitch_id ='" + req.body.pitch_token + "') AS pitch_setting", function (error2,
+                results2,
+                fields2) {
+                console.log(error2,
+                    results2,
+                    fields2)
+                if (error2) {
+                    console.log(error2,
+                        results2,
+                        fields2)
+                }
+                if (results2) {
+                    if (results2[0].user_setting == 'true' && results2[0].pitch_setting == 'true') {
+                        var smtpTransport = nodemailer.createTransport({
+                            service: process.env.SERVICE,
+                            auth: {
+                                user: process.env.HPEMAILUSER,
+                                pass: process.env.PASSWORD
+                            }
+                        });
+                        // -------------------------------mail sending-----------------------------
+                        var tomail = "";
+                        let share = '';
+                        let newEmail = '';
+                        let emailLog = {};
+                        tomail = req.body.user_email;
+                        // setup e-mail data with unicode symbols
+                        // Email Body Builder 
+                        newEmail = 'Your Pitch :- "' + req.body.company_name + '" was viewed by ' + req.body.viewer_name + '<br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                        var mailOptions = {
+                            from: process.env.HPEMAILUSER, // sender address
+                            to: tomail, // list of receivers
+                            subject:'Notification: Pitch "'+ req.body.company_name + '" was viewed', // Subject line
+                            html: newEmail
+                        };
+
+                        console.log("subject : ",mailOptions.subject);
+
+                        // send mail with defined transport object
+                        smtpTransport.sendMail(mailOptions, function (err, info) {
+                            if (err) {
+                                console.log(err)
+                                res.send({
+                                    success: false,
+                                    message: "Something Went Wrong!"
+                                });
+                            } else {
+                                console.log('EMAIL SENT');
+                                console.log('tomail SENT', tomail);
+                                console.log('EMAIL SENT');
+                                res.send({
+                                    success: true,
+                                });
+                            }
+                        });
+                    } else {
+                        res.send({
+                            success: false,
+                            message: "AUTH ISSUE OF PITCH CUSTOMER"
+                        });
+                    }
+                }
+            });
         }
         catch (error) {
             console.error(error);

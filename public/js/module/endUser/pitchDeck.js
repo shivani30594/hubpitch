@@ -743,6 +743,7 @@ const pitchDeck = function () {
 }();
 jQuery(document).ready(function () {
     pitchDeck.init();
+    viewNotification();
 });
 
 function openChatModal() {
@@ -846,4 +847,23 @@ $('#view_name').on('hide.bs.modal', function (e) {
 const getToken = () => {
     let urlToken = window.location.pathname
     console.log(urlToken);
+}
+const viewNotification = () => {
+    if (getCookie('viewerName') != undefined) {
+        $.ajax({
+            url: site_url + 'view-mail',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                user_token: $('#user_token').val(),
+                pitch_token: $('#pitch_token').val(),
+                company_name: $('#company_name').val(),
+                user_email: $('#user_email').val(),
+                viewer_name: getCookie('viewerName')
+            },
+            success: function (response) {
+                console.log(response)
+            }
+        });
+    }
 }

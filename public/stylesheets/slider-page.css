@@ -42,7 +42,7 @@ background-color: #cbe7b2;border-radius: 50%;display: inline-block;font-weight: 
 .gallery-wrap .edit-wrap .bottom-btn  a{color: #fff;}
 .gallery-wrap .slick-prev {left: 5px !important;}
 .gallery-wrap .slick-next {right: 20px !important}
-.gallery-wrap .edit-wrap .slider-text {padding: 40px;display: inline-block;}
+.gallery-wrap .edit-wrap .slider-text {padding: 40px;display: inline-block; width: 100%;}
 .gallery-wrap .edit-wrap .slider-text a {float: left;color: #313131;}
 .gallery-wrap .edit-wrap .slider-text h2 {font-size: 20px;}
 .gallery-wrap .edit-wrap .top-area h2 {font-size: 20px;}

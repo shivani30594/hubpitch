@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="/stylesheets/slider-page.css">
     <link rel="stylesheet" href="/stylesheets/slick.css">
     <link rel="stylesheet" href="/stylesheets/slick-theme.css">
+    <link rel="shortcut icon" type="image/x-icon" href="https://static1.squarespace.com/static/5aecd8b436099b8b647ad307/t/5b74e630aa4a9903e4cca041/favicon.ico"/>
+    <script src="/js/libraries/tinymce/tinymce.min.js"></script>
     <!-- custom css -->
 
     <!-- Validation.Js -->
@@ -216,7 +218,7 @@
             </div>
             <div class="gallery-wrap">
                 <input type="hidden" class="pitch_analytics" value="<%= pitch_analytics %>">
-                <div class="single-item">
+                <div class="single-item"> 
                     <% for(var i=0; i < data.length; i++) { %>
                     <div class="slide">
                         <input type="hidden" class="pitch_info_token_c" value="<%= data[i].pitch_info_id %>">

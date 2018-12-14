@@ -6,7 +6,7 @@ const userPitch = function () {
             url: site_url + 'get_user_pitchs',
             headers: {
                 'Accept': 'application/json',
-                "access-token": accesstoken
+                "access-token": accesstoken 
             },
             method: 'POST',
             dataType: 'json',
@@ -185,7 +185,6 @@ function deletePitch(id) {
     var x = confirm("Are you sure you want to delete?");
     if (x) {
         let accesstoken = getCookie('accesstoken')
-        console.log('id__________',id); 
         $.ajax({
             url: site_url + 'detele_pitch',
             headers: {
@@ -204,7 +203,6 @@ function deletePitch(id) {
                 } else {
                     console.log(response.message);
                     alert('SOMETHING WENT WRONG IN SENDING MESSAGE');
-
                 }
             },
             error: function (jqXHR, textStatus) {

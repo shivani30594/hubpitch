@@ -1273,7 +1273,6 @@ class pitchController {
                     pass: process.env.PASSWORD
                 }
             });
-
             let emailAddress = JSON.parse(req.body.email_id)
             var tomail = "";
             let share = '';
@@ -1281,42 +1280,86 @@ class pitchController {
             let emailLog = {};
             let pitch_url = req.body.pitch_url;
             async.forEachOf(emailAddress, function (value, key, callback) {
-                // // -------------------------------mail sending-----------------------------
-                tomail = "";
-                share = '';
-                newEmail = '';
-                tomail = value;
-                // setup e-mail data with unicode symbols
-                // Email Body Builder 
-                newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + pitch_url + '" target="blank">' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
-                var mailOptions = {
-                    from: process.env.HPEMAILUSER, // sender address
-                    to: tomail, // list of receivers
-                    subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
-                    html: newEmail
-                };
-                smtpTransport.sendMail(mailOptions, function (err, info) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        emailLog = {
-                            'pitch_id': req.body.pitch_id,
-                            'email_body': req.body.email_body,
-                            'email_address': value
-                        }
+                // CREATE END USER
+                var randompassword = Math.random()
+                    .toString(36)
+                    .slice(-8);
 
-                        db.query('INSERT into hp_pitch_viewers SET?', emailLog, function (error,
-                            results,
-                            fields) {
-                            console.log(error,
-                                results,
-                                fields);
-                            if (error) {
-                                res.send({ success: "false", message: "Email Sent || SOMETHING WENT WRONG WITH DATABASE LOG" });
-                            }
-                        })
-                        callback();
+                var randomToken = Math.random()
+                    .toString(36)
+                    .slice(-8);
+                var newViewer = {
+                    viewer_id: uuidV4(),
+                    pitch_id: req.body.pitch_id,
+                    user_id: userid,
+                    view_token: randomToken,
+                    email: value,
+                    password: md5(randompassword)
+                };
+                db.query("INSERT INTO hp_pitch_user_viewer SET ?", newViewer, function (
+                    error,
+                    results,
+                    fields
+                ) {
+                    if (error) {
+                        console.log(error);
+                        res.send({ success: "false", message: "Something went wrong" });
                     }
+                    let tempData = {
+                        user_id: newViewer.viewer_id,
+                        token_value: ' ',
+                        randompassword: randompassword
+                    }
+                    db.query("INSERT INTO hp_users_tmp SET?", tempData, function (
+                        error1,
+                        results1,
+                        fields1
+                    ) {
+                        if (error1) {
+                            console.log(error);
+                            console.log("Something went wrong at Temp Data");
+                        }
+                        if (results1) {
+                            console.log('Viewer Added In Temp!')
+                        }
+                    });
+                    // // -------------------------------mail sending-----------------------------
+                    tomail = "";
+                    share = '';
+                    newEmail = '';
+                    tomail = value;
+                    // setup e-mail data with unicode symbols
+                    // Email Body Builder 
+                    newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '?viewer=' + randomToken + '" target="blank"> ' + req.body.pitch_url + '?viewer=' + randomToken + '</p><br /><p> <strong> Here is your password to access presentation: ' + randompassword + '</strong> </p><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                    var mailOptions = {
+                        from: process.env.HPEMAILUSER, // sender address
+                        to: tomail, // list of receivers
+                        subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
+                        html: newEmail
+                    };
+                    smtpTransport.sendMail(mailOptions, function (err, info) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            emailLog = {
+                                'pitch_id': req.body.pitch_id,
+                                'email_body': req.body.email_body,
+                                'email_address': value
+                            }
+                            db.query('INSERT into hp_pitch_viewers SET?', emailLog, function (error,
+                                results,
+                                fields) {
+                                console.log(error,
+                                    results,
+                                    fields);
+                                if (error) {
+                                    res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
+                                }
+                                callback();
+                            })
+                            callback();
+                        }
+                    })
                 })
             }, function (err) {
                 if (err) console.error(err.message);

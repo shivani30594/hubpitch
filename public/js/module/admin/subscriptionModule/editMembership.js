@@ -1,5 +1,6 @@
 const editMembership = function () {
     const editMambershipForm = () => {
+        $('#pitch_limit').hide()
         $("#membership_plan").validate({
             errorElement: 'span', //default input error message container
             errorClass: 'error-block', // default input error message class
@@ -45,7 +46,7 @@ const editMembership = function () {
                         if (!response.success) {
                             return alert(JSON.stringify(response.error));
                         }
-                        if(response.success) {
+                        if (response.success) {
                             alert(response.message);
                             location.reload();
                         }
@@ -67,4 +68,11 @@ const editMembership = function () {
 }();
 jQuery(document).ready(function () {
     editMembership.init();
+    $('#unlimited_customer_pitches').on('change', function () {
+        if ($('#unlimited_customer_pitches').prop('checked') == false) {
+            $('#pitch_limit').show()
+        } else {
+            $('#pitch_limit').hide()
+        }
+    });
 });

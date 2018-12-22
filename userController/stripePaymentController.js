@@ -161,7 +161,7 @@ class stripePaymentController {
                     tomail = results1[0].email;
                     // setup e-mail data with unicode symbols
                     var mailOptions = {
-                        from: process.env.USERNAME, // sender address
+                        from: process.env.HPEMAILUSER, // sender address
                         to: tomail, // list of receivers
                         subject: "Random password for login", // Subject line
                         html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + process.env.SITE_URL + 'reset-password/' + results1[0].token_value + "> Click Here</a>"

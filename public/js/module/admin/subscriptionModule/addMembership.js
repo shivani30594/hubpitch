@@ -1,5 +1,6 @@
 const site_url = "http://localhost:3000/";
 const addMembership = function () {
+    $('#pitch_limit').hide()
     const addMambershipForm = () => {
         $("#membership_plan").validate({
             errorElement: 'span', //default input error message container
@@ -29,6 +30,7 @@ const addMembership = function () {
                         plan_name: $('#plan_name').val(),
                         plan_price: $('#plan_price').val(),
                         unlimited_customer_pitches: $('#unlimited_customer_pitches').is(":checked"),
+                        pitch_limits: $("#pitch_limit").val(),
                         video_upload_editing: $('#video_upload_editing').is(":checked"),
                         pdf_upload: $('#pdf_upload').is(":checked"),
                         pitch_customization: $('#pitch_customization').is(":checked"),
@@ -66,4 +68,11 @@ const addMembership = function () {
 }();
 jQuery(document).ready(function () {
     addMembership.init();
+    $('#unlimited_customer_pitches').on('change', function() {
+        if($('#unlimited_customer_pitches').prop('checked') == false){
+            $('#pitch_limit').show() 
+        } else {
+            $('#pitch_limit').hide()
+        }
+      });
 });

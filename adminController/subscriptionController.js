@@ -112,6 +112,7 @@ class subscriptionController {
                 plan_price: Joi.string()
                     .min(2).required(),
                 unlimited_customer_pitches: Joi.string().required(),
+                pitch_limits:Joi.allow(),
                 video_upload_editing: Joi.string().required(),
                 pdf_upload: Joi.string().required(),
                 pitch_customization: Joi.string().required(),
@@ -143,6 +144,7 @@ class subscriptionController {
                 'plan_name': req.body.plan_name,
                 'plan_price': req.body.plan_price,
                 'unlimited_customer_pitches': req.body.unlimited_customer_pitches,
+                'pitch_limits': req.body.pitch_limits,
                 'video_upload_editing': req.body.video_upload_editing,
                 'pdf_upload': req.body.pdf_upload,
                 'pitch_customization': req.body.pitch_customization,
@@ -223,6 +225,7 @@ class subscriptionController {
                     .required(),
                 plan_price: Joi.string().required(),
                 unlimited_customer_pitches: Joi.string().required(),
+                pitch_limit:Joi.allow(),
                 video_upload_editing: Joi.string().required(),
                 pdf_upload: Joi.string().required(),
                 pitch_customization: Joi.string().required(),
@@ -241,7 +244,7 @@ class subscriptionController {
                 return;
             }
 
-            db.query('UPDATE hp_membership_plan SET plan_name="' + req.body.plan_name + '",	plan_price="' + req.body.plan_price + '",unlimited_customer_pitches="' + req.body.unlimited_customer_pitches + '", video_upload_editing="' + req.body.video_upload_editing + '", pdf_upload="' + req.body.pdf_upload + '", pitch_customization="' + req.body.pitch_customization + '" , powerpoint_upload="' + req.body.powerpoint_upload + '" , excel_upload="' + req.body.excel_upload + '" , word_upload="' + req.body.word_upload + '" , pitch_analytics="' + req.body.pitch_analytics + '" , pitch_notifications="' + req.body.pitch_notifications + '" , sharing_tracking="' + req.body.sharing_tracking + '" , user_to_customer_messaging="' + req.body.user_to_customer_messaging + '", other_details="' + req.body.other_details + '" WHERE plan_id=' + req.body.plan_id, function (error,
+            db.query('UPDATE hp_membership_plan SET plan_name="' + req.body.plan_name + '",	plan_price="' + req.body.plan_price + '",unlimited_customer_pitches="' + req.body.unlimited_customer_pitches + '",	pitch_limits="' + req.body.	pitch_limits + '", video_upload_editing="' + req.body.video_upload_editing + '", pdf_upload="' + req.body.pdf_upload + '", pitch_customization="' + req.body.pitch_customization + '" , powerpoint_upload="' + req.body.powerpoint_upload + '" , excel_upload="' + req.body.excel_upload + '" , word_upload="' + req.body.word_upload + '" , pitch_analytics="' + req.body.pitch_analytics + '" , pitch_notifications="' + req.body.pitch_notifications + '" , sharing_tracking="' + req.body.sharing_tracking + '" , user_to_customer_messaging="' + req.body.user_to_customer_messaging + '", other_details="' + req.body.other_details + '" WHERE plan_id=' + req.body.plan_id, function (error,
                 results,
                 fields) {
                 if (error) {

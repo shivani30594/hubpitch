@@ -30,29 +30,30 @@
                                 value="<%= data[0].plan_price %>">
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="row">
-                        <div class="form-group col-md-4">
-                                <label class="control-label col-sm-8" for="unlimited_customer_pitches">
-                                    Unlimited Pitches</label>
-                                <div class="col-sm-4">
-                                    <div class="checkbox">
-                                        <label class="switch">
-                                            <input name="unlimited_customer_pitches" type="checkbox" id="unlimited_customer_pitches"
-                                                <%= (data[0].unlimited_customer_pitches=='true' ) ? "checked" : "" %> >
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label col-sm-8" for="unlimited_customer_pitches">
+                            Unlimited Pitches</label>
+                        <div class="col-sm-4">
+                            <input type="number" id="pitch_limit" class="form-control" placeholder="Limit" name="pitch_limit">
+                            <div class="checkbox">
+                                <label class="switch">
+                                    <input name="unlimited_customer_pitches" type="checkbox" id="unlimited_customer_pitches"
+                                        <%=(data[0].unlimited_customer_pitches=='true' ) ? "checked" : "" %> >
+                                    <span class="slider round"></span>
+                                </label>
                             </div>
+                        </div>
+                    </div>
                     <div class="form-group col-md-4">
                         <label class="control-label col-sm-8" for="video_upload_editing">
-                                Video Upload</label>
+                            Video Upload</label>
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label class="switch">
-                                    <input name="video_upload_editing" type="checkbox" id="video_upload_editing" <%= (data[0].video_upload_editing=='true'
+                                    <input name="video_upload_editing" type="checkbox" id="video_upload_editing" <%=(data[0].video_upload_editing=='true'
                                         ) ? "checked" : "" %> >
                                     <span class="slider round"></span>
                                 </label>
@@ -65,7 +66,7 @@
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label class="switch">
-                                    <input name="pdf_upload" type="checkbox" id="pdf_upload" <%= (data[0].pdf_upload=='true'
+                                    <input name="pdf_upload" type="checkbox" id="pdf_upload" <%=(data[0].pdf_upload=='true'
                                         ) ? "checked" : "" %>>
                                     <span class="slider round"></span>
                                 </label>
@@ -78,22 +79,22 @@
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label class="switch">
-                                    <input name="pitch_customization" type="checkbox" id="pitch_customization" <%= (data[0].pitch_customization=='true'
+                                    <input name="pitch_customization" type="checkbox" id="pitch_customization" <%=(data[0].pitch_customization=='true'
                                         ) ? "checked" : "" %> >
                                     <span class="slider round"></span>
                                 </label>
                             </div>
                         </div>
                     </div>
-               
-               
+
+
                     <div class="form-group col-md-4">
                         <label class="control-label col-sm-8" for="powerpoint_upload">
                             Powerpoint Upload</label>
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label class="switch">
-                                    <input name="powerpoint_upload" type="checkbox" id="powerpoint_upload" <%= (data[0].powerpoint_upload=='true'
+                                    <input name="powerpoint_upload" type="checkbox" id="powerpoint_upload" <%=(data[0].powerpoint_upload=='true'
                                         ) ? "checked" : "" %>>
                                     <span class="slider round"></span>
                                 </label>
@@ -106,7 +107,7 @@
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label class="switch">
-                                    <input name="excel_upload" type="checkbox" id="excel_upload" <%= (data[0].excel_upload=='true'
+                                    <input name="excel_upload" type="checkbox" id="excel_upload" <%=(data[0].excel_upload=='true'
                                         ) ? "checked" : "" %>>
                                     <span class="slider round"></span>
                                 </label>
@@ -119,22 +120,21 @@
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label class="switch">
-                                    <input name="word_upload" type="checkbox" id="word_upload" <%= (data[0].word_upload=='true'
+                                    <input name="word_upload" type="checkbox" id="word_upload" <%=(data[0].word_upload=='true'
                                         ) ? "checked" : "" %>>
                                     <span class="slider round"></span>
                                 </label>
                             </div>
                         </div>
                     </div>
-              
-               
+
                     <div class="form-group col-md-4">
                         <label class="control-label col-sm-8" for="pitch_analytics">
                             Pitch Analytics</label>
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label class="switch">
-                                    <input name="pitch_analytics" type="checkbox" id="pitch_analytics" <%= (data[0].pitch_analytics=='true'
+                                    <input name="pitch_analytics" type="checkbox" id="pitch_analytics" <%=(data[0].pitch_analytics=='true'
                                         ) ? "checked" : "" %>>
                                     <span class="slider round"></span>
                                 </label>
@@ -147,7 +147,8 @@
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label class="switch">
-                                    <input name="pitch_notifications" type="checkbox" id="pitch_notifications" <%= (data[0].	pitch_notifications=='true') ? "checked" : "" %>>
+                                    <input name="pitch_notifications" type="checkbox" id="pitch_notifications" <%=(data[0].
+                                        pitch_notifications=='true' ) ? "checked" : "" %>>
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -159,21 +160,23 @@
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label class="switch">
-                                    <input name="recipient_sharing_tracking" type="checkbox" id="recipient_sharing_tracking" <%= (data[0].	sharing_tracking=='true') ? "checked" : "" %>>
+                                    <input name="recipient_sharing_tracking" type="checkbox" id="recipient_sharing_tracking"
+                                        <%=(data[0]. sharing_tracking=='true' ) ? "checked" : "" %>>
                                     <span class="slider round"></span>
                                 </label>
                             </div>
                         </div>
                     </div>
-                
-              
+
+
                     <div class="form-group col-md-4">
                         <label class="control-label col-sm-8" for="user_to_customer_messaging">
                             User to Customer Messaging</label>
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label class="switch">
-                                    <input name="user_to_customer_messaging" type="checkbox" id="user_to_customer_messaging" <%= (data[0].	user_to_customer_messaging=='true') ? "checked" : "" %>>
+                                    <input name="user_to_customer_messaging" type="checkbox" id="user_to_customer_messaging"
+                                        <%=(data[0]. user_to_customer_messaging=='true' ) ? "checked" : "" %>>
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -181,21 +184,19 @@
                     </div>
                 </div>
 
-                    <div class="form-group col-md-8">
-                        <label class="control-label col-sm-2" for="exampleFormControlTextarea1">Other Details</label>
-                        <textarea class="col-sm-10 form-control rounded-1" id="exampleFormControlTextarea1" name="other_details"
-                            placeholder="Other Details About Plan ( IF ANY )" rows="10"><%= data[0].other_details %></textarea>
-                    </div>
-               
+                <div class="form-group col-md-8">
+                    <label class="control-label col-sm-2" for="exampleFormControlTextarea1">Other Details</label>
+                    <textarea class="col-sm-10 form-control rounded-1" id="exampleFormControlTextarea1" name="other_details"
+                        placeholder="Other Details About Plan ( IF ANY )" rows="10"><%= data[0].other_details %></textarea>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-12 text-center">
                         <button type="submit" class="btn btn-primary" name="add_plan">update</button>
                     </div>
                 </div>
             </form>
-        
-        
-    </div>
+        </div>
     </div>
     <!-- LOADER  -->
     <!-- <div class="loader_hp_">

@@ -26,6 +26,8 @@
     <link rel='stylesheet' href='/stylesheets/payment.css' />
     <!-- custom css -->
 
+    <link rel="shortcut icon" type="image/x-icon" href="https://static1.squarespace.com/static/5aecd8b436099b8b647ad307/t/5b74e630aa4a9903e4cca041/favicon.ico" />
+
     <!-- Validation.Js -->
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/js/additional-methods.min.js"></script>
@@ -132,7 +134,8 @@
                             <% if(data[i].plan_price > 0){ %>
                             <li id="<%= data[i].plan_id %>_submmiting">
                                 <%  } else { %>
-                            <li class="grey"><a href="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign Up Free</a></li>
+                            <li class="grey"><a href="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign
+                                    Up Free</a></li>
                             <% } %>
                         </ul>
                     </div>

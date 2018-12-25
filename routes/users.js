@@ -59,6 +59,7 @@ router.get('/admin/edit-plan/:id', adminController.subscriptionController.editPl
  * 
  */
 
+
 router.get('/viewer/:pitch_id', Controller.enduserController.viewPitch)
 router.get('/welcome', function (req, res, next) {
     res.render("loginModule/welcome", { title: 'Free SignUp || Hub Pitch', documents_viewer: 'false', free: 'true' });

@@ -27,8 +27,9 @@ class pitchController {
             }
         });
         //        res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', documents_viewer: 'true' });
+        // db.query("SELECT unlimited_customer_pitches,video_upload_editing,pdf_upload,pitch_customization,powerpoint_upload,excel_upload,word_upload,pitch_analytics,pitch_notifications,sharing_tracking,user_to_customer_messaging FROM hp_membership_plan JOIN hp_users on hp_users.plan_id = hp_membership_plan.plan_id WHERE hp_users.user_id=?", userid, function (
 
-        db.query("SELECT unlimited_customer_pitches,video_upload_editing,pdf_upload,pitch_customization,powerpoint_upload,excel_upload,word_upload,pitch_analytics,pitch_notifications,sharing_tracking,user_to_customer_messaging FROM hp_membership_plan JOIN hp_users on hp_users.plan_id = hp_membership_plan.plan_id WHERE hp_users.user_id=?", userid, function (
+        db.query("SELECT (SELECT remaining_pitch FROM hp_users_pitch_limit WHERE hp_users_pitch_limit.user_id=?) as pitch_limit,unlimited_customer_pitches,video_upload_editing,pdf_upload,pitch_customization,powerpoint_upload,excel_upload,word_upload,pitch_analytics,pitch_notifications,sharing_tracking,user_to_customer_messaging FROM hp_membership_plan JOIN hp_users on hp_users.plan_id = hp_membership_plan.plan_id WHERE hp_users.user_id=?", [userid , userid], function (
             error,
             results,
             fields
@@ -40,6 +41,7 @@ class pitchController {
                 res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', plan: false, documents_viewer: 'true' });
             }
             if (results) {
+                console.log(results);
                 let plan_data = {
                     video: results[0].video_upload_editing,
                     pdf: results[0].pdf_upload,
@@ -55,7 +57,7 @@ class pitchController {
                     text_file: 'true'
                 }
                 console.log(plan_data);
-                res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', plan: JSON.stringify(plan_data), documents_viewer: 'true', plan_type: results[0].pitch_customization });
+                res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', plan: JSON.stringify(plan_data), documents_viewer: 'true', plan_type: results[0].pitch_customization, pitch_limit: "12"});
             }
         });
 

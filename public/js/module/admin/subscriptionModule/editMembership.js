@@ -1,6 +1,10 @@
 const editMembership = function () {
     const editMambershipForm = () => {
-        $('#pitch_limit').hide()
+        if($('#pitch_limit').hasClass('unchecked_limit') == true ){
+            $('#pitch_limit').show()
+        } else {
+            $('#pitch_limit').hide()
+        }
         $("#membership_plan").validate({
             errorElement: 'span', //default input error message container
             errorClass: 'error-block', // default input error message class
@@ -29,6 +33,7 @@ const editMembership = function () {
                         plan_id: $('#plan_id').val(),
                         plan_name: $('#plan_name').val(),
                         plan_price: $('#plan_price').val(),
+                        pitch_limit: $('#pitch_limit').val(),
                         unlimited_customer_pitches: $('#unlimited_customer_pitches').is(":checked"),
                         video_upload_editing: $('#video_upload_editing').is(":checked"),
                         pdf_upload: $('#pdf_upload').is(":checked"),

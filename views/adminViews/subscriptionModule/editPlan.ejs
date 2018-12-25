@@ -37,7 +37,7 @@
                         <label class="control-label col-sm-8" for="unlimited_customer_pitches">
                             Unlimited Pitches</label>
                         <div class="col-sm-4">
-                            <input type="number" id="pitch_limit" class="form-control" placeholder="Limit" name="pitch_limit">
+                            <input type="number" id="pitch_limit" class='form-control <%=(data[0].unlimited_customer_pitches=="false" ) ? "unchecked_limit" : "" %>' placeholder="Limit" name="pitch_limit" value="<%=(data[0].pitch_limits=='null' ) ? '' :  data[0].pitch_limits %>">
                             <div class="checkbox">
                                 <label class="switch">
                                     <input name="unlimited_customer_pitches" type="checkbox" id="unlimited_customer_pitches"

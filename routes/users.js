@@ -32,6 +32,7 @@ router.get('/reset-password/:id', Controller.authController.checkToken);
  */
 router.get('/user/dashboard', Controller.dashboardController.dashboard);
 router.get('/user/profile', Controller.usersController.profile);
+router.get('/user/upgrade', Controller.upgradeController.upgrade);
 
 // Pitch Module 
 router.get('/pitch/add', Controller.pitchController.addNewPitchView);
@@ -95,10 +96,10 @@ router.post('/signup', Controller.authController.singup);
 router.post('/signin', Controller.authController.signin);
 router.post('/forgot_password', Controller.authController.forgotPassword);
 router.post('/reset_password', Controller.authController.resetPassword);
-router.post('/me', Controller.usersController.me)
-router.post('/user/update_profile', Controller.usersController.updateProfile)
-router.post('/user/change_password', Controller.authController.changePassword)
-
+router.post('/me', Controller.usersController.me);
+router.post('/user/update_profile', Controller.usersController.updateProfile);
+router.post('/user/change_password', Controller.authController.changePassword);
+router.post('/user/upgrade_payment_status/:id', Controller.upgradeController.payment);
 // ADMIN API METHOD
 
 

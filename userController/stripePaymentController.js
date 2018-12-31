@@ -189,9 +189,36 @@ class stripePaymentController {
                 res.send({ success: false, message: 'SQL ISSUES', error: error });
             }
             if (results) {
-                db.query('SELECT hp_users.email,hp_users_tmp.token_value,hp_users_tmp.randompassword FROM hp_users_tmp JOIN hp_users ON hp_users_tmp.user_id = hp_users.user_id WHERE hp_users_tmp.user_id=?', array[0], function (error1,
+                db.query('SELECT (SELECT pitch_limits FROM hp_membership_plan WHERE plan_id=?) as pitch_limit,hp_users.email,hp_users_tmp.token_value,hp_users_tmp.randompassword FROM hp_users_tmp JOIN hp_users ON hp_users_tmp.user_id = hp_users.user_id WHERE hp_users_tmp.user_id=?', [array[1] ,array[0]], function (error1,
                     results1,
                     field1) {
+                    if (results1) {
+                        var pitch_limit = results1[0].pitch_limit;
+                        var date = new Date();
+                        var timestamp = date.getTime();
+                        var expire = timestamp + 30 * 24 * 60 * 60;
+                        if (pitch_limit == null) {
+                            pitch_limit = -1;
+                        }
+                        let hp_users_pitch_limit_data = {
+                            user_id: array[0],
+                            remaining_pitch: pitch_limit,
+                            end_date: moment(expire).format("YYYY-MM-DD HH:mm:ss")
+                        }
+                        db.query("INSERT INTO hp_users_pitch_limit SET?", hp_users_pitch_limit_data, function (
+                            error2,
+                            results2,
+                            fields2
+                        ) {
+                            if (error2) {
+                                console.log(error2);
+                                res.send({ success: "false", message: "Something went wrong" });
+                            }
+                            if (results2) {
+
+                            }
+                        });
+                    }
                     // -------------------------------mail sending-----------------------------
                     var tomail = "";
                     tomail = results1[0].email;

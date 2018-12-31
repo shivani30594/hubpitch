@@ -28,8 +28,8 @@ class pitchController {
         });
         //        res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', documents_viewer: 'true' });
         // db.query("SELECT unlimited_customer_pitches,video_upload_editing,pdf_upload,pitch_customization,powerpoint_upload,excel_upload,word_upload,pitch_analytics,pitch_notifications,sharing_tracking,user_to_customer_messaging FROM hp_membership_plan JOIN hp_users on hp_users.plan_id = hp_membership_plan.plan_id WHERE hp_users.user_id=?", userid, function (
-
-        db.query("SELECT (SELECT remaining_pitch FROM hp_users_pitch_limit WHERE hp_users_pitch_limit.user_id=?) as pitch_limit,unlimited_customer_pitches,video_upload_editing,pdf_upload,pitch_customization,powerpoint_upload,excel_upload,word_upload,pitch_analytics,pitch_notifications,sharing_tracking,user_to_customer_messaging FROM hp_membership_plan JOIN hp_users on hp_users.plan_id = hp_membership_plan.plan_id WHERE hp_users.user_id=?", [userid , userid], function (
+        //(SELECT pitch_limits FROM hp_membership_plan WHERE plan_id=?) as total_pitch_limit,
+        db.query("SELECT (SELECT remaining_pitch FROM hp_users_pitch_limit WHERE hp_users_pitch_limit.user_id=?) as pitch_limit,pitch_limits,unlimited_customer_pitches,video_upload_editing,pdf_upload,pitch_customization,powerpoint_upload,excel_upload,word_upload,pitch_analytics,pitch_notifications,sharing_tracking,user_to_customer_messaging FROM hp_membership_plan JOIN hp_users on hp_users.plan_id = hp_membership_plan.plan_id WHERE hp_users.user_id=?", [userid , userid], function (
             error,
             results,
             fields
@@ -57,7 +57,7 @@ class pitchController {
                     text_file: 'true'
                 }
                 console.log(plan_data);
-                res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', plan: JSON.stringify(plan_data), documents_viewer: 'true', plan_type: results[0].pitch_customization, pitch_limit: "12"});
+                res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', plan: JSON.stringify(plan_data), documents_viewer: 'true', plan_type: results[0].pitch_customization, pitch_limit: results[0].pitch_limit, total_pitch_limit: results[0].pitch_limits});
             }
         });
 
@@ -160,6 +160,49 @@ class pitchController {
                                         fields) {
                                         if (results.affectedRows) {
                                             res.send({ success: "true", message: "New Pitch Added", pitch: pitchID });
+                                            db.query("SELECT remaining_pitch FROM `hp_users_pitch_limit` where user_id=?", userid, function (error1,
+                                                results1,
+                                                fields1) {
+                                                if (results1) {
+                                                    var limit_data = results1[0].remaining_pitch;
+                                                    if (limit_data != -1 && limit_data != 0) {
+                                                        limit_data = limit_data - 1;
+                                                    }
+                                                    db.query("Update hp_users_pitch_limit SET remaining_pitch=? WHERE user_id=?",[limit_data,userid], function (error1,
+                                                        results2,
+                                                        fields2) {
+                                                        if (results2) {
+
+                                                        }
+                                                        else {
+                                                            console.log(error2,
+                                                                results2,
+                                                                fields2)
+                                                            res.send({ success: "false", message: "Something went wrong || Info Table" });
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    console.log(error1,
+                                                        results1,
+                                                        fields1)
+                                                    res.send({ success: "false", message: "Something went wrong || Info Table" });
+                                                }
+                                            }); 
+
+                                            // db.query("Update hp_users_pitch_limit SET remaining_pitch='5' WHERE user_id=?", userid, function (error1,
+                                            //     results1,
+                                            //     fields1){
+                                            //     if (results1){
+                                                 
+                                            //     }
+                                            //    else{
+                                            //         console.log(error1,
+                                            //             results1,
+                                            //             fields1)
+                                            //         res.send({ success: "false", message: "Something went wrong || Info Table" });
+                                            //     }
+                                            //     });
                                         } else {
                                             console.log(error,
                                                 results,
@@ -268,6 +311,19 @@ class pitchController {
                                 // console.log('SaveABle LENGTH', saveAble.length);
                                 // console.log('Counter', counter_temp);
                                 res.send({ success: "true", message: "New Pitch Added", pitch: pitchID });
+                                db.query("Update hp_users_pitch_limit SET remaining_pitch='5' WHERE user_id=?", userid, function (error1,
+                                    results1,
+                                    fields1) {
+                                    if (results1) {
+
+                                    }
+                                    else {
+                                        console.log(error1,
+                                            results1,
+                                            fields1)
+                                        res.send({ success: "false", message: "Something went wrong || Info Table" });
+                                    }
+                                });
                             });
                         }
                         else {

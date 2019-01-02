@@ -1248,7 +1248,7 @@ class pitchController {
                 if (results.length > 0) {
                     res.send({ success: "true", data: results });
                 } else {
-                    return res.status.send({ success: "false", message: 'No Message Found' });
+                    return res.status(200).send({ success: "false", message: 'No Message Found' });
                 }
             });
 

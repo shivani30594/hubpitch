@@ -16,14 +16,19 @@ const userPitch = function () {
                 }
                 let dataHTML = '';
                 let data = response.data;
+                console.log(data);
                 if (data == '') {
                     dataHTML = "<li> <h3> You haven't Created Pitch Yet ! </h3> </li>"
                     $('.ul_list_wapper').append(dataHTML);
                 } else {
                     data.forEach((obj) => {
                         dataHTML = ''
-                        if (obj) {
-                            dataHTML = '<li><div class="list-left"> <a href="/user/pitch/viewer/' + obj.pitch_id + '">  <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <div class="message" onclick="openConversation(' + obj.pitch_id + ')">' + obj.messages + ' New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> <div class="delete-pitch"> <span onclick="deletePitch('+obj.pitch_id+')"> <i class="glyphicon glyphicon-trash"> </i> </span> </div> </div> </li>';
+                        if (obj.is_published=="yes") {
+                           dataHTML = '<li><div class="list-left"> <a href="/user/pitch/viewer/' + obj.pitch_id + '">  <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <div class="message" onclick="openConversation(' + obj.pitch_id + ')">' + obj.messages + ' New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> <div class="delete-pitch"> <span onclick="deletePitch('+obj.pitch_id+')"> <i class="glyphicon glyphicon-trash"> </i> </span> </div> </div> </li>';
+                            $('.ul_list_wapper').append(dataHTML);
+                        }
+                        else{
+                            dataHTML = '<li class="published"><div class="list-left"> <a href="/user/pitch/viewer/' + obj.pitch_id + "?publish=publish" + '">  <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <a href="/user/pitch/viewer/' + obj.pitch_id + "?publish=publish"+'"><div class="message"> Published</div></a> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> <div class="delete-pitch"> <span onclick="deletePitch(' + obj.pitch_id + ')"> <i class="glyphicon glyphicon-trash"> </i> </span> </div> </div> </li>';
                             $('.ul_list_wapper').append(dataHTML);
                         }
                     })

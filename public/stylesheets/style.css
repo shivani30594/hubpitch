@@ -677,6 +677,11 @@ button.share.btn.btn-primary.float-right {
 .viewers-list .primary p.lable{font-size: 15px;}
 .viewers-list .modal-body{max-height: 595px;overflow: auto;}
 label.pitch_views_time.pitch_viewers {cursor: pointer;}
+
+.left-pitches{float: none !important;text-align: right;max-width: 700px;margin: 0 auto -90px;}
+.left-pitches p{font-weight: 600;}
+.list-wrap ul li.published {background-color: #fbe4e4;}
+
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

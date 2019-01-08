@@ -13,7 +13,7 @@
 
         <form class="add_new_pitch_form" id="add_pitch" enctype="multipart/form-data" method="POST">
             <div class="col-md-12">
-                <div class="pull-right"><span> <%= pitch_limit %>/<%= total_pitch_limit %> pitches left </span></div>
+                <div class="left-pitches"><p> <span> <%= pitch_limit %>/<%= total_pitch_limit %> </span> pitches left  </p> </div>
                 <div class="first-box" id="main-box">
                     <div class="top-area">
                         <div class="js">
@@ -94,6 +94,7 @@
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
                     <a href="javascript:resetForm()">Cancel</a>
+                    <a href="javascript:void(0)" class="continue_btn_draft">Draft</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
@@ -109,9 +110,11 @@
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
                     <a href="javascript:resetForm()">Cancel</a>
+                    <a href="javascript:void(0)" class="continue_btn_draft">Draft</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
+            
             <div class="row preview_file_docs docs_priview preview_box">
                 <div class="preview-inner-wrap">
                     <div class="col-md-12 top-area preview">
@@ -124,6 +127,7 @@
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
                     <a href="javascript:resetForm()">Cancel</a>
+                    <a href="javascript:void(0)" class="continue_btn_draft">Draft</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
@@ -149,6 +153,7 @@
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
                     <a href="javascript:resetForm()">Cancel</a>
+                    <a href="javascript:void(0)" class="continue_btn_draft">Draft</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>

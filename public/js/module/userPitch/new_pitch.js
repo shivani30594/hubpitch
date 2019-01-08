@@ -213,6 +213,7 @@ const newPitch = function () {
     }
     const handleContinue_final = () => {
         $(document).on("click", '.continue_btn_final', function () {
+            alert("hello");
             let $this = '';
             $('.preview_box').hide('100');
             if ($('div.preview_box').hasClass('display_current') === true) {
@@ -320,6 +321,10 @@ const newPitch = function () {
             }
         });
     }
+
+
+
+
     const handleShareLink = () => {
         $(document).on("click", '#create_pitch', function () {
             let accesstoken = getCookie('accesstoken');
@@ -377,6 +382,7 @@ const newPitch = function () {
             handleNewPitchFormUI();
             handleDropZone();
             handleContinue_final();
+            handleContinue_drafts();
             handleShareLink();
             handleCopyButton();
         }
@@ -517,6 +523,9 @@ function resetForm() {
         location.reload();
     }
 }
+function draftForm(){
+    alert("Rip");
+}
 tinymce.init({
     selector: "#email_body",
     theme: "modern",
@@ -537,3 +546,112 @@ tinymce.init({
         { title: 'Table row 1', selector: 'tr', classes: 'tablerow1' }
     ]
 });
+//* For Drafts Links 
+const handleContinue_drafts = () => {
+    $(document).on("click", '.continue_btn_draft', function () {
+      
+        let $this = '';
+        $('.preview_box').hide('100');
+        if ($('div.preview_box').hasClass('display_current') === true) {
+            $this = $('.display_current').next();
+            if ($this.length === 0) {
+                handleContinueUploadDrafts();
+            }
+            $('div.preview_box').removeClass('display_current');
+        } else {
+            $this = $(".add_preview .preview_box:first-child");
+        }
+        $this.addClass('display_current');
+        $this.show('100');       
+        tinymce.init({
+            selector: ".text_box_ta",
+            theme: "modern",
+            height: 300,
+            plugins: [
+                "searchreplace",
+                "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+            toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent | forecolor backcolor emoticons",
+
+            style_formats: [
+                { title: 'Bold text', inline: 'b' },
+                { title: 'Red text', inline: 'span', styles: { color: '#ff0000' } },
+                { title: 'Red header', block: 'h1', styles: { color: '#ff0000' } },
+                { title: 'Example 1', inline: 'span', classes: 'example1' },
+                { title: 'Example 2', inline: 'span', classes: 'example2' },
+                { title: 'Table styles' },
+                { title: 'Table row 1', selector: 'tr', classes: 'tablerow1' }
+            ]
+        });
+
+        $this.find('.a_another_btn').html(' ');
+        $this.find('.top-area').removeClass('col-md-12').addClass('col-md-6');
+        $this.find('.text-box').show('100');
+    });
+}
+
+const handleContinueUploadDrafts = () => {
+  
+    let accesstoken = getCookie('accesstoken');
+
+    // FILE CODE 
+    var cnt = 1;
+    var ad_img_array = [];
+    jQuery(".drop_zone_input").each(function () {
+        ad_img_array.push(jQuery(this)[0].files[0]);
+        cnt++;
+    });
+
+    // TEXT CODE 
+    var cnt2 = 1;
+    var ad_text_array = [];
+    jQuery(".display_box_d .text_box_ta").each(function () {
+        tinyMCE.triggerSave();
+        ad_text_array.push(jQuery(this).val());
+        cnt2++;
+    });
+    var input = document.querySelector('input[name="drop_zone[]"]')
+    var formData = new FormData();
+    var company_name = $('#c-name').val();
+    formData.append('company_name', company_name);
+    ad_img_array.forEach((obj) => {
+        if (obj) {
+            formData.append('pitch_files', obj);
+        }
+    })
+    ad_text_array.forEach((obj) => {
+        if (obj) {
+            formData.append('pitch_text', obj);
+        }
+    })
+    $('.loader_hp_').show('50');
+    
+    $.ajax({
+        url: site_url + 'add_pitch_draft',
+        headers: {
+            'Accept': 'application/json',
+            "access-token": accesstoken
+        },
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        method: 'POST',
+        data: formData,
+        success: function (response) {
+            if (!response.success) {
+                return alert(JSON.stringify(response.message));
+            }
+            window.location = site_url + 'user/dashboard';
+            console.log('response', response);
+            $('#add_new_pitch_form').hide('100');
+            let cName = $('#c-name').val();
+            $('#final_section').show('100');
+            $('#final_name').val(cName);
+            $('#pitch_id').val(response.pitch);
+            $('.loader_hp_').hide('50');
+        },
+        error: function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        }
+    });
+}
+

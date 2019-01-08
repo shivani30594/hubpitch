@@ -126,6 +126,7 @@ router.post('/admin/remove_membership_plan', adminController.subscriptionControl
 
 // PITCH
 router.post('/add_pitch', Controller.pitchController.addPitch);
+router.post('/add_pitch_draft', Controller.pitchController.addPitchDraft);
 router.post('/get_user_pitchs', Controller.pitchController.getPitch)
 router.post('/detele_pitch', Controller.pitchController.deletePitch)
 router.post('/manage_pitch', Controller.pitchController.managePitch)

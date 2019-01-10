@@ -149,12 +149,12 @@ a.add_note.btn.btn-primary {background: #cbe7b2;float: right !important;}
 
 .edit-wrap-toggled .col-md-6 , .edit-wrap-toggled .col-sm-6{width:100%;}
 .edit-wrap-toggled .preview embed.docs_priview_e{width:100%;}
-.edit-wrap-toggled  .docxjs-wrapper{width:100% !important;
+/* .edit-wrap-toggled  .docxjs-wrapper{width:100% !important;} */
 /* transform: initial !important;
 margin: 0 auto !important;
 transform-origin: initial !important;
 position: unset !important; */
-}
+
 .edit-wrap-toggled div#docxjs-container{width:100% !important;}
 .gallery-wrap .zoom-wapper {margin-top: 10px;text-align: right;}
 .gallery-wrap .zoom-wapper button.full_screen_ {

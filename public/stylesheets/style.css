@@ -682,6 +682,16 @@ label.pitch_views_time.pitch_viewers {cursor: pointer;}
 .left-pitches p{font-weight: 600;}
 .list-wrap ul li.published {background-color: #fbe4e4;}
 
+#publish_pitch .model-body {display: inline-block;padding: 20px 15px;}
+#publish_pitch  .check-box-group{margin: 15px 0;}
+#publish_pitch input#final_name {padding: 2px 4px;width: 300px;}
+button#create_pitch{border: none;color: #ffffff;padding: 6px 12px;margin-top: 20px;
+background-image: -webkit-linear-gradient(top,#337ab7 0,#265a88 100%);
+background-image: -o-linear-gradient(top,#337ab7 0,#265a88 100%);
+background-image: -webkit-gradient(linear,left top,left bottom,from(#337ab7),to(#265a88));
+background-image: linear-gradient(to bottom,#337ab7 0,#265a88 100%);
+}
+#publish_pitch .modal-title {font-size: 15px;}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

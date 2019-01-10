@@ -1,5 +1,6 @@
 const pitchDetails = function () {
     $(".loader_hp_").hide();
+    $('#share_box').hide();
     const pitchShareModule = () => {
         $.ajax({
             url: site_url + 'sharing_details',
@@ -39,6 +40,9 @@ const pitchDetails = function () {
 }();
 jQuery(document).ready(function () {
     pitchDetails.init();
+    $(document).on("click", '.publish', function () {
+        $('#final_name').val($('.company_name').text().trim())
+    })
 });
 const noteDetail = (id) => {
     if (id > 0) {
@@ -99,7 +103,6 @@ function checkEmails() {
         $('.loader_hp_').show('50');
         let accesstoken = getCookie('accesstoken');
         let sender_name = getCookie('cuser');
-        console.log('sender_name', sender_name);
         var url = $(location).attr('href'),
             parts = url.split("/"),
             pitch_id = parts[parts.length - 1];
@@ -162,6 +165,10 @@ function pitchViewerDetails(id) {
             $("#sign_in").reset();
         }
     });
+}
+
+function createDrafLink(id){
+
 }
 tinymce.init({
     selector: "#email_body",

@@ -119,21 +119,27 @@
         }
     </script>
     <div class="container">
-        <div class="slider-main-wrapper user_pitch">
+        <div class="slider-main-wrapper user_pitch <%=(draf == true )?'draf_galley':'' %>">
             <div class="gallery-wrap">
                 <div class="single-item">
                     <% for(var i=0; i < data.length; i++) { %>
                     <div class="slide">
                         <div class="edit-wrap">
                             <div class="row">
+                                <% if (draf == false ) { %>
                                 <button type="button" class="share btn btn-primary float-right" data-toggle="modal"
                                     data-target="#share_pitch">Share</button>
+                                <% } %>
+                                <% if (draf == true ) { %>
+                                <button type="button" class="share publish btn btn-primary float-right" data-toggle="modal"
+                                    data-target="#publish_pitch">Publish</button>
+                                <% } %>
                                 <a href="/user/pitch/edit/<%= data[i].pitch_id %>" class="btn btn-primary float-right">Edit</a>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="top-area">
-                                        <h2>
+                                        <h2 class="company_name">
                                             <%= data[i].company_name %>
                                         </h2>
                                         <div class="analysis-section">
@@ -142,7 +148,9 @@
                                             <label class="total_share" data-toggle="modal" data-target="#share_details">Share:
                                                 <span> <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                     <%= data[i].share_times %> </span></label>
-                                            <label class="pitch_views_time pitch_viewers"> <span onclick="pitchViewerDetails('<%= data[i].pitch_info_id %>')"> Page Details <i class="glyphicon glyphicon-stats" aria-hidden="true"> </i></span> </label>
+                                            <label class="pitch_views_time pitch_viewers"> <span onclick="pitchViewerDetails('<%= data[i].pitch_info_id %>')">
+                                                    Page Details <i class="glyphicon glyphicon-stats" aria-hidden="true">
+                                                    </i></span> </label>
                                         </div>
                                         <input type="hidden" class="pitch_info_token <%= i+1 %>_token" value="<%= data[i].pitch_info_id %>">
                                         <% if(data[i].pitch_attachment_type == 'image') { %>
@@ -242,6 +250,33 @@
                 </div>
             </div>
         </div>
+        <div class="card-box blue-box" id="share_box">
+            <div class="box-title">
+                <span>Create a Link to your Pitch</span>
+            </div>
+            <div class="action-wapper">
+                <div class="text-box_wapper">
+                    <label>Name: </label>
+                    <span id="pitch_name_t"> </span>
+                    <input type="hidden" name="pitch_" id="pitch_id" value="">
+                </div>
+                <div class="placeholder-screenshot">
+                    <img src="/img/preview.png" />
+                </div>
+                <div class="link-place">
+                    <a id="link_value" href="" class="link_value"> </a>
+                </div>
+            </div>
+            <div class="bottom-action">
+                <div class="open_share_action"> <button type="button" data-toggle="modal" data-target="#addviewer">Send
+                        Link Via Email</button> </div>
+                <div class="button-wapper">
+                    <button class="cancel" onclick="discardPitch()"> Cancel </button>
+                    <button id="copy_link_btn" onclick="copyToClipboard('#link_value')"> Copy Link To Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="share_details" role="dialog">
             <div class="modal-dialog">
 
@@ -267,7 +302,7 @@
             <div class="modal-dialog">
 
                 <!-- Modal content-->
-                <div class="modal-content"> 
+                <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Pitch Notes Created By Users In Details</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -433,6 +468,57 @@
             </div>
 
         </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade viewers-list" id="publish_pitch" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create a Link to your Pitch</h4>
+                </div>
+                <div class="model-body">
+                <div class="col-md-12" id="final_section">
+                    <form class="share_pitch">
+                        <div class="action-wapper">
+                            <div class="text-box_wapper">
+                                <label>Name: </label>
+                                <input type="text" name="company_name" id="final_name">
+                            </div>
+                            <div class="check-box-group text-left">
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="allow_notification" type="checkbox" value="checked" name="activity"
+                                            checked>Send
+                                        Notification When There Is Activity</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="allow_messaging" type="checkbox" value="checked" name="allow_messging"
+                                            checked>Allow
+                                        For Messaging </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="allow_share" type="checkbox" value="checked" name="allow_share"
+                                            checked>Allow
+                                        For Pitch To Be Shared</label>
+                                </div>
+                            </div>
+                            <div class="bottom-button-wapper">
+                                <button class="create pitch hp_button" type="button" id="create_pitch">Create Pitch
+                                    Link</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
     </div>
     <!-- LOADER  -->
     <div class="loader_hp_">

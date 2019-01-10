@@ -144,6 +144,7 @@ router.post('/edit_pitch_text', Controller.pitchController.editText)
 router.post('/get_notes', Controller.pitchController.getNotes)
 router.post('/user/search_pitch', Controller.pitchController.searchPitch)
 router.post('/viewer/analysis', Controller.pitchController.getViewerAnalysis)
+router.post('/link_draf', Controller.pitchController.createDrafLink)
 
 // SUPPORT 
 

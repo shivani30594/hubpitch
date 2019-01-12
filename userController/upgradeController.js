@@ -42,6 +42,7 @@ class upgradeController {
             fields
         ) {
             if (results) {
+                console.log("My data");
                 console.log(results);
                 res.render('userViews/upgradeModule/upgrade', { title: 'Payment Page || Hub Pitch', data: results, documents_viewer: 'false' });
             }

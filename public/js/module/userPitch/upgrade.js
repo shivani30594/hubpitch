@@ -32,7 +32,7 @@ function handlePaymentTable(amount, id) {
 
 function handlePaymentTableFree(id) {
     $('.loader_hp_').show();
-    let user_id = getCookie('newtoken');
+    let user_id = getCookie('accesstoken');
     if (user_id == undefined) {
         alert('Something Went Wrong With Token');
         window.location = '/'

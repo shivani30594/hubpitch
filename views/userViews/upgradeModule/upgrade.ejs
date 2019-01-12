@@ -57,6 +57,7 @@
                     <ul class="price">
                         <li class="header">
                             <%= data[i].plan_name %>
+                            <%= data[i].subscription_id %>
                         </li>
                         <li class="grey">$
                             <%= data[i].plan_price %> / Month</li>
@@ -72,11 +73,18 @@
                             </span></li>
                         <li>User to Customer Messaging<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
                             </span></li>
-                        <% if(data[i].plan_price > 0){ %>
+                            
+                        <% if(data[i].plan_id == data[i].subscription_id){ %>
                         <li class="grey"><a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)"
-                                class="button">Upgrade</a></li>
+                                class="button">Your Current Plan</a></li>
+                        <% } else if(data[i].plan_price > 0 ){ %>
+                            <li class="grey">
+                                <a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)" class="button">Upgrade</a>
+                            </li>
                         <%  } else { %>
-                        <li class="grey"><a href="javascript:handlePaymentTableFree(<%= data[i].plan_id %>)" class="button">Upgrade</a></li>
+                             <!-- "javascript:handlePaymentTableFree(
+                            <%= data[i].plan_id %>)" -->
+                        <li class="grey"><a href="#" class="button" disabled="disabled">Free plan</a></li>
                         <% } %>
                     </ul>
                 </div>
@@ -93,13 +101,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Please Confirm Your Membership Plan </h4>
+                    <h4 class="modal-title">Please - Your Membership Plan </h4>
                 </div>
                 <div class="modal-body">
                     <div class="columns">
                         <ul class="price">
                             <li class="header">
                                 <%= data[i].plan_name %>
+                                
                             </li>
                             <li class="grey">$
                                 <%= data[i].plan_price %> / Month</li>
@@ -134,7 +143,7 @@
                             <% if(data[i].plan_price > 0){ %>
                             <li id="<%= data[i].plan_id %>_submmiting">
                                 <%  } else { %>
-                            <li class="grey"><a href="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign
+                            <li class="grey"><a h ref="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign
                                     Up Free</a></li>
                             <% } %>
                         </ul>

@@ -13,7 +13,9 @@
 
         <form class="add_new_pitch_form" id="add_pitch" enctype="multipart/form-data" method="POST">
             <div class="col-md-12">
-                <div class="left-pitches"><p> <span> <%= pitch_limit %>/<%= total_pitch_limit %> </span> pitches left  </p> </div>
+                <% if(pitch_limit != -1){ %>
+                <div class="left-pitches"><p> <span>  <%= pitch_limit %>/<%= total_pitch_limit %> </span> pitches left  </p> </div>
+                <% } %>
                 <div class="first-box" id="main-box">
                     <div class="top-area">
                         <div class="js">

@@ -39,6 +39,9 @@ const pitchDetails = function () {
     }
 }();
 jQuery(document).ready(function () {
+    var str = window.location.href; //window.location.href; 
+    str = str.replace("?publish=publish", '');   
+    $('#pitch_id').val((str.split("/")[6]));    
     pitchDetails.init();
     $(document).on("click", '.publish', function () {
         $('#final_name').val($('.company_name').text().trim())
@@ -103,9 +106,12 @@ function checkEmails() {
         $('.loader_hp_').show('50');
         let accesstoken = getCookie('accesstoken');
         let sender_name = getCookie('cuser');
-        var url = $(location).attr('href'),
-            parts = url.split("/"),
-            pitch_id = parts[parts.length - 1];
+        // var url = $(location).attr('href'),
+        //     parts = url.split("/"),
+        //     pitch_id = parts[parts.length - 1];
+        var str = window.location.href; //window.location.href; 
+        str = str.replace("?publish=publish", ''); 
+        pitch_id = str.split("/")[6] ;  
         $.ajax({
             url: site_url + 'share_pitch_user',
             headers: {
@@ -127,8 +133,8 @@ function checkEmails() {
                 }
                 $('.loader_hp_').hide('50'); 
                 alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
-                //window.location.href = "/user/dashboard";
-                location.reload();
+                window.location.href = "/user/dashboard";
+                //location.reload();
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
@@ -167,9 +173,98 @@ function pitchViewerDetails(id) {
     });
 }
 
-function createDrafLink(id){
+function createDrafLink(){
+    //  $('#pitch_id').val(response.pitch);
+    //      alert(('#pitch_id').val());   
+        let accesstoken = getCookie('accesstoken');
+        var allow_notification = $('#allow_notification').is(":checked");
+        var allow_messaging = $('#allow_messaging').is(":checked");
+        var allow_share = $('#allow_share').is(":checked");
 
+    
+       
+
+        if (allow_notification == undefined && allow_messaging == undefined && allow_share == undefined) {
+            allow_notification, allow_messaging, allow_share = false
+        }
+
+        $.ajax({
+            url: site_url + 'link_draf',
+            headers: {
+                'Accept': 'application/json',
+                "access-token": accesstoken
+            },
+            method: 'POST',
+            data: {
+                pitch_id: $('#pitch_id').val(),
+                allow_notification: allow_notification,
+                allow_messaging: allow_messaging,
+                allow_share: allow_share
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (!response.success) {
+                    return alert(JSON.stringify(response.message));
+                }
+                console.log("response" + response.data);
+                let linkValue = site_url + 'viewer/' + response.data
+                $('#share_box').show();
+                $('.draf_galley').hide();
+                $('#link_value').attr("href", linkValue);
+                $('.link_value').text(linkValue);
+                $('#pitch_name_t').html($('#final_name').val());
+                
+                //$('#final_name').val($('.company_name').text().trim())
+                $('#publish_pitch').modal('hide');
+            },
+            error: function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            }
+        });
+   
 }
+function copyToClipboard(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+    alert('Link Coppied In ClipBoard!')
+}
+
+function discardPitch() {
+    var x = confirm("Are You Sure You Want To Discard This Pitch?");
+    if (x) {
+        let accesstoken = getCookie('accesstoken')
+        let id = $('#pitch_id').val();
+        $.ajax({
+            url: site_url + 'detele_pitch',
+            headers: {
+                'Accept': 'application/json',
+                "access-token": accesstoken
+            },
+            method: 'POST',
+            data: {
+                pitch_delete_type: 'full',
+                pitch_id: id,
+            },
+            success: function (response) {
+                if (response.success == "true") {
+                    alert('Pitch Discard Successfully!');
+                    window.location.href = "/pitch/add";
+                } else {
+                    console.log(response.message);
+                    alert('SOMETHING WENT WRONG IN SENDING MESSAGE');
+
+                }
+            },
+            error: function (jqXHR, textStatus) {
+                console.log("Request failed: " + textStatus);
+            }
+        })
+    }
+}
+
 tinymce.init({
     selector: "#email_body",
     theme: "modern",

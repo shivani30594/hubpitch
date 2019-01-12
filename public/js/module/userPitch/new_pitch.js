@@ -213,7 +213,7 @@ const newPitch = function () {
     }
     const handleContinue_final = () => {
         $(document).on("click", '.continue_btn_final', function () {
-            alert("hello");
+            
             let $this = '';
             $('.preview_box').hide('100');
             if ($('div.preview_box').hasClass('display_current') === true) {

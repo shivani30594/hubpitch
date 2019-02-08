@@ -69,18 +69,30 @@ function openConversation(id) {
                 $('#conversation_list').html(' ');
                 if (response.success == true) {
                     $('#conversation_box').modal('show');
-                    let data = response.data;
+                    let data = response.data;  
+                    console.log(data);                   
                     let dataHTML = '';
-                    data.forEach((obj) => {
+                    data.forEach((obj) => {  
+                        console.log("ripraj"+obj.msg);                                             
                         dataHTML = ''
-                        if (obj) {
-                            dataHTML = `<li><a href="javascript:openChat(${obj.conversation_id},'${obj.sender}')"><span>${ obj.messages}</span> Messages From ${obj.sender}</a></li>`;
-                            $('#conversation_list').append(dataHTML);
+                        if (obj.msg == "true") {
+                            if (!obj.messages){
+                                dataHTML = `<a href="#">You have empty box!!!</a>`;
+                                $('#conversation_list').append(dataHTML); 
+                            }
+                            else
+                            {
+                                dataHTML = `<li><a href="javascript:openChat(${obj.conversation_id},'${obj.sender}')"><span>${ obj.messages}</span> Messages From ${obj.sender}</a></li>`;
+                                $('#conversation_list').append(dataHTML);
+                            }
+                        }
+                        else
+                        {
+                            dataHTML = `<a href="${site_url}user/upgrade" style="text-decoration: underline !important;">You must upgrade your account to Premier Subscription in order to read and respond to the message.</a>`;
+                            $('#conversation_list').append(dataHTML); 
                         }
                     })
-                } else {
-
-                }
+                } 
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
@@ -107,7 +119,10 @@ function openChat(id, name) {
                 $('#message_body_p').html(' ');
                 if (response.success == 'true') {
                     $('#conversation_box').modal('hide');
-                    $('#conversation_modal').modal('show');
+                    $('#conversation_modal').modal('show')
+
+                   
+
                     let data = response.data;
                     let dataHTML = '';
                     $('#name_place').html(name);

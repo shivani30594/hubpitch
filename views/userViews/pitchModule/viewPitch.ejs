@@ -280,7 +280,7 @@
         <div class="modal fade" id="addviewer" role="dialog">
             <div class="modal-dialog">
                 <form method="post" id="formEmail" name="formEmail">
-                    <!-- Modal content-->
+                    <!-- Modal content -->
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -360,20 +360,20 @@
                     <div class="new_section">
                         <form method="post" id="formEmail" name="formEmail">
                             <div class="form-group">
-                                <input type="text" class="form-control" name="emails" id="emails" placeholder="(eg:abc@incipio.com,xyz@ncpo.com,....)" />
+                                <input type="text" class="form-control" name="emails_share" id="emails_share" placeholder="(eg:abc@incipio.com,xyz@ncpo.com,....)" />
                             </div>
                             <div class="form-group">
                                 <input type="text" class="form-control" name="public_link" id="public_link" placeholder="/viewer/xt9odt1n"
                                     value="<%= view_pitch %>" disabled />
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" id="email_body" name="email_body"> </textarea>
+                                <textarea class="form-control" id="email_body_share" name="email_body_share"> </textarea>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href=javascript:checkEmails(); class="btn btn-primary">Send</a>
+                    <a href=javascript:checkEmailsShare(); class="btn btn-primary">Send</a>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>

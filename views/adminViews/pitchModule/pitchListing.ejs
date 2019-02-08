@@ -23,6 +23,7 @@
                                             <th>Company Name</th>
                                             <th>Page Count</th>
                                             <th>User Name</th>
+                                            <th>Status</th>
                                             <th>Created</th>
                                             <th>Actions</th>
                                         </tr>
@@ -39,6 +40,7 @@
                                                 <td>
                                                     <%= data[i].username %>
                                                 </td>
+                                                <td><button type="button" class="btn btn-success" onclick="myDeactive()">Active</button></td>
                                                 <td>
                                                     <%= data[i].created %>
                                                 </td>

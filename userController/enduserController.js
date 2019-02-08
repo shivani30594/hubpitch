@@ -1052,11 +1052,11 @@ class enduserController {
                         var mailOptions = {
                             from: process.env.HPEMAILUSER, // sender address
                             to: tomail, // list of receivers
-                            subject:'Notification: Pitch "'+ req.body.company_name + '" was viewed', // Subject line
+                            subject: 'Notification: Pitch "' + req.body.company_name + '" was viewed', // Subject line
                             html: newEmail
                         };
 
-                        console.log("subject : ",mailOptions.subject);
+                        console.log("subject : ", mailOptions.subject);
 
                         // send mail with defined transport object
                         smtpTransport.sendMail(mailOptions, function (err, info) {

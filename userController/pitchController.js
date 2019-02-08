@@ -1034,7 +1034,7 @@ class pitchController {
                 }
             });
 
-            db.query('SELECT hp_conversation.conversation_id,hp_pitch_chat_tbl.sender,COUNT(*) as messages FROM hp_conversation JOIN hp_pitch_chat_tbl ON hp_conversation.conversation_id = hp_pitch_chat_tbl.conversation_id WHERE hp_conversation.pitch_id=? GROUP BY hp_conversation.conversation_id', req.body.pitch_id, function (
+            db.query('SELECT (SELECT user_to_customer_messaging FROM `hp_membership_plan` where plan_id = (select plan_id from hp_users where user_id ="'+ userid +'"))as msg, hp_conversation.conversation_id,hp_pitch_chat_tbl.sender,COUNT(*) as messages FROM hp_conversation JOIN hp_pitch_chat_tbl ON hp_conversation.conversation_id = hp_pitch_chat_tbl.conversation_id WHERE hp_conversation.pitch_id=? GROUP BY hp_conversation.conversation_id', req.body.pitch_id, function (
                 error,
                 results,
                 fields
@@ -1043,7 +1043,27 @@ class pitchController {
                     res.send({ success: false, error });
                 }
                 if (results) {
-                    res.send({ success: true, data: results });
+                    if(results.length == 0)
+                    {
+                        db.query('SELECT user_to_customer_messaging as "msg" FROM `hp_membership_plan` where plan_id = (select plan_id from hp_users where user_id ="' + userid + '")', function (
+                            error1,
+                            results1,
+                            fields1
+                        ) {
+                            if (error1) {
+                                res.send({ success: false, error1 });
+                            }
+                            if (results1) {
+                               
+                                res.send({ success: true, data: results1 });
+                            }
+                        });
+                    }
+                    else
+                    {
+                        res.send({ success: true, data: results });
+                    }                 
+                 
                 }
             });
         }

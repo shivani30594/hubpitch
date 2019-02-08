@@ -89,6 +89,7 @@ function checkEmail(email) {
 
 function checkEmails() {
     var emails = document.getElementById("emails").value;
+    //alert(emails);
     var emailArray = emails.split(",");
     let errorFlag = 0;
     for (i = 0; i <= (emailArray.length - 1); i++) {
@@ -132,6 +133,61 @@ function checkEmails() {
                     return alert(JSON.stringify(response.message));
                 }
                 $('.loader_hp_').hide('50'); 
+                alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
+                window.location.href = "/user/dashboard";
+                //location.reload();
+            },
+            error: function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            }
+        });
+    }
+}
+function checkEmailsShare() {
+    var emails = document.getElementById("emails_share").value;    
+    var emailArray = emails.split(",");
+    let errorFlag = 0;
+    for (i = 0; i <= (emailArray.length - 1); i++) {
+        if (checkEmail(emailArray[i])) {
+            //Do what ever with the email.
+            //console.log(emailArray);
+        } else {
+            errorFlag = errorFlag + 1
+            alert("invalid email: " + emailArray[i]);
+        }
+    }
+    if (errorFlag === 0) {
+
+        tinyMCE.triggerSave();
+        $('.loader_hp_').show('50');
+        let accesstoken = getCookie('accesstoken');
+        let sender_name = getCookie('cuser');
+        // var url = $(location).attr('href'),
+        //     parts = url.split("/"),
+        //     pitch_id = parts[parts.length - 1];
+        var str = window.location.href; //window.location.href; 
+        str = str.replace("?publish=publish", '');
+        pitch_id = str.split("/")[6];
+        $.ajax({
+            url: site_url + 'share_pitch_user',
+            headers: {
+                'Accept': 'application/json',
+                "access-token": accesstoken
+            },
+            method: 'POST',
+            data: {
+                email_id: JSON.stringify(emailArray),
+                email_body: $('#email_body_share').val(),
+                pitch_id: pitch_id,
+                pitch_url: $('#public_link').val(),
+                sender_name: $('#username_').val()
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (!response.success) {
+                    return alert(JSON.stringify(response.message));
+                }
+                $('.loader_hp_').hide('50');
                 alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
                 window.location.href = "/user/dashboard";
                 //location.reload();

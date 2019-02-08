@@ -692,6 +692,8 @@ background-image: -webkit-gradient(linear,left top,left bottom,from(#337ab7),to(
 background-image: linear-gradient(to bottom,#337ab7 0,#265a88 100%);
 }
 #publish_pitch .modal-title {font-size: 15px;}
+/* For open modal 2 */
+#conversation_modal.in{    overflow-x: hidden;   overflow-y: auto;}
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }

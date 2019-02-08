@@ -29,7 +29,8 @@
     <link rel="stylesheet" href="/stylesheets/slider-page.css">
     <link rel="stylesheet" href="/stylesheets/slick.css">
     <link rel="stylesheet" href="/stylesheets/slick-theme.css">
-    <link rel="shortcut icon" type="image/x-icon" href="https://static1.squarespace.com/static/5aecd8b436099b8b647ad307/t/5b74e630aa4a9903e4cca041/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="https://static1.squarespace.com/static/5aecd8b436099b8b647ad307/t/5b74e630aa4a9903e4cca041/favicon.ico"
+    />
     <script src="/js/libraries/tinymce/tinymce.min.js"></script>
     <!-- custom css -->
 
@@ -38,6 +39,7 @@
     <script src="/js/additional-methods.min.js"></script>
     <script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
     <script>
+        //const site_url = "http://54.200.57.240:3000/";
         const site_url = "http://localhost:3000/";
         var instance = null;
         function display_docx(params, i) {
@@ -65,7 +67,7 @@
                     }
                 );
             };
- 
+
             req.send();
         }
 
@@ -218,432 +220,423 @@
             </div>
             <div class="gallery-wrap">
                 <input type="hidden" class="pitch_analytics" value="<%= pitch_analytics %>">
-                <div class="single-item"> 
+                <div class="single-item">
                     <% for(var i=0; i < data.length; i++) { %>
-                    <div class="slide">
-                        <input type="hidden" class="pitch_info_token_c" value="<%= data[i].pitch_info_id %>">
-                        <div class="edit-wrap <%= data[i].pitch_info_id %>_edit-wrap">
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="top-area">
-                                        <h2>
-                                            <%= data[i].company_name %>
-                                        </h2>
+                        <div class="slide">
+                            <input type="hidden" class="pitch_info_token_c" value="<%= data[i].pitch_info_id %>">
+                            <div class="edit-wrap <%= data[i].pitch_info_id %>_edit-wrap">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="top-area">
+                                            <h2>
+                                                <%= data[i].company_name %>
+                                            </h2>
 
-                                        <input type="hidden" class="pitch_info_token <%= i+1 %>_token" value="<%= data[i].pitch_info_id %>">
-                                        <% if(data[i].pitch_attachment_type == 'image') { %>
-                                        <input type="hidden" value="0" class="sliderViewer">
-                                        <div class="preview">
-                                            <img src="<%= dir_parth+data[i].pitch_attachment_name %>" class="img-responsive"
-                                                alt="preview">
-                                        </div>
-                                        <% } %>
-                                        <% if (data[i].pitch_attachment_type == 'video') { %>
-                                        <input type="hidden" value="0" class="sliderViewer">
-                                        <div class="preview">
-                                            <video width="400" controls>
-                                                <source src="<%= dir_parth+data[i].pitch_attachment_name %>" class="video_here">
-                                                Your
-                                                browser does not support HTML5 video.
-                                            </video>
-                                        </div>
-                                        <% } %>
-                                        <% if (data[i].pitch_attachment_type == 'application') { %>
-                                        <input type="hidden" value="0" class="sliderViewer">
-                                        <div class="preview">
-                                            <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e"
-                                                width="500" height="600" />
-                                        </div>
-                                        <% } %>
-                                        <% if(data[i].pitch_attachment_type == 'docx') { %>
-                                        <input type="hidden" value="0" class="sliderViewer">
-                                        <div class="preview">
-                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
-                                            <script>
-                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
-                                                var i = '<%= i %>';
-                                                display_docx(param, i);
-                                            </script>
-                                        </div>
-                                        <% } %>
-                                        <% if(data[i].pitch_attachment_type == 'pptx') { %>
-                                        <input type="hidden" value="0" class="sliderViewer">
-                                        <div class="preview pptx-view">
-                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
-                                            <script>
-                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
-                                                var i = '<%= i %>';
-                                                display_pptx(param, i);
-                                            </script>
-                                            <div class="kuku-docx-controller">
-                                                <button class="btn prev-btn">
-                                                    <i class="fa fa-arrow-left"></i>
-                                                    Prev</button>
-                                                <button class="btn next-btn">
-                                                    Next
-                                                    <i class="fa fa-arrow-right"></i>
-                                                </button>
-                                                <button class="btn zoomInbutton">
-                                                    Zoom In
-                                                    <i class="glyphicon glyphicon-zoom-in"></i>
-                                                </button>
-                                                <button class="btn zoomOutbutton">
-                                                    Zoom Out
-                                                    <i class="glyphicon glyphicon-zoom-out"></i>
-                                                </button>
+                                            <input type="hidden" class="pitch_info_token <%= i+1 %>_token" value="<%= data[i].pitch_info_id %>">
+                                            <% if(data[i].pitch_attachment_type == 'image') { %>
+                                                <input type="hidden" value="0" class="sliderViewer">
+                                                <div class="preview">
+                                                    <img src="<%= dir_parth+data[i].pitch_attachment_name %>" class="img-responsive" alt="preview">
+                                                </div>
+                                                <% } %>
+                                                    <% if (data[i].pitch_attachment_type == 'video') { %>
+                                                        <input type="hidden" value="0" class="sliderViewer">
+                                                        <div class="preview">
+                                                            <video width="400" controls>
+                                                                <source src="<%= dir_parth+data[i].pitch_attachment_name %>" class="video_here"> Your browser does not support HTML5 video.
+                                                            </video>
+                                                        </div>
+                                                        <% } %>
+                                                            <% if (data[i].pitch_attachment_type == 'application') { %>
+                                                                <input type="hidden" value="0" class="sliderViewer">
+                                                                <div class="preview">
+                                                                    <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e" width="500" height="600" />
+                                                                </div>
+                                                                <% } %>
+                                                                    <% if(data[i].pitch_attachment_type == 'docx') { %>
+                                                                        <input type="hidden" value="0" class="sliderViewer">
+                                                                        <div class="preview">
+                                                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                                                            <script>
+                                                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                                                var i = '<%= i %>';
+                                                                                display_docx(param, i);
+                                                                            </script>
+                                                                        </div>
+                                                                        <% } %>
+                                                                            <% if(data[i].pitch_attachment_type == 'pptx') { %>
+                                                                                <input type="hidden" value="0" class="sliderViewer">
+                                                                                <div class="preview pptx-view">
+                                                                                    <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                                                                    <script>
+                                                                                        var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                                                        var i = '<%= i %>';
+                                                                                        display_pptx(param, i);
+                                                                                    </script>
+                                                                                    <div class="kuku-docx-controller">
+                                                                                        <button class="btn prev-btn">
+                                                                                            <i class="fa fa-arrow-left"></i>
+                                                                                            Prev</button>
+                                                                                        <button class="btn next-btn">
+                                                                                            Next
+                                                                                            <i class="fa fa-arrow-right"></i>
+                                                                                        </button>
+                                                                                        <button class="btn zoomInbutton">
+                                                                                            Zoom In
+                                                                                            <i class="glyphicon glyphicon-zoom-in"></i>
+                                                                                        </button>
+                                                                                        <button class="btn zoomOutbutton">
+                                                                                            Zoom Out
+                                                                                            <i class="glyphicon glyphicon-zoom-out"></i>
+                                                                                        </button>
 
-                                                <button class="btn full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Full
-                                                    Screen<i class="glyphicon glyphicon-resize-full"></i></button>
-                                                <!-- <button class="btn" onclick="full_screen_test(param,'<%= i %>','<%= data[i].pitch_info_id %>',$(this))">
+                                                                                        <button class="btn full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Full Screen
+                                                                                            <i class="glyphicon glyphicon-resize-full"></i>
+                                                                                        </button>
+                                                                                        <!-- <button class="btn" onclick="full_screen_test(param,'<%= i %>','<%= data[i].pitch_info_id %>',$(this))">
                                                     Full Screen
                                                     <i class="glyphicon glyphicon-zoom-out"></i>
                                                 </button> -->
-                                            </div>
-                                        </div>
-                                        <% } %>
-                                        <% if(data[i].pitch_attachment_type == 'xlsx') { %>
-                                        <input type="hidden" value="0" class="sliderViewer">
-                                        <div class="preview pptx-view">
-                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
-                                            <script>
-                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
-                                                var i = '<%= i %>';
-                                                display_excel(param, i);
-                                            </script>
-                                        </div>
-                                        <% } %>
-                                        <% if(data[i].pitch_attachment_type != 'pptx' && data[i].pitch_attachment_type != 'video') { %>
-                                        <div class="zoom-wapper">
-                                            <button class="full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Full
-                                                Screen<i class="glyphicon glyphicon-resize-full"></i></button>
-                                        </div>
-                                        <% } %>
-                                        <!-- <% if(data[i].pitch_attachment_type != 'video') { %>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <% } %>
+                                                                                    <% if(data[i].pitch_attachment_type == 'xlsx') { %>
+                                                                                        <input type="hidden" value="0" class="sliderViewer">
+                                                                                        <div class="preview pptx-view">
+                                                                                            <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
+                                                                                            <script>
+                                                                                                var param = '<%= dir_parth+data[i].pitch_attachment_name %>';
+                                                                                                var i = '<%= i %>';
+                                                                                                display_excel(param, i);
+                                                                                            </script>
+                                                                                        </div>
+                                                                                        <% } %>
+                                                                                            <% if(data[i].pitch_attachment_type != 'pptx' && data[i].pitch_attachment_type != 'video') { %>
+                                                                                                <div class="zoom-wapper">
+                                                                                                    <button class="full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Full Screen
+                                                                                                        <i class="glyphicon glyphicon-resize-full"></i>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                                <% } %>
+                                                                                                    <!-- <% if(data[i].pitch_attachment_type != 'video') { %>
                                         <div class="zoom-wapper">
                                             <button class="full_screen_" onclick="full_sceen_zoom('<%= data[i].pitch_info_id %>',$(this),'<%= i %>')">Zoom In<i class="glyphicon glyphicon-plus-sign"></i></button>
                                         </div>
                                         <% } %> -->
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="slider-text">
-                                        <%- data[i].pitch_attachment_text %>
-                                        <a href="javascript:addNote(<%= data[i].pitch_info_id %>)" class="add_note btn btn-primary"><i
-                                                class="glyphicon glyphicon-plus" id="note_icon_button_<%= data[i].pitch_info_id %>"></i>
-                                            Add Note
-                                        </a>
-                                        <div class="notesection_<%= data[i].pitch_info_id %> note_section" style="display: none">
-                                            <form name="add_note" method="post" class="add-note" id="add_note_form_<%= data[i].pitch_info_id %>">
-                                                <div class="input-group">
-                                                    <textarea rows="4" cols="50" class="form-control" id="note_<%= data[i].pitch_info_id %>"
-                                                        name="note_<%= data[i].pitch_info_id %>"></textarea>
-                                                    <label class="error_custom error_custom_error_<%= data[i].pitch_info_id %>"
-                                                        style="display: none">
-                                                        Please Note Text Are Required
-                                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="slider-text">
+                                            <%- data[i].pitch_attachment_text %>
+                                                <a href="javascript:addNote(<%= data[i].pitch_info_id %>)" class="add_note btn btn-primary">
+                                                    <i class="glyphicon glyphicon-plus" id="note_icon_button_<%= data[i].pitch_info_id %>"></i>
+                                                    Add Note
+                                                </a>
+                                                <div class="notesection_<%= data[i].pitch_info_id %> note_section" style="display: none">
+                                                    <form name="add_note" method="post" class="add-note" id="add_note_form_<%= data[i].pitch_info_id %>">
+                                                        <div class="input-group">
+                                                            <textarea rows="4" cols="50" class="form-control" id="note_<%= data[i].pitch_info_id %>" name="note_<%= data[i].pitch_info_id %>"></textarea>
+                                                            <label class="error_custom error_custom_error_<%= data[i].pitch_info_id %>" style="display: none">
+                                                                Please Note Text Are Required
+                                                            </label>
+                                                        </div>
+                                                        <button type="button" id="submit_btn_note_<%= data[i].pitch_info_id %>" class="btn btn-default btn-sm" onclick="submitNote('<%= data[i].pitch_info_id %>')">
+                                                            Submit Note
+                                                        </button>
+                                                    </form>
                                                 </div>
-                                                <button type="button" id="submit_btn_note_<%= data[i].pitch_info_id %>"
-                                                    class="btn btn-default btn-sm" onclick="submitNote('<%= data[i].pitch_info_id %>')">
-                                                    Submit Note
-                                                </button>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="bottom-btn">
-                                <a href="" class="a-another-btn">hubPitch</a>
-                                <div class="slide-count-wrap">
-                                    <span>Page</span>
-                                    <span class="current"> </span> of
-                                    <span class="total_pitch">
-                                        <%= results_length %> </span>
+                                <div class="bottom-btn">
+                                    <a href="" class="a-another-btn">hubPitch</a>
+                                    <div class="slide-count-wrap">
+                                        <span>Page</span>
+                                        <span class="current"> </span> of
+                                        <span class="total_pitch">
+                                            <%= results_length %>
+                                        </span>
+                                    </div>
+                                    <% if(plan.sharing_tracking == 'true') { %>
+                                        <a href="javascript:void(0)" class="share-btn" data-toggle="modal" data-target="#name-window">
+                                            Share
+                                            <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                        </a>
+                                        <% } %>
                                 </div>
-                                <% if(plan.sharing_tracking == 'true') { %>
-                                <a href="javascript:void(0)" class="share-btn" data-toggle="modal" data-target="#name-window">
-                                    Share
-                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                </a>
-                                <% } %>
                             </div>
                         </div>
-                    </div>
-                    <% } %>
+                        <% } %>
                 </div>
             </div>
-            <% if(plan.user_to_customer_messaging == 'true') { %>
-            <a href="javascript:void(0)" class="send-message" id="conversation_"> Send
+            <a href="javascript:void(0)" class="send-message" id="conversation_" style="display:block"> Send
                 <%= user_name %> a Message </a>
-            <% } %>
-            <input type="hidden" id="user_token" value="<%= user_token %>">
-            <input type="hidden" id="user_email" value="<%= data[0].email %>">
-            <input type="hidden" id="company_name" value="<%= data[0].company_name %>">
+            <!-- <% if(plan.user_to_customer_messaging == 'true') { %> -->
+                
+                <!-- <% } %> -->
+                    <input type="hidden" id="user_token" value="<%= user_token %>">
+                    <input type="hidden" id="user_email" value="<%= data[0].email %>">
+                    <input type="hidden" id="company_name" value="<%= data[0].company_name %>">
         </div>
     </div>
-
-    <!-- Modal -->
-    <% if(plan.user_to_customer_messaging == 'true') { %>
-    <div class="modal fade" id="chat-window" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <form class="send_message_form" name="send_message_form">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h5 class="modal-title"></h5>
-                        <h5 class=""></h5>
-                    </div>
-                    <div id="message_body" class="modal-body">
-                        <!-- <div class="msg-block">
+<div class="modal fade" id="chat-window" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <form class="send_message_form" name="send_message_form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title"></h5>
+                    <h5 class=""></h5>
+                </div>
+                <div id="message_body" class="modal-body">
+                    <!-- <div class="msg-block">
                             <div class="msg-head">
                                 <h5>Name</h5>
                                 <span class="time-right">time</span>
                             </div>
                             <p>MSG</p>
                         </div> -->
-                        <!-- <div class="msg-block darker">
+                    <!-- <div class="msg-block darker">
                             <div class="msg-head">
                                 <h5>Name</h5>
                                  <span class="time-right">TIME</span> 
                             </div>
                             <p></p>
                         </div> -->
-                    </div>
-                    <div class="typing-box">
-                        <div class="panel-footer">
-                            <div class="input-group">
-                                <input id="btn-input" name="chat_msg" type="text" class="form-control input-sm chat_msg"
-                                    placeholder="Type your message here...">
-                                <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-warning btn-sm" id="btn-chat">
-                                        Send</button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <% } %>
-    <!-- Modal -->
-    <!-- Modal -->
-    <div class="modal fade" id="chat-window-dummy" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h5 class="modal-title">Dennis S.</h5>
-                    <h5 class="">hubpitch</h5>
-                </div>
-                <div class="modal-body">
-                    <div class="msg-block">
-                        <div class="msg-head">
-                            <h5>Jack Sparrow</h5>
-                            <span class="time-right">11:00 AM</span>
-                        </div>
-                        <p>Hello. How are you today?</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor,
-                            quis
-                            ullamcorper ligula sodales.</p>
-                    </div>
-                    <div class="msg-block darker">
-                        <div class="msg-head">
-                            <h5>Bhaumik Patel</h5>
-                            <span class="time-right">11:01 AM</span>
-                        </div>
-                        <p>Hey! I'm fine. Thanks for asking!</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor,
-                            quis
-                            ullamcorper ligula sodales.</p>
-                    </div>
                 </div>
                 <div class="typing-box">
                     <div class="panel-footer">
                         <div class="input-group">
-                            <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
+                            <input id="btn-input" name="chat_msg" type="text" class="form-control input-sm chat_msg" placeholder="Type your message here...">
                             <span class="input-group-btn">
-                                <button class="btn btn-warning btn-sm" id="btn-chat">
+                                <button type="submit" class="btn btn-warning btn-sm" id="btn-chat">
                                     Send</button>
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
+</div>
     <!-- Modal -->
-    <!-- Modal -->
-    <% if(plan.sharing_tracking == 'true') { %>
-    <div class="modal fade" id="name-window" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h5 class="modal-title">Share Pitch</h5>
-                </div>
-                <div class="modal-body">
-                    <form class="share_pitch_form" name="share_pitch">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="email_id">Email Address:</label>
-                                    <input type="text" class="form-control" name="email_id" id="email_id">
+    <!-- <% if(plan.user_to_customer_messaging == 'true') { %> -->
+       
+        <!-- <% } %> -->
+            <!-- Modal -->
+            <!-- Modal -->
+            <div class="modal fade" id="chat-window-dummy" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h5 class="modal-title">Dennis S.</h5>
+                            <h5 class="">hubpitch</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="msg-block">
+                                <div class="msg-head">
+                                    <h5>Jack Sparrow</h5>
+                                    <span class="time-right">11:00 AM</span>
+                                </div>
+                                <p>Hello. How are you today?</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor,
+                                    quis ullamcorper ligula sodales.</p>
+                            </div>
+                            <div class="msg-block darker">
+                                <div class="msg-head">
+                                    <h5>Bhaumik Patel</h5>
+                                    <span class="time-right">11:01 AM</span>
+                                </div>
+                                <p>Hey! I'm fine. Thanks for asking!</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor,
+                                    quis ullamcorper ligula sodales.</p>
+                            </div>
+                        </div>
+                        <div class="typing-box">
+                            <div class="panel-footer">
+                                <div class="input-group">
+                                    <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-warning btn-sm" id="btn-chat">
+                                            Send</button>
+                                    </span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="sender_name">Your Name:</label>
-                                    <input type="text" name="sender_name" class="form-control" id="sender_name">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <!-- Modal -->
+            <% if(plan.sharing_tracking == 'true') { %>
+                <div class="modal fade" id="name-window" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h5 class="modal-title">Share Pitch</h5>
+                            </div>
+                            <div class="modal-body">
+                                <form class="share_pitch_form" name="share_pitch">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="email_id">Email Address:</label>
+                                                <input type="text" class="form-control" name="email_id" id="email_id">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="sender_name">Your Name:</label>
+                                                <input type="text" name="sender_name" class="form-control" id="sender_name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="sender_name">Your Message:</label>
+                                                <textarea rows="4" cols="50" class="form-control" name="email_body" id="email_body"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" name="share_pitch" class="btn btn-primary">Send
+                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+                    </div>
+                    <!-- Modal -->
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="add_name_model" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Please Enter Your Name</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="conversation_creater_form" name="conversation_creater_form" method="post">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label for="end_user_name">Insert Your Name: </label>
+                                                    <input type="text" class="form-control" name="end_user_name" id="end_user_name">
+                                                </div>
+                                            </div>
+                                            <button type="submit" name="add_name_" class="btn btn-primary" id="add_name_to_user"> Send a Message </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="sender_name">Your Message:</label>
-                                    <textarea rows="4" cols="50" class="form-control" name="email_body" id="email_body"></textarea>
+
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="add_name_model_simple" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Please Enter Your Name</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="add_name_form" name="add_name_form" method="post">
+                                        <input type="hidden" id="active_info" value="">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label for="end_user_name">Name: </label>
+                                                    <input type="text" class="form-control" name="end_user_name_" id="end_user_name_">
+                                                </div>
+                                            </div>
+                                            <button type="submit" name="add_user_name" class="btn btn-primary" id="add_user_name"> Add Name
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- LOADER  -->
+                    <div class="loader_hp_">
+                        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                    </div>
+                    <!-- Modal-01 -->
+                    <div class="modal fade view-presentation-model" id="view_name" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title text-center">
+                                        <img src="/img/logo.png" alt="Logo">
+                                    </h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <p>You're Invited to View a Presentation</p>
+                                    <form method="POST" name="add_name" id="add_name">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="view_name" name="view_name" placeholder="Enter Your Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="job_title" name="job_title" placeholder="Enter Your Job Title">
+                                        </div>
+                                        <button type="submit" name="submit" value="submit" class="btn btn-default"> View the Material </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" name="share_pitch" class="btn btn-primary">Send <i class="fa fa-paper-plane"
-                                aria-hidden="true"></i></button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <% } %>
-    </div>
-    <!-- Modal -->
+                    </div>
+                    <!-- /Modal-01 -->
 
-    <!-- Modal -->
-    <div class="modal fade" id="add_name_model" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Please Enter Your Name</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="conversation_creater_form" name="conversation_creater_form" method="post">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <label for="end_user_name">Insert Your Name: </label>
-                                    <input type="text" class="form-control" name="end_user_name" id="end_user_name">
+
+                    <!-- Modal-02 -->
+                    <div class="modal fade view-presentation-model" id="login">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title text-center">
+                                        <img src="/img/logo.png" alt="Logo">
+                                    </h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <p>You're Invited to View a Presentation</p>
+
+                                    <form method="POST" name="login" id="login_popup">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" id="email" name="email" disabled="disabled" placeholder="Enter Your Email" value="<%=view_email %>">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" id="pwd" name="password" placeholder="Your Password">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button type="submit" name="submit" value="submit" class="btn btn-default"> View the Material </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <button type="submit" name="add_name_" class="btn btn-primary" id="add_name_to_user"> Send
-                                a Message </button>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="add_name_model_simple" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Please Enter Your Name</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="add_name_form" name="add_name_form" method="post">
-                        <input type="hidden" id="active_info" value="">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <label for="end_user_name">Name: </label>
-                                    <input type="text" class="form-control" name="end_user_name_" id="end_user_name_">
-                                </div>
-                            </div>
-                            <button type="submit" name="add_user_name" class="btn btn-primary" id="add_user_name"> Add
-                                Name
-                                <i class="fa fa-plus" aria-hidden="true"></i></button>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- LOADER  -->
-    <div class="loader_hp_">
-        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-    </div>
-    <!-- Modal-01 -->
-    <div class="modal fade view-presentation-model" id="view_name" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title text-center">
-                        <img src="/img/logo.png" alt="Logo">
-                    </h4>
-                </div>
-                <div class="modal-body text-center">
-                    <p>You're Invited to View a Presentation</p>
-                    <form method="POST" name="add_name" id="add_name">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="view_name" name="view_name" placeholder="Enter Your Name">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="job_title" name="job_title" placeholder="Enter Your Job Title">
-                        </div>
-                        <button type="submit" name="submit" value="submit" class="btn btn-default"> View the
-                            Material </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Modal-01 -->
-
-
-    <!-- Modal-02 -->
-    <div class="modal fade view-presentation-model" id="login">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title text-center">
-                        <img src="/img/logo.png" alt="Logo">
-                    </h4>
-                </div>
-                <div class="modal-body text-center">
-                    <p>You're Invited to View a Presentation</p>
-
-                    <form method="POST" name="login" id="login_popup">
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="email" name="email" disabled="disabled"
-                                placeholder="Enter Your Email" value="<%=view_email %>">
-                        </div>
-
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="pwd" name="password" placeholder="Your Password">
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" name="submit" value="submit" class="btn btn-default"> View the
-                                Material </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Modal-02 -->
-    <script src="/js/module/endUser/pitchSliders.js"></script>
-    <script src="/js/module/endUser/pitchDeck.js"></script>
+                    </div>
+                    <!-- /Modal-02 -->
+                    <script src="/js/module/endUser/pitchSliders.js"></script>
+                    <script src="/js/module/endUser/pitchDeck.js"></script>
 </body>
 
 </html>

@@ -59,6 +59,8 @@ class pitchController {
             }
         });
     }
+
+    
     static async viewPitchDetails(req, res, next) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {

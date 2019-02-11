@@ -52,7 +52,7 @@ function myDeactive() {
                     return alert(JSON.stringify(response.message));
                 }
                 let data = response.data;
-                console.log(data);
+                // console.log(data);
                 // let dataHTML = '';
                 // data.forEach((obj) => {
                 //     dataHTML = ''

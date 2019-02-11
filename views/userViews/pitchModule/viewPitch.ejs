@@ -49,14 +49,17 @@
             req.open("GET", site_url + params, true);
             //Response Type is Blob
             req.responseType = "blob";
-
+            console.log('asda', req.response);
             req.onload = function (e) {
                 var blob = req.response;
-                var slideJS = new SlideJS();
+                console.log('asda', req.response);
+                var slideJS = new SlideJS(); 
+                console.log(slideJS);              
                 slideJS.parse(
                     blob,
                     function () {
                         //After Rendering
+                        
                         slideJS.render($('#loaded-layout_' + i)[0], function (result) {
                             if (result.isError) {
                                 console.log(result.msg);
@@ -89,30 +92,34 @@
         function display_excel(params, i) {
             var req = new XMLHttpRequest();
             //Check File URL & domain origin
-            req.open("GET", site_url + params, true);
+            req.open("GET", site_url + params, true);           
             //Response Type is Blob
             req.responseType = "blob";
-            console.log('asda', req.response);
+            
             req.onload = function (e) {
                 var blob = req.response;
+               console.log('asda', req.response);
                 var cellJS = null;
-                cellJS = new CellJS();
-                console.log(req);
+                var cellJS = new CellJS();
+                console.log(cellJS);
                 cellJS.parse(
                     blob,
-                    function () {
+                    function () {                    
                         //After Rendering
+                        
                         cellJS.render($('#loaded-layout_' + i)[0], function (result) {
                             if (result.isError) {
-                                console.log(result.msg);
+                                console.log("wrong",result.msg);
                             } else {
                                 console.log("Success Render");
                             }
                         });
                     }, function (e) {
+
                         console.log("Error!", e);
                     }
                 );
+                 instance =  cellJS;
             };
 
             req.send();

@@ -1,6 +1,6 @@
 const site_url = "http://localhost:3000/";
 //const site_url = "http://54.200.57.240:3000/";
-
+//const site_url = "http://www.bundle-hubpitch.com:80/";
 const getCookie = (name) => {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");

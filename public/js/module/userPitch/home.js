@@ -88,7 +88,7 @@ function openConversation(id) {
                         }
                         else
                         {
-                            dataHTML = `<a href="${site_url}user/upgrade" style="text-decoration: underline !important;">You must upgrade your account to Premier Subscription in order to read and respond to the message.</a>`;
+                            dataHTML = `You have unread messages. In order to read/reply to messages you will need to upgrade your subscription.<br><a href="${site_url}user/upgrade" style="text-decoration: underline !important;">Click HERE to Upgrade</a>`;
                             $('#conversation_list').append(dataHTML); 
                         }
                     })

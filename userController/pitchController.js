@@ -41,7 +41,7 @@ class pitchController {
                 res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', plan: false, documents_viewer: 'true' });
             }
             if (results) {
-
+                console.log(results);
                 let plan_data = {
                     video: results[0].video_upload_editing,
                     pdf: results[0].pdf_upload,
@@ -57,7 +57,7 @@ class pitchController {
                     text_file: 'true'
                 }
 
-                res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', plan: JSON.stringify(plan_data), documents_viewer: 'true', plan_type: results[0].pitch_customization, pitch_limit: results[0].pitch_limit, total_pitch_limit: results[0].pitch_limits });
+                res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', plan: JSON.stringify(plan_data), documents_viewer: 'true', plan_type: results[0].pitch_customization, pitch_limit: results[0].pitch_limit, total_pitch_limit: results[0].pitch_limits, pitch_limits_plan: results[0].unlimited_customer_pitches });
             }
         });
 

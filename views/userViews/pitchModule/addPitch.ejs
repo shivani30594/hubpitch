@@ -13,7 +13,31 @@
 
         <form class="add_new_pitch_form" id="add_pitch" enctype="multipart/form-data" method="POST">
             <div class="col-md-12">
-                <% if(pitch_limit != -1){ %>
+
+                    <!-- Modals -->
+                    
+                    <div class="modal fade" id="conversation_box" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Upgrade Your Plan</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <ul id="conversation_list">
+                    
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                    
+                        </div>
+                    </div>
+
+                <% if(pitch_limit != -1 && pitch_limits_plan !='true'){ %>
                 <div class="left-pitches"><p> <span>  <%= pitch_limit %>/<%= total_pitch_limit %> </span> pitches left  </p> </div>
                 <% } %>
                 <div class="first-box" id="main-box">
@@ -24,10 +48,10 @@
                                     <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                                     <br> Drag and Drop a File to Edit for your Pitch
                                     <br>OR</br>
-                                    <button type="button" class="btn btn-default upld-btn">Upload a File</button>
+                                    <button type="button" class="btn btn-default upld-btn" >Upload a File</button>
 
                                 </div>
-                                <input type="file" name="drop_zone[]" class="drop_zone_input">
+                                <input type="file" name="drop_zone[]" id="drop_zone" onClick="showModal(<%= pitch_limit %>)" class="drop_zone_input">
                                 <div class="file-value" aria-hidden="true"></div>
                             </div>
                         </div>
@@ -201,14 +225,12 @@
                             <div class="checkbox">
                                 <label>
                                     <input id="allow_notification" type="checkbox" value="checked" name="activity"
-                                        checked>Send
-                                    Notification When There Is Activity</label>
+                                        checked>Send Notification When There Is Activity</label>
                             </div>
                             <div class="checkbox">
                                 <label>
                                     <input id="allow_messaging" type="checkbox" value="checked" name="allow_messging"
-                                        checked>Allow
-                                    For Messaging </label>
+                                        checked>Allow For Messaging </label>
                             </div>
                             <div class="checkbox">
                                 <label>

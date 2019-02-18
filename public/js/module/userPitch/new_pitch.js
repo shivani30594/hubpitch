@@ -655,3 +655,27 @@ const handleContinueUploadDrafts = () => {
     });
 }
 
+    function showModal(limit){
+       
+        if(limit==0)
+        {
+            $("#drop_zone").prop('disabled', true);
+            $('#conversation_list').html(' ');
+            $('#conversation_box').modal('show');
+            let dataHTML = '';
+            dataHTML = `You have finished your pitch limit.In order to continue you uploade pitch you will need to upgrade your subscription<br><a href="${site_url}user/upgrade" style="text-decoration: underline !important;">Click HERE to Upgrade</a>`;
+            $('#conversation_list').append(dataHTML);
+            //window.location.href = "/pitch/add";
+            //$("#drop_zone").prop('disabled', false);
+           // $("#drop_zone").prop('enable', true);
+           // alert("You have finished your pitch limit.In order to continue you uploade pitch you will need to upgrade your subscription");
+        }
+        else
+        {
+           // $("#drop_zone").click();
+            //$("#drop_zone").prop('enable', true);
+        }
+        
+    }
+
+

@@ -141,19 +141,25 @@
             req.send();
         }
         $(document).on('click', '.slick-active .prev-btn', function () {
-            console.log('prev');
+          
             currentId = instance.getCurrentId();
+            
+              console.log("current id",currentId);
             instance.gotoPage(currentId - 1);
             console.log('instance', instance);
             return false;
         });
+
         $(document).on('click', '.slick-active .next-btn', function () {
             console.log('next');
             currentId = instance.getCurrentId();
+            console.log("current id", currentId);
             instance.gotoPage(currentId + 1);
+             
             console.log('instance', instance);
             return false;
         });
+
         $(document).on('click', '.slick-active .zoomInbutton', function () {
             currentId = instance.getCurrentId();
             /** getZoom API
@@ -165,6 +171,7 @@
             instance.setZoom(currentZoom + 0.5);
             return false;
         });
+
         $(document).on('click', '.slick-active .zoomOutbutton', function () {
             currentId = instance.getCurrentId();
             var currentZoom = instance.getZoom();

@@ -14,14 +14,14 @@ function wrap(func) {
 }
 /* GENRAL PAGE CALLING METHOD */
 router.get('/', function (req, res, next) {
-    res.render('loginModule/index', { title: 'SignIn || Hub Pitch' });
+    res.render('loginModule/index', { title: 'SignIn || hubPitch' });
 });
 router.get('/signup', function (req, res, next) {
     res.render('loginModule/signup', { title: 'hubPitch Sign Up' });
 });
 router.get('/payment', Controller.stripePaymentController.paymentPage);
 router.get('/forgot-password', function (req, res, next) {
-    res.render('loginModule/forget', { title: 'Forgot Password || Hub Pitch' });
+    res.render('loginModule/forget', { title: 'Forgot Password || hubPitch' });
 });
 router.get('/reset-password/:id', Controller.authController.checkToken);
 
@@ -63,7 +63,7 @@ router.get('/admin/edit-plan/:id', adminController.subscriptionController.editPl
 
 router.get('/viewer/:pitch_id', Controller.enduserController.viewPitch)
 router.get('/welcome', function (req, res, next) {
-    res.render("loginModule/welcome", { title: 'Free SignUp || Hub Pitch', documents_viewer: 'false', free: 'true' });
+    res.render("loginModule/welcome", { title: 'Free SignUp || hubPitch', documents_viewer: 'false', free: 'true' });
 });
 
 // Pitch Analytics
@@ -125,7 +125,8 @@ router.post('/admin/edit_membership_plan', adminController.subscriptionControlle
 router.post('/admin/remove_membership_plan', adminController.subscriptionController.removePlan);
 
 // PITCH
-router.post('/add_pitch', Controller.pitchController.addPitch);
+router.post('/add_pitch', Controller.pitchController.addPitch); 
+router.post('/upgrade_plan_email', Controller.pitchController.upgradePlanEmail);
 router.post('/add_pitch_draft', Controller.pitchController.addPitchDraft);
 router.post('/get_user_pitchs', Controller.pitchController.getPitch)
 router.post('/detele_pitch', Controller.pitchController.deletePitch)
@@ -133,6 +134,7 @@ router.post('/manage_pitch', Controller.pitchController.managePitch)
 router.post('/sharing_details', Controller.pitchController.sharingDetails)
 router.post('/edit_pitch', Controller.pitchController.editPitch)
 router.post('/get_conversation', Controller.pitchController.getConversation)
+router.post('/upgrade_account', Controller.pitchController.upgradeAccount);
 router.post('/get_conversation_messages', Controller.pitchController.getPitchMessage)
 router.post('/mark_as_read_conversation', Controller.pitchController.markAsReadConversation)
 router.post('/reply_message', Controller.pitchController.replyPitchMessage)

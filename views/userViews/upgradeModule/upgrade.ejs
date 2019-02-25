@@ -36,21 +36,10 @@
 
 <body>
     <% include ../component/header.ejs %>
-    <section class="signup-wrap">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="logo-wrap">
-                        <!-- <a href="#">
-                            <img src="/img/logo.png" alt="Logo">
-                        </a>  -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+   
     <section class="signup-wrapper">
         <div class="container">
+            <div class="payment_box_wrraper">
             <div class="payment_box">
                 <% for(var i=0; i < data.length; i++) { %>
                 <div class="columns">
@@ -60,8 +49,14 @@
                         </li>
                         <li class="grey">$
                             <%= data[i].plan_price %> / Month</li>
+                        <% if(data[i].unlimited_customer_pitches=='true'){%>
                         <li>Unlimited Customer Pitches <span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
                             </span></li>
+                        <% }else { %>
+                            <li>Monthly Number of Pitches: <span style="color:green"><b><%= data[i].pitch_limits %></b></span>
+                                
+                            </li>
+                            <% } %>
                         <li>Video Upload Editing <span class="memberpship_icon <%= (data[i].video_upload_editing=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
                             </span></li>
                         <li>Pitch Customization <span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
@@ -84,7 +79,7 @@
                          <% } %>
                         <% } else if(data[i].plan_price > 0 ){ %>
                             <li class="grey">
-                                <a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)" class="button">Upgrade</a>
+                                <a href="javascript:-(<%= data[i].plan_price %>,<%= data[i].plan_id %>)" class="button">Upgrade</a>
                             </li>
                         <%  } else { %>
                              <!-- "javascript:handlePaymentTableFree(
@@ -94,6 +89,10 @@
                     </ul>
                 </div>
                 <% } %>
+            </div>
+            <div class="payment_box_btn-wrap">
+                <a class="button" onclick="myFunction()" >Cancel Subscription</a>
+            </div>
             </div>
         </div>
     </section>

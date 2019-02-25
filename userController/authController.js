@@ -312,9 +312,9 @@ class authController {
         res.send({ success: "false", message: "Something went wrong" });
       }
       if (results.length > 0) {
-        res.render('loginModule/reset', { title: 'Reset Password || Hub Pitch', reset_id: results[0].user_id, expired: 'false' });
+        res.render('loginModule/reset', { title: 'Reset Password || hubPitch', reset_id: results[0].user_id, expired: 'false' });
       } else {
-        res.render('loginModule/reset', { title: 'Reset Token Expired Password || Hub Pitch', expired: 'true' });
+        res.render('loginModule/reset', { title: 'Reset Token Expired Password || hubPitch', expired: 'true' });
       }
     })
   }

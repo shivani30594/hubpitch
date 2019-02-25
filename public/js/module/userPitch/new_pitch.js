@@ -507,7 +507,6 @@ function discardPitch() {
                 } else {
                     console.log(response.message);
                     alert('SOMETHING WENT WRONG IN SENDING MESSAGE');
-
                 }
             },
             error: function (jqXHR, textStatus) {
@@ -663,8 +662,31 @@ const handleContinueUploadDrafts = () => {
             $('#conversation_list').html(' ');
             $('#conversation_box').modal('show');
             let dataHTML = '';
-            dataHTML = `You have finished your pitch limit.In order to continue you uploade pitch you will need to upgrade your subscription<br><a href="${site_url}user/upgrade" style="text-decoration: underline !important;">Click HERE to Upgrade</a>`;
+            dataHTML = `Email Sent To Your Mail.You have finished your pitch limit.In order to continue you uploade pitch you will need to upgrade your subscription<br><a href="${site_url}user/upgrade" style="text-decoration: underline !important;">Click HERE to Upgrade</a>`;
             $('#conversation_list').append(dataHTML);
+
+            if (limit === 0) {               
+                let accesstoken = getCookie('accesstoken');              
+                $.ajax({
+                    url: site_url + 'upgrade_plan_email',
+                    headers: {
+                        'Accept': 'application/json',
+                        "access-token": accesstoken
+                    },
+                    method: 'POST',                  
+                    success: function (response) {
+                        if (!response.success) {
+                            return alert(JSON.stringify(response.message));
+                        }
+                       
+                       // alert('Email Sent To Your Mail, Please upgrade your subscription For See The Updated Page');
+                        //window.location.href = "/pitch/add";
+                    },
+                    error: function (jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    }
+                });
+            }
             //window.location.href = "/pitch/add";
             //$("#drop_zone").prop('disabled', false);
            // $("#drop_zone").prop('enable', true);

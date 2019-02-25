@@ -44,7 +44,7 @@ class upgradeController {
             if (results) {
                 console.log("My data");
                 console.log(results);
-                res.render('userViews/upgradeModule/upgrade', { title: 'Payment Page || Hub Pitch', data: results, documents_viewer: 'false' });
+                res.render('userViews/upgradeModule/upgrade', { title: 'Payment Page || hubPitch', data: results, documents_viewer: 'false' });
             }
             else if (error) {
                 console.log(error,
@@ -148,7 +148,7 @@ class upgradeController {
                                         res.send({ success: "false", message: "Something went wrong" });
                                     }
                                     if (results2) {
-                                        res.render('userViews/dashboardModule/index', { title: 'User Dashboard || Hub Pitch', documents_viewer: 'false' });
+                                        res.render('userViews/dashboardModule/index', { title: 'User Dashboard || hubPitch', documents_viewer: 'false' });
                                     }
                                 });
                                 // console.log('RIP', results1);
@@ -173,7 +173,7 @@ class upgradeController {
                             //         console.log(err);
                             //     } else {
                             //         console.log("Message sent: " + info);
-                            //         res.render("loginModule/welcome", { title: 'Payment Page || Hub Pitch', documents_viewer: 'false', free: 'false' })
+                            //         res.render("loginModule/welcome", { title: 'Payment Page || hubPitch', documents_viewer: 'false', free: 'false' })
                             //     }
                             // });
                         });

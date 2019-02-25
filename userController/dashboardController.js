@@ -11,7 +11,7 @@ class dashboardController {
 
     // DASHBOARD
     static async dashboard(req, res, next) {
-        res.render('userViews/dashboardModule/index', { title: 'User Dashboard || Hub Pitch', documents_viewer: 'false' });
+        res.render('userViews/dashboardModule/index', { title: 'User Dashboard || hubPitch', documents_viewer: 'false' });
     }
 
 }

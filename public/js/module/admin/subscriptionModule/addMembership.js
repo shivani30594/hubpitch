@@ -1,6 +1,6 @@
 const site_url = "http://localhost:3000/";
 const addMembership = function () {
-    $('#pitch_limit').hide()
+    //$('#pitch_limit').hide()
     const addMambershipForm = () => {
         $("#membership_plan").validate({
             errorElement: 'span', //default input error message container

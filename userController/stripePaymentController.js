@@ -50,7 +50,7 @@ class stripePaymentController {
             fields
         ) {
             if (results) {
-                res.render('loginModule/payment', { title: 'Payment Page || Hub Pitch', data: results, documents_viewer: 'false' });
+                res.render('loginModule/payment', { title: 'Payment Page || hubPitch', data: results, documents_viewer: 'false' });
             }
             else if (error) {
                 console.log(error,
@@ -154,7 +154,7 @@ class stripePaymentController {
                                     console.log(err);
                                 } else {
                                     console.log("Message sent: " + info);
-                                    res.render("loginModule/welcome", { title: 'Payment Page || Hub Pitch', documents_viewer: 'false', free: 'false' })
+                                    res.render("loginModule/welcome", { title: 'Payment Page || hubPitch', documents_viewer: 'false', free: 'false' })
                                 }
                             });
                         });

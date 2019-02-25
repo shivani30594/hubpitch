@@ -20,10 +20,10 @@ class usersController {
         db.query('SELECT hp_membership_plan.pitch_notifications,hp_users.user_id,hp_users.first_name,hp_users.last_name,hp_users.email,hp_users_info.company_name,hp_users_info.notification_1,hp_users_info.notification_2,hp_users_info.notification_3 FROM hp_users LEFT JOIN hp_users_info ON hp_users.user_id = hp_users_info.user_id JOIN hp_membership_plan ON hp_membership_plan.plan_id = hp_users.plan_id WHERE hp_users.user_id = ?', userid, function (error, results, fields) {
             if (results) {
                 console.log(results[0])
-                res.render('userViews/profileModule/profile', { title: 'User Profile || Hub Pitch', documents_viewer: 'false', data: results[0] });
+                res.render('userViews/profileModule/profile', { title: 'User Profile || hubPitch', documents_viewer: 'false', data: results[0] });
             } else {
                 console.log(error, results, fields);
-                res.render('userViews/profileModule/profile', { title: 'User Profile || Hub Pitch', documents_viewer: 'false', data: '' });
+                res.render('userViews/profileModule/profile', { title: 'User Profile || hubPitch', documents_viewer: 'false', data: '' });
             }
         });
     }

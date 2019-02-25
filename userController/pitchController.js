@@ -342,6 +342,65 @@ class pitchController {
         }
     }
 
+    static upgradePlanEmail(req, res){
+     
+        var smtpTransport = nodemailer.createTransport({
+            service: process.env.SERVICE,
+            auth: {
+                user: process.env.HPEMAILUSER,
+                pass: process.env.PASSWORD
+            }
+        });
+
+        var token = req.headers['access-token'];
+        let userid = '';
+        jwt.verify(token, jwtsecret, function (err, decoded) {
+            if (err) {
+                return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+            } else {
+                userid = decoded.user;
+            }
+        });
+        db.query('SELECT * from hp_users  WHERE hp_users.user_id = ?', userid, function (error, results, fields) {
+            if (results.length) {
+                console.log(results[0].first_name);
+                // -------------------------------mail sending-----------------------------
+                var tomail = "rip@narola.email";
+                var share = '';
+                var newEmail = '';
+                var emailLog = {};
+                var subject = "Your Account Needs an Update";
+                // setup e-mail data with unicode symbols
+                // Email Body Builder 
+                var newEmail = `<p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">You have reached your maximum number of pitches within your hubPitch Bundle account. In order to continue sending pitches to your clients you will need to upgrade your subscription.</span></span></p>
+                <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;"><u>To Upgrade Your Subscription</u></span></span></p>
+                <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">1. Sign in to your account at&nbsp;</span></span><a href="http://bundle-hubpitch.com"><span style="color: #0000ff;"><span style="font-family: Helvetica, serif;"><u>http://bundle-hubpitch.com</u></span></span></a></p>
+                <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">2. Click on your Account Name (top right corner of the screen)</span></span></p>
+                <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">3. Click on My Subscription</span></span></p>
+                <p>&nbsp;</p>
+                <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">We look forward to hearing about your continued sales success!</span></span></p>
+                <p>&nbsp;</p>
+                <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">-The hubPitch Team</span></span></p>`
+                var mailOptions = {
+                    from: process.env.HPEMAILUSER, // sender address
+                    to: tomail, // list of receivers
+                    subject: subject, // Subject line
+                    html: newEmail
+                };
+                smtpTransport.sendMail(mailOptions, function (err, info) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.send({ success: true, message: 'Mail send succesfully' });
+                    }
+                })
+                //res.send({ success: "true", data: results });
+            } else {
+                console.log(error, results, fields);
+            }
+        });
+        
+    }
     static async addPitchDraft(req, res) {
         try {
 
@@ -1902,6 +1961,62 @@ class pitchController {
             console.error(error);
             res.send({ success: false, error });
         }
+    }
+    static upgradeAccount(req, res) {
+
+        var smtpTransport = nodemailer.createTransport({
+            service: process.env.SERVICE,
+            auth: {
+                user: process.env.HPEMAILUSER,
+                pass: process.env.PASSWORD
+            }
+        });
+
+        var token = req.headers['access-token'];
+        let userid = '';
+        jwt.verify(token, jwtsecret, function (err, decoded) {
+            if (err) {
+                return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+            } else {
+                userid = decoded.user;
+            }
+        });
+        db.query('SELECT * from hp_users  WHERE hp_users.user_id = ?', userid, function (error, results, fields) {
+            if (results.length) {
+                //console.log(results[0].first_name);
+                // -------------------------------mail sending-----------------------------
+                var tomail = "rip@narola.email";
+                var share = '';
+                var newEmail = '';
+                var emailLog = {};
+                var subject = "Account Update Needed – Customer Message Sent via hubPitch";
+                // setup e-mail data with unicode symbols
+                // Email Body Builder 
+                var newEmail = `<p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">You have received a message from one of your customers within your hubPitch Bundle account. In order to read &amp; respond to your customer(s) you will need to upgrade your subscription.</span></span></p>
+                    <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;"><u>To Upgrade Your Subscription</u></span></span></p>
+                    <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">1. Sign in to your account at&nbsp;</span></span><a href="http://bundle-hubpitch.com"><span style="color: #0000ff;"><span style="font-family: Helvetica, serif;"><u>http://bundle-hubpitch.com</u></span></span></a></p>
+                    <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">2. Click on your Account Name (top right corner of screen)</span></span></p>
+                    <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">3.Click on My Subscription<br /><br /></span></span></p>
+                    <p><span style="color: #000000;"><span style="font-family: Helvetica, serif;">We look forward to hearing about your continued sales success!<br /><br /><br /></span></span><span style="color: #000000;"><span style="font-family: Helvetica, serif;">-The hubPitch Team</span></span></p>`
+                var mailOptions = {
+                    from: process.env.HPEMAILUSER, // sender address
+                    to: tomail, // list of receivers
+                    subject: subject, // Subject line
+                    html: newEmail
+                };
+                smtpTransport.sendMail(mailOptions, function (err, info) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.send({ success: true, message: 'Mail send succesfully' });
+                    }
+                })
+                //res.send({ success: "true", data: results });
+            } else {
+                console.log(error, results, fields);
+            }
+        });
+
     }
 }
 module.exports = pitchController;

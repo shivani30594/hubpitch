@@ -72,3 +72,14 @@ function signUpFree(id) {
 $(document).ajaxComplete(function () {
     console.log('ajaxComplete');
 });
+
+function myFunction() {
+    var txt;
+    var r = confirm("Are you want to cancel your subscription plan!");
+    if (r == true) {
+        txt = "You pressed OK!";
+    } else {
+        txt = "You pressed Cancel!";
+    }
+    document.getElementById("demo").innerHTML = txt;
+}

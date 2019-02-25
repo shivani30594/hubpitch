@@ -12,7 +12,9 @@
     <script src="/js/libraries/tinymce/tinymce.min.js"></script>
     <% include ../component/header.ejs %>
     <script>
-        var instance = null;
+        var instance= null;
+        var cnt =0;
+         var temp = 0;
         function display_docx(params, i) {
             var req = new XMLHttpRequest();
             //Check File URL & domain origin
@@ -44,12 +46,21 @@
         }
 
         function display_pptx(params, i) {
+           
+            temp=temp+1;
+            console.log("temp",temp);
             var req = new XMLHttpRequest();
             //Check File URL & domain origin
             req.open("GET", site_url + params, true);
             //Response Type is Blob
             req.responseType = "blob";
-            console.log('asda', req.response);
+           // console.log('asda', req.response);
+            if(req.response==null)
+            {
+                console.log("null");
+              $(".loader1").show();   
+            }
+           
             req.onload = function (e) {
                 var blob = req.response;
                 console.log('asda', req.response);
@@ -64,13 +75,22 @@
                             if (result.isError) {
                                 console.log(result.msg);
                             } else {
+                                
+                                 console.log("rip", result); 
+                                  cnt = cnt + 1; 
+                                  console.log("cnt", cnt);
+                                  if(cnt==temp)
+                                  {
+                                      $(".loader1").hide(); 
+                                  }
                                 console.log("Success Render");
                             }
                         });
                     }, function (e) {
                         console.log("Error!", e);
                     }
-                );
+                );               
+                
                 instance = slideJS;
             };
             req.send();
@@ -196,7 +216,9 @@
                                         <% } %>
                                         <% if(data[i].pitch_attachment_type == 'pptx') { %>
                                         <input type="hidden" value="0" class="sliderViewer">
+                                        <div class="loader1" style="display:none"></div>
                                         <div class="preview pptx-view">
+                                           
                                             <div id="loaded-layout_<%= i %>" style="width:1000px; height: 500px; border:1px solid #eee; margin: 20px 0;"></div>
                                             <script>
                                                 var param = '<%= dir_parth+data[i].pitch_attachment_name %>';

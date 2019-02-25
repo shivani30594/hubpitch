@@ -25,7 +25,7 @@ class pitchController {
             fields
         ) {
             if (results) {
-                res.render('adminViews/pitchModule/pitchListing', { title: 'All Users Pitch || Hub Pitch', data: results, datatable: 'TRUE' });
+                res.render('adminViews/pitchModule/pitchListing', { title: 'All Users Pitch || hubPitch', data: results, datatable: 'TRUE' });
             } else {
                 console.log(error, results, fields);
                 return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });

@@ -36,10 +36,10 @@
 
 <body>
     <% include ../component/header.ejs %>
-   
+ 
     <section class="signup-wrapper">
         <div class="container">
-            <div class="payment_box_wrraper">
+          <div class="payment_box_wrraper">
             <div class="payment_box">
                 <% for(var i=0; i < data.length; i++) { %>
                 <div class="columns">
@@ -79,7 +79,7 @@
                          <% } %>
                         <% } else if(data[i].plan_price > 0 ){ %>
                             <li class="grey">
-                                <a href="javascript:-(<%= data[i].plan_price %>,<%= data[i].plan_id %>)" class="button">Upgrade</a>
+                                <a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)" class="button">Upgrade</a>
                             </li>
                         <%  } else { %>
                              <!-- "javascript:handlePaymentTableFree(
@@ -91,9 +91,9 @@
                 <% } %>
             </div>
             <div class="payment_box_btn-wrap">
-                <a class="button" onclick="myFunction()" >Cancel Subscription</a>
+                <a class="button" onclick="cancelSubscription()">Cancel Subscription</a>
             </div>
-            </div>
+         </div>
         </div>
     </section>
     <!-- BUILD MODEL FOR DETAILS -->

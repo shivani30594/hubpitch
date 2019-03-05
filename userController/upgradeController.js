@@ -19,6 +19,58 @@ var moment = require('moment');
 require('dotenv').config()
 class upgradeController {
 
+    static async deactiveUser(req, res){
+
+        try {
+            var token = req.cookies.accesstoken;
+            let userid = '';
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    userid = decoded.user;
+                }
+            });
+            let sql = 'UPDATE hp_users SET activated="no"  WHERE user_id="' + userid + '"';
+            db.query(sql, function (error,
+                results,
+                fields) {
+                if (error) {
+                    console.log(error,
+                        results,
+                        fields);
+                    console.log(sql)
+                    res.send({ success: false, message: "SQL ISSUES IN USERS" });
+                }
+                if (results) {
+                    // let sql1 = 'REPLACE into hp_users_info SET user_id="' + userid + '", company_name = "' + req.body.companyName + '", notification_1 ="' + req.body.allow_notification + '", notification_2 = "' + req.body.allow_messaging + '", notification_3 = "' + req.body.allow_share + '"';
+                    // db.query(sql1, function (error1,
+                    //     results1,
+                    //     fields1) {
+                    //     if (error1) {
+                    //         console.log(error1,
+                    //             results1,
+                    //             fields1);
+                    //         console.log(sql1)
+                    //         res.send({ success: false, message: "SQL ISSUES IN USERS" });
+                    //     }
+                    //     if (results1) {
+                    //         res.send({ success: true, message: "Profile Updated Successfully" });
+                    //     }
+                    // });
+                 res.send({ success: true, message: "Plan Deactivated Successfully" });
+                }
+               
+            });
+        }
+        catch (error) {
+            console.error(error);
+            res.send({ success: false, error });
+        }
+    }
+
+  
+
     // Upgrade
     static async upgrade(req, res, next) {
      
@@ -60,8 +112,46 @@ class upgradeController {
         });
     }
 
+    static async upgradeplan(req, res, next) {
 
-    static async payment(req, res) {
+        let bin = ('11, 18e1c619-2e99-4146-81dd-3567829d2acf')
+        var b64 = btoa(bin)
+        console.log('b64-------------', b64)
+        var bin1 = atob(b64);
+        console.log('bin1---------sssswss----', bin1[0])
+        var token = req.cookies.accesstoken;
+        let userid = '';
+        jwt.verify(token, jwtsecret, function (err, decoded) {
+            if (err) {
+                return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+            } else {
+                userid = decoded.user;
+            }
+        });
+        db.query('SELECT(SELECT plan_id FROM hp_users WHERE user_id="' + userid + '") AS subscription_id, hp_membership_plan.* FROM hp_membership_plan', function (
+            error,
+            results,
+            fields
+        ) {
+            if (results) {
+                console.log("My data");
+                console.log(results);
+                res.render('userViews/upgradeModule/upgradeplan', { title: 'Payment Page || hubPitch', data: results, documents_viewer: 'false' });
+            }
+            else if (error) {
+                console.log(error,
+                    results,
+                    fields);
+                res.send({ success: false, message: 'SQL ISSUES', error: error });
+            } else {
+                console.log(error,
+                    results,
+                    fields);
+                res.send({ success: false, message: 'Something Went Wrong' });
+            }
+        });
+    }
+    static async paymentPlan(req, res) {
         // var smtpTransport = nodemailer.createTransport({
         //     service: process.env.SERVICE,
         //     auth: {
@@ -117,17 +207,19 @@ class upgradeController {
                             results1,
                             field1) {
                             if (results1) {
-                                //console.log(results1[0].pitch_limit);
-                                //console.log("rip");
+                               
                                 var pitch_limit = results1[0].pitch_limit;
 
                                 var date = new Date();
                                 var timestamp = date.getTime();
                                 var expire = timestamp + 30 * 24 * 60 * 60;
 
-                                if (pitch_limit == null) {
+                                if (pitch_limit == "") {
                                     pitch_limit = -1;
-                                }
+                                   // console.log("null");
+                                }                             
+
+                               
                                 let hp_users_pitch_limit_data = {
                                     user_id: userid,
                                     remaining_pitch: pitch_limit,
@@ -148,14 +240,46 @@ class upgradeController {
                                         res.send({ success: "false", message: "Something went wrong" });
                                     }
                                     if (results2) {
-                                        res.render('userViews/dashboardModule/index', { title: 'User Dashboard || hubPitch', documents_viewer: 'false' });
+                                        let sql = 'UPDATE hp_users SET activated="yes"  WHERE user_id="' + userid + '"';
+                                        db.query(sql, function (error3,
+                                            results3,
+                                            fields) {
+                                            if (error3) {
+                                                console.log(error3,
+                                                    results3,
+                                                    fields);
+                                                console.log(sql)
+                                                res.send({ success: false, message: "SQL ISSUES IN USERS" });
+                                            }
+                                            if (results3) {
+                                                // let sql1 = 'REPLACE into hp_users_info SET user_id="' + userid + '", company_name = "' + req.body.companyName + '", notification_1 ="' + req.body.allow_notification + '", notification_2 = "' + req.body.allow_messaging + '", notification_3 = "' + req.body.allow_share + '"';
+                                                // db.query(sql1, function (error1,
+                                                //     results1,
+                                                //     fields1) {
+                                                //     if (error1) {
+                                                //         console.log(error1,
+                                                //             results1,
+                                                //             fields1);
+                                                //         console.log(sql1)
+                                                //         res.send({ success: false, message: "SQL ISSUES IN USERS" });
+                                                //     }
+                                                //     if (results1) {
+                                                //         res.send({ success: true, message: "Profile Updated Successfully" });
+                                                //     }
+                                                // });
+                                               // res.send({ success: true, message: "Plan Deactivated Successfully" });
+                                                res.render('userViews/dashboardModule/index', { title: 'User Dashboard || hubPitch', documents_viewer: 'false' });
+                                            }
+
+                                        });
+                                        
                                     }
                                 });
                                 // console.log('RIP', results1);
                             }
                             else
                             {
-                                //console.log("rip wrong");
+                                console.log("rip wrong");
                             }
                             // -------------------------------mail sending-----------------------------
                             // var tomail = "";
@@ -186,6 +310,131 @@ class upgradeController {
             }); // render the charge view: views/charge.pug
 
     }
+    static async payment(req, res) {
+        // var smtpTransport = nodemailer.createTransport({
+        //     service: process.env.SERVICE,
+        //     auth: {
+        //         user: process.env.HPEMAILUSER,
+        //         pass: process.env.PASSWORD
+        //     }
+        // });
+        var bin1 = atob(req.params.id);
 
+        var array = bin1.split(',');
+        let amount = array[0];
+        // console.log(bin1);
+        // console.log(array[1]);
+        // console.log(req.cookies.accesstoken);
+        var token = req.cookies.accesstoken;
+        let userid = '';
+        jwt.verify(token, jwtsecret, function (err, decoded) {
+            if (err) {
+                return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+            } else {
+                userid = decoded.user;
+            }
+        });
+        // console.log(array[2],userid);
+        //create a customer 
+        stripe.customers.create({
+            email: req.body.stripeEmail, // customer email, which user need to enter while making payment
+            source: req.body.stripeToken // token for the given card 
+        })
+            .then(customer =>
+                stripe.charges.create({ // charge the customer
+                    amount,
+                    description: "hubPitch Membership",
+                    currency: "usd",
+                    customer: customer.id
+                }))
+            .then(charge => {
+                db.query('UPDATE hp_users SET is_payment="yes",	plan_id="' + array[2] + '",	transaction_id="' + charge.id + '" WHERE user_id="' + userid + '"', function (error,
+                    results,
+                    fields) {
+                    if (error) {
+                        console.log(error,
+                            results,
+                            fields);
+                        res.send({ success: false, message: 'SQL ISSUES', error: error });
+                    }
+                    // SELECT(SELECT pitch_limits FROM hp_membership_plan WHERE plan_id =?) as pitch_limit, hp_users.email, hp_users_tmp.token_value, hp_users_tmp.randompassword FROM hp_users_tmp JOIN hp_users ON hp_users_tmp.user_id = hp_users.user_id WHERE hp_users_tmp.user_id =? ', [array[2], userid]
+                    //  
+                    if (results) {
+                        // console.log(results);
+                        // console.log("ritts"+array[2]+userid);
+                        db.query('SELECT (SELECT pitch_limits FROM hp_membership_plan WHERE plan_id="' + array[2] + '") as pitch_limit,hp_users.email  FROM  hp_users WHERE hp_users.user_id="' + userid + '"', function (error1,
+                            results1,
+                            field1) {
+                            if (results1) {
+
+                                var pitch_limit = results1[0].pitch_limit;
+
+                                var date = new Date();
+                                var timestamp = date.getTime();
+                                var expire = timestamp + 30 * 24 * 60 * 60;
+
+                                if (pitch_limit == "") {
+                                    pitch_limit = -1;
+                                    // console.log("null");
+                                }
+
+
+                                let hp_users_pitch_limit_data = {
+                                    user_id: userid,
+                                    remaining_pitch: pitch_limit,
+                                    end_date: moment(expire).format("YYYY-MM-DD HH:mm:ss")
+                                }
+                                // db.query("INSERT INTO hp_users_pitch_limit SET?", hp_users_pitch_limit_data, function (
+                                //     error2,
+                                //     results2,
+                                //     fields2
+                                // )
+                                db.query('UPDATE hp_users_pitch_limit SET remaining_pitch="' + pitch_limit + '",end_date="' + moment(expire).format("YYYY-MM-DD HH:mm:ss") + '" WHERE user_id="' + userid + '"', function (
+                                    error2,
+                                    results2,
+                                    fields2
+                                ) {
+                                    if (error2) {
+                                        console.log(error2);
+                                        res.send({ success: "false", message: "Something went wrong" });
+                                    }
+                                    if (results2) {
+                                        res.render('userViews/dashboardModule/index', { title: 'User Dashboard || hubPitch', documents_viewer: 'false' });
+                                    }
+                                });
+                                // console.log('RIP', results1);
+                            }
+                            else {
+                                console.log("rip wrong");
+                            }
+                            // -------------------------------mail sending-----------------------------
+                            // var tomail = "";
+                            // tomail = results1[0].email;
+                            // // setup e-mail data with unicode symbols
+                            // var mailOptions = {
+                            //     from: process.env.USERNAME, // sender address
+                            //     to: tomail, // list of receivers
+                            //     subject: "Random password for login", // Subject line
+                            //     html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + process.env.SITE_URL + 'reset-password/' + results1[0].token_value + "> Click Here</a>"
+                            // };
+                            // // send mail with defined transport object
+                            // smtpTransport.sendMail(mailOptions, function (err, info) {
+                            //     if (err) {
+                            //         console.log(err);
+                            //     } else {
+                            //         console.log("Message sent: " + info);
+                            //         res.render("loginModule/welcome", { title: 'Payment Page || hubPitch', documents_viewer: 'false', free: 'false' })
+                            //     }
+                            // });
+                        });
+                    }
+                });
+            })
+            .catch(err => {
+                console.log("Error:", err);
+                res.status(500).send({ error: "Purchase Failed" })
+            }); // render the charge view: views/charge.pug
+
+    }
 }
 module.exports = upgradeController;

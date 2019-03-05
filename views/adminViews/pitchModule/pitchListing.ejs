@@ -40,15 +40,19 @@
                                                 <td>
                                                     <%= data[i].username %>
                                                 </td>
-                                                <td><button type="button" class="btn btn-success" onclick="myDeactive()">Active</button></td>
+                                                <% if(data[i].activated=="yes"){%>
+                                                <td><button type="button" class="btn btn-success" onclick="myDeactive('<%= data[i].user_id %>')">Active</button></td>
+                                                <% } else { %>
+                                                <td><button type="button" class="btn btn-danger" onclick="myActivate('<%= data[i].user_id %>')" >Deactive</button></td>
+                                                <% } %>
                                                 <td>
                                                     <%= data[i].created %>
                                                 </td>
                                                 <td>
-                                                    <a class="action-table" href="javascript:void(0)">
+                                                    <!-- <a class="action-table" href="javascript:void(0)">
                                                         <span class="glyphicon glyphicon-eye-open"></span>
-                                                    </a>
-                                                    <a class="action-table" href="javascript:ConfirmDeleteUser(<%= data[i].user_id %>)">
+                                                    </a> -->
+                                                    <a class="action-table" href="javascript:ConfirmDeleteUser('<%= data[i].user_id %>')">
                                                         <span class="glyphicon glyphicon-trash"></span>
                                                     </a>
                                                 </td>

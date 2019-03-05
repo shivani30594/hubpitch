@@ -13,8 +13,11 @@ const signout = () => {
         var cookie = cookies[i];
         var eqPos = cookie.indexOf("=");
         var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        console.log(name);
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+       // document.cookie.clearCookie(name);
     }
+    
     window.location.href = "/?logout=true";
 }
 
@@ -37,11 +40,12 @@ const meUser = () => {
                 if (!response.success) {
                     return alert(JSON.stringify(response.message));
                 }
+                console.log("data",response);
                 let data = response.data[0];
                 let name = data.first_name + ' ' + data.last_name;
                 let company_name = data.company_name;
                 document.cookie = "cuser=" + name;
-                document.cookie = "ucompany=" + company_name;
+                document.cookie = "ucompany=" + company_name;                
                 let userName = getCookie('cuser');
                 $('#c_user_box').text(userName);
                 $('#company_name_user').text(company_name);

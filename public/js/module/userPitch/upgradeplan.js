@@ -19,12 +19,12 @@ jQuery(document).ready(function () {
 });
 
 function handlePaymentTable(amount, id) {
-    let user_id = getCookie('accesstoken');   
+    let user_id = getCookie('accesstoken');
     let payableamount = amount * 100
     let encodedDataD = payableamount + ',' + user_id + ',' + id
     var encodedData = window.btoa(encodedDataD); // encode a string
     $('.loader_hp_').show();
-    let script = '<form action="/user/upgrade_payment_status/' + encodedData + '" method="POST"> <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_nN2AAsg2jHlJxmCky4QOiuPe" data-name="hubPitch Membership" data-amount="' + payableamount + '"> <input type="hidden" name="amount" value="' + amount + '" /> </form>';
+    let script = '<form action="/user/upgrade_payment_status_active/' + encodedData + '" method="POST"> <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_nN2AAsg2jHlJxmCky4QOiuPe" data-name="hubPitch Membership" data-amount="' + payableamount + '"> <input type="hidden" name="amount" value="' + amount + '" /> </form>';
     $("#" + id + "_submmiting").html(script);
     $("#" + id + "_stripe_confi").modal('show');
     $('.loader_hp_').hide();
@@ -73,38 +73,6 @@ $(document).ajaxComplete(function () {
     console.log('ajaxComplete');
 });
 
-function cancelSubscription() {
-    var txt;
-    var r = confirm("Are you want to cancel your subscription plan!");
-    if (r == true) {
-        txt = "You pressed OK!";
-        console.log("ok");
-        let accesstoken = getCookie('accesstoken');
-        $.ajax({
-            url: site_url + 'deactivate_user',
-            headers: {
-                'Accept': 'application/json',
-                "access-token": accesstoken
-            },
-            method: 'POST',           
-            success: function (response) {
-                if (response.success == true) {
-                    alert(response.message);
-                    window.location = '/';
-                    //location.reload();
-                } else {
-                    console.log(response.success,response.message);
-                    alert('SOMETHING WENT WRONG IN SENDING MESSAGE1');
-                }
-            },
-            error: function (jqXHR, textStatus) {
-                console.log("Request failed: " + textStatus);
-            }
-        })
-    } else {
-        txt = "You pressed Cancel!";
-    }   
-}
 
 const handleSignUp = () => {
     $('.loader_hp_').hide('50');

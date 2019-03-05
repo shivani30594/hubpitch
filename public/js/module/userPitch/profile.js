@@ -46,6 +46,7 @@ const userProfile = function () {
                             alert(response.message);
                             document.cookie = 'cuser' + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
                             document.cookie = 'ucompany' + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+                            //document.cookie = 'uactivated' + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
                             location.reload();
                         }
                     },

@@ -1932,7 +1932,7 @@ class pitchController {
                                     results2,
                                     fields2) {
                                     if (results2) {
-
+                                        
                                     }
                                     else {
                                         console.log(error2,

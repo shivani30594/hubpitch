@@ -39,7 +39,7 @@ const Login = function () {
                         if (response.success == false) {
                             alert(response.message);
                             $('#sign_up_form').trigger("reset");
-                            $('.loader_hp_').hide('50');
+                            $ ('.loader_hp_').hide('50');
                         }
                         if (response.success) {
                             document.cookie = "newtoken=" + response.token;
@@ -158,8 +158,26 @@ const Login = function () {
                         if (!response.success) {
                             return alert(JSON.stringify(response.message));
                         }
-                        document.cookie = "accesstoken=" + response.accesstoken;
-                        window.location.href = "/" + response.url;
+                        // document.cookie = "accesstoken=" + response.accesstoken;
+                        // window.location.href = "/" + response.url;
+                        if (response.data=="login")
+                        {                           
+                            document.cookie = "accesstoken=" + response.accesstoken;                            
+                            window.location.href = "/" + response.url;
+                        }
+                        else{
+                            document.cookie = "accesstoken=" + response.accesstoken;                            
+                            window.location.href = "/" + response.url;
+                            //setTimeout(window.location = "/payment", 5000);
+                        }
+
+                        // document.cookie = "newtoken=" + response.token;
+                        // $('.loader_hp_').hide('50');
+                        // alert("You will be redirected to a new page in 5 seconds");
+                        // setTimeout(window.location = "/payment", 5000);
+
+
+
                     },
                     error: function (jqXHR, textStatus) {
                         alert("Request failed: " + textStatus);

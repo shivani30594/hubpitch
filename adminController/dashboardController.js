@@ -32,8 +32,6 @@ class dashboardController {
                 res.render('adminViews/profileModule/profile', { title: 'Admin Profile || Hub Pitch', datatable: 'FALSE' });
             }
         });
-
-
     }
 
     // Update Profile

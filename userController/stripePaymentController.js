@@ -76,6 +76,7 @@ class stripePaymentController {
         });
         var bin1 = atob(req.params.id);
         var array = bin1.split(',');
+        console.log("array",array);
         let amount = array[0];
         // create a customer 
         stripe.customers.create({
@@ -101,19 +102,21 @@ class stripePaymentController {
                     }
                    
                     if (results) {
+                        console.log('Raj', results, array[2], array[1]);
                         db.query('SELECT (SELECT pitch_limits FROM hp_membership_plan WHERE plan_id=?) as pitch_limit,hp_users.email,hp_users_tmp.token_value,hp_users_tmp.randompassword FROM hp_users_tmp JOIN hp_users ON hp_users_tmp.user_id = hp_users.user_id WHERE hp_users_tmp.user_id=?', [array[2], array[1]], function (error1,
                             results1,
                             field1) {
                             
                             if (results1)
                             {
+                                console.log('RIP', results1);
                                 var pitch_limit = results1[0].pitch_limit;
                                
                                 var date = new Date();
                                 var timestamp = date.getTime();                               
                                 var expire = timestamp + 30 * 24 * 60 * 60;
                               
-                                if (pitch_limit == null)
+                                if (pitch_limit == "")
                                 {
                                     pitch_limit = -1;
                                 }
@@ -136,7 +139,7 @@ class stripePaymentController {
                                         
                                     }
                                 });
-                               // console.log('RIP', results1);
+                            
                             }
                             // -------------------------------mail sending-----------------------------
                             var tomail = "";
@@ -197,9 +200,10 @@ class stripePaymentController {
                         var date = new Date();
                         var timestamp = date.getTime();
                         var expire = timestamp + 30 * 24 * 60 * 60;
-                        if (pitch_limit == null) {
+                        if (pitch_limit == "") {
                             pitch_limit = -1;
-                        }
+                        }                             
+
                         let hp_users_pitch_limit_data = {
                             user_id: array[0],
                             remaining_pitch: pitch_limit,

@@ -33,6 +33,7 @@ router.get('/reset-password/:id', Controller.authController.checkToken);
 router.get('/user/dashboard', Controller.dashboardController.dashboard);
 router.get('/user/profile', Controller.usersController.profile);
 router.get('/user/upgrade', Controller.upgradeController.upgrade);
+router.get('/user/upgradeplan', Controller.upgradeController.upgradeplan);
 
 // Pitch Module 
 router.get('/pitch/add', Controller.pitchController.addNewPitchView);
@@ -48,6 +49,9 @@ router.get('/user/pitch/edit/:id', Controller.pitchController.editPitchPage)
 router.get('/admin/dashboard', adminController.dashboardController.dashboard);
 router.get('/admin/profile', adminController.dashboardController.profile);
 router.get('/admin/manage-pitch', adminController.pitchController.allUsersPitchView)
+router.post('/admin/remove-pitch', adminController.pitchController.allUsersRemovePitch)
+router.post('/admin/active_user', adminController.pitchController.UsersActivation)
+router.post('/admin/block_user', adminController.pitchController.UsersDeactivation)
 router.get('/admin/manage-subscription', adminController.subscriptionController.manageSubscription)
 router.get('/admin/stripe-managment', adminController.subscriptionController.manageStripeSetting)
 router.get('/admin/add-plan', adminController.subscriptionController.addPlanPage)
@@ -100,6 +104,9 @@ router.post('/me', Controller.usersController.me);
 router.post('/user/update_profile', Controller.usersController.updateProfile);
 router.post('/user/change_password', Controller.authController.changePassword);
 router.post('/user/upgrade_payment_status/:id', Controller.upgradeController.payment);
+router.post('/user/upgrade_payment_status_active/:id', Controller.upgradeController.paymentPlan);
+router.post('/deactivate_user', Controller.upgradeController.deactiveUser);
+
 // ADMIN API METHOD
 
 

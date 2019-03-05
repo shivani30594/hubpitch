@@ -84,6 +84,7 @@ class authController {
                   error,
                   results,
                   fields
+                
                 ) {
                   if (error) {
                     console.log(error);
@@ -160,16 +161,30 @@ class authController {
         [req.body.email, md5(req.body.password)],
         function (error, results, fields) {
           if (results.length) {
-            let dashboardURL = (results[0].role == 'user') ? 'user/dashboard' : 'admin/dashboard';
+            let dashboardURL = (results[0].role == 'user') ? 'user/dashboard' : 'admin/dashboard';      
             var authToken = jwt.sign({ user: results[0].user_id }, jwtsecret, {
               expiresIn: expiresIn
-            });
-            res.send({
-              success: true,
-              message: "Successfully signin.",
-              url: dashboardURL,
-              accesstoken: authToken
-            });
+            });          
+              if (results[0].activated =="yes")
+              {              
+                res.send({
+                  success: true,
+                  message: "Successfully signin.",                  
+                  url: dashboardURL,
+                  data: "login",
+                  accesstoken: authToken
+                });
+              }
+              else{             
+               
+                res.send({
+                  success: true,
+                  message: "Successfully signin.",
+                  url:"user/upgradeplan",
+                  data:'payment',
+                  accesstoken: authToken
+                });
+              }
           } else {
             res.send({
               success: false,

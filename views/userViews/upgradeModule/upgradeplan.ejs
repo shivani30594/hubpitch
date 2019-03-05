@@ -31,36 +31,24 @@
     <!-- Validation.Js -->
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/js/additional-methods.min.js"></script>
+    <% include ../component/headerFile.ejs %>
 </head>
 
 <body>
-    <section class="signup-wrap">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="logo-wrap">
-                        <a href="#">
-                            <img src="/img/logo.png" alt="Logo">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+   
     <section class="signup-wrapper">
         <div class="container">
+          <div class="payment_box_wrraper">
             <div class="payment_box">
                 <% for(var i=0; i < data.length; i++) { %>
                 <div class="columns">
                     <ul class="price">
                         <li class="header">
-                            <%= data[i].plan_name %>
+                            <%= data[i].plan_name %>                            
                         </li>
                         <li class="grey">$
                             <%= data[i].plan_price %> / Month</li>
-                        <!-- <li>Unlimited Customer Pitches <span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                            </span></li> -->
-                             <% if(data[i].unlimited_customer_pitches=='true'){%>
+                        <% if(data[i].unlimited_customer_pitches=='true'){%>
                         <li>Unlimited Customer Pitches <span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
                             </span></li>
                         <% }else { %>
@@ -78,18 +66,31 @@
                             </span></li>
                         <li>User to Customer Messaging<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
                             </span></li>
-                        <% if(data[i].plan_price > 0){ %>
-                        <li class="grey"><a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)"
-                                class="button">Sign
-                                Up</a></li>
+                            
+                        <% if(data[i].plan_id == data[i].subscription_id){
+                             if(data[i].plan_price > 0 ) { %>
+                            <li class="grey"><a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)"
+                                class="button">Upgrade</a></li>
+                                <% } else { %>
+                                <li class="grey">
+                                    <a class="button" disabled="disabled">Free plan</a>
+                                </li>
+                         <% } %>
+                        <% } else if(data[i].plan_price > 0 ){ %>
+                            <li class="grey">
+                                <a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)" class="button">Upgrade</a>
+                            </li>
                         <%  } else { %>
-                        <li class="grey"><a href="javascript:handlePaymentTableFree(<%= data[i].plan_id %>)" class="button">Sign
-                                Up</a></li>
+                             <!-- "javascript:handlePaymentTableFree(
+                            <%= data[i].plan_id %>)" -->
+                        <li class="grey"><a  class="button" disabled="disabled">Free plan</a></li>
                         <% } %>
                     </ul>
                 </div>
                 <% } %>
             </div>
+            
+         </div>
         </div>
     </section>
     <!-- BUILD MODEL FOR DETAILS -->
@@ -101,13 +102,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Please Confirm Your Membership Plan </h4>
+                    <h4 class="modal-title">Please - Your Membership Plan </h4>
                 </div>
                 <div class="modal-body">
                     <div class="columns">
                         <ul class="price">
                             <li class="header">
-                                <%= data[i].plan_name %>
+                                <%= data[i].plan_name %>                                
                             </li>
                             <li class="grey">$
                                 <%= data[i].plan_price %> / Month</li>
@@ -142,7 +143,7 @@
                             <% if(data[i].plan_price > 0){ %>
                             <li id="<%= data[i].plan_id %>_submmiting">
                                 <%  } else { %>
-                            <li class="grey"><a href="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign
+                            <li class="grey"><a h ref="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign
                                     Up Free</a></li>
                             <% } %>
                         </ul>
@@ -158,11 +159,8 @@
     <% } %>
     <!-- Modal -->
 
-    <script src="/js/module/payment.js"></script>
-    <!-- LOADER  -->
-    <div class="loader_hp_">
-        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-    </div>
+    <script src="/js/module/userPitch/upgradeplan.js"></script>
+  
 </body>
 
 </html>

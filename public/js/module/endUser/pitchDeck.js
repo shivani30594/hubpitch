@@ -30,6 +30,7 @@ const pitchDeck = function () {
             }
         }
     }
+    
     const getCookie = (name) => {
         var value = "; " + document.cookie;
         var parts = value.split("; " + name + "=");
@@ -43,7 +44,7 @@ const pitchDeck = function () {
         let url = $(location).attr("href").split('?').pop();
         let pitchToken = url.split('/').pop()
         if (pitchToken == '') {
-            alert('SOME THING WENT WRONG');
+            //alert('SOME THING WENT WRONG');
             return false;
         }
         setTimeout(function () {
@@ -60,11 +61,11 @@ const pitchDeck = function () {
                 },
                 success: function (response) {
                     if (!response.success) {
-                        return alert(JSON.stringify(response.message));
+                       // return alert(JSON.stringify(response.message));
                     }
                 },
                 error: function (jqXHR, textStatus) {
-                    alert("Request failed: " + textStatus);
+                    //alert("Request failed: " + textStatus);
                 }
             });
         }, 3000);
@@ -107,11 +108,11 @@ const pitchDeck = function () {
                         },
                         success: function (response) {
                             if (!response.success) {
-                                return alert(JSON.stringify(response.message));
+                               // return alert(JSON.stringify(response.message));
                             }
                         },
                         error: function (jqXHR, textStatus) {
-                            alert("Request failed: " + textStatus);
+                           // alert("Request failed: " + textStatus);
                         }
                     });
                 } else if (currentPage == 1) {
@@ -119,10 +120,10 @@ const pitchDeck = function () {
                     console.log('LAST', lastValue);
                     lastViewCount = $('.' + lastValue + '_page').val();
                     lastToken = $('.' + lastValue + '_token').val();
-                    console.log(lastViewCount, 'lastViewCount');
-                    console.log(lastValue, 'lastValue');
-                    console.log(lastToken, 'lastToken');
-                    //lastViewCount = $('.' + lastValue + '_page').val();
+                    // console.log(lastViewCount, 'lastViewCount');
+                    // console.log(lastValue, 'lastValue');
+                    // console.log(lastToken, 'lastToken');
+                    // lastViewCount = $('.' + lastValue + '_page').val();
                     $.ajax({
                         url: site_url + 'pitch-page-view',
                         headers: {
@@ -138,15 +139,15 @@ const pitchDeck = function () {
                         },
                         success: function (response) {
                             if (!response.success) {
-                                return alert(JSON.stringify(response.message));
+                               // return alert(JSON.stringify(response.message));
                             }
                         },
                         error: function (jqXHR, textStatus) {
-                            alert("Request failed: " + textStatus);
+                            //alert("Request failed: " + textStatus);
                         }
                     });
                 } else {
-                    alert('SomethingWent Wrong!');
+                    //alert('SomethingWent Wrong!');
                 }
                 setInterval(incrementSeconds, 1000);
             });
@@ -166,6 +167,8 @@ const pitchDeck = function () {
         setInterval(incrementSeconds, 1000);
     }
     const share_pitch = () => {
+        let viewerName = getCookie('viewerName');
+        let viewerRole = getCookie('viewerRole');
         $("#success-alert").hide();
         $(".share_pitch_form").validate({
             errorElement: 'span', //default input error message container
@@ -177,9 +180,9 @@ const pitchDeck = function () {
                     required: true,
                     email: true
                 },
-                sender_name: {
-                    required: true
-                },
+                // sender_name: {
+                //     required: true
+                // },
                 email_body: {
                     required: true
                 },
@@ -194,22 +197,24 @@ const pitchDeck = function () {
                     dataType: 'json',
                     data: {
                         email_id: $('input[name="email_id"]').val(),
-                        sender_name: $('input[name="sender_name"]').val(),
+                        sender_name: viewerName,
+                        sender_role: viewerRole,
                         url: window.location.href,
                         email_body: $('textarea[name="email_body"]').val(),
-                        pitch_token: $('#pitch_token').val(),
+                        pitch_token:$('#pitch_token').val(),
                         user_token: $('#user_token').val(),
-                        user_email: $('#user_email').val()
+                        user_email: $('#user_email').val(),
+                        company_name: $('#company_name').val()
                     },
                     success: function (response) {
                         if (!response.success) {
-                            return alert(JSON.stringify(response.error));
+                            //return alert(JSON.stringify(response.error));
                         }
 
                         $('.loader_hp_').hide();
                         console.log(response);
                         if (JSON.stringify(response.success == 'true')) {
-                            $('input[name="sender_name"]').val('');
+                            // $('input[name="sender_name"]').val('');
                             $('input[name="email_id"]').val('');
                             $('#name-window').modal('hide')
                             $("#success-alert").fadeTo(5000, 500).slideUp(500, function () {
@@ -218,7 +223,7 @@ const pitchDeck = function () {
                         }
                     },
                     error: function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
+                        //alert("Request failed: " + textStatus);
                     }
                 });
             }
@@ -252,14 +257,17 @@ const pitchDeck = function () {
                     }
                 },
                 error: function (jqXHR, textStatus) {
-                    alert("Request failed: " + textStatus);
+                    //alert("Request failed: " + textStatus);
                 }
             });
         }
         $(document).on("click", '#conversation_', () => {
             let endUserName = getCookie('viewerName');
             let conversation = getCookie('conversation');
-            let sender = 'Hareen Desai';
+            
+        //let sender = 'John Doe';
+            let sender = document.getElementById("sender_name_value").value;
+            console.log("name", document.getElementById("sender_name_value").value);
             if (endUserName == undefined) {
                 $('#add_name_model').modal('show');
             } else {
@@ -318,11 +326,11 @@ const pitchDeck = function () {
                                 }
                             }
                             else {
-                                alert('Something Went Wrong!');
+                                //alert('Something Went Wrong!');
                             }
                         },
                         error: function (jqXHR, textStatus) {
-                            alert("Request failed: " + textStatus);
+                            //alert("Request failed: " + textStatus);
                         }
                     });
                 } else {
@@ -347,11 +355,11 @@ const pitchDeck = function () {
                                 jQuery('#chat-window').modal('show');
                             }
                             else {
-                                alert('Something Went Wrong!');
+                                //alert('Something Went Wrong!');
                             }
                         },
                         error: function (jqXHR, textStatus) {
-                            alert("Request failed: " + textStatus);
+                           // alert("Request failed: " + textStatus);
                         }
                     });
                 }
@@ -396,11 +404,11 @@ const pitchDeck = function () {
                             $('.loader_hp_').hide();
                         }
                         else {
-                            alert('Something Went Wrong!');
+                           // alert('Something Went Wrong!');
                         }
                     },
                     error: function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
+                        //alert("Request failed: " + textStatus);
                     }
                 });
             }
@@ -441,11 +449,11 @@ const pitchDeck = function () {
                             jQuery('#chat-window').modal('show');
                         }
                         else {
-                            alert('Something Went Wrong!');
+                           // alert('Something Went Wrong!');
                         }
                     },
                     error: function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
+                       // alert("Request failed: " + textStatus);
                     }
                 });
             }
@@ -539,11 +547,11 @@ const pitchDeck = function () {
 
                     }
                     else {
-                        alert('Something Went Wrong!');
+                       //alert('Something Went Wrong!');
                     }
                 },
                 error: function (jqXHR, textStatus) {
-                    alert("Request failed: " + textStatus);
+                    //alert("Request failed: " + textStatus);
                 }
             });
         }
@@ -574,10 +582,10 @@ const pitchDeck = function () {
                     },
                     success: function (response) {
                         if (response.error) {
-                            alert(response.error.details[0].message);
+                           // alert(response.error.details[0].message);
                         }
                         if (response.success == false) {
-                            alert(response.message);
+                           // alert(response.message);
                             $('#sign_up_form').trigger("reset");
                             $('.loader_hp_').hide('50');
                         }
@@ -588,7 +596,7 @@ const pitchDeck = function () {
                         }
                     },
                     error: function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
+                        //alert("Request failed: " + textStatus);
                     }
                 });
                 //form.submit();
@@ -624,16 +632,17 @@ const pitchDeck = function () {
                     },
                     success: function (response) {
                         if (response.error) {
-                            alert(response.error.details[0].message);
+                            //alert(response.error.details[0].message);
                         }
                         if (response.success == false) {
-                            alert(response.message);
+                            //alert(response.message);
                             $('#add_name').trigger("reset");
                             $('.loader_hp_').hide('50');
                         }
                         if (response.success) {
                             alert('Update Successfully!')
                             document.cookie = "viewerName=" + $('#add_name input[name="view_name"]').val();
+                            document.cookie = "viewerRole=" + $('#add_name input[name="job_title"]').val();
                             $.ajax({
                                 url: site_url + 'conversation-creater',
                                 headers: {
@@ -652,17 +661,17 @@ const pitchDeck = function () {
                                         location.reload();
                                     }
                                     else {
-                                        alert('Something Went Wrong!');
+                                        //alert('Something Went Wrong!');
                                     }
                                 },
                                 error: function (jqXHR, textStatus) {
-                                    alert("Request failed: " + textStatus);
+                                    //alert("Request failed: " + textStatus);
                                 }
                             });
                         }
                     },
                     error: function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
+                        //alert("Request failed: " + textStatus);
                     }
                 });
                 //form.submit();
@@ -685,7 +694,7 @@ const pitchDeck = function () {
                     console.log(response)
                 },
                 error: function (jqXHR, textStatus) {
-                    alert("Request failed: " + textStatus);
+                    //alert("Request failed: " + textStatus);
                 }
             });
         } else {
@@ -758,13 +767,19 @@ function addNote(id) {
     $('#note_icon_button_' + id).toggleClass("glyphicon glyphicon-plus");
 }
 function submitNote(id) {
-    let textValue = $('#note_' + id).val()
+    let textValue = $('#note_' + id).val();
+    let sender_email = $('#user_email').val();
+    let company_name = $('#company_name').val();
+
+    console.log("rippps",sender_email,company_name);
+
     $('#active_info').val(id);
     if (textValue == '') {
         $('#note_' + id).addClass('error-custom');
         $('.error_custom_error_' + id).show();
     } else {
-        let endUserName = getCookie('endUserName');
+        //let endUserName = getCookie('endUserName');
+        let endUserName = getCookie('viewerName');        
         if (endUserName == undefined) {
             $('#add_name_model_simple').modal('show');
             $('.error_custom_error_' + id).hide('100');
@@ -773,6 +788,7 @@ function submitNote(id) {
         else {
             $('.loader_hp_').show();
             let token = getCookie('endUsertoken');
+            //let token = getCookie('viewertoken');
             if (token == undefined || token == '') {
                 token = makeToken();
             }
@@ -787,22 +803,25 @@ function submitNote(id) {
                     pitch_info_id: id,
                     end_user_name: endUserName,
                     text: textValue,
-                    token: token
+                    token: token,
+                    user_email: sender_email,
+                    company_name: company_name
                 },
                 success: function (response) {
                     if (response.success == 'true') {
-                        document.cookie = "endUserName=" + $('#end_user_name_').val();
+                       //document.cookie = "endUserName=" + $('#end_user_name_').val();
+                        document.cookie = "endUserName=" + endUserName;
                         document.cookie = "endUsertoken=" + token;
                         $('#note_' + id).prop('disabled', true);
                         $('#submit_btn_note_' + id).hide();
                         $('.loader_hp_').hide();
                     }
                     else {
-                        alert('Something Went Wrong!');
+                        //alert('Something Went Wrong!');
                     }
                 },
                 error: function (jqXHR, textStatus) {
-                    alert("Request failed: " + textStatus);
+                    //alert("Request failed: " + textStatus);
                 }
             });
         }
@@ -818,6 +837,43 @@ const makeToken = () => {
     return text;
 }
 
+function download_document(type){
+    //console.log(type);    
+    let sender_email = $('#user_email').val();
+    let company_name = $('#company_name').val();
+    let endUserName = getCookie('viewerName');
+    let endUserRole = getCookie('viewerRole');
+    $.ajax({
+        url: site_url + 'download-document',
+        headers: {
+            'Accept': 'application/json',
+        },
+        method: 'POST',
+        dataType: 'json',
+        data: {           
+            end_user_name: endUserName,           
+            user_email: sender_email,
+            company_name: company_name,
+            end_user_role:endUserRole,
+        },
+        success: function (response) {
+            if (response.success == 'true') {
+                //document.cookie = "endUserName=" + $('#end_user_name_').val();
+                // document.cookie = "endUserName=" + endUserName;
+                // document.cookie = "endUsertoken=" + token;
+                // $('#note_' + id).prop('disabled', true);
+                // $('#submit_btn_note_' + id).hide();
+                // $('.loader_hp_').hide();
+            }
+            else {
+                //alert('Something Went Wrong!');
+            }
+        },
+        error: function (jqXHR, textStatus) {
+            //alert("Request failed: " + textStatus);
+        }
+    });
+}
 const getCookie = (name) => {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");

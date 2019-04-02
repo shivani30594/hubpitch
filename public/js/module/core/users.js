@@ -7,17 +7,28 @@ const getCookie = (name) => {
     if (parts.length == 2) return parts.pop().split(";").shift();
 }
 
-const signout = () => {
+const removeCookies = () => {
     var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i];
         var eqPos = cookie.indexOf("=");
         var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        console.log(name);
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-       // document.cookie.clearCookie(name);
+        //console.log(name);
+        document.cookie = "accesstoken"+ "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+       // console.log("dc", document.cookie);
+       // document.cookie.clearCookie(name);   
     }
     
+    window.location.href = "/?logout=true";
+}
+const signout = () => {
+    var res = document.cookie;
+    var multiple = res.split(";");
+    for (var i = 0; i < multiple.length; i++) {
+        var key = multiple[i].split("=");
+        document.cookie = key[0] + " =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
+    }
+    //cookieHelper.setCookie('jwt', '', 0)
     window.location.href = "/?logout=true";
 }
 
@@ -37,10 +48,12 @@ const meUser = () => {
             method: 'POST',
             dataType: 'json',
             success: function (response) {
+                console.log("response",response);
                 if (!response.success) {
-                    return alert(JSON.stringify(response.message));
+                    window.location.href = "/";
+                   // return alert(JSON.stringify(response.message));
                 }
-                console.log("data",response);
+                //console.log("data",response);
                 let data = response.data[0];
                 let name = data.first_name + ' ' + data.last_name;
                 let company_name = data.company_name;
@@ -52,6 +65,7 @@ const meUser = () => {
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
+                window.location.href = "/";
             }
         });
     } else {
@@ -69,6 +83,7 @@ $(function () {
 });
 
 const sendSupport = () => {
+    console.log("sendSupport");
     let userName = getCookie('cuser');
     let accesstoken = getCookie('accesstoken')
     $('.loader_header_').show('20');

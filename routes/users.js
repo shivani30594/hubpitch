@@ -10,7 +10,7 @@ function wrap(func) {
             console.error(error);
             res.send(error);
         }
-    };
+    };    
 }
 /* GENRAL PAGE CALLING METHOD */
 router.get('/', function (req, res, next) {
@@ -26,10 +26,11 @@ router.get('/forgot-password', function (req, res, next) {
 router.get('/reset-password/:id', Controller.authController.checkToken);
 
 /** 
- * 
- *  ====== USER PAGE CALLING METHOD 
  *  
+ *  ====== USER PAGE CALLING METHOD 
+ *    
  */
+
 router.get('/user/dashboard', Controller.dashboardController.dashboard);
 router.get('/user/profile', Controller.usersController.profile);
 router.get('/user/upgrade', Controller.upgradeController.upgrade);
@@ -80,6 +81,7 @@ router.post('/get_conversation_', Controller.enduserController.getConversation)
 router.post('/mark_as_read_conversation_end_user', Controller.enduserController.markAsReadConversation)
 router.post('/check_for_update', Controller.enduserController.checkforUpdate)
 router.post('/note-creater', Controller.enduserController.noteCreater)
+router.post('/download-document', Controller.enduserController.downloadDocument)
 router.post('/get-notes', Controller.enduserController.getNotes)
 router.post('/get-viewer', Controller.enduserController.getViewerFromToken)
 router.post('/end-user-login', Controller.enduserController.viewerLogin)

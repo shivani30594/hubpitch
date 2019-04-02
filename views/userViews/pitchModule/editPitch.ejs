@@ -148,8 +148,7 @@
                                         <div class="preview">
                                             <video width="400" controls>
                                                 <source src="<%= dir_parth+data[i].pitch_attachment_name %>" class="video_here">
-                                                Your
-                                                browser does not support HTML5 video.
+                                                Your browser does not support HTML5 video.
                                             </video>
                                         </div>
                                         <% } %>
@@ -238,7 +237,7 @@
                 </div>
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:resetFormEdit()">Cancel</a>
                     <a href="javascript:void(0)" class="continue_btn">Continue</a>
                 </div>
             </div>
@@ -277,7 +276,7 @@
                 </div>
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:resetFormEdit()">Cancel</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
@@ -290,7 +289,7 @@
                 </div>
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:resetFormEdit()">Cancel</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
@@ -303,7 +302,7 @@
                 </div>
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="jjavascript:resetFormEdit()">Cancel</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
@@ -326,7 +325,7 @@
                 </div>
                 <div class="bottom-btn">
                     <a href="javascript:void(0)" class="a_another_btn">Add Another Page</a>
-                    <a href="javascript:void(0)">Cancel</a>
+                    <a href="javascript:resetFormEdit()">Cancel</a>
                     <a href="javascript:void(0)" class="continue_btn_final">Continue</a>
                 </div>
             </div>
@@ -342,13 +341,13 @@
                                         <br>OR</br>
                                         <button type="button" class="btn btn-default upld-btn">Upload a File</button>
                                     </div>
-                                    <input type="file" name="drop_zone[]" class="drop_zone_input">
+                                    <input type="file" name="drop_zone[]" id="drop_zone_edit" class="drop_zone_input">
                                     <div class="file-value" aria-hidden="true"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="bottom-btn">
-                            <a href="javascript:void(0)">Cancel</a>
+                            <a href="javascript:resetFormEdit()">Cancel</a>
                             <a href="javascript:void(0)" class="continue_btn">Continue</a>
                         </div>
                     </div>
@@ -395,10 +394,10 @@
                                         placeholder="(eg:abc@incipio.com,xyz@ncpo.com,....)" value="" disabled />
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="emails" id="emails" placeholder="(eg:abc@incipio.com,xyz@ncpo.com,....)" />
+                                    <input type="text" class="form-control" name="emails" id="emails" placeholder="Please include additional email recipients"  />
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control" id="email_body" name="email_body"> </textarea>
+                                    <textarea class="form-control" id="email_body" cols="30" rows="10" name="email_body" placeholder="Add a message and/or notes"> </textarea>
                                 </div>
                             </form>
                         </div>
@@ -435,10 +434,11 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
-
+                
             </div>
         </div>
     </div>
+  
     <!-- LOADER  -->
     <div class="loader_hp_">
         <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>

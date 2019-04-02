@@ -69,8 +69,9 @@ a.share-btn{padding: 2px 10px;background-color: #4a4a4a !important;border-radius
 a.share-btn .fa {font-size: 12px;padding-left: 3px;}
 
 .preview {border: 1px solid #ddd;height: 500px;display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-align: center;
--ms-flex-align: center;align-items: center;-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;}
+-ms-flex-align: center;align-items: center;-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;overflow: hidden;}
 .preview  embed.docs_priview_e {height: 450px;}
+.preview video {height: 500px;}
 #name-window .modal-header .close { color: #000; position: inherit;}
 #name-window .modal-header { color: #337ab7; }
 
@@ -195,6 +196,23 @@ button.full_screen_ i {margin-left: 7px;}
 .err-404-row  p{text-shadow: rgba(0,0,0,0.16) 1px 1px 1px;margin-bottom: 30px;}
 
 .dark-modal .modal-backdrop.in {filter: alpha(opacity=50);opacity: .9;}
+.unread_count_wapper {
+    display: flex;
+    justify-content: center;
+}
+.preview-custome-wraper{position: relative;}
+.preview-custome-wraper .download-btn{position: absolute;
+    right: 108px;
+    top: 40px;
+    opacity: 0;
+    font-size: 15px;}
+.preview-custome-wraper .download-btn .fa{color: #ffffff;}
+.preview-custome-wraper:hover .download-btn{opacity: 1;}
+
+
+
+
+
 @media (max-width: 991px){
   .gallery-wrap .edit-wrap .slider-text {padding: 0;}
 }

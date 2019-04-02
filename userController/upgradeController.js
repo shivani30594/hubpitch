@@ -32,33 +32,63 @@ class upgradeController {
                 }
             });
             let sql = 'UPDATE hp_users SET activated="no"  WHERE user_id="' + userid + '"';
-            db.query(sql, function (error,
-                results,
+            db.query(sql, function (error1,
+                results1,
                 fields) {
-                if (error) {
-                    console.log(error,
-                        results,
+                if (error1) {
+                    console.log(error1,
+                        results1,
                         fields);
                     console.log(sql)
                     res.send({ success: false, message: "SQL ISSUES IN USERS" });
                 }
-                if (results) {
-                    // let sql1 = 'REPLACE into hp_users_info SET user_id="' + userid + '", company_name = "' + req.body.companyName + '", notification_1 ="' + req.body.allow_notification + '", notification_2 = "' + req.body.allow_messaging + '", notification_3 = "' + req.body.allow_share + '"';
-                    // db.query(sql1, function (error1,
-                    //     results1,
-                    //     fields1) {
-                    //     if (error1) {
-                    //         console.log(error1,
-                    //             results1,
-                    //             fields1);
-                    //         console.log(sql1)
-                    //         res.send({ success: false, message: "SQL ISSUES IN USERS" });
-                    //     }
-                    //     if (results1) {
-                    //         res.send({ success: true, message: "Profile Updated Successfully" });
-                    //     }
-                    // });
-                 res.send({ success: true, message: "Plan Deactivated Successfully" });
+                if (results1) {
+                    var smtpTransport = nodemailer.createTransport({
+                        service: process.env.SERVICE,
+                        auth: {
+                            user: process.env.HPEMAILUSER,
+                            pass: process.env.PASSWORD
+                        }
+                    });                   
+                  console.log("user",auth);
+                    db.query('SELECT * from hp_users  WHERE hp_users.user_id = ?', userid, function (error, results, fields) {
+                        if (results.length) {
+                            console.log(results[0].first_name);
+                            // -------------------------------mail sending-----------------------------
+                            var tomail = "rip@narola.email";
+                            var share = '';
+                            var newEmail = '';
+                            var emailLog = {};
+                            var subject = "Cancellation Confirmation";
+                            // setup e-mail data with unicode symbols
+                            // Email Body Builder 
+                            var newEmail = `<div>We have received your request for a cancellation of your subscription to hubPitch. Your request has been processed. No further charges will be posted. You can keep this email as a receipt of your cancellation.&nbsp;<br /><br />We are sorry to see you go and hope that you will consider hubPitch services in the future.&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>If you change your mind, you can login to your original account and re-activate your subscription here: <a href="http://www.bundle-hubpitch.com" target="_blank" rel="noopener">http://www.bundle-hubpitch.com</a></div>
+                                <div>&nbsp;</div>
+                                <div>-The hubPitch Team</div>
+                                <div><a href="http://www.hubpitch.com" target="_blank" rel="noopener">www.hubpitch.com</a>&nbsp;</div>`
+                            var mailOptions = {
+                                from: process.env.HPEMAILUSER, // sender address
+                                to: tomail, // list of receivers
+                                subject: subject, // Subject line
+                                html: newEmail
+                            };
+                            smtpTransport.sendMail(mailOptions, function (err, info) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                   res.send({ success: true, message: 'Mail send succesfully' });
+                                    
+                                }
+                            })
+                            //res.send({ success: "true", data: results });
+                        } else {
+                            console.log(error, results, fields);
+                        }
+                    });
+
+                    res.send({ success: true, message: "Plan Deactivated Successfully" });
                 }
                
             });
@@ -267,7 +297,7 @@ class upgradeController {
                                                 //         res.send({ success: true, message: "Profile Updated Successfully" });
                                                 //     }
                                                 // });
-                                               // res.send({ success: true, message: "Plan Deactivated Successfully" });
+                                                // res.send({ success: true, message: "Plan Deactivated Successfully" });
                                                 res.render('userViews/dashboardModule/index', { title: 'User Dashboard || hubPitch', documents_viewer: 'false' });
                                             }
 
@@ -336,18 +366,55 @@ class upgradeController {
         });
         // console.log(array[2],userid);
         //create a customer 
+        var customer_id="";
         stripe.customers.create({
             email: req.body.stripeEmail, // customer email, which user need to enter while making payment
             source: req.body.stripeToken // token for the given card 
-        })
-            .then(customer =>
+        }).then(customer =>               
                 stripe.charges.create({ // charge the customer
                     amount,
                     description: "hubPitch Membership",
                     currency: "usd",
                     customer: customer.id
                 }))
+
             .then(charge => {
+                console.log("Charge",charge);
+                console.log("Charge", charge.customer);
+
+                                        // stripe.invoices.create({
+                                        //     customer: charge.customer
+                                        // }, function (err, invoice) {
+                                        //     console.log("invoice",invoice);
+                                        //     // asynchronously called
+                                        // });
+                // stripe.invoices.sendInvoice("in_1E7gPGI4oG97uKrjhrcLrlre", function (err, invoice) {
+                //     // asynchronously called
+                // });
+                stripe.plans.list(
+                    { limit: 3 },
+                    function (err, plan) {
+                        console.log("products",plan);
+                    }
+                );
+
+                stripe.subscriptions.create({
+                    customer: charge.customer,
+                    items: [{ plan:'plan_EdxfwzAt0F7sfl'}],
+                    billing: 'send_invoice',
+                    days_until_due: 30,
+                },function (err, subscription) {
+                        console.log(err);
+                        console.log(subscription);
+                        if (err) {
+                           // res.send({ success: false, message: err });
+                        }
+                        else{
+                           // res.send({ success: true, message: 'Success'});
+                        }
+                        // asynchronously called
+                    });
+                    
                 db.query('UPDATE hp_users SET is_payment="yes",	plan_id="' + array[2] + '",	transaction_id="' + charge.id + '" WHERE user_id="' + userid + '"', function (error,
                     results,
                     fields) {
@@ -399,6 +466,8 @@ class upgradeController {
                                         res.send({ success: "false", message: "Something went wrong" });
                                     }
                                     if (results2) {
+                                        // var stripe = require("stripe")("sk_test_1lBmrGdD8351UCKd8BIcHbZh");
+
                                         res.render('userViews/dashboardModule/index', { title: 'User Dashboard || hubPitch', documents_viewer: 'false' });
                                     }
                                 });

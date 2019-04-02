@@ -15,13 +15,21 @@ const newPitch = function () {
         $('#continue_btn_main').on("click", function () {
             if ($('#c-name').val() == '') {
                 alert('Company Name Is Required!');
-            } else {
+                ///location.reload();
+            } 
+            else if($('#drop_zone').val() == ''){
+                alert('File Is Required!');
+                //location.reload();
+            }
+            else {
                 $('.active_one').hide();
                 $('#main-box').removeClass('active_one');
                 $('.active_one').hide();
                 $('div').removeClass('active_one');
                 $(".current_preview").show('200');
-            }
+            }           
+           
+            
         });
 
         $(document).on("click", '.a_another_btn', function () {
@@ -288,6 +296,7 @@ const newPitch = function () {
                 formData.append('pitch_files', obj);
             }
         })
+        
         ad_text_array.forEach((obj) => {
             if (obj) {
                 formData.append('pitch_text', obj);
@@ -447,6 +456,7 @@ function checkEmails() {
 
 function checkFileTypeWithPlan(file) {
     let plan_type = $('.plan_').val();
+    console.log("Plan",plan_type);
     // inArray(jQuery.trim(file.split('.').pop().toLowerCase()), fileExtensionImage)
     // jQuery.trim(file.split('.').pop().toLowerCase()), fileExtensionVideo
     let plan_support = JSON.parse(plan_type);
@@ -515,7 +525,7 @@ function discardPitch() {
         })
     }
 }
-function resetForm() {
+function resetFormEdit() {
     var x = confirm("Are You Sure You Want To Discard This Pitch?");
     if (x) {
         $('#add_pitch').trigger("reset");

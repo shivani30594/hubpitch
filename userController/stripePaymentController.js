@@ -109,7 +109,7 @@ class stripePaymentController {
                             
                             if (results1)
                             {
-                                console.log('RIP', results1);
+                                //console.log('RIP', results1);
                                 var pitch_limit = results1[0].pitch_limit;
                                
                                 var date = new Date();
@@ -122,9 +122,10 @@ class stripePaymentController {
                                 }
                                 let hp_users_pitch_limit_data = {
                                     user_id: array[1],
-                                    remaining_pitch: pitch_limit ,
+                                    remaining_pitch: pitch_limit,
                                     end_date: moment(expire).format("YYYY-MM-DD HH:mm:ss")                                 
                                 }
+                                
                                 
                                 db.query("INSERT INTO hp_users_pitch_limit SET?", hp_users_pitch_limit_data, function (
                                     error2,
@@ -229,7 +230,7 @@ class stripePaymentController {
                     // setup e-mail data with unicode symbols
                     var mailOptions = {
                         from: process.env.HPEMAILUSER, // sender address
-                        to: tomail, // list of receivers
+                        to: tomail, // list of receivers/*9
                         subject: "Random password for login", // Subject line
                         html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + process.env.SITE_URL + 'reset-password/' + results1[0].token_value + "> Click Here</a>"
                     };

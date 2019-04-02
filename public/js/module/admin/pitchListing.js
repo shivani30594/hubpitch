@@ -62,8 +62,8 @@ function myActivate(id){
         txt = "You pressed Cancel!";
     }
 }
-function myDeactive(id) {
 
+function myDeactive(id) {
  
     var r = confirm("Are you sure you want to deactivate the User!");
     if (r == true) {
@@ -102,9 +102,9 @@ function myDeactive(id) {
         });
     } else {
         txt = "You pressed Cancel!";
-    }
-    
+    }    
 }
+
 function ConfirmDeleteUser(id) {    
     var x = confirm("Are you sure you want to delete?");
     if (x) {

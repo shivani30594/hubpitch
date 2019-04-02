@@ -28,7 +28,7 @@
 
     <link rel="stylesheet" href="/stylesheets/slider-page.css">
     <link rel="heet" href="/stylesheets/slick.css">
-    <link rel="stylesheet" href="/stylesheets/slick-theme.css">6790
+    <link rel="stylesheet" href="/stylesheets/slick-theme.css">
     <link rel="shortcut icon" type="image/x-icon" href="https://static1.squarespace.com/static/5aecd8b436099b8b647ad307/t/5b74e630aa4a9903e4cca041/favicon.ico"
     />
     <script src="/js/libraries/tinymce/tinymce.min.js"></script>
@@ -154,8 +154,7 @@
             console.log('next');
             currentId = instance.getCurrentId();
             console.log("current id", currentId);
-            instance.gotoPage(currentId + 1);
-             
+            instance.gotoPage(currentId + 1);             
             console.log('instance', instance);
             return false;
         });
@@ -165,7 +164,6 @@
             /** getZoom API
                 *  structure : getZoom() **/
             var currentZoom = instance.getZoom();
-
             /** setZoom API
              *  structure : setZoom(zoomVal) **/
             instance.setZoom(currentZoom + 0.5);
@@ -211,7 +209,6 @@
         }
     </script>
 </head>
-
 <body>
     <div class="container">
         <input type="hidden" id="pitch_token" value="<%= pitch_token %>">
@@ -221,11 +218,7 @@
                 <strong>Email Sent Successfully</strong>
                 Thank You For Sharing Pitch.
             </div>
-            <div class="row">
-                <div class="unread_count_wapper">
-                    <button class="unread_count" onclick="openChatModal()"></button>
-                </div>
-            </div>
+           
             <div class="gallery-wrap">
                 <input type="hidden" class="pitch_analytics" value="<%= pitch_analytics %>">
                 <div class="single-item">
@@ -256,9 +249,12 @@
                                                         </div>
                                                         <% } %>
                                                             <% if (data[i].pitch_attachment_type == 'application') { %>
-                                                                <input type="hidden" value="0" class="sliderViewer">
-                                                                <div class="preview">
-                                                                    <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e" width="500" height="600" />
+                                                                <input type="hidden" value="0" class="sliderViewer">                                                               
+                                                                <div class="preview-custome-wraper">
+                                                                    <a href="<%= dir_parth+data[i].pitch_attachment_name %>" onclick="download_document('<%= data[i].pitch_attachment_type %>')" download class="download-btn"> <i class="fa fa-download" aria-hidden="true"></i> </a>  
+                                                                     <div class="preview">
+                                                                            <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e" width="500" height="600" />
+                                                                     </div>
                                                                 </div>
                                                                 <% } %>
                                                                     <% if(data[i].pitch_attachment_type == 'docx') { %>
@@ -343,7 +339,7 @@
                                                 <div class="notesection_<%= data[i].pitch_info_id %> note_section" style="display: none">
                                                     <form name="add_note" method="post" class="add-note" id="add_note_form_<%= data[i].pitch_info_id %>">
                                                         <div class="input-group">
-                                                            <textarea rows="4" cols="50" class="form-control" id="note_<%= data[i].pitch_info_id %>" name="note_<%= data[i].pitch_info_id %>"></textarea>
+                                                            <textarea rows="4" cols="50" class="form-control" style="color:#080808;" id="note_<%= data[i].pitch_info_id %>" name="note_<%= data[i].pitch_info_id %>"></textarea>
                                                             <label class="error_custom error_custom_error_<%= data[i].pitch_info_id %>" style="display: none">
                                                                 Please Note Text Are Required
                                                             </label>
@@ -378,10 +374,17 @@
                 </div>
             </div>
             <a href="javascript:void(0)" class="send-message" id="conversation_" style="display:block"> Send
-                <%= user_name %> a Message </a>
+                <%= user_name %> a Message</a>
+
+                <div class="row">
+                    <div class="unread_count_wapper">
+                        <button class="unread_count" onclick="openChatModal()"></button>
+                    </div>
+                </div>
             <!-- <% if(plan.user_to_customer_messaging == 'true') { %> -->
                 
                 <!-- <% } %> -->
+                    <input type="hidden" id="sender_name_value" name="sender_name_value" value="<%= user_name %>">
                     <input type="hidden" id="user_token" value="<%= user_token %>">
                     <input type="hidden" id="user_email" value="<%= data[0].email %>">
                     <input type="hidden" id="company_name" value="<%= data[0].company_name %>">
@@ -488,18 +491,18 @@
                             <div class="modal-body">
                                 <form class="share_pitch_form" name="share_pitch">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="email_id">Email Address:</label>
                                                 <input type="text" class="form-control" name="email_id" id="email_id">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <!-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="sender_name">Your Name:</label>
                                                 <input type="text" name="sender_name" class="form-control" id="sender_name">
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="sender_name">Your Message:</label>
@@ -552,7 +555,7 @@
                     <!-- Modal -->
                     <div class="modal fade" id="add_name_model_simple" role="dialog">
                         <div class="modal-dialog">
-                            <!-- Modal content-->
+                           
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -602,7 +605,7 @@
                                             <input type="text" class="form-control" id="view_name" name="view_name" placeholder="Enter Your Name">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="job_title" name="job_title" placeholder="Enter Your Job Title">
+                                            <input type="text" class="form-control" id="job_title" name="job_title" placeholder="Enter Your Role / Title">
                                         </div>
                                         <button type="submit" name="submit" value="submit" class="btn btn-default"> View the Material </button>
                                     </form>

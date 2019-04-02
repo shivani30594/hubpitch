@@ -30,6 +30,7 @@ class usersController {
 
     // User Info
     static async me(req, res, next) {
+        //console.clear();
         var token = req.headers['access-token'];
         let userid = '';
         if (!token) return res.status(401).send({ success: false, message: 'No token provided.' });

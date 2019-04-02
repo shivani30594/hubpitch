@@ -12,9 +12,16 @@ const pitchEdit = function () {
         $('#main-box').addClass('active_one');
 
         $('#continue_btn_main').on("click", function () {
+            console.log("Drop ZONE",$('#drop_zone_edit').val());
             if ($('#c-name').val() == '') {
                 Swal('Validation Error', 'Company Name Is Required!', 'error')
-            } else {
+            } 
+            else if ($('#drop_zone_edit').val() == '') {
+                Swal('Validation Error', 'File Is Required!', 'error')
+                alert('File Is Required!');
+                //location.reload();
+            }
+            else {
                 $('.active_one').hide();
                 $('#main-box').removeClass('active_one');
                 $('.active_one').hide();
@@ -33,13 +40,23 @@ const pitchEdit = function () {
         })
 
         $(document).on("click", '.continue_btn', function () {
-            $('.active_one').hide();
-            $('div').removeClass('active_one');
-            $(".current_preview").show('200');
+
+            if ($('#drop_zone_edit').val() == '') {               
+                alert('File Is Required!');
+                //location.reload();
+            }
+            else
+            {
+                $('.active_one').hide();
+                $('div').removeClass('active_one');
+                $(".current_preview").show('200');
+            }
         })
 
     }
     const handleDropZone = () => {
+        //$('#email_body').val("Add a message and/or notes");
+        //$('#viewers_emails').modal('show');
         var count = 1;
         $(document).on("change", '.drop_zone_input', function () {
             var $element = $(this);
@@ -47,6 +64,8 @@ const pitchEdit = function () {
             var $value = $(this).parent('.file').find('.file-value');
             // Get the value of the input
             var val = $input.val();
+           // let checkFileTypeWithPlanM = checkFileTypeWithPlan(val);
+            //if (checkFileTypeWithPlanM == true) {
             // Normalize strings    
             val = val.replace(/\\/g, "/");
             // Remove the path
@@ -199,12 +218,16 @@ const pitchEdit = function () {
                     return false;
                 });
             }
-            else {
+            else {     
+                           
                 alert('FILE TYPE NOT SUPPORTED');
-            }
-
+                $('#add_pitch').trigger("reset");   
+                location.reload();            
+            }          
+        
         })
     }
+  
     const handleContinue_final = () => {
         $(document).on("click", '.continue_btn_final', function () {
             let $this = '';
@@ -230,7 +253,7 @@ const pitchEdit = function () {
                     "save table contextmenu directionality emoticons template paste textcolor"
                 ],
                 toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent | forecolor backcolor emoticons",
-        
+                
                 style_formats: [
                     { title: 'Bold text', inline: 'b' },
                     { title: 'Red text', inline: 'span', styles: { color: '#ff0000' } },
@@ -278,7 +301,7 @@ const pitchEdit = function () {
                 formData.append('pitch_text', obj);
             }
         })
-        console.log(formData);
+        $('.loader_hp_').show('50');
         $.ajax({
             url: site_url + 'add_new_file',
             headers: {
@@ -290,17 +313,21 @@ const pitchEdit = function () {
             method: 'POST',
             data: formData,
             success: function (response) {
+                console.log("response",response);
                 if (!response.success) {
                     return alert(JSON.stringify(response.message));
                 }
-                $('#add_new_pitch_form').hide('100');
-                let cName = $('#c-name').val();
-                $('#final_section').show('100');
-                $('#final_name').val(cName);
-                $('#pitch_id').val(response.pitch);
+                //_____Form will hide till email box display________________________
+                //$('#add_new_pitch_form').hide('100');
+
+                //let cName = $('#c-name').val();
+                //$('#final_section').show('100');
+                //$('#final_name').val(cName);
+                //$('#pitch_id').val(response.pitch);
                 //alert('Your Pages Are Added Please Reload This Page To See The Changes');
                 if (response.viewers) {
-                    let emailAdressInput = '';
+                   
+                    let emailAdressInput = '';                    
                     response.viewers.forEach((obj) => {
                         if (emailAdressInput === '') {
                             emailAdressInput = obj.email_address;
@@ -309,9 +336,12 @@ const pitchEdit = function () {
                         }
                     })
                     $('#pre_emails').val(emailAdressInput);
-                    $('#email_body').val(response.viewers[0].email_body);
+                    //$('#email_body').val(response.viewers[0].email_body);
+                    $('#email_body').val("Add a message and/or notes");
+                    $('.loader_hp_').hide('50');
                     $('#viewers_emails').modal('show');
                 }
+               
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
@@ -334,7 +364,13 @@ function checkEmail(email) {
     var regExp = /(^[a-z]([a-z_\.]*)@([a-z_\.]*)([.][a-z]{3})$)|(^[a-z]([a-z_\.]*)@([a-z_\.]*)(\.[a-z]{3})(\.[a-z]{2})*$)/i;
     return regExp.test(email);
 }
-
+function resetFormEdit() {
+    var x = confirm("Are You Sure You Want To Discard This Pitch?");
+    if (x) {
+        $('#add_pitch').trigger("reset");
+        location.reload();
+    }
+}
 function checkEmails() {
     var emails = document.getElementById("emails").value;
     var pre_emails = document.getElementById("pre_emails").value;
@@ -366,6 +402,7 @@ function checkEmails() {
                 $('#viewers_emails').modal('hide');
                 if (response.success == 'true') {
                     alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
+
                 }
             },
             error: function (jqXHR, textStatus) {
@@ -386,6 +423,8 @@ function checkEmails() {
             }
         }
         if (errorFlag === 0) {
+            tinyMCE.triggerSave();
+            $('.loader_hp_').show('50');
             console.log('DO THE API CALL');
             let accesstoken = getCookie('accesstoken');
             $.ajax({
@@ -407,7 +446,9 @@ function checkEmails() {
                     if (!response.success) {
                         return alert(JSON.stringify(response.message));
                     }
+                    $('.loader_hp_').hide('50');
                     alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
+                    location.reload();
                 },
                 error: function (jqXHR, textStatus) {
                     alert("Request failed: " + textStatus);
@@ -481,10 +522,12 @@ const editTextCall = () => {
                     $('#edit_text_modal').modal('hide');
                     if (response.success == true) {
                         alert("Text Contains Are Updated Please Reload The Page To See Changes");
+                        location.reload();
                     }
                 },
                 error: function (jqXHR, textStatus) {
                     alert("Request failed: " + textStatus);
+                    location.reload();
                 }
             });
         }
@@ -501,3 +544,33 @@ $(document).on("click", '.btn-prev', function () {
 $(document).on("click", '.btn-next', function () {
     tinymce.execCommand('mceRemoveEditor', true, 'pitch_text');
 });
+
+function checkFileTypeWithPlan(file) {
+    let plan_type = $('.plan_').val();
+    // inArray(jQuery.trim(file.split('.').pop().toLowerCase()), fileExtensionImage)
+    // jQuery.trim(file.split('.').pop().toLowerCase()), fileExtensionVideo
+    let plan_support = JSON.parse(plan_type);
+    console.log(plan_support.img_support);
+    file_type = jQuery.trim(file.split('.').pop().toLowerCase())
+    if (file_type == 'jpg' || file_type == 'jpeg' || file_type == 'png' || file_type == 'bmp') {
+        return (plan_support.img_support == 'true') ? true : false
+    }
+    if (file_type == 'pdf') {
+        return (plan_support.pdf == 'true') ? true : false
+    }
+    if (file_type == 'txt') {
+        return (plan_support.text_file == 'true') ? true : false
+    }
+    if (file_type == 'docx') {
+        return (plan_support.word_upload == 'true') ? true : false
+    }
+    if (file_type == 'xlsx') {
+        return (plan_support.excel_upload == 'true') ? true : false
+    }
+    if (file_type == 'pptx') {
+        return (plan_support.powerpoint_upload == 'true') ? true : false
+    }
+    if (file_type == 'mp4' || file_type == 'mkv' || file_type == 'mov' || file_type == 'mpeg') {
+        return (plan_support.video == 'true') ? true : false
+    }
+}

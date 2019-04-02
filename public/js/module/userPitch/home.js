@@ -70,14 +70,14 @@ function openConversation(id) {
                 if (response.success == true) {
                     $('#conversation_box').modal('show');
                     let data = response.data;  
-                    console.log(data);                   
+                    //console.log(data);                   
                     let dataHTML = '';
                     data.forEach((obj) => {  
-                        console.log("ripraj"+obj.msg);                                             
+                        //console.log("riprajGFHGJNHGBMBNM"+obj.msg);                                             
                         dataHTML = ''
                         if (obj.msg == "true") {
                             if (!obj.messages){
-                                dataHTML = `<a href="#">You have empty box!!!</a>`;
+                                dataHTML = `<a href="#">Your inbox is empty.</a>`;
                                 $('#conversation_list').append(dataHTML); 
                             }
                             else
@@ -88,9 +88,8 @@ function openConversation(id) {
                         }
                         else
                         {
-                            dataHTML = `You have unread messages. In order to read/reply to messages you will need to upgrade your subscription.<br><a href="${site_url}user/upgrade" style="text-decoration: underline !important;">Click HERE to Upgrade</a>`;
-                            $('#conversation_list').append(dataHTML); 
-
+                            dataHTML = `<a href="${site_url}user/upgrade" style="text-decoration: underline !important;">You must upgrade your account to Premier Subscription in order to read and respond to the message.</a>`;
+                            $('#conversation_list').append(dataHTML);
                           
                                 let accesstoken = getCookie('accesstoken');
                                 $.ajax({
@@ -112,8 +111,8 @@ function openConversation(id) {
                                         alert("Request failed: " + textStatus);
                                     }
                                 });
+                            BREAK
                             
-
                         }
                     })
                 } 
@@ -143,9 +142,7 @@ function openChat(id, name) {
                 $('#message_body_p').html(' ');
                 if (response.success == 'true') {
                     $('#conversation_box').modal('hide');
-                    $('#conversation_modal').modal('show')
-
-                   
+                    $('#conversation_modal').modal('show');                 
 
                     let data = response.data;
                     let dataHTML = '';

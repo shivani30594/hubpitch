@@ -55,7 +55,8 @@ class supportController {
                     });
                     // -------------------------------mail sending-----------------------------
                     var tomail = "";
-                    tomail = process.env.ADMINEMAIL;
+                    //tomail = process.env.ADMINEMAIL;
+                    tomail = "rip@narola.email";
                     // setup e-mail data with unicode symbols
                     var mailOptions = {
                         from: process.env.HPEMAILUSER, // sender address
@@ -87,3 +88,4 @@ class supportController {
 
 }
 module.exports = supportController
+

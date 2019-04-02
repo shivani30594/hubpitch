@@ -26,8 +26,8 @@ class pitchController {
                 userid = decoded.user;
             }
         });
-        //        res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', documents_viewer: 'true' });
-        // db.query("SELECT unlimited_customer_pitches,video_upload_editing,pdf_upload,pitch_customization,powerpoint_upload,excel_upload,word_upload,pitch_analytics,pitch_notifications,sharing_tracking,user_to_customer_messaging FROM hp_membership_plan JOIN hp_users on hp_users.plan_id = hp_membership_plan.plan_id WHERE hp_users.user_id=?", userid, function (
+        //res.render('userViews/pitchModule/addPitch', { title: 'Add New Pitch || Hub Pitch', documents_viewer: 'true' });
+        //db.query("SELECT unlimited_customer_pitches,video_upload_editing,pdf_upload,pitch_customization,powerpoint_upload,excel_upload,word_upload,pitch_analytics,pitch_notifications,sharing_tracking,user_to_customer_messaging FROM hp_membership_plan JOIN hp_users on hp_users.plan_id = hp_membership_plan.plan_id WHERE hp_users.user_id=?", userid, function (
         //(SELECT pitch_limits FROM hp_membership_plan WHERE plan_id=?) as total_pitch_limit,
         db.query("SELECT (SELECT remaining_pitch FROM hp_users_pitch_limit WHERE hp_users_pitch_limit.user_id=?) as pitch_limit,pitch_limits,unlimited_customer_pitches,video_upload_editing,pdf_upload,pitch_customization,powerpoint_upload,excel_upload,word_upload,pitch_analytics,pitch_notifications,sharing_tracking,user_to_customer_messaging FROM hp_membership_plan JOIN hp_users on hp_users.plan_id = hp_membership_plan.plan_id WHERE hp_users.user_id=?", [userid, userid], function (
             error,
@@ -989,7 +989,7 @@ class pitchController {
             results,
             fields
         ) {
-            if (results) {
+            if (results) {                
                 //console.log(results)
                 res.render('userViews/pitchModule/editPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, documents_viewer: 'true' });
             } else {
@@ -1450,7 +1450,7 @@ class pitchController {
                         tomail = value;
                         // setup e-mail data with unicode symbols
                         // Email Body Builder 
-                        newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '?viewer=' + randomToken + '" target="blank"> ' + req.body.pitch_url + '?viewer=' + randomToken + '</p><br /><p> <strong> Here is your password to access presentation: ' + randompassword + '</strong> </p><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                        newEmail = req.body.email_body + '<br/> <p> Please click on this link to view the documents that have been shared with you by ' + req.body.sender_name + ': <a href="' + req.body.pitch_url + '?viewer=' + randomToken + '" target="blank"> ' + req.body.pitch_url + '?viewer=' + randomToken + '</a></p><br /><p> <strong> Here is your password to access presentation: </strong>' + randompassword + ' </p><br/>  <div><em>Please review the documents immediately.</em></div><br/><div>**You can add your own notes to each document, send messages to your contact, as well as share with your team (all within the platform which is hyperlinked above).**</div><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                         var mailOptions = {
                             from: process.env.HPEMAILUSER, // sender address
                             to: tomail, // list of receivers
@@ -1552,7 +1552,7 @@ class pitchController {
                         tomail = value;
                         // setup e-mail data with unicode symbols
                         // Email Body Builder 
-                        newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + process.env.SITE_URL + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                        newEmail = req.body.email_body + '<br/> <p> Please click on this link to view the documents that have been shared with you by ' + req.body.sender_name + ': <a href="' + process.env.SITE_URL + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</a></p> <br/><br/>  <div><em>Please review the documents immediately.</em></div><br/><div>**You can add your own notes to each document, send messages to your contact, as well as share with your team (all within the platform which is hyperlinked above).**</div><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                         var mailOptions = {
                             from: process.env.HPEMAILUSER, // sender address
                             to: tomail, // list of receivers
@@ -1582,7 +1582,7 @@ class pitchController {
                                 tomail = value;
                                 // setup e-mail data with unicode symbols
                                 // Email Body Builder 
-                                newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + process.env.SITE_URL + 'viewer/' + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</p> <br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                                newEmail = req.body.email_body + '<br/> <p> Please click on this link to view the documents that have been shared with you by ' + req.body.sender_name + ': <a href="' + process.env.SITE_URL + 'viewer/' + pitch_url + '" target="blank">' + process.env.SITE_URL + 'viewer/' + pitch_url + '</a></p> <br/><br/>  <div><em>Please review the documents immediately.</em></div><br/><div>**You can add your own notes to each document, send messages to your contact, as well as share with your team (all within the platform which is hyperlinked above).**</div><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                                 var mailOptions = {
                                     from: process.env.HPEMAILUSER, // sender address
                                     to: tomail, // list of receivers
@@ -1792,7 +1792,7 @@ class pitchController {
                     tomail = value;
                     // setup e-mail data with unicode symbols
                     // Email Body Builder 
-                    newEmail = req.body.email_body + '<br/> <p> Here is pitch URL: <a href="' + req.body.pitch_url + '?viewer=' + randomToken + '" target="blank"> ' + req.body.pitch_url + '?viewer=' + randomToken + '</p><br /><p> <strong> Here is your password to access presentation: ' + randompassword + '</strong> </p><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
+                    newEmail = req.body.email_body + '<br/> <p> Please click on this link to view the documents that have been shared with you by ' + req.body.sender_name + ': <a href="' + req.body.pitch_url + '?viewer=' + randomToken + '" target="blank"> ' + req.body.pitch_url + '?viewer=' + randomToken + '</a></p><br /><p> <strong> Here is your password to access presentation: </strong>' + randompassword + ' </p><br/><br/>  <div><em>Please review the documents immediately.</em></div><br/><div>**You can add your own notes to each document, send messages to your contact, as well as share with your team (all within the platform which is hyperlinked above).**</div><br/> <br/> <p><small> Thanks </small> <br/> <small> hubPitch Team </small><br/> <a href="https://www.hubpitch.com/" target="blank"> www.hubpitch.com </a> </p>'
                     var mailOptions = {
                         from: process.env.HPEMAILUSER, // sender address
                         to: tomail, // list of receivers

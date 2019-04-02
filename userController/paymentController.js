@@ -4,7 +4,6 @@ const Paypal = require('paypal-express-checkout');
 class paymentController {
     static async paymentPayPal(req, res, next) {
         var paypal = Paypal.init('username', 'password', 'signature', 'http://www.example.com/return', 'http://www.example.com/cancel', true);
-
         // Localization (OPTIONAL): https://developer.paypal.com/docs/classic/api/locale_codes/
         // paypal.locale = 'SK';
         // or

@@ -1,5 +1,17 @@
+const getCookie = (name) => {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+}
 const Login = function () {
-    const handleSignUp = () => { 
+    const handleSignUp = () => {
+        planid = getCookie('planid');
+
+        if (planid == undefined) {
+             alert('Please First Choose Your Plan');
+             window.location = '/'
+        }     
+
         $('.loader_hp_').hide('50');
         $("#sign_up_form").validate({
             errorElement: 'span', //default input error message container
@@ -42,10 +54,41 @@ const Login = function () {
                             $ ('.loader_hp_').hide('50');
                         }
                         if (response.success) {
-                            document.cookie = "newtoken=" + response.token;
-                            $('.loader_hp_').hide('50');
-                            alert("You will be redirected to a new page in 5 seconds");
-                            setTimeout(window.location = "/payment", 5000);
+                            
+                           document.cookie = "newtoken=" + response.token;                      
+                         
+//**********************************************For Payement Description Based on their Plan choosen***********************************************//
+                            
+                             id = getCookie('planid');                                                       
+                             encodedDataD = response.token + ',' + id                            
+                             encodedData = window.btoa(encodedDataD); // encode a string                            
+                             $.ajax({
+                                url: '/sign_up_free/' + encodedData,
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {
+                                    email: $('#sign_in input[name="email"]').val(),
+                                    password: $('#sign_in input[name="password"]').val()
+                                },
+                                success: function (response) {
+                                    if (!response.success) {
+                                        return alert(JSON.stringify(response.message));
+                                    }
+                                    if (response.success == 'true') {
+                                       // $('.loader_hp_').hide('50');
+                                        alert("You will be redirected to a new page in 5 seconds"); 
+                                        window.location = '/welcome'
+                                    } 
+                                    else 
+                                    {
+                                        alert('Something Went Wrong!')
+                                    }
+                                },
+                                error: function (jqXHR, textStatus) {
+                                    alert("Request failed: " + textStatus);
+                                }
+                            });
+                        
                         }
                     },
                     error: function (jqXHR, textStatus) {
@@ -165,7 +208,8 @@ const Login = function () {
                             document.cookie = "accesstoken=" + response.accesstoken;                            
                             window.location.href = "/" + response.url;
                         }
-                        else{
+                        else
+                        {
                             document.cookie = "accesstoken=" + response.accesstoken;                            
                             window.location.href = "/" + response.url;
                             //setTimeout(window.location = "/payment", 5000);
@@ -174,8 +218,7 @@ const Login = function () {
                         // document.cookie = "newtoken=" + response.token;
                         // $('.loader_hp_').hide('50');
                         // alert("You will be redirected to a new page in 5 seconds");
-                        // setTimeout(window.location = "/payment", 5000);
-
+                        // setTimeout(window.location = "/payment", 5000);                  
 
 
                     },

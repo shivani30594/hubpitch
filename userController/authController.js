@@ -175,8 +175,7 @@ class authController {
                   accesstoken: authToken
                 });
               }
-              else{             
-               
+              else{                
                 res.send({
                   success: true,
                   message: "Successfully signin.",

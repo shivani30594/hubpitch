@@ -13,9 +13,10 @@ const newPitch = function () {
         $('#main-box').addClass('active_one');
 
         $('#continue_btn_main').on("click", function () {
+            // str.name.value.trim() == ""
             if ($('#c-name').val().trim() == '') {
                 alert('Company Name Is Required!');
-                //location.reload();
+                ///location.reload();
             }
             else if ($('#drop_zone').val() == '') {
                 alert('File Is Required!');
@@ -117,7 +118,6 @@ const newPitch = function () {
                                  *  structure : destory(callback) **/
                                 instance.destroy();
                             }
-
                             if (fileType === 'docx') {
                                 if (!docxJS) {
                                     docxJS = new DocxJS();
@@ -140,7 +140,6 @@ const newPitch = function () {
                                     pdfJS = new PdfJS();
                                 }
                                 instance = pdfJS;
-
                                 instance.setCMapUrl('cmaps/');
                             }
 
@@ -220,6 +219,7 @@ const newPitch = function () {
     }
     const handleContinue_final = () => {
         $(document).on("click", '.continue_btn_final', function () {
+            alert("rip");
 
             let $this = '';
             $('.preview_box').hide('100');
@@ -295,40 +295,49 @@ const newPitch = function () {
                 formData.append('pitch_files', obj);
             }
         })
+
         ad_text_array.forEach((obj) => {
             if (obj) {
                 formData.append('pitch_text', obj);
             }
         })
+        // console.log("heloo", ad_text_array, ad_text_array.length);
+        // if (ad_text_array.length == 1) {
+        //     alert("Please fill document information fields");
 
-        $('.loader_hp_').show('50');
-        $.ajax({
-            url: site_url + 'add_pitch',
-            headers: {
-                'Accept': 'application/json',
-                "access-token": accesstoken
-            },
-            processData: false,  // tell jQuery not to process the data
-            contentType: false,  // tell jQuery not to set contentType
-            method: 'POST',
-            data: formData,
-            success: function (response) {
-                if (!response.success) {
-                    return alert(JSON.stringify(response.message));
-                }
-                console.log('response', response);
-                $('#add_new_pitch_form').hide('100');
-                let cName = $('#c-name').val();
-                $('#final_section').show('100');
-                $('#final_name').val(cName);
-                $('#pitch_id').val(response.pitch);
-                $('.loader_hp_').hide('50');
-            },
-            error: function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
-            }
-        });
+        //     location.reload();
+        // }
+
+        // $('.loader_hp_').show('50');
+        // $.ajax({
+        //     url: site_url + 'add_pitch',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         "access-token": accesstoken
+        //     },
+        //     processData: false,  // tell jQuery not to process the data
+        //     contentType: false,  // tell jQuery not to set contentType
+        //     method: 'POST',
+        //     data: formData,
+        //     success: function (response) {
+        //         if (!response.success) {
+        //             return alert(JSON.stringify(response.message));
+        //         }
+        //         console.log('response', response);
+        //         $('#add_new_pitch_form').hide('100');
+        //         let cName = $('#c-name').val();
+        //         $('#final_section').show('100');
+        //         $('#final_name').val(cName);
+        //         $('#pitch_id').val(response.pitch);
+        //         $('.loader_hp_').hide('50');
+        //     },
+        //     error: function (jqXHR, textStatus) {
+        //         alert("Request failed: " + textStatus);
+        //     }
+        // });
     }
+
+
 
 
     const handleShareLink = () => {
@@ -453,6 +462,7 @@ function checkEmails() {
 
 function checkFileTypeWithPlan(file) {
     let plan_type = $('.plan_').val();
+    console.log("Plan", plan_type);
     // inArray(jQuery.trim(file.split('.').pop().toLowerCase()), fileExtensionImage)
     // jQuery.trim(file.split('.').pop().toLowerCase()), fileExtensionVideo
     let plan_support = JSON.parse(plan_type);
@@ -513,7 +523,6 @@ function discardPitch() {
                 } else {
                     console.log(response.message);
                     alert('SOMETHING WENT WRONG IN SENDING MESSAGE');
-
                 }
             },
             error: function (jqXHR, textStatus) {
@@ -522,7 +531,7 @@ function discardPitch() {
         })
     }
 }
-function resetForm() {
+function resetFormEdit() {
     var x = confirm("Are You Sure You Want To Discard This Pitch?");
     if (x) {
         $('#add_pitch').trigger("reset");
@@ -631,7 +640,10 @@ const handleContinueUploadDrafts = () => {
         }
     })
 
-
+    // if (ad_text_array.length == 1) {
+    //     alert("Please fill document information fields");
+    //     location.reload();
+    // }
     $('.loader_hp_').show('50');
 
     $.ajax({
@@ -663,15 +675,16 @@ const handleContinueUploadDrafts = () => {
     });
 }
 
-
 function showModal(limit) {
+
     if (limit == 0) {
         $("#drop_zone").prop('disabled', true);
         $('#conversation_list').html(' ');
         $('#conversation_box').modal('show');
         let dataHTML = '';
         //dataHTML = `Email Sent To Your Mail.You have finished your pitch limit.In order to continue you uploade pitch you will need to upgrade your subscription<br><a href="${site_url}user/upgrade" style="text-decoration: underline !important;">Click HERE to Upgrade</a>`;
-        dataHTML = `<center>Your Bundle Account Has Expired<br><br>Please upgrade your account to continue.<br><br><a href="${site_url}user/upgrade" style="text-decoration: underline !important;">Click HERE to Upgrade</a></center>`;
+        dataHTML = `Your Bundle Account Has Expired<br><br>Please upgrade your account to continue.<br><br><a href="${site_url}user/upgrade" style="text-decoration: underline !important;">Click HERE to Upgrade</a>`;
+
         $('#conversation_list').append(dataHTML);
 
         if (limit === 0) {
@@ -698,8 +711,8 @@ function showModal(limit) {
         }
         //window.location.href = "/pitch/add";
         //$("#drop_zone").prop('disabled', false);
-        // $("#drop_zone").prop('enable', true);
-        // alert("You have finished your pitch limit.In order to continue you uploade pitch you will need to upgrade your subscription");
+        //$("#drop_zone").prop('enable', true);
+        //alert("You have finished your pitch limit.In order to continue you uploade pitch you will need to upgrade your subscription");
     }
     else {
         // $("#drop_zone").click();
@@ -707,4 +720,5 @@ function showModal(limit) {
     }
 
 }
+
 

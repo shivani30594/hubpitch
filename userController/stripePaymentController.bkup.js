@@ -60,7 +60,9 @@ class stripePaymentController {
 					fields);
 				res.send({ success: false, message: 'SQL ISSUES', error: error });
 			} else {
-				console.log(error, results, fields);
+				console.log(error,
+					results,
+					fields);
 				res.send({ success: false, message: 'Something Went Wrong' });
 			}
 		});
@@ -77,55 +79,48 @@ class stripePaymentController {
 		stripe.customers.create({
 			email: req.body.stripeEmail,
 			source: req.body.stripeToken
-		})
-			.then(customer => {
-				console.log('customer => ', customer);
-				stripe.charges
-					.create({
-						amount,
-						description: "hubPitch Membership",
-						currency: "usd",
-						customer: customer.id,
-						receipt_email: req.body.stripeEmail
-					}).then(charge => {
-						console.log('charge => ', charge);
-						var charge_id = charge.id;
-						var customer_id = charge.customer;
-						stripe.subscriptions.create({
-							customer: charge.customer,
-							items: [{ plan: array[2] }],
-							trial_end: 1557896607,
-							billing: 'send_invoice',
-							days_until_due: 5,
-						}, function (err, subscription) {
-							if (err) {
-								console.log('err => ', err);
-								res.send({ success: false, message: err });
-							}
-							else {
-								console.log('subscription => ', subscription);
+		}).then(customer =>
+			stripe.charges.create({
+				amount,
+				description: "hubPitch Membership",
+				currency: "usd",
+				customer: customer.id,
+				receipt_email: req.body.stripeEmail
+			}))
+			.then(charge => {
+				var charge_id = charge.id;
+				stripe.subscriptions.create({
+					customer: charge.customer,
+					items: [{ plan: array[2] }],
+					trial_end: 1557896607,
+					billing: 'send_invoice',
+					days_until_due: 5,
+				}, function (err, subscription) {
+					if (err) {
+						res.send({ success: false, message: err });
+					}
+					else {
+						//res.send({ success: true, message: 'Success'});  
+						console.log(" plan subscription", subscription);
+						console.log("plan subscription id", subscription.id);
+						//res.redirect('/user/upgrade');
+						res.render('loginModule/signup', { title: 'hubPitch Sign Up', charge: charge_id });
+					}
+				});
 
-								let encodedDataD = charge_id + ',' + subscription.id + ',' + customer_id;
-								var encodedData = btoa(encodedDataD);
-								//window.location.href = http://www.gorissen.info/Pierre/...";} 
-								//res.redirect('/signup/?id=' + encodedData);
-								//res.redirect('/signupp');
-								res.render('loginModule/signup', { title: 'hubPitch Sign Up', charge: encodedData });
-							}
-						});
-					}).catch(err => {
-						console.log('charge Error => ', err);
-					});
 			})
-			.catch(err_customer => {
-				console.log('custome create Error => ', err_customer);
+			.catch(err => {
 				if (err.type === 'StripeCardError') {
 					res.status(500).send({ error: "Your card was decliend" })
 				}
 				else {
+					//console.log("Error1:", err);
+					//console.log("Error2:", err.raw);
+					console.log("Error3:", err.message);
 					res.status(500).send({ error: err.message })
 				}
 			});
+
 	}
 
 	static async paymentDone(req, res) {
@@ -138,14 +133,11 @@ class stripePaymentController {
 		});
 		var bin1 = atob(req.params.id);
 		var array = bin1.split(',');
-		var charge = atob(array[2]);
-		var subscription = charge.split(',');
-		// var charge = await stripe.charges.retrieve(array[2]);
-		// var customer_id = charge.customer;
-		console.log("array1", array);
-		console.log("charge111", subscription);
+		var charge = await stripe.charges.retrieve(array[2]);
+		var customer_id = charge.customer;
+		console.log("charge111", charge.customer);
 
-		db.query('UPDATE hp_users SET is_payment="yes",	plan_id="' + array[1] + '",	transaction_id="' + subscription[0] + '" , subscription_id="' + subscription[1] + '" , customer_id="' + subscription[2] + '" WHERE user_id="' + array[0] + '"', function (error,
+		db.query('UPDATE hp_users SET is_payment="yes",	plan_id="' + array[1] + '",	transaction_id="' + array[2] + '", customer_id="' + customer_id + '" WHERE user_id="' + array[0] + '"', function (error,
 			results,
 			fields) {
 
@@ -190,6 +182,7 @@ class stripePaymentController {
 							}
 							if (results2) {
 								// -------------------------------mail sending-----------------------------
+
 								var tomail = "";
 								tomail = results1[0].email;
 								// setup e-mail data with unicode symbols
@@ -204,9 +197,9 @@ class stripePaymentController {
 									if (err) {
 										console.log(err);
 									} else {
-										console.log("Message sent: " + info);
+										// console.log("Message sent: " + info);
 										// res.render("loginModule/welcome", { title: 'Payment Page || hubPitch', documents_viewer: 'false', free: 'false' })
-										res.status(200).send({ success: "true" });
+										res.status(200).send({ success: "true" })
 									}
 								});
 							}

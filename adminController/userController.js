@@ -5,7 +5,7 @@ const jwtsecret = "Narola123";
 const _ = require('lodash');
 var async = require('async')
 
-class pitchController {
+class userController {
 
     static async allUsersPitchView(req, res, next) {
         let userid = '';
@@ -25,9 +25,6 @@ class pitchController {
             fields
         ) {
             if (results) {
-                db.query("Select * from hp_users", function (errro1, results1, fields1) {
-                    console.log("results1", results1);
-                });
                 console.log("results", results);
                 res.render('adminViews/pitchModule/pitchListing', { title: 'All Users Pitch || hubPitch', data: results, datatable: 'TRUE' });
             } else {
@@ -35,6 +32,7 @@ class pitchController {
                 return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
             }
         });
+
         // db.query("SELECT * FROM `hp_users` ", function (
         //     error,
         //     results,
@@ -48,6 +46,7 @@ class pitchController {
         //     }
         // });
     }
+
     static async UsersActivation(req, res, next) {
         try {
             console.log()
@@ -73,6 +72,7 @@ class pitchController {
             res.send({ success: false, error });
         }
     }
+
     static async UsersDeactivation(req, res, next) {
         try {
 
@@ -99,6 +99,7 @@ class pitchController {
         }
 
     }
+
     static async  allUsersRemovePitch(req, res, next) {
         db.query("DELETE FROM `hp_users` WHERE user_id=?", req.body.user_id, function (
             error,
@@ -122,6 +123,7 @@ class pitchController {
         });
 
     }
+
     static async getPitch(req, res, next) {
         var token = req.headers['access-token'];
         let userid = '';
@@ -180,4 +182,4 @@ class pitchController {
     }
 
 }
-module.exports = pitchController;
+module.exports = userController;

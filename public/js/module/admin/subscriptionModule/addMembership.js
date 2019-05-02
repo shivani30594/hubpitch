@@ -20,7 +20,7 @@ const addMembership = function () {
             submitHandler: function (form) {
                 let accesstoken = getCookie('accesstoken');
                 $.ajax({
-                    url:  site_url+'admin/add_membership_plan',
+                    url: site_url + 'admin/add_membership_plan',
                     headers: {
                         'Accept': 'application/json',
                         "access-token": accesstoken
@@ -68,11 +68,11 @@ const addMembership = function () {
 }();
 jQuery(document).ready(function () {
     addMembership.init();
-    $('#unlimited_customer_pitches').on('change', function() {
-        if($('#unlimited_customer_pitches').prop('checked') == false){
-            $('#pitch_limit').show() 
+    $('#unlimited_customer_pitches').on('change', function () {
+        if ($('#unlimited_customer_pitches').prop('checked') == false) {
+            $('#pitch_limit').show()
         } else {
             $('#pitch_limit').hide()
         }
-      });
+    });
 });

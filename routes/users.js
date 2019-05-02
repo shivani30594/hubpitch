@@ -10,16 +10,17 @@ function wrap(func) {
             console.error(error);
             res.send(error);
         }
-    };    
+    };
 }
 /* GENRAL PAGE CALLING METHOD */
 router.get('/', function (req, res, next) {
     res.render('loginModule/index', { title: 'SignIn || hubPitch' });
 });
-router.get('/signup', function (req, res, next) {
-    res.render('loginModule/signup', { title: 'hubPitch Sign Up' });
+router.get('/signup/:id?', function (req, res, next) {
+    res.render('loginModule/signup', { title: 'hubPitch Sign Up', charge: "free" });
 });
 router.get('/payment', Controller.stripePaymentController.paymentPage);
+
 router.get('/forgot-password', function (req, res, next) {
     res.render('loginModule/forget', { title: 'Forgot Password || hubPitch' });
 });
@@ -35,6 +36,8 @@ router.get('/user/dashboard', Controller.dashboardController.dashboard);
 router.get('/user/profile', Controller.usersController.profile);
 router.get('/user/upgrade', Controller.upgradeController.upgrade);
 router.get('/user/upgradeplan', Controller.upgradeController.upgradeplan);
+router.get('/testing', Controller.upgradeController.testing);
+
 
 // Pitch Module 
 router.get('/pitch/add', Controller.pitchController.addNewPitchView);
@@ -49,6 +52,8 @@ router.get('/user/pitch/edit/:id', Controller.pitchController.editPitchPage)
 
 router.get('/admin/dashboard', adminController.dashboardController.dashboard);
 router.get('/admin/profile', adminController.dashboardController.profile);
+router.get('/admin/manage-support', adminController.supportController.get_all_support);
+router.post('/admin/pending_user', adminController.supportController.UsersActivation);
 router.get('/admin/manage-pitch', adminController.pitchController.allUsersPitchView)
 router.post('/admin/remove-pitch', adminController.pitchController.allUsersRemovePitch)
 router.post('/admin/active_user', adminController.pitchController.UsersActivation)
@@ -99,6 +104,7 @@ router.post('/view-mail', Controller.enduserController.viewMail)
 // GENRAL API METHOD
 
 router.post('/signup', Controller.authController.singup);
+//router.post('/signup', Controller.authController.singup);
 router.post('/signin', Controller.authController.signin);
 router.post('/forgot_password', Controller.authController.forgotPassword);
 router.post('/reset_password', Controller.authController.resetPassword);
@@ -108,6 +114,13 @@ router.post('/user/change_password', Controller.authController.changePassword);
 router.post('/user/upgrade_payment_status/:id', Controller.upgradeController.payment);
 router.post('/user/upgrade_payment_status_active/:id', Controller.upgradeController.paymentPlan);
 router.post('/deactivate_user', Controller.upgradeController.deactiveUser);
+
+//Tseting porpuse
+router.post('/user/upgrade_payment_test_status/:id', Controller.upgradeController.paymentTesting);
+
+
+
+
 
 // ADMIN API METHOD
 
@@ -134,7 +147,7 @@ router.post('/admin/edit_membership_plan', adminController.subscriptionControlle
 router.post('/admin/remove_membership_plan', adminController.subscriptionController.removePlan);
 
 // PITCH
-router.post('/add_pitch', Controller.pitchController.addPitch); 
+router.post('/add_pitch', Controller.pitchController.addPitch);
 router.post('/upgrade_plan_email', Controller.pitchController.upgradePlanEmail);
 router.post('/add_pitch_draft', Controller.pitchController.addPitchDraft);
 router.post('/get_user_pitchs', Controller.pitchController.getPitch)
@@ -169,6 +182,7 @@ router.post('/marge_video', Controller.videoController.margeVideo);
 router.post('/cut_video', Controller.videoController.cutVideoWithTime);
 router.post('/test_stripe', Controller.stripePaymentController.testStripe);
 router.post('/payment_status/:id', Controller.stripePaymentController.payment);
+router.post('/payment_done/:id', Controller.stripePaymentController.paymentDone);
 router.post('/sign_up_free/:id', Controller.stripePaymentController.signUpFree);
 
 module.exports = router;

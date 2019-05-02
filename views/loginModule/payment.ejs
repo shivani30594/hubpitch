@@ -2,167 +2,262 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>
-        <%= title %>
-    </title>
+	<title>
+		<%= title %>
+	</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-    <!-- Optional theme -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<!-- Optional theme -->
 
-    <script src="/js/jquery.min.js"></script>
-    <!--jquery js-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- bootstrap js -->
-    <script src="https://use.fontawesome.com/8a22b161e0.js"></script>
-    <!-- font awesome -->
+	<script src="/js/jquery.min.js"></script>
+	<!--jquery js-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!-- bootstrap js -->
+	<script src="https://use.fontawesome.com/8a22b161e0.js"></script>
+	<!-- font awesome -->
 
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href='/stylesheets/payment.css' />
-    <!-- custom css -->
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel='stylesheet' href='/stylesheets/payment.css' />
+	<!-- custom css -->
 
-    <link rel="shortcut icon" type="image/x-icon" href="https://static1.squarespace.com/static/5aecd8b436099b8b647ad307/t/5b74e630aa4a9903e4cca041/favicon.ico" />
+	<link rel="shortcut icon" type="image/x-icon" href="https://static1.squarespace.com/static/5aecd8b436099b8b647ad307/t/5b74e630aa4a9903e4cca041/favicon.ico"
+	/>
 
-    <!-- Validation.Js -->
-    <script src="/js/jquery.validate.min.js"></script>
-    <script src="/js/additional-methods.min.js"></script>
+	<!-- Validation.Js -->
+	<script src="/js/jquery.validate.min.js"></script>
+	<script src="/js/additional-methods.min.js"></script>
 </head>
 
 <body>
-    <section class="signup-wrap">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="logo-wrap">
-                        <a href="#">
-                            <img src="/img/logo.png" alt="Logo">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="signup-wrapper">
-        <div class="container">
-            <div class="payment_box">
-                <% for(var i=0; i < data.length; i++) { %>
-                <div class="columns">
-                    <ul class="price">
-                        <li class="header">
-                            <%= data[i].plan_name %>
-                        </li>
-                        <li class="grey">$
-                            <%= data[i].plan_price %> / Month</li>
-                        <!-- <li>Unlimited Customer Pitches <span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                            </span></li> -->
-                             <% if(data[i].unlimited_customer_pitches=='true'){%>
-                        <li>Unlimited Customer Pitches <span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                            </span></li>
-                        <% }else { %>
-                            <li>Monthly Number of Pitches: <span style="color:green"><b><%= data[i].pitch_limits %></b></span>
-                                
-                            </li>
-                            <% } %>
-                        <li>Video Upload Editing <span class="memberpship_icon <%= (data[i].video_upload_editing=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                            </span></li>
-                        <li>Pitch Customization <span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                            </span></li>
-                        <li>Pitch Analytics <span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                            </span></li>
-                        <li>Sharing Tracking <span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                            </span></li>
-                        <li>User to Customer Messaging<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                            </span></li>
-                        <% if(data[i].plan_price > 0){ %>
-                        <li class="grey"><a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)"
-                                class="button">Sign
-                                Up</a></li>
-                        <%  } else { %>
-                        <li class="grey"><a href="javascript:handlePaymentTableFree(<%= data[i].plan_id %>)" class="button">Sign
-                                Up</a></li>
-                        <% } %>
-                    </ul>
-                </div>
-                <% } %>
-            </div>
-        </div>
-    </section>
-    <!-- BUILD MODEL FOR DETAILS -->
-    <!-- Modal -->
-    <% for(var i=0; i < data.length; i++) { %>
-    <div class="modal fade payment_details" id="<%= data[i].plan_id %>_stripe_confi" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Please Confirm Your Membership Plan </h4>
-                </div>
-                <div class="modal-body">
-                    <div class="columns">
-                        <ul class="price">
-                            <li class="header">
-                                <%= data[i].plan_name %>
-                            </li>
-                            <li class="grey">$
-                                <%= data[i].plan_price %> / Month</li>
-                            <li>Unlimited Customer Pitches <span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>Video Upload Editing <span class="memberpship_icon <%= (data[i].video_upload_editing=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>Pdf Upload <span class="memberpship_icon <%= (data[i].pdf_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>Pitch Customization <span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>Powerpoint Upload <span class="memberpship_icon <%= (data[i].powerpoint_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>Excel Upload<span class="memberpship_icon <%= (data[i].excel_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>Word Upload <span class="memberpship_icon <%= (data[i].word_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>Pitch Analytics <span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>Pitch Notifications <span class="memberpship_icon <%= (data[i].pitch_notifications=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>Tracking Pitch Shares <span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>User to Customer Messaging<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
-                                </span></li>
-                            <li>
-                                <p class="other_details">
-                                    <%= data[i].other_details %>
-                                </p>
-                            </li>
+	<section class="signup-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="logo-wrap">
+						<a href="#">
+							<img src="/img/logo.png" alt="Logo">
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="signup-wrapper">
+		<div class="container">
+			<div class="payment_box">
+				<% for(var i=0; i < data.length; i++) { %>
+					<div class="columns">
+						<ul class="price">
+							<li class="header">
+								<%= data[i].plan_name %>
+							</li>
+							<li>
+								<p class="other_details">
+									<%= data[i].other_details %>
+								</p>
+							</li>
+							<li class="grey">$
+								<%= data[i].plan_price %> / Month</li>
 
-                            <% if(data[i].plan_price > 0){ %>
-                            <li id="<%= data[i].plan_id %>_submmiting">
-                                <%  } else { %>
-                            <li class="grey"><a href="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign
-                                    Up Free</a></li>
-                            <% } %>
-                        </ul>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
+							<% if(data[i].unlimited_customer_pitches=='true'){%>
+								<li>Unlimited Customer Pitches
+									<span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+								<% }else { %>
+									<li>Monthly Number of Pitches:
+										<span style="color:green">
+											<b>
+												<%= data[i].pitch_limits %>
+											</b>
+										</span>
+									</li>
+									<% } %>
 
-        </div>
-    </div>
-    <% } %>
-    <!-- Modal -->
+										<!-- False Data -->
+										<% if(data[i].pitch_analytics=='false'){%>
+											<li>Pitch Analytics
+												<span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> "></span>
+											</li>
+											<% } %>
+												<% if(data[i].user_to_customer_messaging=='false'){%>
+													<li>User to Customer Messaging
+														<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> "></span>
+													</li>
+													<% } %>
+														<% if(data[i].video_upload_editing=='false'){%>
+															<li>Video Upload Editing
+																<span class="memberpship_icon <%= (data[i].video_upload_editing=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+																</span>
+															</li>
+															<% } %>
+																<% if(data[i].pitch_customization=='false'){%>
+																	<li>Pitch Customization
+																		<span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+																		</span>
+																	</li>
+																	<% } %>
+																		<% if(data[i].sharing_tracking=='false'){%>
+																			<li>Sharing Tracking
+																				<span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+																				</span>
+																			</li>
+																			<% } %>
 
-    <script src="/js/module/payment.js"></script>
-    <!-- LOADER  -->
-    <div class="loader_hp_">
-        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-    </div>
+																				<!-- True Data -->
+
+																				<% if(data[i].pitch_analytics=='true'){%>
+																					<li>Pitch Analytics
+																						<span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> "></span>
+																					</li>
+																					<% } %>
+																						<% if(data[i].user_to_customer_messaging=='true'){%>
+																							<li>User to Customer Messaging
+																								<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> "></span>
+																							</li>
+																							<% } %>
+																								<% if(data[i].video_upload_editing=='true'){%>
+																									<li>Video Upload Editing
+																										<span class="memberpship_icon <%= (data[i].video_upload_editing=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+																										</span>
+																									</li>
+																									<% } %>
+																										<% if(data[i].pitch_customization=='true'){%>
+																											<li>Pitch Customization
+																												<span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+																												</span>
+																											</li>
+																											<% } %>
+																												<% if(data[i].sharing_tracking=='true'){%>
+																													<li>Sharing Tracking
+																														<span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+																														</span>
+																													</li>
+																													<% } %>
+
+																														<% if(data[i].plan_price > 0){ %>
+																															<li class="grey">
+																																<a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>,'<%= data[i].plan_key %>')" class="button">Sign Up
+																																</a>
+																															</li>
+																															<%  } else { %>
+																																<li class="grey">
+																																	<a href="javascript:handlePaymentTableFree(<%= data[i].plan_id %>)" class="button">Sign Up
+																																	</a>
+																																</li>
+																																<% } %>
+						</ul>
+					</div>
+					<% } %>
+			</div>
+		</div>
+	</section>
+	<!-- BUILD MODEL FOR DETAILS -->
+	<!-- Modal -->
+	<% for(var i=0; i < data.length; i++) { %>
+		<div class="modal fade payment_details" id="<%= data[i].plan_id %>_stripe_confi" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Please Confirm Your Membership Plan </h4>
+					</div>
+					<div class="modal-body">
+						<div class="columns">
+							<ul class="price">
+
+								<li class="header">
+									<%= data[i].plan_name %>
+								</li>
+								<li>
+									<p class="other_details">
+										<%= data[i].other_details %>
+									</p>
+								</li>
+								<li class="grey">$
+									<%= data[i].plan_price %> / Month</li>
+								<li>Unlimited Customer Pitches
+									<span class="memberpship_icon <%= (data[i].unlimited_customer_pitches=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+								<li>Pitch Analytics
+									<span class="memberpship_icon <%= (data[i].pitch_analytics=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+								<li>User to Customer Messaging
+									<span class="memberpship_icon <%= (data[i].user_to_customer_messaging=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+
+								<li>Video Upload Editing
+									<span class="memberpship_icon <%= (data[i].video_upload_editing=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+
+								<li>Pdf Upload
+									<span class="memberpship_icon <%= (data[i].pdf_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+
+								<li>Pitch Customization
+									<span class="memberpship_icon <%= (data[i].pitch_customization=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+
+								<li>Powerpoint Upload
+									<span class="memberpship_icon <%= (data[i].powerpoint_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+								<li>Excel Upload
+									<span class="memberpship_icon <%= (data[i].excel_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+								<li>Word Upload
+									<span class="memberpship_icon <%= (data[i].word_upload=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+								<li>Pitch Notifications
+									<span class="memberpship_icon <%= (data[i].pitch_notifications=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+								<li>Tracking Pitch Shares
+									<span class="memberpship_icon <%= (data[i].sharing_tracking=='true') ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove' %> ">
+									</span>
+								</li>
+
+
+								<% if(data[i].plan_price > 0){ %>
+									<li id="<%= data[i].plan_id %>_submmiting">
+										<%  } else { %>
+											<li class="grey">
+												<a href="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign Up Free</a>
+											</li>
+											<% } %>
+							</ul>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<% } %>
+			<!-- Modal -->
+
+			<script src="/js/module/payment.js"></script>
+			<!-- LOADER  -->
+			<div class="loader_hp_">
+				<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+			</div>
 </body>
 
 </html>

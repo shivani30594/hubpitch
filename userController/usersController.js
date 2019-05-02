@@ -56,25 +56,29 @@ class usersController {
 
     // Update Profile
     static async updateProfile(req, res) {
+
         try {
+
             const pitchData = Joi.validate(Object.assign(req.params, req.body, req.flies), {
                 firstName: Joi.string()
                     .min(2)
-                    .required(),
+                    .required().trim(),
                 lastName: Joi.string()
                     .min(2)
-                    .required(),
+                    .required().trim(),
                 companyName: Joi.string()
                     .min(2)
-                    .required(),
+                    .required().trim(),
                 allow_notification: Joi.allow(),
                 allow_messaging: Joi.allow(),
                 allow_share: Joi.allow(),
             });
+
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
                 return;
             }
+
             var token = req.cookies.accesstoken;
             let userid = '';
             jwt.verify(token, jwtsecret, function (err, decoded) {
@@ -95,6 +99,7 @@ class usersController {
                     console.log(sql)
                     res.send({ success: false, message: "SQL ISSUES IN USERS" });
                 }
+
                 if (results) {
                     let sql1 = 'REPLACE into hp_users_info SET user_id="' + userid + '", company_name = "' + req.body.companyName + '", notification_1 ="' + req.body.allow_notification + '", notification_2 = "' + req.body.allow_messaging + '", notification_3 = "' + req.body.allow_share + '"';
                     db.query(sql1, function (error1,
@@ -104,7 +109,7 @@ class usersController {
                             console.log(error1,
                                 results1,
                                 fields1);
-                            console.log(sql1)
+                            console.log(sql1);
                             res.send({ success: false, message: "SQL ISSUES IN USERS" });
                         }
                         if (results1) {

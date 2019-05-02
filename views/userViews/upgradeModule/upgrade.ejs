@@ -70,7 +70,7 @@
                             
                         <% if(data[i].plan_id == data[i].subscription_id){
                              if(data[i].plan_price > 0 ) { %>
-                            <li class="grey"><a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)"
+                            <li class="grey"><a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>,'<%= data[i].plan_key %>')"
                                 class="button">Your Current Plan</a></li>
                                 <% } else { %>
                                 <li class="grey">
@@ -79,15 +79,17 @@
                          <% } %>
                         <% } else if(data[i].plan_price > 0 ){ %>
                             <li class="grey">
-                                <a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)" class="button">Upgrade</a>
+                                <a href="javascript:handlePaymentTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>,'<%= data[i].plan_key %>')" class="button">Upgrade</a>
                             </li>
                         <%  } else { %>
                              <!-- "javascript:handlePaymentTableFree(
                             <%= data[i].plan_id %>)" -->
-                        <li class="grey"><a  class="button" disabled="disabled">Free plan</a></li>
+                        <li class="greey"><a  class="button" disabled="disabled">Free plan</a></li>
                         <% } %>
+                        <li><a href="javascript:handlePaymentTestingTable(<%= data[i].plan_price %>,<%= data[i].plan_id %>)" class="button">UpgradeTesting</a></li>
                     </ul>
                 </div>
+                
                 <% } %>
             </div>
             <div class="payment_box_btn-wrap">
@@ -146,7 +148,7 @@
                             <% if(data[i].plan_price > 0){ %>
                             <li id="<%= data[i].plan_id %>_submmiting">
                                 <%  } else { %>
-                            <li class="grey"><a h ref="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign
+                            <li class="grey"><a href="javascript:signUpFree(<%=data[i].plan_id %>)" class="sign_up_free">Sign
                                     Up Free</a></li>
                             <% } %>
                         </ul>

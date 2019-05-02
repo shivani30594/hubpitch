@@ -60,3 +60,11 @@ div span.error-block {
   .slider.round:before {
     border-radius: 50%;
   }
+
+
+ 
+.support_text {
+  width: 320px; 
+  border: 1px solid #000000;
+  word-wrap: break-word;
+}

@@ -12,6 +12,7 @@ const pitchDeck = function () {
             return false
         }
     }
+
     const loginCheck = () => {
         let viewertoken = getCookie('viewertoken')
         let viewerName = getCookie('viewerName')
@@ -161,11 +162,13 @@ const pitchDeck = function () {
         seconds += 1;
         $('.slick-active .sliderViewer').val(seconds);
     }
+
     const firstPitchPage = () => {
         seconds = 0;
         $('.slick-active .sliderViewer').addClass('1_page');
         setInterval(incrementSeconds, 1000);
     }
+
     const share_pitch = () => {
         let viewerName = getCookie('viewerName');
         let viewerRole = getCookie('viewerRole');
@@ -212,7 +215,7 @@ const pitchDeck = function () {
                         }
 
                         $('.loader_hp_').hide();
-                        console.log(response);
+                        //console.log(response);
                         if (JSON.stringify(response.success == 'true')) {
                             // $('input[name="sender_name"]').val('');
                             $('input[name="email_id"]').val('');
@@ -265,7 +268,7 @@ const pitchDeck = function () {
             let endUserName = getCookie('viewerName');
             let conversation = getCookie('conversation');
             
-        //let sender = 'John Doe';
+            //let sender = 'John Doe';
             let sender = document.getElementById("sender_name_value").value;
             console.log("name", document.getElementById("sender_name_value").value);
             if (endUserName == undefined) {
@@ -291,7 +294,8 @@ const pitchDeck = function () {
                                 if (response.new_conversation == 'true') {
                                     console.log('new conversation');
                                     return
-                                } else {
+                                } 
+                                else {
                                     $('.unread_count_wapper').show();
                                     $('.unread_count').html('<i class="glyphicon glyphicon-envelope"></i> You Have ' + response.unread + ' Unread Messages');
                                     let data = response.data;
@@ -378,6 +382,15 @@ const pitchDeck = function () {
                 },
             },
             submitHandler: function (form) {
+               
+                if ($('.chat_msg').val().trim()=="")
+                {
+                    alert("Not Empty");
+                    $('.chat_msg').val('');
+
+                }
+                else
+                {
                 $('.loader_hp_').show();
                 let conversation_id = getCookie('conversation');
                 let sender = getCookie('viewerName');
@@ -412,6 +425,7 @@ const pitchDeck = function () {
                     }
                 });
             }
+        }
         });
     }
 
@@ -516,6 +530,7 @@ const pitchDeck = function () {
             }
         });
     }
+
     const getNotes = () => {
         let token = getCookie('endUsertoken');
         if (token != undefined && token != '') {
@@ -585,7 +600,7 @@ const pitchDeck = function () {
                            // alert(response.error.details[0].message);
                         }
                         if (response.success == false) {
-                           // alert(response.message);
+                            // alert(response.message);
                             $('#sign_up_form').trigger("reset");
                             $('.loader_hp_').hide('50');
                         }
@@ -618,8 +633,8 @@ const pitchDeck = function () {
                 }
             },
             submitHandler: function (form) {
-                $('.loader_hp_').show('50');
-                $('body').removeClass('dark-modal')
+                $('.loader_hp_').show('50');            
+                
                 let viewertoken = getCookie('viewertoken')
                 $.ajax({
                     url: '/viewer-add-name',
@@ -639,8 +654,11 @@ const pitchDeck = function () {
                             $('#add_name').trigger("reset");
                             $('.loader_hp_').hide('50');
                         }
-                        if (response.success) {
+                        if (response.success) {                           
                             alert('Update Successfully!')
+                            $('#view_name').hide();
+                            $('#view_info').modal('show');                                                     
+
                             document.cookie = "viewerName=" + $('#add_name input[name="view_name"]').val();
                             document.cookie = "viewerRole=" + $('#add_name input[name="job_title"]').val();
                             $.ajax({
@@ -656,9 +674,13 @@ const pitchDeck = function () {
                                 },
                                 success: function (response) {
                                     if (response.success == 'true') {
-                                        document.cookie = "conversation=" + response.data;
+                                        document.cookie = "conversation=" + response.data;                                       
                                         $('.loader_hp_').hide();
-                                        location.reload();
+                                            setTimeout(function () {                                               
+                                                $("#view_info").hide();
+                                                $('body').removeClass('dark-modal');
+                                                location.reload();                         
+                                            }, 10000);
                                     }
                                     else {
                                         //alert('Something Went Wrong!');
@@ -668,7 +690,8 @@ const pitchDeck = function () {
                                     //alert("Request failed: " + textStatus);
                                 }
                             });
-                        }
+                       //set time
+                      }
                     },
                     error: function (jqXHR, textStatus) {
                         //alert("Request failed: " + textStatus);
@@ -680,7 +703,7 @@ const pitchDeck = function () {
     }
 
     const handleViewerAnalysis = () => {
-        let viewer_id = getCookie('viewertoken')
+        let viewer_id = getCookie('viewertoken');
         if (viewer_id != undefined) {
             $.ajax({
                 url: '/viewer-analysis',
@@ -691,7 +714,7 @@ const pitchDeck = function () {
                     pitch_info_id: $('.slick-current .pitch_info_token_c').val(),
                 },
                 success: function (response) {
-                    console.log(response)
+                    console.log(response);
                 },
                 error: function (jqXHR, textStatus) {
                     //alert("Request failed: " + textStatus);
@@ -706,9 +729,9 @@ const pitchDeck = function () {
         let viewer_id = getCookie('viewertoken')
         if (viewer_id != undefined) {
             setInterval(function () {
-                console.log('viewer_id', viewer_id)
-                console.log('viewing_time', $('.slick-active .sliderViewer').val())
-                console.log('pitch_info_id', $('.slick-current .pitch_info_token_c').val())
+                console.log('viewer_id', viewer_id);
+                console.log('viewing_time', $('.slick-active .sliderViewer').val());
+                console.log('pitch_info_id', $('.slick-current .pitch_info_token_c').val());
                 $.ajax({
                     url: site_url + 'viewer/analysis-update',
                     headers: {
@@ -751,7 +774,8 @@ const pitchDeck = function () {
         }
     };
 }();
-jQuery(document).ready(function () {
+jQuery(document).ready(function () {    
+    
     pitchDeck.init();
     viewNotification();
 });
@@ -767,13 +791,11 @@ function addNote(id) {
     $('#note_icon_button_' + id).toggleClass("glyphicon glyphicon-plus");
 }
 function submitNote(id) {
-    let textValue = $('#note_' + id).val();
+    let textValue = $('#note_' + id).val().trim();
     let sender_email = $('#user_email').val();
     let company_name = $('#company_name').val();
 
-    console.log("rippps",sender_email,company_name);
-
-    $('#active_info').val(id);
+     $('#active_info').val(id);
     if (textValue == '') {
         $('#note_' + id).addClass('error-custom');
         $('.error_custom_error_' + id).show();
@@ -858,7 +880,7 @@ function download_document(type){
         },
         success: function (response) {
             if (response.success == 'true') {
-                //document.cookie = "endUserName=" + $('#end_user_name_').val();
+                // document.cookie = "endUserName=" + $('#end_user_name_').val();
                 // document.cookie = "endUserName=" + endUserName;
                 // document.cookie = "endUsertoken=" + token;
                 // $('#note_' + id).prop('disabled', true);
@@ -880,14 +902,15 @@ const getCookie = (name) => {
     if (parts.length == 2) return parts.pop().split(";").shift();
 }
 const full_sceen_zoom = (id, e, loop) => {
-    console.log(e.text());
+    console.log("rip",e.text());
     let currentText = e.text();
     if (currentText == 'Full Screen') {
-        e.html('Normal Screen<i class="glyphicon glyphicon-resize-small">');
+        e.html('Full Screen<i class="glyphicon glyphicon-resize-small">');
     } else {
-        e.html('Full Screen<i class="glyphicon glyphicon-resize-full">');
+        e.html('Normal Screen<i class="glyphicon glyphicon-resize-full">');
     }
     $("." + id + "_edit-wrap").toggleClass("edit-wrap-toggled");
+    currentText='';
     $("#loaded-layout_" + loop).resize();
 }
 $('#login').on('hide.bs.modal', function (e) {
@@ -919,7 +942,7 @@ const viewNotification = () => {
                 viewer_name: getCookie('viewerName')
             },
             success: function (response) {
-                console.log(response)
+                console.log(response);
             }
         });
     }

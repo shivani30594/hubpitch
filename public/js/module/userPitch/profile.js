@@ -17,7 +17,8 @@ const userProfile = function () {
                     required: true,
                 }
             },
-            submitHandler: function (form) {
+            submitHandler: function (form) {               
+                
                 $('.loader_hp_').show('50');
                 var allow_notification = $('#allow_notification').is(":checked")
                 var allow_messaging = $('#allow_messaging').is(":checked")
@@ -39,9 +40,11 @@ const userProfile = function () {
                     },
                     success: function (response) {
                         if (!response.success) {
-                            return alert(JSON.stringify(response.message));
+                            $('.loader_hp_').hide('50');
+                            return alert(response.error.details[0].message);
+                            location.reload();
                         }
-                        if (response.success == true) {
+                        if (response.success == true) { 
                             $('.loader_hp_').hide('50');
                             alert(response.message);
                             document.cookie = 'cuser' + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
@@ -55,6 +58,7 @@ const userProfile = function () {
                     }
                 });
             }
+            
         });
     }
     return {

@@ -20,7 +20,8 @@ jQuery(document).ready(function () {
 
 function handlePaymentTable(amount, id) {
     let user_id = getCookie('accesstoken');
-    let payableamount = amount * 100
+    let payableamount = Math.round(amount * 100);
+
     let encodedDataD = payableamount + ',' + user_id + ',' + id
     var encodedData = window.btoa(encodedDataD); // encode a string
     $('.loader_hp_').show();

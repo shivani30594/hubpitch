@@ -25,7 +25,8 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <!-- custom css -->
 
-    <link rel="shortcut icon" type="image/x-icon" href="https://static1.squarespace.com/static/5aecd8b436099b8b647ad307/t/5b74e630aa4a9903e4cca041/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="https://static1.squarespace.com/static/5aecd8b436099b8b647ad307/t/5b74e630aa4a9903e4cca041/favicon.ico"
+    />
 
     <!-- Validation.Js -->
     <script src="/js/jquery.validate.min.js"></script>
@@ -51,18 +52,19 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-wrap">
-                        <div class="head">Sign Up</div>
+                        <div class="head">Sign Up </div>
                         <div class="sign-up-form">
                             <form method="post" name="signup" class="signup_from" id="sign_up_form">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="firstName" placeholder="First Name">
+                                            <input type="hidden" class="" name="charge_id" value="<%=charge %>">
+                                            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="lastName" placeholder="Last Name">
+                                            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name">
                                         </div>
                                     </div>
                                     <div class="col-md-12">

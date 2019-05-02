@@ -32,7 +32,7 @@
                                             <th>Plan Name</th>
                                             <th>Plan Price</th>
                                             <th>Created</th>
-                                            <th>Actions</th>
+                                            <th>Actions </th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbody_datatable">
@@ -51,7 +51,7 @@
                                                 <a class="action-table" href="/admin/edit-plan/<%= data[i].plan_id %>">
                                                     <span class="glyphicon glyphicon-pencil"></span>
                                                 </a>
-                                                <a class="action-table" href="javascript:ConfirmDelete(<%= data[i].plan_id %>)">
+                                                <a class="action-table" href="javascript:ConfirmDelete(<%= data[i].plan_id %>,'<%= data[i].plan_key %>')">
                                                     <span class="glyphicon glyphicon-trash"></span>
                                                 </a>
                                             </td>

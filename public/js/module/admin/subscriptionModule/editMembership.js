@@ -32,6 +32,7 @@ const editMembership = function () {
                     data: {
                         plan_id: $('#plan_id').val(),
                         plan_name: $('#plan_name').val(),
+                        plan_key: $('#plan_key').val(),
                         plan_price: $('#plan_price').val(),
                         pitch_limit: $('#pitch_limit').val(),
                         unlimited_customer_pitches: $('#unlimited_customer_pitches').is(":checked"),

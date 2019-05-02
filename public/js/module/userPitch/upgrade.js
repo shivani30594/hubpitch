@@ -18,13 +18,27 @@ jQuery(document).ready(function () {
     Upgrade.init();
 });
 
-function handlePaymentTable(amount, id) {
-    let user_id = getCookie('accesstoken');   
-    let payableamount = amount * 100
-    let encodedDataD = payableamount + ',' + user_id + ',' + id
+function handlePaymentTable(amount, id, plan_key) {
+    alert(plan_key);
+    let user_id = getCookie('accesstoken');
+    let payableamount = Math.round(amount * 100);
+    let encodedDataD = payableamount + ',' + user_id + ',' + id + ',' + plan_key
     var encodedData = window.btoa(encodedDataD); // encode a string
     $('.loader_hp_').show();
     let script = '<form action="/user/upgrade_payment_status/' + encodedData + '" method="POST"> <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_nN2AAsg2jHlJxmCky4QOiuPe" data-name="hubPitch Membership" data-amount="' + payableamount + '"> <input type="hidden" name="amount" value="' + amount + '" /> </form>';
+    $("#" + id + "_submmiting").html(script);
+    $("#" + id + "_stripe_confi").modal('show');
+    $('.loader_hp_').hide();
+}
+
+
+function handlePaymentTestingTable(amount, id) {
+    let user_id = getCookie('accesstoken');
+    let payableamount = Math.round(amount * 100);
+    let encodedDataD = payableamount + ',' + user_id + ',' + id
+    var encodedData = window.btoa(encodedDataD); // encode a string
+    $('.loader_hp_').show();
+    let script = '<form action="/user/upgrade_payment_test_status/' + encodedData + '" method="POST"> <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_nN2AAsg2jHlJxmCky4QOiuPe" data-name="hubPitch Membership" data-amount="' + payableamount + '"> <input type="hidden" name="amount" value="' + amount + '" /> </form>';
     $("#" + id + "_submmiting").html(script);
     $("#" + id + "_stripe_confi").modal('show');
     $('.loader_hp_').hide();
@@ -86,14 +100,14 @@ function cancelSubscription() {
                 'Accept': 'application/json',
                 "access-token": accesstoken
             },
-            method: 'POST',           
+            method: 'POST',
             success: function (response) {
                 if (response.success == true) {
                     alert(response.message);
                     window.location = '/';
                     //location.reload();
                 } else {
-                    console.log(response.success,response.message);
+                    console.log(response.success, response.message);
                     alert('SOMETHING WENT WRONG IN SENDING MESSAGE1');
                 }
             },
@@ -103,7 +117,7 @@ function cancelSubscription() {
         })
     } else {
         txt = "You pressed Cancel!";
-    }   
+    }
 }
 
 const handleSignUp = () => {

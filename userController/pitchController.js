@@ -365,7 +365,7 @@ class pitchController {
             if (results.length) {
                 console.log(results[0].first_name);
                 // -------------------------------mail sending-----------------------------
-                var tomail = "rip@narola.email";
+                var tomail = results[0].email;
                 var share = '';
                 var newEmail = '';
                 var emailLog = {};
@@ -895,7 +895,16 @@ class pitchController {
                 res.send({ success: false, error: pitchData.error });
                 return;
             }
-            db.query('SELECT * FROM hp_email_log WHERE `pitch_id` = ?', req.body.pitch_id, function (error, results, fields) {
+            var token = req.headers['access-token'];
+            let userid = '';
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    userid = decoded.user;
+                }
+            });   
+            db.query('SELECT * ,(SELECT sharing_tracking FROM hp_membership_plan where plan_id =(SELECT plan_id FROM hp_users where user_id="'+userid+'")) as sharing_tracking_permission FROM hp_email_log WHERE `pitch_id` = ?', req.body.pitch_id, function (error, results, fields) {
                 if (error) {
                     res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
                 }
@@ -1238,12 +1247,14 @@ class pitchController {
                                 results,
                                 fields) {
                                 if (results.affectedRows) {
-                                    db.query("SELECT * FROM hp_pitch_viewers where pitch_id=?", pitchID, function (error1, results1, fields1) {
+                                    //"SELECT * FROM hp_pitch_viewers where pitch_id=?", pitchID
+                                    db.query("SELECT hp_pitch_viewers.*,hp_pitch_master.is_published FROM hp_pitch_viewers RIGHT JOIN hp_pitch_master ON hp_pitch_viewers.pitch_id = hp_pitch_master.pitch_id where hp_pitch_master.pitch_id=?", pitchID, function (error1, results1, fields1) {
                                         if (error1) {
                                             console.log(error1, results1, fields1);
                                             res.send({ success: "true", message: "New Pitch Added || In Something Went Wrong" });
-                                        }
-                                        res.send({ success: "true", message: "New Pitch Added", viewers: results1 });
+                                        }                     
+                                       
+                                        res.send({ success: "true", message: "New Pitch Added", viewers: results1, publish:results1[0].is_published });
                                     })
                                 } else {
                                     console.log(error,
@@ -1256,7 +1267,8 @@ class pitchController {
                     }
                 });
             }
-            else {
+            else 
+            {
                 var temp = [];
                 var ext = '';
                 counter = 0;
@@ -1844,8 +1856,18 @@ class pitchController {
                 res.send({ success: false, error: pitchData.error });
                 return;
             }
+
+            var token = req.headers['access-token'];
+            let userid = '';            
+            jwt.verify(token, jwtsecret, function (err, decoded) {
+                if (err) {
+                    return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    userid = decoded.user;
+                }
+            });            
             db.query(
-                'SELECT hp_pitch_viewer_analytics.views,CONVERT_TZ(hp_pitch_viewer_analytics.created, @@session.time_zone, "+00:00") AS `utc_datetime`,hp_pitch_user_viewer.full_name,hp_pitch_user_viewer.job_title,hp_pitch_viewer_analytics.viewing_time FROM hp_pitch_viewer_analytics LEFT JOIN hp_pitch_user_viewer ON hp_pitch_viewer_analytics.viewer_id = hp_pitch_user_viewer.viewer_id WHERE hp_pitch_viewer_analytics.pitch_info_id ="' + req.body.pitch_info_id + '"',
+                'SELECT hp_pitch_viewer_analytics.views,(SELECT pitch_analytics FROM hp_membership_plan where plan_id =(SELECT plan_id FROM hp_users where user_id="' + userid +'")) as analytics_permission,CONVERT_TZ(hp_pitch_viewer_analytics.created, @@session.time_zone, "+00:00") AS `utc_datetime`,hp_pitch_user_viewer.full_name,hp_pitch_user_viewer.job_title,hp_pitch_viewer_analytics.viewing_time FROM hp_pitch_viewer_analytics LEFT JOIN hp_pitch_user_viewer ON hp_pitch_viewer_analytics.viewer_id = hp_pitch_user_viewer.viewer_id  WHERE hp_pitch_viewer_analytics.pitch_info_id ="' + req.body.pitch_info_id + '"',
                 function (error1, results1, fields1) {
                     if (error1) {
                         console.log(error1);
@@ -1853,7 +1875,7 @@ class pitchController {
                     if (results1) {
                         res.send({
                             success: true,
-                            data: results1
+                            data: results1,                            
                         });
                     } else {
                         res.send({
@@ -1985,7 +2007,7 @@ class pitchController {
             if (results.length) {
                 //console.log(results[0].first_name);
                 // -------------------------------mail sending-----------------------------
-                var tomail = "rip@narola.email";
+                var tomail = results[0].email;
                 var share = '';
                 var newEmail = '';
                 var emailLog = {};

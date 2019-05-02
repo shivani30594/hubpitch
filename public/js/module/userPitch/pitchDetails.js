@@ -2,9 +2,14 @@ const pitchDetails = function () {
     $(".loader_hp_").hide();
     $('#share_box').hide();
     const pitchShareModule = () => {
+        let accesstoken = getCookie('accesstoken');
         $.ajax({
             url: site_url + 'sharing_details',
             type: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "access-token": accesstoken
+            },
             dataType: 'json',
             data: {
                 pitch_id: $(location).attr("href").split('/').pop(),
@@ -18,10 +23,24 @@ const pitchDetails = function () {
                     return
                 }
                 let dataHTML = '';
-                response.data.forEach((obj) => {
-                    if (obj) {
-                        dataHTML = '<li> <div class="details-box"> <div class="sender_name details"> <label> Sender Name: </label> <span>' + obj.sender_name + '</span> </div> <div class="receiver_email_address details"> <label> Receiver Email Address: </label> <span>' + obj.receiver_email_address + '</span> </div> <div class="email_body details"> <label> Email Body: </label> <span>' + obj.email_body + '</span> </div> <div class="created details"> <label> Shared At : </label> <span>' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</span> </div>   </div></li>';
-                        $('.ul_list_wapper_sharing').append(dataHTML);
+                let i =1;
+                response.data.forEach((obj) => {               
+
+                    if (obj.sharing_tracking_permission != "false") {
+                        dataHTML = ''
+                        if (obj) {
+                            dataHTML = '<li> <div class="details-box"> <div class="sender_name details"> <label> Sender Name: </label> <span>' + obj.sender_name + '</span> </div> <div class="receiver_email_address details"> <label> Receiver Email Address: </label> <span>' + obj.receiver_email_address + '</span> </div> <div class="email_body details"> <label> Email Body: </label> <span>' + obj.email_body + '</span> </div> <div class="created details"> <label> Shared At : </label> <span>' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</span> </div>   </div></li>';
+                            $('.ul_list_wapper_sharing').append(dataHTML);
+                        }
+                    }
+                    else {
+                        dataHTML = ''
+                        if (i == 1) {
+                            dataHTML = `<li> <div class="details-box"> <a href="${site_url}user/upgrade" style="text-decoration: underline !important;">You must upgrade your account to Premier Subscription in order to see pitch sharing information.</a> </div></li>`;
+                            $('.ul_list_wapper_sharing').append(dataHTML);                          
+                            i++;
+                        }
+                       
                     }
                 })
             },
@@ -200,23 +219,43 @@ function checkEmailsShare() {
 }
 
 function pitchViewerDetails(id) {
+    let accesstoken = getCookie('accesstoken');
     $(".loader_hp_").show('50');
     $.ajax({
         url: site_url + 'viewer/analysis',
         type: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            "access-token": accesstoken
+        },
         dataType: 'json',
         data: {
             pitch_info_id: id,
         },
         success: function (response) {
-            let data = response.data;
-            let dataHTML = '';
+            let data = response.data;           
+            let dataHTML = '';       
+            let i = 1;    
             $('#viewer_details').html(' ');
-            data.forEach((obj) => {
-                dataHTML = ''
-                if (obj) {
-                    dataHTML = '<div class="col-md-4 col-sm-4 col-xs-12"> <div class="viewer-info text-center"> <div class="primary"> <p class="lable">' + obj.full_name + '</p> <p>' + obj.job_title + '</p> </div> <p class="total-view"><span class="lable">Views:</span>' + obj.views + '</p><div class="viewer-time"> <p class="lable">viewing Time:</p> <p>' +  moment.utc(obj.viewing_time*1000).format('HH:mm:ss')+ '</p> </div> <div class="last-view-time"> <p class="lable">last View:</p> <p> ' + moment(obj.utc_datetime).format("MMM DD YYYY hh:mm A", 'en')+ '</p> </div> </div> </div>';
-                    $('#viewer_details').append(dataHTML);
+            data.forEach((obj) => {               
+                if (obj.analytics_permission!="false")
+                {                    
+                    dataHTML = ''
+                    if (obj) {
+                        dataHTML = '<div class="col-md-4 col-sm-4 col-xs-12"> <div class="viewer-info text-center"> <div class="primary"> <p class="lable">' + obj.full_name + '</p> <p>' + obj.job_title + '</p> </div> <p class="total-view"><span class="lable">Views:</span>' + obj.views + '</p><div class="viewer-time"> <p class="lable">viewing Time:</p> <p>' +  moment.utc(obj.viewing_time*1000).format('HH:mm:ss')+ '</p> </div> <div class="last-view-time"> <p class="lable">last View:</p> <p> ' + moment(obj.utc_datetime).format("MMM DD YYYY hh:mm A", 'en')+ '</p> </div> </div> </div>';
+                        $('#viewer_details').append(dataHTML);
+                    }
+                }
+                else
+                {                    
+                    dataHTML = ''
+                    if (i==1) {
+                        dataHTML = `<div class="col-md-12 col-sm-12 col-xs-12"> <div class="viewer-info text-center"> <div class="primary"> <a href="${site_url}user/upgrade" style="text-decoration: underline !important;">You must upgrade your account to Premier Subscription in order  to see pitch details..</a> </div> </div> </div>`;
+                        $('#viewer_details').append(dataHTML);      
+                        i++;                
+                    }
+                   // return false; 
+                   // break; 
                 }
             })
             $('#viewer_analysis').modal('show');

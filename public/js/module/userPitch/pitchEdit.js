@@ -11,6 +11,7 @@ const pitchEdit = function () {
         $('.preview_docx').hide();
         $('#main-box').addClass('active_one');
 
+
         $('#continue_btn_main').on("click", function () {
             console.log("Drop ZONE",$('#drop_zone_edit').val());
             if ($('#c-name').val() == '') {
@@ -287,6 +288,7 @@ const pitchEdit = function () {
             cnt2++;
         });
 
+
         var pitch_id = $('#pitch_token').val();
         var input = document.querySelector('input[name="drop_zone[]"]')
         var formData = new FormData();
@@ -296,11 +298,18 @@ const pitchEdit = function () {
                 formData.append('pitch_files', obj);
             }
         })
+
         ad_text_array.forEach((obj) => {
             if (obj) {
                 formData.append('pitch_text', obj);
             }
         })
+
+        // if (ad_text_array.length == 1) {
+        //     alert("Please fill document information fields");
+        //     location.reload();
+        // }
+
         $('.loader_hp_').show('50');
         $.ajax({
             url: site_url + 'add_new_file',
@@ -313,10 +322,11 @@ const pitchEdit = function () {
             method: 'POST',
             data: formData,
             success: function (response) {
-                console.log("response",response);
+                console.log("response", response.message);
                 if (!response.success) {
                     return alert(JSON.stringify(response.message));
                 }
+               
                 //_____Form will hide till email box display________________________
                 //$('#add_new_pitch_form').hide('100');
 
@@ -339,7 +349,16 @@ const pitchEdit = function () {
                     //$('#email_body').val(response.viewers[0].email_body);
                     $('#email_body').val("Add a message and/or notes");
                     $('.loader_hp_').hide('50');
-                    $('#viewers_emails').modal('show');
+                   
+                    if (response.publish=="no")
+                    {
+                        alert(response.message);
+                        window.location = '/user/dashboard';                       ;
+                    }
+                    else
+                    {
+                        $('#viewers_emails').modal('show');
+                    }
                 }
                
             },

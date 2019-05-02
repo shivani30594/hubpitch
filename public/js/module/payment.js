@@ -24,22 +24,28 @@ const getCookie = (name) => {
     if (parts.length == 2) return parts.pop().split(";").shift();
 }
 
-function handlePaymentTable(amount, id) {
-    //let user_id = getCookie('newtoken');
+function handlePaymentTable(amount, id, plan_key) {
+
+    // let user_id = getCookie('newtoken');
     // if (user_id == undefined) {
     //     alert('Something Went Wrong With Token');
     //     window.location = '/'
     // }
-    let payableamount = amount * 100
+
+
+    document.cookie = "planid=" + id;
+    let payableamount = Math.round(amount * 100);
+    console.log("amount payebel", amount, payableamount);
     // let encodedDataD = payableamount + ',' + user_id + ',' + id
-    let encodedDataD = payableamount + ',' + id
-    
+    let encodedDataD = payableamount + ',' + id + ',' + plan_key;
+
     var encodedData = window.btoa(encodedDataD); // encode a string
     $('.loader_hp_').show();
     let script = '<form action="/payment_status/' + encodedData + '" method="POST"> <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_nN2AAsg2jHlJxmCky4QOiuPe" data-name="hubPitch Membership" data-amount="' + payableamount + '"> <input type="hidden" name="amount" value="' + amount + '" /> </form>';
     $("#" + id + "_submmiting").html(script);
     $("#" + id + "_stripe_confi").modal('show');
     $('.loader_hp_').hide();
+
 }
 
 function handlePaymentTableFree(id) {
@@ -56,13 +62,14 @@ function handlePaymentTableFree(id) {
 function signUpFree(id) {
     // alert(id);
     //let token = Math.random().toString(36).slice(2)
-     document.cookie = "planid=" + id;
+    document.cookie = "planid=" + id;
     // document.cookie = "newtoken=" + token;  
-     window.location = '/signup';
+    window.location = '/signup';
+
     // let user_id = getCookie('planid');
     // alert(user_id);
-    //let user_id = getCookie('newtoken');
-    //let encodedDataD = user_id + ',' + id
+    // let user_id = getCookie('newtoken');
+    // let encodedDataD = user_id + ',' + id
     // let encodedDataD =  id;
     // var encodedData = window.btoa(encodedDataD); // encode a string
     // $.ajax({

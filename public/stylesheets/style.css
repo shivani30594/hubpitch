@@ -683,7 +683,7 @@ label.pitch_views_time.pitch_viewers {cursor: pointer;}
 .list-wrap ul li.published {background-color: #fbe4e4;}
 
 #publish_pitch .model-body {display: inline-block;padding: 20px 15px;}
-#publish_pitch  .check-box-group{margin: 15px 0;}
+#publish_pitch .check-box-group{margin: 15px 0;}
 #publish_pitch input#final_name {padding: 2px 4px;width: 300px;}
 button#create_pitch{border: none;color: #ffffff;padding: 6px 12px;margin-top: 20px;
 background-image: -webkit-linear-gradient(top,#337ab7 0,#265a88 100%);
@@ -693,16 +693,30 @@ background-image: linear-gradient(to bottom,#337ab7 0,#265a88 100%);
 }
 #publish_pitch .modal-title {font-size: 15px;}
 /* For open modal 2 */
-#conversation_modal.in{    overflow-x: hidden;   overflow-y: auto;}
+#conversation_modal.in{overflow-x: hidden;   overflow-y: auto;}
 
+.customer-demo {
+    background-color: #eef9ea;
+    padding: 50px 20px;
+    border: 1px solid #e4e4e4;
+    margin: 0 100px;
+}
 
-
+.customer-demo .video-wrap video{width: 100%}
+.customer-demo .video-wrap {
+    width: 500px;
+    height: auto;
+    margin: 0 auto;
+    border: 2px solid #b9b8b8;
+    background-color: #f1f1f1;
+}
 
 
 
 @media screen and (max-width: 1199px){
 	.menu-items > ul li{padding: 0 35px;}
 }
+
 @media screen and (max-width: 991px){
     .form_inner_data form {max-width: 470px;}
 	.sign-up-form input[type="email"], .sign-up-form input[type="password"], .sign-up-form input[type="text"],.form-bottom{width: 400px;}
@@ -760,12 +774,14 @@ background-image: linear-gradient(to bottom,#337ab7 0,#265a88 100%);
     .edit-wrap textarea {margin: 15px 0 0 0;width: 100%;}
     .card-box.blue-box .action-wapper #final_name {width: 85%;}
 }
+
 @media screen and (max-width: 600px){
 	.mobile-menu{width: 33%;}
 	.logged-user {width: 25%;}
     .search-box {width: 40%;}
     .payment_details .modal-body .columns{width: 100% !important;}
 }
+
 @media only screen and (max-width: 667px) and (min-width: 480px) {
     .payment_box_wrraper .payment_box .button {font-size: 13px;}
 }
@@ -779,8 +795,6 @@ background-image: linear-gradient(to bottom,#337ab7 0,#265a88 100%);
 	.logged-user {width: 29%;}
 	.search-box {width: 50%;}
 }
-
-
 
 /**/
 
@@ -804,7 +818,10 @@ border: 8px solid #cecece;
 .payment_box_wrraper .payment_box_btn-wrap a.button{display: inline-block;width: 280px;font-size: 20px;background-color: #ea5050;cursor: pointer;}
 .payment_box_wrraper .payment_box_btn-wrap a.button:hover{color: #ffffff;background-color: #e03f3f;}
 
-
+.price p.other_details {
+    font-size: 20px;
+    min-height: 56px;
+}
 
 
 /* Safari */

@@ -33,9 +33,10 @@ const signout = () => {
 }
 
 // ME AJAX CALL
-const meUser = () => {
+const meUser = () => {    
     let userName = getCookie('cuser');
-    let company_name = getCookie('company_name');
+    let company_name = getCookie('company_name');     
+    console.log("hello",window.location.href);
     if (userName == undefined || company_name == undefined) {
         let accesstoken = getCookie('accesstoken')
         $.ajax({
@@ -50,21 +51,30 @@ const meUser = () => {
             success: function (response) {
                 console.log("response",response);
                 if (!response.success) {
+                    alert(response.error.details[0].message);                    
                     window.location.href = "/";
-                   // return alert(JSON.stringify(response.message));
+                    
                 }
+                else
+                {
                 //console.log("data",response);
                 let data = response.data[0];
                 let name = data.first_name + ' ' + data.last_name;
                 let company_name = data.company_name;
+
+                if (company_name == null  && window.location.href != site_url + "user/profile") {
+                    $('#MessageModal').modal('show');
+                }
+
                 document.cookie = "cuser=" + name;
                 document.cookie = "ucompany=" + company_name;                
                 let userName = getCookie('cuser');
                 $('#c_user_box').text(userName);
                 $('#company_name_user').text(company_name);
+                }
             },
             error: function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
+                alert("Request failed: " + "Failed to authenticate token");
                 window.location.href = "/";
             }
         });

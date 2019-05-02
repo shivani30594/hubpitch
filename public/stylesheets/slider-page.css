@@ -209,7 +209,27 @@ button.full_screen_ i {margin-left: 7px;}
 .preview-custome-wraper .download-btn .fa{color: #ffffff;}
 .preview-custome-wraper:hover .download-btn{opacity: 1;}
 
+.panel-footer.end-user-messaging #btn-input-error{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: -22px;
+    font-size: 12px;
+}
+.panel-footer.end-user-messaging .input-group{
+    margin-bottom: 20px;
+}
 
+.panel-footer.end-user-messaging {
+    padding: 20px;
+}
+
+#view_info button.close{
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    opacity: 0.6;
+}
 
 
 
@@ -219,8 +239,8 @@ button.full_screen_ i {margin-left: 7px;}
 
 @media screen and (min-width: 768px){
   .view-presentation-model .modal-content {width: 580px;margin: 0 auto;}
-
 }
+
 @media(max-width: 767px){
 .gallery-wrap .edit-wrap .row {padding: 0px 38px;}
 button.slick-prev.slick-arrow:before , button.slick-next.slick-arrow:before{width: 25px;height: 25px;font-size: 14px;line-height: 1.8;}

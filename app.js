@@ -18,13 +18,13 @@ app.use(logger('dev'));
 app.use(fileUpload());
 
 app.use(cookieParser());
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: false
-})); 
-  
+}));
+
 app.use(express.static(path.join(__dirname, 'public')));
-var enableCORS = function(req, res, next) {
+var enableCORS = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, access-token, Content-Length, X-Requested-With, *');
@@ -34,7 +34,7 @@ var enableCORS = function(req, res, next) {
     next();
   }
 };
-app.all("/*", function(req, res, next) {
+app.all("/*", function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, access-token, Content-Length, X-Requested-With, *');
@@ -46,13 +46,26 @@ app.use(enableCORS);
 app.use('/admin', indexRouter);
 app.use('/', usersRouter);
 
+app.get(`/`, async (ereq, eres) => {
+
+  const http = (options) => {
+    return new Promise((resolve, reject) => {
+      request(options, (err, res, body) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(body));
+      });
+    });
+  };
+});
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   next(createError(404));
 // });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -61,7 +74,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(3000,function(err,result){
+app.listen(3000, function (err, result) {
   console.log("Project successfully diployed on port -3000");
 });
 

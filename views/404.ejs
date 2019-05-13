@@ -1,14 +1,64 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+<style>
+    .error-page {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .error-page .logo {
+        width: 180px;
+        margin-bottom: 30px;
+    }
+
+    .error-page h1 {
+        font-size: 65px;
+        text-transform: uppercase;
+        margin-bottom: 40px;
+        font-weight: 700;
+    }
+
+    .error-page p {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .btn-default {
+        border: 1px solid #39cb04;
+        padding: 11px 30px;
+        text-transform: capitalize;
+        margin-top: 20px;
+        color: white;
+        background: #39cb04;
+        transition: 0.5s;
+    }
+
+    .btn-default:hover {
+        color: #39cb04;
+        background: white;
+        border: 1px solid #39cb04;
+        transition: 0.5s;
+    }
+</style>
+
 <div class="container">
 
     <div class="row err-404-row">
-        <div class="text-center col-md-8 col-xs-12 col-md-offset-2">
-
-            <h1 class="fa fa-frown-o"></h1>
-            <h2><strong>404 Page Not Found</strong></h2>
+        <div class="text-center col-md-8 col-xs-12 col-md-offset-2 error-page">
+            <a href="#">
+                <img src="/img/logo.png" alt="Logo" class="img-fluid logo">
+            </a>
+            <h1>404 Page Not Found</h1>
 
             <p>Please, search again using more specific keywords.</p>
-
+            <a href="#" class="btn btn-default"> go to home</a>
         </div>
     </div>
 
 </div>
+<script src="/js/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>

@@ -199,7 +199,7 @@ class enduserController {
                 pitch_token: Joi.string().required(),
                 user_token: Joi.strict().required(),
                 user_email: Joi.strict().required(),
-                company_name:Joi.string().required(),
+                company_name: Joi.string().required(),
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
@@ -254,7 +254,7 @@ class enduserController {
                     subject: "You're invited To Visit hubPitch by " + req.body.sender_name, // Subject line
                     html: newEmail
                 };
-                
+
                 // send mail with defined transport object
                 smtpTransport.sendMail(mailOptions, function (err, info) {
                     if (err) {
@@ -298,7 +298,7 @@ class enduserController {
                             results2,
                             fields2) {
                             if (error2) {
-                                console.log(error2,results2,fields2);
+                                console.log(error2, results2, fields2);
                             }
                             if (results2) {
                                 if (results2[0].user_setting == 'true' && results2[0].pitch_setting == 'true') {
@@ -310,7 +310,7 @@ class enduserController {
                                     tomail = req.body.user_email;
                                     // setup e-mail data with unicode symbols
                                     // Email Body Builder 
-                                    newEmail = 'Your Pitch,' + req.body.company_name + ' was recently shared by a client of yours. This is a good sign that a final Decision Maker is viewing your sales pitch!<br /><br /></u>Who Shared your Pitch?</u><br/>Contact : ' + req.body.sender_name + ' <br /> Their Role at the Company : ' + req.body.sender_role + ' <br/><br/><u></u>Who Received your Pitch?</u><br/>Contact Email Address : ' +req.body.email_id+'<br/><br/><p><small> **The best time to connect with a client is when they are viewing your material. Try sending them a message through the hubPitch Chat.** </small> <br/><br/> <small> hubPitch Sales Team </small><br/> Seattle, WA </p>'
+                                    newEmail = 'Your Pitch,' + req.body.company_name + ' was recently shared by a client of yours. This is a good sign that a final Decision Maker is viewing your sales pitch!<br /><br /></u>Who Shared your Pitch?</u><br/>Contact : ' + req.body.sender_name + ' <br /> Their Role at the Company : ' + req.body.sender_role + ' <br/><br/><u></u>Who Received your Pitch?</u><br/>Contact Email Address : ' + req.body.email_id + '<br/><br/><p><small> **The best time to connect with a client is when they are viewing your material. Try sending them a message through the hubPitch Chat.** </small> <br/><br/> <small> hubPitch Sales Team </small><br/> Seattle, WA </p>'
                                     var mailOptions = {
                                         from: process.env.USERNAME, // sender address
                                         to: tomail, // list of receivers
@@ -318,7 +318,7 @@ class enduserController {
                                         html: newEmail
                                     };
 
-                                   // send mail with defined transport object
+                                    // send mail with defined transport object
                                     smtpTransport.sendMail(mailOptions, function (err, info) {
                                         if (err) {
                                             console.log(err)
@@ -415,7 +415,6 @@ class enduserController {
         }
 
     }
-
     static async getMessage(req, res) {
         try {
             const pitchData = Joi.validate(Object.assign(req.params, req.body), {
@@ -458,7 +457,7 @@ class enduserController {
                 pitch_token: Joi.string().required(),
                 company_name: Joi.string().required(),
                 user_email: Joi.string().required(),
-                company_name:Joi.string().required()
+                company_name: Joi.string().required()
             });
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
@@ -477,7 +476,7 @@ class enduserController {
                     pass: process.env.PASSWORD
                 }
             });
-            console.log("user id and password",process.env.HPEMAILUSER, process.env.PASSWORD)
+            console.log("user id and password", process.env.HPEMAILUSER, process.env.PASSWORD)
             db.query("SELECT ( select `notification_2` from hp_users_info where user_id = '" + req.body.receiver + "') AS user_setting,( select allow_messaging from hp_pitch_manager where pitch_id ='" + req.body.pitch_token + "') AS pitch_setting", function (error2,
                 results2,
                 fields2) {
@@ -487,7 +486,7 @@ class enduserController {
                         fields2);
                 }
                 if (results2) {
-                    console.log("Rip",results2)
+                    console.log("Rip", results2)
                     if (results2[0].user_setting == 'true' && results2[0].pitch_setting == 'true') {
                         // -------------------------------mail sending-----------------------------
                         var tomail = "";
@@ -681,7 +680,7 @@ class enduserController {
                             console.log('EMAIL SENT');
                             res.send({ success: "true", message: "New Note created" });
                         }
-                    });           
+                    });
 
                 } else {
                     return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
@@ -694,60 +693,60 @@ class enduserController {
         }
     }
 
-    static downloadDocument(req,res){
-        try{
-            const pitchData = Joi.validate(Object.assign(req.params, req.body), {               
-                end_user_name: Joi.string().required(),              
+    static downloadDocument(req, res) {
+        try {
+            const pitchData = Joi.validate(Object.assign(req.params, req.body), {
+                end_user_name: Joi.string().required(),
                 user_email: Joi.string().required(),
                 company_name: Joi.string().required(),
                 end_user_role: Joi.string().required()
-            });    
+            });
             // end_user_name: endUserName,
             //     user_email: sender_email,
             //         company_name: company_name
             var smtpTransport = nodemailer.createTransport({
-                    service: process.env.SERVICE,
-                    auth: {
-                        user: process.env.HPEMAILUSER,
-                        pass: process.env.PASSWORD
-                    }
-                });
-                // -------------------------------mail sending-----------------------------
-                var tomail = "";
-                let share = '';
-                let newEmail = '';
-                let emailLog = {};
-                tomail = req.body.user_email;
-                // setup e-mail data with unicode symbols
-                // Email Body Builder 
-            newEmail = 'A document was recently downloaded and is being viewed right now! <br /><br />Pitch Name:' + req.body.company_name + ' <br />Contact:' + req.body.end_user_name + ' <br /> Their Role at the Company:' + req.body.end_user_role+' <br/> Name of Document: <br/><p><small> **The best time to connect with a client is when they are viewing your material. Try sending them a message through the hubPitch Chat.** </small> <br/><br/> <small> hubPitch Sales Team </small><br/> Seattle, WA </p>'
-                var mailOptions = {
-                    from: process.env.USERNAME, // sender address
-                    to: tomail, // list of receivers
-                    subject: 'NOTIFICATION: Document Downloaded from Pitch ' + req.body.company_name , // Subject line
-                    html: newEmail
-                };
+                service: process.env.SERVICE,
+                auth: {
+                    user: process.env.HPEMAILUSER,
+                    pass: process.env.PASSWORD
+                }
+            });
+            // -------------------------------mail sending-----------------------------
+            var tomail = "";
+            let share = '';
+            let newEmail = '';
+            let emailLog = {};
+            tomail = req.body.user_email;
+            // setup e-mail data with unicode symbols
+            // Email Body Builder 
+            newEmail = 'A document was recently downloaded and is being viewed right now! <br /><br />Pitch Name:' + req.body.company_name + ' <br />Contact:' + req.body.end_user_name + ' <br /> Their Role at the Company:' + req.body.end_user_role + ' <br/> Name of Document: <br/><p><small> **The best time to connect with a client is when they are viewing your material. Try sending them a message through the hubPitch Chat.** </small> <br/><br/> <small> hubPitch Sales Team </small><br/> Seattle, WA </p>'
+            var mailOptions = {
+                from: process.env.USERNAME, // sender address
+                to: tomail, // list of receivers
+                subject: 'NOTIFICATION: Document Downloaded from Pitch ' + req.body.company_name, // Subject line
+                html: newEmail
+            };
 
-                console.log("subject : ", mailOptions.subject);
-                // console.log("list of receivers : ", mailOptions.to);
-                //  'Notification: Pitch "' + req.body.company_name + '" was viewed'
-                //  send mail with defined transport object
-                smtpTransport.sendMail(mailOptions, function (err, info) {
-                    if (err) {
-                        console.log(err)
-                        res.send({
-                            success: false,
-                            message: "Something Went Wrong!"
-                        });
-                    } else {
-                        console.log('EMAIL SENT');
-                        console.log('tomail SENT');
-                        console.log('EMAIL SENT');
-                        res.send({ success: "true", message: "New Note created" });
-                    }
-                });
+            console.log("subject : ", mailOptions.subject);
+            // console.log("list of receivers : ", mailOptions.to);
+            //  'Notification: Pitch "' + req.body.company_name + '" was viewed'
+            //  send mail with defined transport object
+            smtpTransport.sendMail(mailOptions, function (err, info) {
+                if (err) {
+                    console.log(err)
+                    res.send({
+                        success: false,
+                        message: "Something Went Wrong!"
+                    });
+                } else {
+                    console.log('EMAIL SENT');
+                    console.log('tomail SENT');
+                    console.log('EMAIL SENT');
+                    res.send({ success: "true", message: "New Note created" });
+                }
+            });
         }
-        catch(error) {
+        catch (error) {
             console.error(error);
             res.send({ success: false, error });
         }

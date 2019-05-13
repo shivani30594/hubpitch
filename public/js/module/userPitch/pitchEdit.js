@@ -13,10 +13,10 @@ const pitchEdit = function () {
 
 
         $('#continue_btn_main').on("click", function () {
-            console.log("Drop ZONE",$('#drop_zone_edit').val());
+            console.log("Drop ZONE", $('#drop_zone_edit').val());
             if ($('#c-name').val() == '') {
                 Swal('Validation Error', 'Company Name Is Required!', 'error')
-            } 
+            }
             else if ($('#drop_zone_edit').val() == '') {
                 Swal('Validation Error', 'File Is Required!', 'error')
                 alert('File Is Required!');
@@ -42,12 +42,11 @@ const pitchEdit = function () {
 
         $(document).on("click", '.continue_btn', function () {
 
-            if ($('#drop_zone_edit').val() == '') {               
+            if ($('#drop_zone_edit').val() == '') {
                 alert('File Is Required!');
                 //location.reload();
             }
-            else
-            {
+            else {
                 $('.active_one').hide();
                 $('div').removeClass('active_one');
                 $(".current_preview").show('200');
@@ -65,7 +64,7 @@ const pitchEdit = function () {
             var $value = $(this).parent('.file').find('.file-value');
             // Get the value of the input
             var val = $input.val();
-           // let checkFileTypeWithPlanM = checkFileTypeWithPlan(val);
+            // let checkFileTypeWithPlanM = checkFileTypeWithPlan(val);
             //if (checkFileTypeWithPlanM == true) {
             // Normalize strings    
             val = val.replace(/\\/g, "/");
@@ -219,16 +218,16 @@ const pitchEdit = function () {
                     return false;
                 });
             }
-            else {     
-                           
+            else {
+
                 alert('FILE TYPE NOT SUPPORTED');
-                $('#add_pitch').trigger("reset");   
-                location.reload();            
-            }          
-        
+                $('#add_pitch').trigger("reset");
+                location.reload();
+            }
+
         })
     }
-  
+
     const handleContinue_final = () => {
         $(document).on("click", '.continue_btn_final', function () {
             let $this = '';
@@ -254,7 +253,7 @@ const pitchEdit = function () {
                     "save table contextmenu directionality emoticons template paste textcolor"
                 ],
                 toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent | forecolor backcolor emoticons",
-                
+
                 style_formats: [
                     { title: 'Bold text', inline: 'b' },
                     { title: 'Red text', inline: 'span', styles: { color: '#ff0000' } },
@@ -324,9 +323,11 @@ const pitchEdit = function () {
             success: function (response) {
                 console.log("response", response.message);
                 if (!response.success) {
-                    return alert(JSON.stringify(response.message));
+                    $('.loader_hp_').hide('50');
+                    alert("Pitch Informmation Can't Be Blank.Please Try Again To Add Pitch!!!");
+                    location.reload();
                 }
-               
+
                 //_____Form will hide till email box display________________________
                 //$('#add_new_pitch_form').hide('100');
 
@@ -336,8 +337,8 @@ const pitchEdit = function () {
                 //$('#pitch_id').val(response.pitch);
                 //alert('Your Pages Are Added Please Reload This Page To See The Changes');
                 if (response.viewers) {
-                   
-                    let emailAdressInput = '';                    
+
+                    let emailAdressInput = '';
                     response.viewers.forEach((obj) => {
                         if (emailAdressInput === '') {
                             emailAdressInput = obj.email_address;
@@ -349,21 +350,21 @@ const pitchEdit = function () {
                     //$('#email_body').val(response.viewers[0].email_body);
                     $('#email_body').val("Add a message and/or notes");
                     $('.loader_hp_').hide('50');
-                   
-                    if (response.publish=="no")
-                    {
+
+                    if (response.publish == "no") {
                         alert(response.message);
-                        window.location = '/user/dashboard';                       ;
+                        window.location = '/user/dashboard';
                     }
-                    else
-                    {
+                    else {
                         $('#viewers_emails').modal('show');
                     }
                 }
-               
+
             },
             error: function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
+                $('.loader_hp_').hide('50');
+                // window.location = '/user/dashboard';
+                //alert("Request failed: " + textStatus);
             }
         });
     }
@@ -393,59 +394,21 @@ function resetFormEdit() {
 function checkEmails() {
     var emails = document.getElementById("emails").value;
     var pre_emails = document.getElementById("pre_emails").value;
-    var url = $(location).attr('href'),
-        parts = url.split("/"),
-        pitch_id = parts[parts.length - 1];
-    if (emails == '') {
-        let accesstoken = getCookie('accesstoken');
-        var pre_email_id_arr = pre_emails.split(',');
-        $.ajax({
-            url: site_url + 'update_share_pitch_email',
-            headers: {
-                'Accept': 'application/json',
-                "access-token": accesstoken
-            },
-            method: 'POST',
-            data: {
-                pre_email_id: JSON.stringify(pre_email_id_arr),
-                new_email_id: '',
-                email_body: $('#email_body').val(),
-                pitch_id: pitch_id,
-                sender_name: $('#c_user_box').text()
-            },
-            dataType: 'json',
-            success: function (response) {
-                if (!response.success) {
-                    return alert(JSON.stringify(response.message));
-                }
-                $('#viewers_emails').modal('hide');
-                if (response.success == 'true') {
-                    alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
-
-                }
-            },
-            error: function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
-            }
-        });
-    } else {
-        var emailArray = emails.split(",");
-        var pre_email_id_arr = pre_emails.split(',');
-        let errorFlag = 0;
-        for (i = 0; i <= (emailArray.length - 1); i++) {
-            if (checkEmail(emailArray[i])) {
-                //Do what ever with the email.
-                console.log(emailArray);
-            } else {
-                errorFlag = errorFlag + 1
-                alert("invalid email: " + emailArray[i]);
-            }
-        }
-        if (errorFlag === 0) {
-            tinyMCE.triggerSave();
-            $('.loader_hp_').show('50');
-            console.log('DO THE API CALL');
+    if ($('#email_body').val().trim() == '' || $('#email_body').val() == "Add a message and/or notes") {
+        alert("Email information can't be empty");
+        $('#email_body').val('');
+    }
+    else if ($('#emails').val().trim() == '') {
+        alert("Recipients Email information can't be empty");
+        $('#emails').val('');
+    }
+    else {
+        var url = $(location).attr('href'),
+            parts = url.split("/"),
+            pitch_id = parts[parts.length - 1];
+        if (emails == '') {
             let accesstoken = getCookie('accesstoken');
+            var pre_email_id_arr = pre_emails.split(',');
             $.ajax({
                 url: site_url + 'update_share_pitch_email',
                 headers: {
@@ -455,7 +418,7 @@ function checkEmails() {
                 method: 'POST',
                 data: {
                     pre_email_id: JSON.stringify(pre_email_id_arr),
-                    new_email_id: JSON.stringify(emailArray),
+                    new_email_id: '',
                     email_body: $('#email_body').val(),
                     pitch_id: pitch_id,
                     sender_name: $('#c_user_box').text()
@@ -463,16 +426,64 @@ function checkEmails() {
                 dataType: 'json',
                 success: function (response) {
                     if (!response.success) {
-                        return alert(JSON.stringify(response.message));
+                        ralert(JSON.stringify(response.message));
                     }
-                    $('.loader_hp_').hide('50');
-                    alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
-                    location.reload();
+                    $('#viewers_emails').modal('hide');
+                    if (response.success == 'true') {
+                        alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
+                        location.reload();
+                    }
                 },
                 error: function (jqXHR, textStatus) {
                     alert("Request failed: " + textStatus);
                 }
             });
+        } else {
+            var emailArray = emails.split(",");
+            var pre_email_id_arr = pre_emails.split(',');
+            let errorFlag = 0;
+            for (i = 0; i <= (emailArray.length - 1); i++) {
+                if (checkEmail(emailArray[i])) {
+                    //Do what ever with the email.
+                    console.log(emailArray);
+                } else {
+                    errorFlag = errorFlag + 1
+                    alert("invalid email: " + emailArray[i]);
+                }
+            }
+            if (errorFlag === 0) {
+                tinyMCE.triggerSave();
+                $('.loader_hp_').show('50');
+                console.log('DO THE API CALL');
+                let accesstoken = getCookie('accesstoken');
+                $.ajax({
+                    url: site_url + 'update_share_pitch_email',
+                    headers: {
+                        'Accept': 'application/json',
+                        "access-token": accesstoken
+                    },
+                    method: 'POST',
+                    data: {
+                        pre_email_id: JSON.stringify(pre_email_id_arr),
+                        new_email_id: JSON.stringify(emailArray),
+                        email_body: $('#email_body').val(),
+                        pitch_id: pitch_id,
+                        sender_name: $('#c_user_box').text()
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (!response.success) {
+                            return alert(JSON.stringify(response.message));
+                        }
+                        $('.loader_hp_').hide('50');
+                        alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus) {
+                        alert("Request failed: " + textStatus);
+                    }
+                });
+            }
         }
     }
 }
@@ -483,7 +494,7 @@ const editText = (id) => {
     $('#pitch_text').val('');
     $('#pitch_info_token').val('');
     let text = $('#textof_' + id).html();
-    console.log('text====',$('#textof_' + id));
+    console.log('text====', $('#textof_' + id));
     $('#pitch_text').val(text);
     $('#pitch_info_token').val(id);
     tinymce.init({
@@ -521,16 +532,18 @@ const editTextCall = () => {
     if (pitch_info_id == undefined || pitch_info_id == '') {
         alert('Something Went Wrong Please Reload The Page');
     } else {
-        if (pitcht_text == '') {
+        let t = pitcht_text.replace(/<[^>]+>/g, '');
+        let p = t.replace(/\&nbsp;/g, '');
+        if (p.trim() == '') {
             alert('Please Add Some Text Contain First');
         } else {
 
             $.ajax({
-                url: site_url+'edit_pitch_text',
+                url: site_url + 'edit_pitch_text',
                 headers: {
                     'Accept': 'application/json',
                 },
-                processData: false,  // tell jQuery not to process the data
+                processData: false,  // tell jQuery not to process the data //$('#pitch_text').val().trim() == ''
                 contentType: false,  // tell jQuery not to set contentType
                 method: 'POST',
                 data: formData,

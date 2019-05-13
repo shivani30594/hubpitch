@@ -28,8 +28,8 @@
 					<div class="search-box">
 						<form>
 							<div class="form-group">
-								<input type="text" class="form-control" id="search_box"  data-live-search="true" placeholder="Search..." value="" onkeyup="search()">
-								<div class="search_res"> 
+								<input type="text" class="form-control" id="search_box" data-live-search="true" placeholder="Search..." value="" onkeyup="search()">
+								<div class="search_res">
 									<ul class="search_res_display">
 
 									</ul>
@@ -37,80 +37,87 @@
 							</div>
 						</form>
 					</div>
+
 					<div class="logged-user" onload="meUser()">
-						
+
 						<ul>
 							<li class="account">
-								<a href="javascript:(void)"><label id="c_user_box"> </label>
+								<a href="javascript:void(0)">
+									<label id="c_user_box"> </label>
 									<span id="company_name_user">hubPitch</span>
 								</a>
-								<ul class="account-sub-menu">
-									<li>
-										<a href="/user/profile">My Settings</a>
-									</li>
-									<li>
-										<a href="/user/upgrade">My Subscription</a>
-									</li>
-									<li>
-										<a href="https://www.hubpitch.com/" target="blank">What's new</a>
-									</li>
-									<li>
-										<a href="https://www.hubpitch.com/resources/" target="blank">Resources</a>
-									</li>
-									<li>
-										<a href="javascript:(void)" onclick="signout()">Sign Out</a>
-									</li>
-								</ul>
+								<div class="logged-event">
+									<ul class="account-sub-menu">
+										<li>
+											<a href="/user/profile">My Settings</a>
+										</li>
+										<li>
+											<a href="/user/upgrade">My Subscription</a>
+										</li>
+										<li>
+											<a href="https://www.hubpitch.com/" target="blank">What's new</a>
+										</li>
+										<li>
+											<a href="https://www.hubpitch.com/resources/" target="blank">Resources</a>
+										</li>
+										<li>
+											<a href="javascript:(void)" onclick="signout()">Sign Out</a>
+										</li>
+									</ul>
+								</div>
 							</li>
 						</ul>
-						
+
+
 					</div>
 				</div>
 				<!-- /.navbar-collapse -->
 			</nav>
 		</div>
 	</div>
-		<!-- Modals -->
-		<div class="modal fade" id="SearchModal" role="dialog">
-			<div class="modal-dialog">
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Support</h4>
-					</div>
-					<div class="modal-body">
-						<p class="modal-head">What can we help you with?</p>
-						<form>
-							<div class="form-group">
-								<textarea id="support_msg" cols="30" rows="10" placeholder="Tell us what we can help you with..."></textarea>
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" onclick="sendSupport()">Send</button>
-					</div>
-				</div>
-		
-			</div>
-		</div>
 
-			<div class="modal fade" id="MessageModal" role="dialog">
-				<div class="modal-dialog">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Setting your profile</h4>
+
+	<!-- Modals -->
+	<div class="modal fade" id="SearchModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Support</h4>
+				</div>
+				<div class="modal-body">
+					<p class="modal-head">What can we help you with?</p>
+					<form>
+						<div class="form-group">
+							<textarea id="support_msg" cols="30" rows="10" placeholder="Tell us what we can help you with..." required></textarea>
 						</div>
-						<div class="modal-body">
-							Please Update Your Profile First : 
-							<a href="/user/profile" style="text-decoration: underline !important;">Click Here To Set Profile</a>
-						</div>						
-					</div>
-			
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" onclick="sendSupport()">Send</button>
 				</div>
 			</div>
+
+		</div>
+	</div>
+
+	<div class="modal fade" id="MessageModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Setting your profile</h4>
+				</div>
+				<div class="modal-body">
+					Please Update Your Profile First :
+					<a href="/user/profile" style="text-decoration: underline !important;">Click Here To Set Profile</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
 	<!-- LOADER  -->
 	<div class="loader_header_">
 		<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>

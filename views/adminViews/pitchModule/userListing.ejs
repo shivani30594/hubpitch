@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../adminComponents/headerFile.ejs %>
+</head>
+
+<body>
+    <% include ../adminComponents/header.ejs %>
+        <div class="form-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card-box">
+
+                            <h4 class="m-t-0 header-title">All Pitchs</h4>
+                            <p class="text-muted m-b-30 font-14">Manage All Pitch From Here.</p>
+
+                            <div class="all-pitchs-table data-table-wapper">
+                                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Send Mail</th>
+                                            <th>User_Name</th>
+                                            <th>Email</th>
+                                            <th>Company_Name</th>
+                                            <th>Payment_type</th>
+                                            <th>role</th>
+                                            <th>Plan_id</th>
+                                            <th>Plan_name</th>
+                                            <th>Plan_price</th>
+                                            <th>Pitch_limits</th>
+                                            <th>Remaining_pitch</th>
+                                            <th>Status</th>
+                                            <th>Created</th>
+                                            <th>End Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_datatable">
+                                        <% for(var i=0; i < data.length; i++) { %>
+                                            <tr>
+                                                <!--  user_id: '5d799c3f-6d02-40b2-9ea5-02bcf567d0f3', first_name: 'Ritika', last_name: 'Patel', email: 'shp@narola.email', password:
+                                                'f9e23497f56820609f1c0023db0567be', is_payment: 'yes', role: 'user', plan_id: 29, transaction_id: 'trial_period', subscription_id:
+                                                'sub_F17ZLSNvs2oBwA', customer_id: 'cus_F17ZPqQY9Ryvzr', activated: 'yes', created: 2019-05-06T11:49:56.000Z, updated: null,
+                                                plan_name: 'Bundle Professional limited', plan_price: 9.95, pitch_limits: '', company_name: null, remaining_pitch: -1, end_date:
+                                                2019-05-06T12:33:09.000Z } ] -->
+                                                <td>
+                                                    <a href="javascript:void(0)" class="share-btn" data-toggle="modal" data-target="#name-window">
+                                                        Send Mail
+                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <%= data[i].first_name %>
+                                                        <%= data[i].last_name %>
+                                                </td>
+                                                <td>
+                                                    <%= data[i].email %>
+                                                </td>
+                                                <td>
+                                                    <%= data[i].company_name%>
+                                                </td>
+                                                <td>
+
+                                                    <% if(data[i].is_payment!='yes'){%>
+                                                        <%= data[i].is_payment %>
+                                                            <% } else { %> Stripe Payment
+                                                                <% } %>
+                                                </td>
+                                                <td>
+                                                    <%= data[i].role %>
+                                                </td>
+                                                <td>
+                                                    <%= data[i].plan_id %>
+                                                </td>
+                                                <td>
+                                                    <%= data[i].plan_name %>
+                                                </td>
+                                                <td>
+                                                    $
+                                                    <%= data[i].plan_price %>
+                                                </td>
+                                                <td>
+                                                    <% if(data[i].pitch_limits!=''){%>
+                                                        <%= data[i].pitch_limits %>
+                                                            <% } else { %> Unlimited
+                                                                <% } %>
+                                                </td>
+                                                <td>
+                                                    <% if(data[i].remaining_pitch != -1){%>
+                                                        <%= data[i].remaining_pitch %>
+                                                            <% } else { %> Unlimited
+                                                                <% } %>
+
+                                                </td>
+                                                <% if(data[i].activated=="yes"){%>
+                                                    <td>
+                                                        <button type="button" class="btn btn-success" onclick="myDeactive('<%= data[i].user_id %>')">Active</button>
+                                                    </td>
+                                                    <% } else { %>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger" onclick="myActivate('<%= data[i].user_id %>')">Deactive</button>
+                                                        </td>
+                                                        <% } %>
+                                                            <td>
+                                                                <%= data[i].created %>
+                                                            </td>
+                                                            <td>
+                                                                <%= data[i].end_date %>
+                                                            </td>
+                                                            <td>
+                                                                <!-- <a class="action-table" href="javascript:void(0)">
+                                                                <span class="glyphicon glyphicon-eye-open"></span>
+                                                                </a> -->
+                                                                <a class="action-table" href="javascript:ConfirmDeleteUser('<%= data[i].user_id %>')">
+                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                </a>
+
+                                                            </td>
+                                            </tr>
+                                            <% } %>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- end card-box -->
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="name-window" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h5 class="modal-title">Share Pitch</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form class="share_pitch_form" name="share_pitch">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email_id">Email Address:</label>
+                                            <input type="email" class="form-control" name="email_id" id="email_id">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="sender_name">Your Message:</label>
+                                            <textarea rows="4" cols="50" class="form-control" name="email_body" id="email_body"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <button type="button" class="btn btn-danger" onclick="sharePitch()">Deactive</button> -->
+                                <button type="submit" name="share_pitch" class="btn btn-primary">Send
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/module/admin/userListing.js"></script>
+</body>
+
+</html>

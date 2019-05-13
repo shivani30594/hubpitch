@@ -68,3 +68,4 @@ div span.error-block {
   border: 1px solid #000000;
   word-wrap: break-word;
 }
+.all-pitchs-table{overflow: auto;} 

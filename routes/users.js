@@ -13,12 +13,14 @@ function wrap(func) {
     };
 }
 /* GENRAL PAGE CALLING METHOD */
-router.get('/', function (req, res, next) {
-    res.render('loginModule/index', { title: 'SignIn || hubPitch' });
-});
+// router.get('/', function (req, res, next) {
+//     res.render('loginModule/index', { title: 'SignIn || hubPitch' });
+// });
+router.get('/', Controller.usersController.checklogin);
 router.get('/signup/:id?', function (req, res, next) {
     res.render('loginModule/signup', { title: 'hubPitch Sign Up', charge: "free" });
 });
+
 router.get('/payment', Controller.stripePaymentController.paymentPage);
 
 router.get('/forgot-password', function (req, res, next) {
@@ -54,6 +56,7 @@ router.get('/admin/dashboard', adminController.dashboardController.dashboard);
 router.get('/admin/profile', adminController.dashboardController.profile);
 router.get('/admin/manage-support', adminController.supportController.get_all_support);
 router.post('/admin/pending_user', adminController.supportController.UsersActivation);
+router.get('/admin/get_user_list', adminController.userController.allUsersView)
 router.get('/admin/manage-pitch', adminController.pitchController.allUsersPitchView)
 router.post('/admin/remove-pitch', adminController.pitchController.allUsersRemovePitch)
 router.post('/admin/active_user', adminController.pitchController.UsersActivation)
@@ -181,6 +184,9 @@ router.post('/video_test2', Controller.videoController.testfluentFFMPEG2);
 router.post('/marge_video', Controller.videoController.margeVideo);
 router.post('/cut_video', Controller.videoController.cutVideoWithTime);
 router.post('/test_stripe', Controller.stripePaymentController.testStripe);
+//Testing template mail
+router.get('/test_mail', Controller.stripePaymentController.tempMail);
+
 router.post('/payment_status/:id', Controller.stripePaymentController.payment);
 router.post('/payment_done/:id', Controller.stripePaymentController.paymentDone);
 router.post('/sign_up_free/:id', Controller.stripePaymentController.signUpFree);

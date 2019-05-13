@@ -6,7 +6,7 @@ const userPitch = function () {
             url: site_url + 'get_user_pitchs',
             headers: {
                 'Accept': 'application/json',
-                "access-token": accesstoken 
+                "access-token": accesstoken
             },
             method: 'POST',
             dataType: 'json',
@@ -23,12 +23,12 @@ const userPitch = function () {
                 } else {
                     data.forEach((obj) => {
                         dataHTML = ''
-                        if (obj.is_published=="yes") {
-                           dataHTML = '<li><div class="list-left"> <a href="/user/pitch/viewer/' + obj.pitch_id + '">  <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <div class="message" onclick="openConversation(' + obj.pitch_id + ')">' + obj.messages + ' New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> <div class="delete-pitch"> <span onclick="deletePitch('+obj.pitch_id+')"> <i class="glyphicon glyphicon-trash"> </i> </span> </div> </div> </li>';
+                        if (obj.is_published == "yes") {
+                            dataHTML = '<li><div class="list-left"> <a href="/user/pitch/viewer/' + obj.pitch_id + '">  <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <div class="message" onclick="openConversation(' + obj.pitch_id + ')">' + obj.messages + ' New Messages</div> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> <div class="delete-pitch"> <span onclick="deletePitch(' + obj.pitch_id + ')"> <i class="glyphicon glyphicon-trash"> </i> </span> </div> </div> </li>';
                             $('.ul_list_wapper').append(dataHTML);
                         }
-                        else{
-                            dataHTML = '<li class="published"><div class="list-left"> <a href="/user/pitch/viewer/' + obj.pitch_id + "?publish=publish" + '">  <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <a href="/user/pitch/viewer/' + obj.pitch_id + "?publish=publish"+'"><div class="message"> Published</div></a> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> <div class="delete-pitch"> <span onclick="deletePitch(' + obj.pitch_id + ')"> <i class="glyphicon glyphicon-trash"> </i> </span> </div> </div> </li>';
+                        else {
+                            dataHTML = '<li class="published"><div class="list-left"> <a href="/user/pitch/viewer/' + obj.pitch_id + "?publish=publish" + '">  <div class="title"><h3>' + obj.company_name + '</h3></div> <div class="uploaded-txt">Uploaded ' + moment(obj.created).format("MMM DD YYYY HH:mm:ss", 'en') + '</div> </a> </div> <div class="list-right"> <a href="/user/pitch/viewer/' + obj.pitch_id + "?publish=publish" + '"><div class="message"> Published</div></a> <div class="pages-num">' + obj.page_count + '<span>Pages</span></div> <div class="delete-pitch"> <span onclick="deletePitch(' + obj.pitch_id + ')"> <i class="glyphicon glyphicon-trash"> </i> </span> </div> </div> </li>';
                             $('.ul_list_wapper').append(dataHTML);
                         }
                     })
@@ -36,7 +36,7 @@ const userPitch = function () {
 
             },
             error: function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
+                //alert("Request failed: " + textStatus);
             }
         });
     }
@@ -69,53 +69,51 @@ function openConversation(id) {
                 $('#conversation_list').html(' ');
                 if (response.success == true) {
                     $('#conversation_box').modal('show');
-                    let data = response.data;  
+                    let data = response.data;
                     //console.log(data);                   
                     let dataHTML = '';
-                    data.forEach((obj) => {  
+                    data.forEach((obj) => {
                         //console.log("riprajGFHGJNHGBMBNM"+obj.msg);                                             
                         dataHTML = ''
                         if (obj.msg == "true") {
-                            if (!obj.messages){
+                            if (!obj.messages) {
                                 dataHTML = `<a href="#">Your inbox is empty.</a>`;
-                                $('#conversation_list').append(dataHTML); 
+                                $('#conversation_list').append(dataHTML);
                             }
-                            else
-                            {
-                                dataHTML = `<li><a href="javascript:openChat(${obj.conversation_id},'${obj.sender}')"><span>${ obj.messages}</span> Messages From ${obj.sender}</a></li>`;
+                            else {
+                                dataHTML = `<li><a href="javascript:openChat(${obj.conversation_id},'${obj.sender}')"><span>${obj.messages}</span> Messages From ${obj.sender}</a></li>`;
                                 $('#conversation_list').append(dataHTML);
                             }
                         }
-                        else
-                        {
+                        else {
                             dataHTML = `<a href="${site_url}user/upgrade" style="text-decoration: underline !important;">You must upgrade your account to Premier Subscription in order to read and respond to the message.</a>`;
                             $('#conversation_list').append(dataHTML);
-                          
-                                let accesstoken = getCookie('accesstoken');
-                                $.ajax({
-                                    url: site_url + 'upgrade_account',
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        "access-token": accesstoken
-                                    },
-                                    method: 'POST',
-                                    success: function (response) {
-                                        if (!response.success) {
-                                            return alert(JSON.stringify(response.message));
-                                        }
 
-                                        // alert('Email Sent To Your Mail, Please upgrade your subscription For See The Updated Page');
-                                        //window.location.href = "/pitch/add";
-                                    },
-                                    error: function (jqXHR, textStatus) {
-                                        alert("Request failed: " + textStatus);
+                            let accesstoken = getCookie('accesstoken');
+                            $.ajax({
+                                url: site_url + 'upgrade_account',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    "access-token": accesstoken
+                                },
+                                method: 'POST',
+                                success: function (response) {
+                                    if (!response.success) {
+                                        return alert(JSON.stringify(response.message));
                                     }
-                                });
+
+                                    // alert('Email Sent To Your Mail, Please upgrade your subscription For See The Updated Page');
+                                    //window.location.href = "/pitch/add";
+                                },
+                                error: function (jqXHR, textStatus) {
+                                    alert("Request failed: " + textStatus);
+                                }
+                            });
                             BREAK
-                            
+
                         }
                     })
-                } 
+                }
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
@@ -142,7 +140,7 @@ function openChat(id, name) {
                 $('#message_body_p').html(' ');
                 if (response.success == 'true') {
                     $('#conversation_box').modal('hide');
-                    $('#conversation_modal').modal('show');                 
+                    $('#conversation_modal').modal('show');
 
                     let data = response.data;
                     let dataHTML = '';

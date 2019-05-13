@@ -4,6 +4,7 @@ const keyPublishable = 'pk_test_nN2AAsg2jHlJxmCky4QOiuPe';
 const keySecret = 'sk_test_1lBmrGdD8351UCKd8BIcHbZh';
 
 const db = require("../dbconfig/db");
+
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const jwtsecret = "Narola123";
@@ -14,6 +15,7 @@ var btoa = require('btoa');
 var atob = require('atob');
 var moment = require('moment');
 const nodemailer = require("nodemailer");
+
 require('dotenv').config()
 
 class stripePaymentController {
@@ -55,9 +57,7 @@ class stripePaymentController {
 				res.render('loginModule/payment', { title: 'Payment Page || hubPitch', data: results, documents_viewer: 'false' });
 			}
 			else if (error) {
-				console.log(error,
-					results,
-					fields);
+				console.log(error, results, fields);
 				res.send({ success: false, message: 'SQL ISSUES', error: error });
 			} else {
 				console.log(error,

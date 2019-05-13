@@ -17,8 +17,8 @@ const userProfile = function () {
                     required: true,
                 }
             },
-            submitHandler: function (form) {               
-                
+            submitHandler: function (form) {
+
                 $('.loader_hp_').show('50');
                 var allow_notification = $('#allow_notification').is(":checked")
                 var allow_messaging = $('#allow_messaging').is(":checked")
@@ -44,7 +44,7 @@ const userProfile = function () {
                             return alert(response.error.details[0].message);
                             location.reload();
                         }
-                        if (response.success == true) { 
+                        if (response.success == true) {
                             $('.loader_hp_').hide('50');
                             alert(response.message);
                             document.cookie = 'cuser' + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
@@ -58,7 +58,7 @@ const userProfile = function () {
                     }
                 });
             }
-            
+
         });
     }
     return {
@@ -74,10 +74,10 @@ jQuery(document).ready(function () {
 
 function changePassword() {
     console.log($('#password').val());
-    if ($('#password').val() == '') {
+    if ($('#password').val().trim() == '') {
         alert('Please Give New Password Input');
     }
-    else if ($('#confirm_password').val() == '') {
+    else if ($('#confirm_password').val().trim() == '') {
         alert('Please Give Confirm Password Input');
     } else if ($('#password').val() != $('#confirm_password').val()) {
         alert('Password & Confirm Password Should Be Same');

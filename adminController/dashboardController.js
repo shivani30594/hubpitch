@@ -27,7 +27,8 @@ class dashboardController {
             if (results) {
                 console.log(results)
                 res.render('adminViews/profileModule/profile', { title: 'Admin Profile || Hub Pitch', datatable: 'FALSE', data: results[0] });
-            } else {
+            }
+            else {
                 console.log(error, results, fields);
                 res.render('adminViews/profileModule/profile', { title: 'Admin Profile || Hub Pitch', datatable: 'FALSE' });
             }

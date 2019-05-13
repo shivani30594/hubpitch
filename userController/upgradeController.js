@@ -53,8 +53,12 @@ class upgradeController {
                         }
                     });
                     console.log("user", auth);
-                    db.query('SELECT * from hp_users  WHERE hp_users.user_id = ?', userid, function (error, results, fields) {
+                    db.query('SELECT * from hp_users WHERE hp_users.user_id = ?', userid, function (error, results, fields) {
                         if (results.length) {
+
+                            if (results[0].subscription_id != '' || results[0].subscription_id != null) {
+                                stripe.subscriptions.del(results[0].subscription_id);
+                            }
                             console.log(results[0].first_name);
                             // -------------------------------mail sending-----------------------------
                             var tomail = "rip@narola.email";
@@ -65,11 +69,11 @@ class upgradeController {
                             // setup e-mail data with unicode symbols
                             // Email Body Builder 
                             var newEmail = `<div>We have received your request for a cancellation of your subscription to hubPitch. Your request has been processed. No further charges will be posted. You can keep this email as a receipt of your cancellation.&nbsp;<br /><br />We are sorry to see you go and hope that you will consider hubPitch services in the future.&nbsp;</div>
-                                <div>&nbsp;</div>
-                                <div>If you change your mind, you can login to your original account and re-activate your subscription here: <a href="http://www.bundle-hubpitch.com" target="_blank" rel="noopener">http://www.bundle-hubpitch.com</a></div>
-                                <div>&nbsp;</div>
-                                <div>-The hubPitch Team</div>
-                                <div><a href="http://www.hubpitch.com" target="_blank" rel="noopener">www.hubpitch.com</a>&nbsp;</div>`
+                                    <div>&nbsp;</div>
+                                    <div>If you change your mind, you can login to your original account and re-activate your subscription here: <a href="http://www.bundle-hubpitch.com" target="_blank" rel="noopener">http://www.bundle-hubpitch.com</a></div>
+                                    <div>&nbsp;</div>
+                                    <div>-The hubPitch Team</div>
+                                    <div><a href="http://www.hubpitch.com" target="_blank" rel="noopener">www.hubpitch.com</a>&nbsp;</div>`
                             var mailOptions = {
                                 from: process.env.HPEMAILUSER, // sender address
                                 to: tomail, // list of receivers
@@ -224,10 +228,11 @@ class upgradeController {
                     customer: customer.id
                 }))
             .then(charge => {
+                var customer_id = charge.customer;
                 var charge_id = charge.id;
                 stripe.subscriptions.create({
                     customer: charge.customer,
-                    items: [{ plan: 'plan_Es6caY2JfAYbpW' }],
+                    items: [{ plan: array[3] }],
                     billing: 'send_invoice',
                     days_until_due: 5,
                 }, function (err, subscription) {
@@ -236,7 +241,7 @@ class upgradeController {
                     }
                     else {
 
-                        db.query('UPDATE hp_users SET is_payment="yes",	plan_id="' + array[2] + '",	transaction_id="' + charge.id + '" WHERE user_id="' + userid + '"', function (error,
+                        db.query('UPDATE hp_users SET is_payment="yes",	plan_id="' + array[2] + '",	transaction_id="' + charge.id + '" , subscription_id="' + subscription.id + '" , customer_id="' + customer_id + '"  WHERE user_id="' + userid + '"', function (error,
                             results,
                             fields) {
                             if (error) {
@@ -268,7 +273,7 @@ class upgradeController {
                                         let hp_users_pitch_limit_data = {
                                             user_id: userid,
                                             remaining_pitch: pitch_limit,
-                                            end_date: moment(expire).format("YYYY-MM-DD HH:mm:ss")
+                                            end_date: moment(Date.now()).add(1, 'months').format('LLLL')
                                         }
 
                                         // db.query("INSERT INTO hp_users_pitch_limit SET?", hp_users_pitch_limit_data, function (
@@ -725,7 +730,7 @@ class upgradeController {
                                 let hp_users_pitch_limit_data = {
                                     user_id: userid,
                                     remaining_pitch: pitch_limit,
-                                    end_date: moment(expire).format("YYYY-MM-DD HH:mm:ss")
+                                    end_date: moment(Date.now()).add(1, 'months').format('LLLL')
                                 }
 
                                 db.query('UPDATE hp_users_pitch_limit SET remaining_pitch="' + pitch_limit + '",end_date="' + moment(expire).format("YYYY-MM-DD HH:mm:ss") + '" WHERE user_id="' + userid + '"', function (

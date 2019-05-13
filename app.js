@@ -60,22 +60,30 @@ app.get(`/`, async (ereq, eres) => {
   };
 });
 // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
+app.use(function (req, res, next) {
+  // res.status(config.NOT_FOUND).json({
+  //   status: 0,
+  //   message: "Invalid route"
+  // })//yeha se
+  //res.send("<h1>page not found</h1>");
+  res.render('404')
+  console.log('404 => ');
+});
 
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  console.log(err);  // render the error page
+  console.log("RIP", err);  // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send("<h1>Error</h1>");
 });
 
 app.listen(3000, function (err, result) {
   console.log("Project successfully diployed on port -3000");
 });
+
+
 
 module.exports = app;

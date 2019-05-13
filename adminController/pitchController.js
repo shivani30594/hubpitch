@@ -7,6 +7,7 @@ var async = require('async')
 
 class pitchController {
 
+
     static async allUsersPitchView(req, res, next) {
         let userid = '';
         jwt.verify(req.cookies.accesstoken, jwtsecret, function (err, decoded) {
@@ -14,7 +15,8 @@ class pitchController {
 
                 return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
 
-            } else {
+            }
+            else {
 
                 userid = decoded.user;
             }
@@ -25,10 +27,10 @@ class pitchController {
             fields
         ) {
             if (results) {
-                db.query("Select * from hp_users", function (errro1, results1, fields1) {
-                    console.log("results1", results1);
-                });
-                console.log("results", results);
+                // db.query("Select * from hp_users", function (errro1, results1, fields1) {
+                //     console.log("results1", results1);
+                // });
+                // console.log("results", results);
                 res.render('adminViews/pitchModule/pitchListing', { title: 'All Users Pitch || hubPitch', data: results, datatable: 'TRUE' });
             } else {
                 console.log(error, results, fields);
@@ -48,17 +50,15 @@ class pitchController {
         //     }
         // });
     }
+
     static async UsersActivation(req, res, next) {
         try {
-            console.log()
             let sql = 'UPDATE hp_users SET activated="yes"  WHERE user_id="' + req.body.user_id + '"';
             db.query(sql, function (error,
                 results,
                 fields) {
                 if (error) {
-                    console.log(error,
-                        results,
-                        fields);
+                    console.log(error, results, fields);
                     console.log(sql)
                     res.send({ success: false, message: "SQL ISSUES IN USERS" });
                 }
@@ -73,9 +73,9 @@ class pitchController {
             res.send({ success: false, error });
         }
     }
+
     static async UsersDeactivation(req, res, next) {
         try {
-
             let sql = 'UPDATE hp_users SET activated="no"  WHERE user_id="' + req.body.user_id + '"';
             db.query(sql, function (error,
                 results,
@@ -99,12 +99,10 @@ class pitchController {
         }
 
     }
+
     static async  allUsersRemovePitch(req, res, next) {
-        db.query("DELETE FROM `hp_users` WHERE user_id=?", req.body.user_id, function (
-            error,
-            results,
-            fields
-        ) {
+
+        db.query("DELETE FROM `hp_users` WHERE user_id=?", req.body.user_id, function (error, results, fields) {
             if (results) {
                 res.send({ success: true, message: 'User Has Deleted!' });
             }
@@ -122,6 +120,7 @@ class pitchController {
         });
 
     }
+
     static async getPitch(req, res, next) {
         var token = req.headers['access-token'];
         let userid = '';
@@ -178,6 +177,5 @@ class pitchController {
             res.send({ success: false, error });
         }
     }
-
 }
 module.exports = pitchController;

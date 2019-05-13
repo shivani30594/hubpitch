@@ -140,7 +140,6 @@ const newPitch = function () {
                                     pdfJS = new PdfJS();
                                 }
                                 instance = pdfJS;
-
                                 instance.setCMapUrl('cmaps/');
                             }
 
@@ -314,18 +313,22 @@ const newPitch = function () {
             data: formData,
             success: function (response) {
                 if (!response.success) {
-                    return alert(JSON.stringify(response.message));
+                    alert("Pitch Informmation Can't Be Blank.Please Try Again To Add Pitch!!!");
+                    window.location.href = "/pitch/add";
                 }
-                console.log('response', response);
-                $('#add_new_pitch_form').hide('100');
-                let cName = $('#c-name').val();
-                $('#final_section').show('100');
-                $('#final_name').val(cName);
-                $('#pitch_id').val(response.pitch);
-                $('.loader_hp_').hide('50');
+                else {
+                    console.log('response', response);
+                    $('#add_new_pitch_form').hide('100');
+                    let cName = $('#c-name').val();
+                    $('#final_section').show('100');
+                    $('#final_name').val(cName);
+                    $('#pitch_id').val(response.pitch);
+                    $('.loader_hp_').hide('50');
+                }
             },
             error: function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
+                $('.loader_hp_').hide('50');
+                // alert("Request failed: " + textStatus);
             }
         });
     }
@@ -404,6 +407,7 @@ function checkEmail(email) {
 }
 
 function checkEmails() {
+
     var emails = document.getElementById("emails").value;
     var emailArray = emails.split(",");
     let errorFlag = 0;
@@ -420,35 +424,49 @@ function checkEmails() {
 
         tinyMCE.triggerSave();
         let accesstoken = getCookie('accesstoken');
-        $('.loader_hp_').show('50');
-        $.ajax({
-            url: site_url + 'share_pitch_email',
-            headers: {
-                'Accept': 'application/json',
-                "access-token": accesstoken
-            },
-            method: 'POST',
-            data: {
-                email_id: JSON.stringify(emailArray),
-                email_body: $('#email_body').val(),
-                pitch_token: $('#pitch_id').val(),
-                sender_name: $('#c_user_box').text(),
-                pitch_url: $('#link_value').attr('href')
-            },
-            dataType: 'json',
-            success: function (response) {
-                if (!response.success) {
-                    return alert(JSON.stringify(response.message));
+        let s = document.getElementById("email_body").value;
+        let t = s.replace(/<[^>]+>/g, '');
+        let p = t.replace(/\&nbsp;/g, '');
+
+        alert(p.trim());
+        if (p.trim() == '') {
+            alert("Email information can't be empty");
+            $('#email_body').val('');
+        }
+        else {
+            $('.loader_hp_').show('50');
+            $.ajax({
+                url: site_url + 'share_pitch_email',
+                headers: {
+                    'Accept': 'application/json',
+                    "access-token": accesstoken
+                },
+                method: 'POST',
+                data: {
+                    email_id: JSON.stringify(emailArray),
+                    email_body: $('#email_body').val(),
+                    pitch_token: $('#pitch_id').val(),
+                    sender_name: $('#c_user_box').text(),
+                    pitch_url: $('#link_value').attr('href')
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (!response.success) {
+                        $('.loader_hp_').hide('50');
+                        return alert(JSON.stringify(response.message));
+                    }
+                    $('.loader_hp_').hide('50');
+                    alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
+                    window.location.href = "/user/dashboard";
+                },
+                error: function (jqXHR, textStatus) {
+                    $('.loader_hp_').hide('50');
+                    alert("Request failed: " + textStatus);
                 }
-                $('.loader_hp_').hide('50');
-                alert('Email Sent To Your Viewers, Please Reload The Page For See The Updated Page');
-                window.location.href = "/user/dashboard";
-            },
-            error: function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
-            }
-        });
+            });
+        }
     }
+
 }
 
 function checkFileTypeWithPlan(file) {
@@ -646,19 +664,23 @@ const handleContinueUploadDrafts = () => {
         data: formData,
         success: function (response) {
             if (!response.success) {
-                return alert(JSON.stringify(response.message));
+                alert("Pitch Informmation Can't Be Blank.Please Try Again To Add Pitch!!!");
+                window.location.href = "/pitch/add";
             }
-            window.location = site_url + 'user/dashboard';
-            console.log('response', response);
-            $('#add_new_pitch_form').hide('100');
-            let cName = $('#c-name').val();
-            $('#final_section').show('100');
-            $('#final_name').val(cName);
-            $('#pitch_id').val(response.pitch);
-            $('.loader_hp_').hide('50');
+            else {
+                window.location = site_url + 'user/dashboard';
+                console.log('response', response);
+                $('#add_new_pitch_form').hide('100');
+                let cName = $('#c-name').val();
+                $('#final_section').show('100');
+                $('#final_name').val(cName);
+                $('#pitch_id').val(response.pitch);
+                $('.loader_hp_').hide('50');
+            }
         },
         error: function (jqXHR, textStatus) {
-            alert("Request failed: " + textStatus);
+            $('.loader_hp_').hide('50');
+            // alert("Request failed: " + textStatus);
         }
     });
 }

@@ -96,6 +96,7 @@ class pitchController {
                 user_id: userid,
             }
             if (_.size(req.files) == 1 && _.size(req.files['pitch_files']) == 7) {
+                console.log("ritt", _.size(req.files['pitch_files']));
                 fileExtension = '';
                 filename = '';
                 thisFile = req.files['pitch_files'];
@@ -165,6 +166,7 @@ class pitchController {
                                                 fields1) {
                                                 if (results1) {
                                                     var limit_data = results1[0].remaining_pitch;
+                                                    console.log("fdhgfh", results1[0].remaining_pitch);
                                                     if (limit_data != -1 && limit_data != 0) {
                                                         limit_data = limit_data - 1;
                                                     }
@@ -227,6 +229,7 @@ class pitchController {
                 var ext = '';
                 counter = 0;
                 async.eachSeries(req.files.pitch_files, function (value, each_callback) {
+                    console.log("12345bhfgbhnbmmmmmmmmmmm");
                     fileExtension = '';
                     filename = '';
                     thisFile = [];
@@ -307,15 +310,38 @@ class pitchController {
                                 callback();
                             }, function (err) {
                                 if (err) console.error(err.message);
+                                console.log("12345");
                                 // configs is now a map of JSON 
                                 // console.log('SaveABle LENGTH', saveAble.length);
                                 // console.log('Counter', counter_temp);
                                 res.send({ success: "true", message: "New Pitch Added", pitch: pitchID });
-                                db.query("Update hp_users_pitch_limit SET remaining_pitch='5' WHERE user_id=?", userid, function (error1,
+
+
+
+
+
+                                db.query("SELECT remaining_pitch FROM `hp_users_pitch_limit` where user_id=?", userid, function (error1,
                                     results1,
                                     fields1) {
                                     if (results1) {
+                                        var limit_data = results1[0].remaining_pitch;
+                                        console.log("fdhgfh", results1[0].remaining_pitch);
+                                        if (limit_data != -1 && limit_data != 0) {
+                                            limit_data = limit_data - 1;
+                                        }
+                                        db.query("Update hp_users_pitch_limit SET remaining_pitch=? WHERE user_id=?", [limit_data, userid], function (error1,
+                                            results2,
+                                            fields2) {
+                                            if (results2) {
 
+                                            }
+                                            else {
+                                                console.log(error2,
+                                                    results2,
+                                                    fields2)
+                                                res.send({ success: "false", message: "Something went wrong || Info Table" });
+                                            }
+                                        });
                                     }
                                     else {
                                         console.log(error1,
@@ -324,6 +350,19 @@ class pitchController {
                                         res.send({ success: "false", message: "Something went wrong || Info Table" });
                                     }
                                 });
+                                // db.query("Update hp_users_pitch_limit SET remaining_pitch='5' WHERE user_id=?", userid, function (error1,
+                                //     results1,
+                                //     fields1) {
+                                //     if (results1) {
+
+                                //     }
+                                //     else {
+                                //         console.log(error1,
+                                //             results1,
+                                //             fields1)
+                                //         res.send({ success: "false", message: "Something went wrong || Info Table" });
+                                //     }
+                                // });
                             });
                         }
                         else {
@@ -342,8 +381,8 @@ class pitchController {
         }
     }
 
-    static upgradePlanEmail(req, res){
-     
+    static upgradePlanEmail(req, res) {
+
         var smtpTransport = nodemailer.createTransport({
             service: process.env.SERVICE,
             auth: {
@@ -399,7 +438,7 @@ class pitchController {
                 console.log(error, results, fields);
             }
         });
-        
+
     }
     static async addPitchDraft(req, res) {
         try {
@@ -779,7 +818,7 @@ class pitchController {
                 results,
                 fields
             ) {
-                console.log('------------------1',error,
+                console.log('------------------1', error,
                     results,
                     fields)
                 if (results) {
@@ -903,8 +942,8 @@ class pitchController {
                 } else {
                     userid = decoded.user;
                 }
-            });   
-            db.query('SELECT * ,(SELECT sharing_tracking FROM hp_membership_plan where plan_id =(SELECT plan_id FROM hp_users where user_id="'+userid+'")) as sharing_tracking_permission FROM hp_email_log WHERE `pitch_id` = ?', req.body.pitch_id, function (error, results, fields) {
+            });
+            db.query('SELECT * ,(SELECT sharing_tracking FROM hp_membership_plan where plan_id =(SELECT plan_id FROM hp_users where user_id="' + userid + '")) as sharing_tracking_permission FROM hp_email_log WHERE `pitch_id` = ?', req.body.pitch_id, function (error, results, fields) {
                 if (error) {
                     res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
                 }
@@ -998,7 +1037,7 @@ class pitchController {
             results,
             fields
         ) {
-            if (results) {                
+            if (results) {
                 //console.log(results)
                 res.render('userViews/pitchModule/editPitch', { title: 'View Pitch || Hub Pitch', dir_parth: '/uploads/test/', data: results, results_length: results.length, documents_viewer: 'true' });
             } else {
@@ -1102,7 +1141,7 @@ class pitchController {
                 }
             });
 
-            db.query('SELECT (SELECT user_to_customer_messaging FROM `hp_membership_plan` where plan_id = (select plan_id from hp_users where user_id ="'+ userid +'"))as msg, hp_conversation.conversation_id,hp_pitch_chat_tbl.sender,COUNT(*) as messages FROM hp_conversation JOIN hp_pitch_chat_tbl ON hp_conversation.conversation_id = hp_pitch_chat_tbl.conversation_id WHERE hp_conversation.pitch_id=? GROUP BY hp_conversation.conversation_id', req.body.pitch_id, function (
+            db.query('SELECT (SELECT user_to_customer_messaging FROM `hp_membership_plan` where plan_id = (select plan_id from hp_users where user_id ="' + userid + '"))as msg, hp_conversation.conversation_id,hp_pitch_chat_tbl.sender,COUNT(*) as messages FROM hp_conversation JOIN hp_pitch_chat_tbl ON hp_conversation.conversation_id = hp_pitch_chat_tbl.conversation_id WHERE hp_conversation.pitch_id=? GROUP BY hp_conversation.conversation_id', req.body.pitch_id, function (
                 error,
                 results,
                 fields
@@ -1111,8 +1150,7 @@ class pitchController {
                     res.send({ success: false, error });
                 }
                 if (results) {
-                    if(results.length == 0)
-                    {
+                    if (results.length == 0) {
                         db.query('SELECT user_to_customer_messaging as "msg" FROM `hp_membership_plan` where plan_id = (select plan_id from hp_users where user_id ="' + userid + '")', function (
                             error1,
                             results1,
@@ -1122,16 +1160,15 @@ class pitchController {
                                 res.send({ success: false, error1 });
                             }
                             if (results1) {
-                               
+
                                 res.send({ success: true, data: results1 });
                             }
                         });
                     }
-                    else
-                    {
+                    else {
                         res.send({ success: true, data: results });
-                    }                 
-                 
+                    }
+
                 }
             });
         }
@@ -1252,9 +1289,9 @@ class pitchController {
                                         if (error1) {
                                             console.log(error1, results1, fields1);
                                             res.send({ success: "true", message: "New Pitch Added || In Something Went Wrong" });
-                                        }                     
-                                       
-                                        res.send({ success: "true", message: "New Pitch Added", viewers: results1, publish:results1[0].is_published });
+                                        }
+
+                                        res.send({ success: "true", message: "New Pitch Added", viewers: results1, publish: results1[0].is_published });
                                     })
                                 } else {
                                     console.log(error,
@@ -1267,8 +1304,7 @@ class pitchController {
                     }
                 });
             }
-            else 
-            {
+            else {
                 var temp = [];
                 var ext = '';
                 counter = 0;
@@ -1829,7 +1865,7 @@ class pitchController {
                                 if (error) {
                                     res.send({ success: "false", message: "Something went wrong || EMAIL Analytics" });
                                 }
-                               // callback();
+                                // callback();
                             })
                             callback();
                         }
@@ -1858,16 +1894,16 @@ class pitchController {
             }
 
             var token = req.headers['access-token'];
-            let userid = '';            
+            let userid = '';
             jwt.verify(token, jwtsecret, function (err, decoded) {
                 if (err) {
                     return res.status(500).send({ success: false, message: 'Failed to authenticate token.' });
                 } else {
                     userid = decoded.user;
                 }
-            });            
+            });
             db.query(
-                'SELECT hp_pitch_viewer_analytics.views,(SELECT pitch_analytics FROM hp_membership_plan where plan_id =(SELECT plan_id FROM hp_users where user_id="' + userid +'")) as analytics_permission,CONVERT_TZ(hp_pitch_viewer_analytics.created, @@session.time_zone, "+00:00") AS `utc_datetime`,hp_pitch_user_viewer.full_name,hp_pitch_user_viewer.job_title,hp_pitch_viewer_analytics.viewing_time FROM hp_pitch_viewer_analytics LEFT JOIN hp_pitch_user_viewer ON hp_pitch_viewer_analytics.viewer_id = hp_pitch_user_viewer.viewer_id  WHERE hp_pitch_viewer_analytics.pitch_info_id ="' + req.body.pitch_info_id + '"',
+                'SELECT hp_pitch_viewer_analytics.views,(SELECT pitch_analytics FROM hp_membership_plan where plan_id =(SELECT plan_id FROM hp_users where user_id="' + userid + '")) as analytics_permission,CONVERT_TZ(hp_pitch_viewer_analytics.created, @@session.time_zone, "+00:00") AS `utc_datetime`,hp_pitch_user_viewer.full_name,hp_pitch_user_viewer.job_title,hp_pitch_viewer_analytics.viewing_time FROM hp_pitch_viewer_analytics LEFT JOIN hp_pitch_user_viewer ON hp_pitch_viewer_analytics.viewer_id = hp_pitch_user_viewer.viewer_id  WHERE hp_pitch_viewer_analytics.pitch_info_id ="' + req.body.pitch_info_id + '"',
                 function (error1, results1, fields1) {
                     if (error1) {
                         console.log(error1);
@@ -1875,7 +1911,7 @@ class pitchController {
                     if (results1) {
                         res.send({
                             success: true,
-                            data: results1,                            
+                            data: results1,
                         });
                     } else {
                         res.send({
@@ -1899,7 +1935,7 @@ class pitchController {
                 allow_messaging: Joi.string().required(),
                 allow_share: Joi.string().required()
             });
-            console.log("data"+pitchData);
+            console.log("data" + pitchData);
             if (pitchData.error) {
                 res.send({ success: false, error: pitchData.error });
                 return;
@@ -1924,7 +1960,7 @@ class pitchController {
                     console.log("Something went wrong at Temp Data");
                     return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' })
                 }
-                if (results) { 
+                if (results) {
                     db.query("Update hp_pitch_master SET is_published='yes' WHERE pitch_id=?", req.body.pitch_id, function (error1, results1,
                         fields1) {
                         if (error1) {
@@ -1954,7 +1990,7 @@ class pitchController {
                                     results2,
                                     fields2) {
                                     if (results2) {
-                                        
+
                                     }
                                     else {
                                         console.log(error2,

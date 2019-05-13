@@ -40,8 +40,8 @@
     <script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
     <script>
         //const site_url = "http://:3000/";
-       const site_url = "http://localhost:3000/";
-       //const site_url = "http://www.bundle-hubpitch.com:80/";
+        const site_url = "http://localhost:3000/";
+        //const site_url = "http://www.bundle-hubpitch.com:80/";
         var instance = null;
         function display_docx(params, i) {
             var req = new XMLHttpRequest();
@@ -65,6 +65,7 @@
                         });
                     }, function (e) {
                         console.log("Error!", e);
+
                     }
                 );
             };
@@ -141,10 +142,10 @@
             req.send();
         }
         $(document).on('click', '.slick-active .prev-btn', function () {
-          
+
             currentId = instance.getCurrentId();
-            
-              console.log("current id",currentId);
+
+            console.log("current id", currentId);
             instance.gotoPage(currentId - 1);
             console.log('instance', instance);
             return false;
@@ -154,7 +155,7 @@
             console.log('next');
             currentId = instance.getCurrentId();
             console.log("current id", currentId);
-            instance.gotoPage(currentId + 1);             
+            instance.gotoPage(currentId + 1);
             console.log('instance', instance);
             return false;
         });
@@ -176,6 +177,7 @@
             instance.setZoom(currentZoom - 0.5);
             return false;
         });
+
         function display_excel(params, i) {
             var req = new XMLHttpRequest();
             //Check File URL & domain origin
@@ -209,16 +211,15 @@
         }
     </script>
 </head>
+
 <body>
     <div class="container">
         <input type="hidden" id="pitch_token" value="<%= pitch_token %>">
         <div class="slider-main-wrapper">
             <div class="alert alert-success" id="success-alert">
-                <button type="button" class="close" data-dismiss="alert">x</button>
-                <strong>Email Sent Successfully</strong>
-                Thank You For Sharing Pitch.
+
             </div>
-           
+
             <div class="gallery-wrap">
                 <input type="hidden" class="pitch_analytics" value="<%= pitch_analytics %>">
                 <div class="single-item">
@@ -249,12 +250,15 @@
                                                         </div>
                                                         <% } %>
                                                             <% if (data[i].pitch_attachment_type == 'application') { %>
-                                                                <input type="hidden" value="0" class="sliderViewer">                                                               
+                                                                <input type="hidden" value="0" class="sliderViewer">
                                                                 <div class="preview-custome-wraper">
-                                                                    <a href="<%= dir_parth+data[i].pitch_attachment_name %>" onclick="download_document('<%= data[i].pitch_attachment_type %>')" download class="download-btn"> <i class="fa fa-download" aria-hidden="true"></i> </a>  
-                                                                     <div class="preview">
-                                                                            <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e" width="500" height="600" />
-                                                                     </div>
+                                                                    <a href="<%= dir_parth+data[i].pitch_attachment_name %>" onclick="download_document('<%= data[i].pitch_attachment_type %>')"
+                                                                        download class="download-btn">
+                                                                        <i class="fa fa-download" aria-hidden="true"></i>
+                                                                    </a>
+                                                                    <div class="preview">
+                                                                        <embed src="<%= dir_parth+data[i].pitch_attachment_name %>" class="docs_priview_e" width="500" height="600" />
+                                                                    </div>
                                                                 </div>
                                                                 <% } %>
                                                                     <% if(data[i].pitch_attachment_type == 'docx') { %>
@@ -341,7 +345,7 @@
                                                         <div class="input-group">
                                                             <textarea rows="4" cols="50" class="form-control" style="color:#080808;" id="note_<%= data[i].pitch_info_id %>" name="note_<%= data[i].pitch_info_id %>"></textarea>
                                                             <label class="error_custom error_custom_error_<%= data[i].pitch_info_id %>" style="display: none">
-                                                                Please Note Text Are Required
+                                                                Please Note Text Is Required
                                                             </label>
                                                         </div>
                                                         <button type="button" id="submit_btn_note_<%= data[i].pitch_info_id %>" class="btn btn-default btn-sm" onclick="submitNote('<%= data[i].pitch_info_id %>')">
@@ -376,325 +380,321 @@
             <a href="javascript:void(0)" class="send-message" id="conversation_" style="display:block"> Send
                 <%= user_name %> a Message</a>
 
-                <div class="row">
-                    <div class="unread_count_wapper">
-                        <button class="unread_count" onclick="openChatModal()"></button>
-                    </div>
+            <div class="row">
+                <div class="unread_count_wapper">
+                    <button class="unread_count" onclick="openChatModal()"></button>
                 </div>
+            </div>
             <!-- <% if(plan.user_to_customer_messaging == 'true') { %> -->
-                
-                <!-- <% } %> -->
-                    <input type="hidden" id="sender_name_value" name="sender_name_value" value="<%= user_name %>">
-                    <input type="hidden" id="user_token" value="<%= user_token %>">
-                    <input type="hidden" id="user_email" value="<%= data[0].email %>">
-                    <input type="hidden" id="company_name" value="<%= data[0].company_name %>">
+
+            <!-- <% } %> -->
+            <input type="hidden" id="sender_name_value" name="sender_name_value" value="<%= user_name %>">
+            <input type="hidden" id="user_token" value="<%= user_token %>">
+            <input type="hidden" id="user_email" value="<%= data[0].email %>">
+            <input type="hidden" id="company_name" value="<%= data[0].company_name %>">
         </div>
     </div>
-<div class="modal fade" id="chat-window" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <form class="send_message_form" name="send_message_form">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h5 class="modal-title"></h5>
-                    <h5 class=""></h5>
-                </div>
-                <div id="message_body" class="modal-body">
-                    <!-- <div class="msg-block">
+    <div class="modal fade" id="chat-window" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <form class="send_message_form" name="send_message_form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h5 class="modal-title"></h5>
+                        <h5 class=""></h5>
+                    </div>
+                    <div id="message_body" class="modal-body">
+                        <!-- <div class="msg-block">
                             <div class="msg-head">
                                 <h5>Name</h5>
                                 <span class="time-right">time</span>
                             </div>
                             <p>MSG</p>
                         </div> -->
-                    <!-- <div class="msg-block darker">
+                        <!-- <div class="msg-block darker">
                             <div class="msg-head">
                                 <h5>Name</h5>
                                  <span class="time-right">TIME</span> 
                             </div>
                             <p></p>
                         </div> -->
+                    </div>
+                    <div class="typing-box ">
+                        <div class="panel-footer end-user-messaging">
+                            <div class="input-group">
+                                <input id="btn-input" name="chat_msg" type="text" class="form-control input-sm chat_msg" placeholder="Type your message here...">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-warning btn-sm" id="btn-chat">
+                                        Send</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="typing-box ">
-                    <div class="panel-footer end-user-messaging">
+            </form>
+        </div>
+    </div>
+    <!-- Modal -->
+    <!-- <% if(plan.user_to_customer_messaging == 'true') { %> -->
+
+    <!-- <% } %> -->
+    <!-- Modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="chat-window-dummy" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title">Dennis S.</h5>
+                    <h5 class="">hubpitch</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="msg-block">
+                        <div class="msg-head">
+                            <h5>Jack Sparrow</h5>
+                            <span class="time-right">11:00 AM</span>
+                        </div>
+                        <p>Hello. How are you today?</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper
+                            ligula sodales.</p>
+                    </div>
+                    <div class="msg-block darker">
+                        <div class="msg-head">
+                            <h5>Bhaumik Patel</h5>
+                            <span class="time-right">11:01 AM</span>
+                        </div>
+                        <p>Hey! I'm fine. Thanks for asking!</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper
+                            ligula sodales.</p>
+                    </div>
+                </div>
+                <div class="typing-box">
+                    <div class="panel-footer">
                         <div class="input-group">
-                            <input id="btn-input" name="chat_msg" type="text" class="form-control input-sm chat_msg" placeholder="Type your message here...">
+                            <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
                             <span class="input-group-btn">
-                                <button type="submit" class="btn btn-warning btn-sm" id="btn-chat">
+                                <button class="btn btn-warning btn-sm" id="btn-chat">
                                     Send</button>
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
     <!-- Modal -->
-    <!-- <% if(plan.user_to_customer_messaging == 'true') { %> -->
-       
-        <!-- <% } %> -->
-            <!-- Modal -->
-            <!-- Modal -->
-            <div class="modal fade" id="chat-window-dummy" role="dialog">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h5 class="modal-title">Dennis S.</h5>
-                            <h5 class="">hubpitch</h5>
-                        </div>
-                        <div class="modal-body">
-                            <div class="msg-block">
-                                <div class="msg-head">
-                                    <h5>Jack Sparrow</h5>
-                                    <span class="time-right">11:00 AM</span>
-                                </div>
-                                <p>Hello. How are you today?</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor,
-                                    quis ullamcorper ligula sodales.</p>
-                            </div>
-                            <div class="msg-block darker">
-                                <div class="msg-head">
-                                    <h5>Bhaumik Patel</h5>
-                                    <span class="time-right">11:01 AM</span>
-                                </div>
-                                <p>Hey! I'm fine. Thanks for asking!</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor,
-                                    quis ullamcorper ligula sodales.</p>
-                            </div>
-                        </div>
-                        <div class="typing-box">
-                            <div class="panel-footer">
-                                <div class="input-group">
-                                    <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-warning btn-sm" id="btn-chat">
-                                            Send</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Modal -->
+    <% if(plan.sharing_tracking == 'true') { %>
+        <div class="modal fade" id="name-window" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h5 class="modal-title">Share Pitch</h5>
                     </div>
-                </div>
-            </div>
-            <!-- Modal -->
-            <!-- Modal -->
-            <% if(plan.sharing_tracking == 'true') { %>
-                <div class="modal fade" id="name-window" role="dialog">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h5 class="modal-title">Share Pitch</h5>
-                            </div>
-                            <div class="modal-body">
-                                <form class="share_pitch_form" name="share_pitch">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="email_id">Email Address:</label>
-                                                <input type="text" class="form-control" name="email_id" id="email_id">
-                                            </div>
-                                        </div>
-                                        <!-- <div class="col-md-6">
+                    <div class="modal-body">
+                        <form class="share_pitch_form" name="share_pitch">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="email_id">Email Address:</label>
+                                        <input type="email" class="form-control" name="email_id" id="email_id">
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="sender_name">Your Name:</label>
                                                 <input type="text" name="sender_name" class="form-control" id="sender_name">
                                             </div>
                                         </div> -->
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="sender_name">Your Message:</label>
-                                                <textarea rows="4" cols="50" class="form-control" name="email_body" id="email_body"></textarea>
-                                            </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="sender_name">Your Message:</label>
+                                        <textarea rows="4" cols="50" class="form-control" name="email_body" id="email_body"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" name="share_pitch" class="btn btn-primary">Send
+                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+            </div>
+            <!-- Modal -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="add_name_model" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Please Enter Your Name</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="conversation_creater_form" name="conversation_creater_form" method="post">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label for="end_user_name">Insert Your Name: </label>
+                                            <input type="text" class="form-control" name="end_user_name" id="end_user_name">
                                         </div>
                                     </div>
-                                    <button type="submit" name="share_pitch" class="btn btn-primary">Send
-                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    <button type="submit" name="add_name_" class="btn btn-primary" id="add_name_to_user"> Send a Message </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="add_name_model_simple" role="dialog">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Please Enter Your Name</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="add_name_form" name="add_name_form" method="post">
+                                <input type="hidden" id="active_info" value="">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label for="end_user_name">Name: </label>
+                                            <input type="text" class="form-control" name="end_user_name_" id="end_user_name_">
+                                        </div>
+                                    </div>
+                                    <button type="submit" name="add_user_name" class="btn btn-primary" id="add_user_name"> Add Name
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
                                     </button>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- LOADER  -->
+            <div class="loader_hp_">
+                <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+            </div>
+            <!-- Modal-01 -->
+            <div class="modal fade view-presentation-model" id="view_name" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-center">
+                                <img src="/img/logo.png" alt="Logo">
+                            </h4>
+                        </div>
+                        <div class="modal-body text-center">
+                            <p>You're Invited to View a Presentation1</p>
+                            <form method="POST" name="add_name" id="add_name" class="invite-form">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="view_name" name="view_name" placeholder="Enter Your Name">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="job_title" name="job_title" placeholder="Enter Your Role / Title">
+                                </div>
+                                <button type="submit" name="submit" value="submit" class="btn btn-default"> View the Material </button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <% } %>
-                    </div>
-                    <!-- Modal -->
+            </div>
+            <!-- /Modal-01 -->
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="add_name_model" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Please Enter Your Name</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="conversation_creater_form" name="conversation_creater_form" method="post">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group">
-                                                    <label for="end_user_name">Insert Your Name: </label>
-                                                    <input type="text" class="form-control" name="end_user_name" id="end_user_name">
-                                                </div>
-                                            </div>
-                                            <button type="submit" name="add_name_" class="btn btn-primary" id="add_name_to_user"> Send a Message </button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
 
+            <!-- Modal-02 -->
+            <div class="modal fade view-presentation-model" id="login">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-center">
+                                <img src="/img/logo.png" alt="Logo">
+                            </h4>
+                        </div>
+                        <div class="modal-body text-center">
+                            <p>You're Invited to View a Presentation</p>
+
+                            <form method="POST" name="login" id="login_popup" class="invite-form">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="email" name="email" disabled="disabled" placeholder="Enter Your Email" value="<%=view_email %>">
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="pwd" name="password" placeholder="Your Password">
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" name="submit" value="submit" class="btn btn-default"> View the Material </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
+                </div>
+            </div>
+            <!-- /Modal-02 -->
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="add_name_model_simple" role="dialog">
-                        <div class="modal-dialog">
-                           
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Please Enter Your Name</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="add_name_form" name="add_name_form" method="post">
-                                        <input type="hidden" id="active_info" value="">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group">
-                                                    <label for="end_user_name">Name: </label>
-                                                    <input type="text" class="form-control" name="end_user_name_" id="end_user_name_">
-                                                </div>
-                                            </div>
-                                            <button type="submit" name="add_user_name" class="btn btn-primary" id="add_user_name"> Add Name
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
+
+            <!-- Modal-03 -->
+            <div class="modal fade view-presentation-model" id="view_info" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <div class="modal-header">
+
+                            <h4 class="modal-title text-center">
+                                <img src="/img/logo.png" alt="Logo">
+                            </h4>
+
 
                         </div>
-                    </div>
+                        <div class="modal-body text-center">
+                            <center>
+                                <h1>
 
-                    <!-- LOADER  -->
-                    <div class="loader_hp_">
-                        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-                    </div>
-                    <!-- Modal-01 -->
-                    <div class="modal fade view-presentation-model" id="view_name" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title text-center">
-                                        <img src="/img/logo.png" alt="Logo">
-                                    </h4>
-                                </div>
-                                <div class="modal-body text-center">
-                                    <p>You're Invited to View a Presentation</p>
-                                    <form method="POST" name="add_name" id="add_name">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="view_name" name="view_name" placeholder="Enter Your Name">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="job_title" name="job_title" placeholder="Enter Your Role / Title">
-                                        </div>
-                                        <button type="submit" name="submit" value="submit" class="btn btn-default"> View the Material </button>
-                                    </form>
-                                </div>
-                            </div>
+                                    <strong>Welcome to your</strong>
+                                    <br />
+                                    <strong>Product Overview</strong>
+                                </h1>
+                                <p style="color:black">
+                                    <strong>
+                                        <span style="text-decoration: underline;">Feature available for you when viewing:</span>
+                                    </strong>
+                                    <br/> Document Downloading Direct Messaging Notes Collaboration
+                                    <br />Team Sharing
+                                    <br />
+                                    <br />
+                                </p>
+                                <p style="color:black">
+                                    <em>If you have any question, please do not hesitate to reach out to </em>
+                                    <br />
+                                    <em>your contact via Direct Message.</em>
+                                </p>
+                            </center>
                         </div>
                     </div>
-                    <!-- /Modal-01 -->
-
-
-                    <!-- Modal-02 -->
-                    <div class="modal fade view-presentation-model" id="login">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title text-center">
-                                        <img src="/img/logo.png" alt="Logo">
-                                    </h4>
-                                </div>
-                                <div class="modal-body text-center">
-                                    <p>You're Invited to View a Presentation</p>
-
-                                    <form method="POST" name="login" id="login_popup">
-                                        <div class="form-group">
-                                            <input type="email" class="form-control" id="email" name="email" disabled="disabled" placeholder="Enter Your Email" value="<%=view_email %>">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" id="pwd" name="password" placeholder="Your Password">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <button type="submit" name="submit" value="submit" class="btn btn-default"> View the Material </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Modal-02 -->
-
-
-                        <!-- Modal-03 -->
-                        <div class="modal fade view-presentation-model" id="view_info" role="dialog">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <div class="modal-header">
-                                        
-                                        <h4 class="modal-title text-center">
-                                            <img src="/img/logo.png" alt="Logo">
-                                        </h4>                  
-                                           
-                                    
-                                    </div>
-                                    <div class="modal-body text-center">
-                                    <center>
-                                        <h1>
-                                           
-                                            <strong>Welcome to your</strong>
-                                            <br />
-                                            <strong>Product Overview</strong>
-                                        </h1>
-                                        <p style="color:black">
-                                            <strong>
-                                                <span style="text-decoration: underline;">Feature available for you when viewing:</span>
-                                            </strong><br/>
-                                        
-                                            Document Downloading
-                                            Direct Messaging
-                                            Notes   Collaboration
-                                            <br />Team Sharing
-                                            <br />
-                                            <br />
-                                        </p>
-                                        <p style="color:black">
-                                            <em>If you have any question, please do not hesitate to
-                                                reach out to </em>
-                                            <br />
-                                            <em>your contact via Direct Message.</em>
-                                        </p>
-                                    </center>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Modal-03 -->
-                    <script src="/js/module/endUser/pitchSliders.js"></script>
-                    <script src="/js/module/endUser/pitchDeck.js"></script>
+                </div>
+            </div>
+            <!-- /Modal-03 -->
+            <script src="/js/module/endUser/pitchSliders.js"></script>
+            <script src="/js/module/endUser/pitchDeck.js"></script>
 </body>
 
 </html>

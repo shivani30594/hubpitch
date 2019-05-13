@@ -7,7 +7,7 @@ var async = require('async')
 
 class userController {
 
-    static async allUsersPitchView(req, res, next) {
+    static async allUsersView(req, res, next) {
         let userid = '';
         jwt.verify(req.cookies.accesstoken, jwtsecret, function (err, decoded) {
             if (err) {
@@ -19,15 +19,16 @@ class userController {
                 userid = decoded.user;
             }
         });
-        db.query("SELECT DISTINCT master.user_id,master.pitch_id,master.company_name,count(*) as page_count,hp_users.activated,CONCAT(hp_users.first_name,' ',hp_users.last_name) AS username,master.created FROM hp_pitch_master as master JOIN hp_pitch_info ON master.pitch_id=hp_pitch_info.pitch_id JOIN hp_users ON master.user_id = hp_users.user_id GROUP BY hp_pitch_info.pitch_id ORDER BY master.created DESC", function (
+        db.query("SELECT u.*,m.plan_name,m.plan_price,m.pitch_limits,uf.company_name,pl.remaining_pitch,pl.end_date FROM hp_users as u LEFT JOIN hp_users_pitch_limit as pl on u.user_id=pl.user_id LEFT JOIN hp_users_info as uf on u.user_id=uf.user_id LEFT JOIN hp_membership_plan as m ON  u.plan_id = m.plan_id where u.role = 'user'", function (
             error,
             results,
             fields
         ) {
             if (results) {
                 console.log("results", results);
-                res.render('adminViews/pitchModule/pitchListing', { title: 'All Users Pitch || hubPitch', data: results, datatable: 'TRUE' });
-            } else {
+                res.render('adminViews/pitchModule/userListing', { title: 'All Users Pitch || hubPitch', data: results, datatable: 'TRUE' });
+            }
+            else {
                 console.log(error, results, fields);
                 return res.status(500).send({ success: false, message: 'Something Went Wrong || Get Query Issues' });
             }
@@ -75,7 +76,6 @@ class userController {
 
     static async UsersDeactivation(req, res, next) {
         try {
-
             let sql = 'UPDATE hp_users SET activated="no"  WHERE user_id="' + req.body.user_id + '"';
             db.query(sql, function (error,
                 results,

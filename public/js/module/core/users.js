@@ -7,37 +7,75 @@ const getCookie = (name) => {
     if (parts.length == 2) return parts.pop().split(";").shift();
 }
 
-const removeCookies = () => {
+const signout = () => {
     var cookies = document.cookie.split(";");
-    for (var i = 0; i < cookies.length; i++) {
+    for (var i = cookies.length - 1; i >= 0; i--) {
         var cookie = cookies[i];
         var eqPos = cookie.indexOf("=");
         var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
         //console.log(name);
-        document.cookie = "accesstoken"+ "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-       // console.log("dc", document.cookie);
-       // document.cookie.clearCookie(name);   
+        //document.cookie = "accesstoken" + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        // document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        // document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        // "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"      
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        // console.log("dc", document.cookie);
+        // document.cookie.clearCookie(name);   
     }
-    
+
     window.location.href = "/?logout=true";
 }
-const signout = () => {
-    var res = document.cookie;
-    var multiple = res.split(";");
-    for (var i = 0; i < multiple.length; i++) {
-        var key = multiple[i].split("=");
-        document.cookie = key[0] + " =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
-    }
+var delete_cookie = function (name) {
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+};
+const removeCookies = () => {
+
+    // document.cookie = "username=" + "John Doe"; "expires=" + Date.now();
+    //document.cookie = "  accesstoken=";
+    // document.cookie = "amt=" + 'cbvcn';
+    // document.cookie = "accesstoken=" + '';
+
+    // var res = document.cookie;
+    // var multiple = res.split(";");
+    // console.log("before", document.cookie);
+
+    // for (var i = 0; i < multiple.length; i++) {
+    //     var key = multiple[i].split("=");
+    //     console.log('key => ', key[0]);
+    //     if (key[0].trim() == "accesstoken") {
+    //         console.log('accesstocken => ');
+
+    //         document.cookie.set('accesstoken', "");
+    //         document.cookie.set(key[1], "");
+    //         document.cookie.remove("accesstoken", "");
+    //         document.cookie.remove(key[1], "");
+    //     }
+    //     document.cookie.set("accesstoken", "");
+    //     document.cookie.set(key[1], "");
+    //     document.cookie.remove("accesstoken", "");
+    //     document.cookie.remove(key[1], "");
+    //     console.log('document.cookie => ', document.cookie);
+
+    //     // document.cookie = key[0] + " =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
+    //     // console.log("before", document.cookie);
+    //     // document.cookie.set(key[0], "");
+    //     // console.log("after", document.cookie);
+    // }
+    // console.log("after", document.cookie);
+    // 
+    // console.log("cooke", res);
     //cookieHelper.setCookie('jwt', '', 0)
-    window.location.href = "/?logout=true";
+    //window.location.href = "/?logout=true";
 }
 
 // ME AJAX CALL
-const meUser = () => {    
+const meUser = () => {
     let userName = getCookie('cuser');
-    let company_name = getCookie('company_name');     
-    console.log("hello",window.location.href);
+    let company_name = getCookie('company_name');
+    console.log("hello", window.location.href);
+
     if (userName == undefined || company_name == undefined) {
+
         let accesstoken = getCookie('accesstoken')
         $.ajax({
             type: 'POST',
@@ -49,28 +87,26 @@ const meUser = () => {
             method: 'POST',
             dataType: 'json',
             success: function (response) {
-                console.log("response",response);
+                console.log("response", response);
                 if (!response.success) {
-                    alert(response.error.details[0].message);                    
+                    alert(response.error.details[0].message);
                     window.location.href = "/";
-                    
-                }
-                else
-                {
-                //console.log("data",response);
-                let data = response.data[0];
-                let name = data.first_name + ' ' + data.last_name;
-                let company_name = data.company_name;
 
-                if (company_name == null  && window.location.href != site_url + "user/profile") {
-                    $('#MessageModal').modal('show');
                 }
+                else {
+                    //console.log("data",response);
+                    let data = response.data[0];
+                    let name = data.first_name + ' ' + data.last_name;
+                    let company_name = data.company_name;
 
-                document.cookie = "cuser=" + name;
-                document.cookie = "ucompany=" + company_name;                
-                let userName = getCookie('cuser');
-                $('#c_user_box').text(userName);
-                $('#company_name_user').text(company_name);
+                    if (company_name == null && window.location.href != site_url + "user/profile") {
+                        $('#MessageModal').modal('show');
+                    }
+                    document.cookie = "cuser=" + name;
+                    document.cookie = "ucompany=" + company_name;
+                    let userName = getCookie('cuser');
+                    $('#c_user_box').text(userName);
+                    $('#company_name_user').text(company_name);
                 }
             },
             error: function (jqXHR, textStatus) {
@@ -79,6 +115,7 @@ const meUser = () => {
             }
         });
     } else {
+
         $('#c_user_box').text(userName);
         $('#company_name_user').text(company_name);
     }
@@ -95,33 +132,43 @@ $(function () {
 const sendSupport = () => {
     console.log("sendSupport");
     let userName = getCookie('cuser');
-    let accesstoken = getCookie('accesstoken')
+    let accesstoken = getCookie('accesstoken');
     $('.loader_header_').show('20');
-    $.ajax({
-        url: site_url + 'send_support_message',
-        type: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            "access-token": accesstoken
-        },
-        data: {
-            support_message: $('#support_msg').val(),
-            user_name: userName
-        },
-        success: function (response) {
-            if (!response.success) {
-                return alert(JSON.stringify(response.message));
-            }
-            if (response.success == "true") {
+    if ($('#support_msg').val().trim() == '') {
+        $('.loader_header_').hide('70');
+        alert("Support msg should not be empty!!");
+        $('#support_msg').val('');
+    }
+    else {
+        $.ajax({
+            url: site_url + 'send_support_message',
+            type: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "access-token": accesstoken
+            },
+            data: {
+                support_message: $('#support_msg').val(),
+                user_name: userName
+            },
+            success: function (response) {
+                if (!response.success) {
+                    $('.loader_header_').hide('70');
+                    alert('Something went wrong!!');
+                    location.reload();
+                }
+                if (response.success == "true") {
+                    $('.loader_header_').hide('70');
+                    alert(response.message);
+                    location.reload();
+                }
+            },
+            error: function (jqXHR, textStatus) {
                 $('.loader_header_').hide('70');
-                alert(response.message);
-                location.reload();
+                alert("Request failed: " + textStatus);
             }
-        },
-        error: function (jqXHR, textStatus) {
-            alert("Request failed: " + textStatus);
-        }
-    });
+        });
+    }
 }
 
 function search(id) {
@@ -139,7 +186,8 @@ function search(id) {
             },
             success: function (response) {
                 if (!response.success) {
-                    return alert(JSON.stringify(response.message));
+                    $('.loader_header_').hide('70');
+                    alert(JSON.stringify(response.message));
                 }
                 if (response.success == "true") {
                     $('.loader_header_').hide('70');
@@ -154,12 +202,14 @@ function search(id) {
                     })
                 }
                 else if (response.success == "search_fail") {
-                    $('.loader_header_').hide('70');
-                    alert(response.message);
-                    return
+                    $('.loader_header_').hide('10');
+                    $('#search_box').val('');
+                    return alert(response.message);
+
                 }
             },
             error: function (jqXHR, textStatus) {
+                $('.loader_header_').hide('70');
                 alert("Request failed: " + textStatus);
             }
         });
@@ -169,6 +219,18 @@ function search(id) {
 $(document).on("click", '.search_link', () => {
     jQuery('.loader_header_').show('20');
 })
-jQuery(document).ready(function () {
+$(document).ready(function () {
     jQuery('.loader_header_').hide('50');
+});
+$(document).mouseup(function (e) {
+    var container = $(".account");
+    if (!container.is(e.target) && container.has(e.target).length === 0) {
+        var containerss = $(".logged-event");
+        containerss.fadeOut();
+        // $(".account-sub-menu").toggleClass("show-menu");
+    }
+    else {
+        var containerss = $(".logged-event");
+        containerss.fadeIn();
+    }
 });

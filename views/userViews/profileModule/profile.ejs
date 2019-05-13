@@ -7,118 +7,118 @@
 
 <body>
 	<% include ../component/header.ejs %>
-	<div class="setting_wrapper">
-		<div class="container">
-			<div class="setting_inner_wrapper">
-				<h2 class="head_global primary_color">My Settings</h2>
-				<div class="form_inner_data">
-					<form method="post" id="profile_form" name="profile">
-						<div class="form-group row">
-							<label class="col-sm-3 col-form-label">Name</label>
-							<div class="col-sm-9">
-								<div class="row">
-									<div class="col-sm-6">
-										<input type="text" class="form-control" id="fname" name="fname" placeholder="Denish" value="<%=data.first_name %>">
-									</div>
-									<div class="col-sm-6">
-										<input type="text" class="form-control" id="lname" name="lname" placeholder="Smith" value="<%=data.last_name %>">
+		<div class="setting_wrapper">
+			<div class="container">
+				<div class="setting_inner_wrapper">
+					<h2 class="head_global primary_color">My Settings</h2>
+					<div class="form_inner_data">
+						<form method="post" id="profile_form" name="profile">
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Name</label>
+								<div class="col-sm-9">
+									<div class="row">
+										<div class="col-sm-6">
+											<input type="text" class="form-control" id="fname" name="fname" placeholder="Denish" value="<%=data.first_name %>">
+										</div>
+										<div class="col-sm-6">
+											<input type="text" class="form-control" id="lname" name="lname" placeholder="Smith" value="<%=data.last_name %>">
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-3 col-form-label">Company Name:</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="cname" name="cname" placeholder="hubPitch" value="<%=data.company_name %>">
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Company Name:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="cname" name="cname" placeholder="hubPitch" value="<%=data.company_name %>">
+								</div>
 							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-3 col-form-label">Email Address</label>
-							<div class="col-sm-9">
-								<input type="email" class="form-control" id="email" name="email" placeholder="denish@hubpitch.com" value="<%=data.email %>"
-								 disabled>
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Email Address</label>
+								<div class="col-sm-9">
+									<input type="email" class="form-control" id="email" name="email" placeholder="denish@hubpitch.com" value="<%=data.email %>"
+									 disabled>
+								</div>
 							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-3 col-form-label">Password</label>
-							<div class="col-sm-9">
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Password</label>
+								<div class="col-sm-9">
 
-								<a class="a_change_pass btn btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#changePassword"><span
-									 class="glyphicon glyphicon-lock"></span> Change Password</a>
-							</div>
-						</div>
-						<% if (data.pitch_notifications == 'true') {  %>
-						<div class="form-group row">
-							<label class="col-sm-3 col-form-label">Notification</label>
-							<div class="col-sm-9">
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="" id="allow_notification" <%=(data.notification_1=='true'
-									 ) ? "checked" : "" %> >
-									<label class="form-check-label" for="allow_notification">Recieve Email when Pitch is Opened or Viewed</label>
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="" id="allow_messaging" <%=(data.notification_2=='true'
-									 ) ? "checked" : "" %>>
-									<label class="form-check-label" for="allow_messaging">Recieve Email when a New message is Recieved</label>
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="" id="allow_share" <%=(data.notification_3=='true' ) ?
-									 "checked" : "" %>>
-									<label class="form-check-label" for="allow_share">Recieve Email when Pitch is shared</label>
+									<a class="a_change_pass btn btn-sm" href="javascript:void(0)" data-toggle="modal" data-target="#changePassword">
+										<span class="glyphicon glyphicon-lock"></span> Change Password</a>
 								</div>
 							</div>
-						</div>
-						<% } %>
-						<div class="btn_dicard">
-							<button class="btn_form">Discard</button>
-							<button type="submit" name="submit" value="submit" class="btn_form">Save</button>
-						</div>
-					</form>
+							<% if (data.pitch_notifications == 'true') {  %>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Notification</label>
+									<div class="col-sm-9">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" value="" id="allow_notification" <%=(data.notification_1=='true' ) ?
+											 "checked" : "" %> >
+											<label class="form-check-label" for="allow_notification">Recieve Email when Pitch is Opened or Viewed</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" value="" id="allow_messaging" <%=(data.notification_2=='true' ) ?
+											 "checked" : "" %>>
+											<label class="form-check-label" for="allow_messaging">Recieve Email when a New message is Recieved</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" value="" id="allow_share" <%=(data.notification_3=='true' ) ? "checked" :
+											 "" %>>
+											<label class="form-check-label" for="allow_share">Recieve Email when Pitch is shared</label>
+										</div>
+									</div>
+								</div>
+								<% } %>
+									<div class="btn_dicard">
+										<button class="btn_form">Discard</button>
+										<button type="submit" name="submit" value="submit" class="btn_form">Save</button>
+									</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="changePassword" role="dialog">
-		<div class="modal-dialog">
+		<!-- Modal -->
+		<div class="modal fade" id="changePassword" role="dialog">
+			<div class="modal-dialog">
 
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Change Password</h4>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group row">
-							<label class="col-sm-3 col-form-label">Password:</label>
-							<div class="col-sm-9">
-								<input type="password" class="form-control" id="password" name="password">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Change Password</h4>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Password:</label>
+								<div class="col-sm-9">
+									<input type="password" class="form-control" id="password" name="password">
+								</div>
 							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-3 col-form-label">Confirm Password</label>
-							<div class="col-sm-9">
-								<input type="password" class="form-control" id="confirm_password" name="confirm_password">
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Confirm Password</label>
+								<div class="col-sm-9">
+									<input type="password" class="form-control" id="confirm_password" name="confirm_password">
+								</div>
 							</div>
-						</div>
-					</form>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-default" onclick="changePassword()">Update</button>
+					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-default" onclick="changePassword()">Update</button>
-				</div>
+
 			</div>
-
 		</div>
-	</div>
-	<!-- LOADER  -->
-	<div class="loader_hp_">
-		<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-	</div>
+		<!-- LOADER  -->
+		<div class="loader_hp_">
+			<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+		</div>
 
-	<script src="/js/module/userPitch/profile.js"></script>
+		<script src="/js/module/userPitch/profile.js"></script>
 </body>
 
 </html>

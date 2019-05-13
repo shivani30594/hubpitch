@@ -104,6 +104,13 @@
     background-image: -o-linear-gradient(#28a0e5,#015e94);
     background-image: linear-gradient(#28a0e5,#015e94);
 }
+.payment-detail.signup-wrapper {
+    margin-bottom: 0;
+}
+.payment-detail .logo-wrap {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
 
 /* Change the width of the three columns to 100% 
 (to stack horizontally on small screens) */

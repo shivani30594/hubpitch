@@ -18,11 +18,11 @@ jQuery(document).ready(function () {
     Upgrade.init();
 });
 
-function handlePaymentTable(amount, id) {
+function handlePaymentTable(amount, id, plan_key) {
     let user_id = getCookie('accesstoken');
     let payableamount = Math.round(amount * 100);
 
-    let encodedDataD = payableamount + ',' + user_id + ',' + id
+    let encodedDataD = payableamount + ',' + user_id + ',' + id + ',' + plan_key
     var encodedData = window.btoa(encodedDataD); // encode a string
     $('.loader_hp_').show();
     let script = '<form action="/user/upgrade_payment_status_active/' + encodedData + '" method="POST"> <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_nN2AAsg2jHlJxmCky4QOiuPe" data-name="hubPitch Membership" data-amount="' + payableamount + '"> <input type="hidden" name="amount" value="' + amount + '" /> </form>';

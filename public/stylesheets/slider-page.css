@@ -230,8 +230,10 @@ button.full_screen_ i {margin-left: 7px;}
     top: 5px;
     opacity: 0.6;
 }
-
-
+/* error class */
+.invite-form .error-block{
+    display: flex;
+}
 
 @media (max-width: 991px){
   .gallery-wrap .edit-wrap .slider-text {padding: 0;}

@@ -3,6 +3,7 @@
 const keyPublishable = 'pk_test_nN2AAsg2jHlJxmCky4QOiuPe';
 const keySecret = 'sk_test_1lBmrGdD8351UCKd8BIcHbZh';
 
+var http = require('http');
 const db = require("../dbconfig/db");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
@@ -14,7 +15,12 @@ var btoa = require('btoa');
 var atob = require('atob');
 var moment = require('moment');
 const nodemailer = require("nodemailer");
+const EmailTemplate = require('email-templates-v2').EmailTemplate;
+var path = require('path');
+var handlebars = require('handlebars');
+var fs = require('fs');
 require('dotenv').config()
+
 
 class stripePaymentController {
 
@@ -66,7 +72,108 @@ class stripePaymentController {
 		});
 	}
 
+
 	static async payment(req, res) {
+
+		var readHTMLFile = function (path, callback) {
+			fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
+				if (err) {
+					throw err;
+					callback(err);
+				}
+				else {
+					callback(null, html);
+				}
+			});
+		};
+
+
+		var transporter = nodemailer.createTransport({
+			service: process.env.SERVICE,
+			auth: {
+				user: process.env.HPEMAILUSER,
+				pass: process.env.PASSWORD
+			}
+		});
+
+
+		var bin1 = atob(req.params.id);
+		var array = bin1.split(',');
+
+		let amount = array[0];
+		const token = req.body.stripeToken;
+		// create a customer 
+		stripe.customers.create({
+			email: req.body.stripeEmail,
+			source: req.body.stripeToken
+		})
+			.then(customer => {
+				console.log('customer => ', customer);
+				var charge_id = "trial_period";
+				var customer_id = customer.id;
+				stripe.subscriptions.create({
+					customer: customer.id,
+					items: [{ plan: array[2] }],
+					trial_end: 1557896607,
+					billing: 'send_invoice',
+					days_until_due: 5,
+				}, function (err, subscription) {
+					if (err) {
+						console.log('err => ', err);
+						res.send({ success: false, message: err });
+					}
+					else {
+						console.log('subscription => ', subscription);
+
+						readHTMLFile('emailhelper/emailViews.html', function (err, html) {
+
+							var template = handlebars.compile(html);
+							var replacements = {
+								date: moment(Date.now()).format('LL'),
+								dateto: moment(Date.now()).add(7, 'days').format('LL'),
+
+							};
+							var htmlToSend = template(replacements);
+							var mailOptions = {
+								from: process.env.HPEMAILUSER, // sender address
+								to: req.body.stripeEmail, // list of receivers/*9
+								subject: "Welcome to your Bundle Free Trial!", // Subject line
+								html: htmlToSend
+							};
+							transporter.sendMail(mailOptions, function (error, response) {
+								if (error) {
+									console.log(error);
+									//callback(error);
+								}
+								else {
+									let encodedDataD = charge_id + ',' + subscription.id + ',' + customer_id;
+									var encodedData = btoa(encodedDataD);
+									//window.location.href = http://www.gorissen.info/Pierre/...";} 
+									//res.redirect('/signup/?id=' + encodedData);
+									//res.redirect('/signupp');
+									res.render('loginModule/signup', { title: 'hubPitch Sign Up', charge: encodedData });
+								}
+							});
+						});
+
+					}
+					//});
+				}).catch(err => {
+					console.log('charge Error => ', err);
+				});
+			})
+			.catch(err_customer => {
+				console.log('custome create Error => ', err_customer);
+				if (err_customer.type === 'StripeCardError') {
+					res.status(500).send({ error: "Your card was decliend" })
+				}
+				else {
+					res.status(500).send({ error: err_customer.message });
+				}
+			});
+	}
+
+	static async paymentbackup(req, res) {
 
 		var bin1 = atob(req.params.id);
 		var array = bin1.split(',');
@@ -94,7 +201,7 @@ class stripePaymentController {
 						stripe.subscriptions.create({
 							customer: charge.customer,
 							items: [{ plan: array[2] }],
-							trial_end: 1557896607,
+							trial_end: 1557748731,
 							billing: 'send_invoice',
 							days_until_due: 5,
 						}, function (err, subscription) {
@@ -104,12 +211,8 @@ class stripePaymentController {
 							}
 							else {
 								console.log('subscription => ', subscription);
-
 								let encodedDataD = charge_id + ',' + subscription.id + ',' + customer_id;
 								var encodedData = btoa(encodedDataD);
-								//window.location.href = http://www.gorissen.info/Pierre/...";} 
-								//res.redirect('/signup/?id=' + encodedData);
-								//res.redirect('/signupp');
 								res.render('loginModule/signup', { title: 'hubPitch Sign Up', charge: encodedData });
 							}
 						});
@@ -119,11 +222,11 @@ class stripePaymentController {
 			})
 			.catch(err_customer => {
 				console.log('custome create Error => ', err_customer);
-				if (err.type === 'StripeCardError') {
+				if (err_customer.type === 'StripeCardError') {
 					res.status(500).send({ error: "Your card was decliend" })
 				}
 				else {
-					res.status(500).send({ error: err.message })
+					res.status(500).send({ error: err_customer.message });
 				}
 			});
 	}
@@ -140,8 +243,7 @@ class stripePaymentController {
 		var array = bin1.split(',');
 		var charge = atob(array[2]);
 		var subscription = charge.split(',');
-		// var charge = await stripe.charges.retrieve(array[2]);
-		// var customer_id = charge.customer;
+
 		console.log("array1", array);
 		console.log("charge111", subscription);
 
@@ -176,7 +278,7 @@ class stripePaymentController {
 						let hp_users_pitch_limit_data = {
 							user_id: array[0],
 							remaining_pitch: pitch_limit,
-							end_date: moment(expire).format("YYYY-MM-DD HH:mm:ss")
+							end_date: moment(Date.now()).add(1, 'months').format('LLLL')
 						}
 
 						db.query("INSERT INTO hp_users_pitch_limit SET?", hp_users_pitch_limit_data, function (
@@ -197,13 +299,15 @@ class stripePaymentController {
 									from: process.env.USERNAME, // sender address
 									to: tomail, // list of receivers
 									subject: "Random password for login", // Subject line
+									//html: res.render('email/emailViews')									
 									html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + process.env.SITE_URL + 'reset-password/' + results1[0].token_value + "> Click Here</a>"
 								};
 								// send mail with defined transport object
 								smtpTransport.sendMail(mailOptions, function (err, info) {
 									if (err) {
 										console.log(err);
-									} else {
+									}
+									else {
 										console.log("Message sent: " + info);
 										// res.render("loginModule/welcome", { title: 'Payment Page || hubPitch', documents_viewer: 'false', free: 'false' })
 										res.status(200).send({ success: "true" });
@@ -256,7 +360,7 @@ class stripePaymentController {
 						let hp_users_pitch_limit_data = {
 							user_id: array[0],
 							remaining_pitch: pitch_limit,
-							end_date: moment(expire).format("YYYY-MM-DD HH:mm:ss")
+							end_date: moment(Date.now()).add(1, 'months').format('LLLL')
 						}
 						db.query("INSERT INTO hp_users_pitch_limit SET?", hp_users_pitch_limit_data, function (
 							error2,
@@ -279,8 +383,9 @@ class stripePaymentController {
 					var mailOptions = {
 						from: process.env.HPEMAILUSER, // sender address
 						to: tomail, // list of receivers/*9
-						subject: "Random password for login", // Subject line
-						html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + process.env.SITE_URL + 'reset-password/' + results1[0].token_value + "> Click Here</a>"
+						subject: "Random password for login1", // Subject line
+						html: res.render('email/emailViews')
+						//html: "<h1> Your hubPitch Random Password is: " + results1[0].randompassword + "</h1> <br/> Please Click this Link to Reset your Password: <a href=" + process.env.SITE_URL + 'reset-password/' + results1[0].token_value + "> Click Here</a>"
 					};
 					// send mail with defined transport object
 					smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -294,6 +399,163 @@ class stripePaymentController {
 				});
 			}
 		});
+	}
+
+
+	static async tempMail(req, res) {
+
+		var readHTMLFile = function (path, callback) {
+			fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
+				if (err) {
+					throw err;
+					callback(err);
+				}
+				else {
+					callback(null, html);
+				}
+			});
+		};
+
+
+		var transporter = nodemailer.createTransport({
+			service: process.env.SERVICE,
+			auth: {
+				user: process.env.HPEMAILUSER,
+				pass: process.env.PASSWORD
+			}
+		});
+
+		var date = new Date();
+		var timestamp = date.getTime();
+		var expire = timestamp + 30 * 24 * 60 * 60;
+		// console.log(date);
+		// console.log(timestamp);
+		// console.log(expire);
+		// console.log("date", moment(expire).format("YYYY-MM-DD HH:mm:ss"));
+		// // console.log(moment.unix(Date.now()).add(7, 'days'));
+		// console.log("now", moment(Date.now()).format('LL'));
+
+		console.log("7 daya", moment(Date.now()).add(7, 'days').format('LLLL'));
+		console.log("1 month", moment(Date.now()).add(1, 'months').format('LLLL'));
+
+
+		// db.query("SELECT * from hp_users WHERE hp_users.user_id ='abf054f1-1057-4ba7-aaa6-17b143377a0a'", function (error, results, fields) {
+		// 	if (results.length) {
+
+		// 		if (results[0].subscription_id != '' || results[0].subscription_id != null) {
+		// 			console.log("rip");
+		// 		}
+		// 		else {
+		// 			console.log("rip not");
+		// 		}
+		// 	}
+		// });
+
+		//console.log(Date.now());
+
+		// readHTMLFile('emailhelper/emailViews.html', function (err, html) {
+
+		// 	var template = handlebars.compile(html);
+		// 	var replacements = {
+		// 		date: "hj",
+		// 		dateto: "gfnjg",
+
+		// 	};
+		// 	var htmlToSend = template(replacements);
+		// 	var mailOptions = {
+		// 		from: process.env.HPEMAILUSER, // sender address
+		// 		to: "rip@narola.email", // list of receivers/*9
+		// 		subject: "Testing", // Subject line
+		// 		html: htmlToSend
+		// 	};
+		// 	transporter.sendMail(mailOptions, function (error, response) {
+		// 		if (error) {
+		// 			console.log(error);
+		// 			//callback(error);
+		// 		}
+		// 		else {
+		// 			res.status(200).send({ success: "true" })
+		// 		}
+		// 	});
+		// });
+
+	}
+
+	static async tempMail1(req, res) {
+
+		var smtpTransport = nodemailer.createTransport({
+			service: process.env.SERVICE,
+			auth: {
+				user: process.env.HPEMAILUSER,
+				pass: process.env.PASSWORD
+			}
+		});
+		//var temp = new EmailTemplate('emailhelper/emailViews');
+		// var sendPwdReminder = smtpTransport.templateSender({
+		// 	render: function (context, callback) {
+		// 		callback(null, {
+		// 			html: 'rendered html content',
+		// 			text: 'rendered text content'
+		// 		});
+		// 	}
+		// });
+
+		// var template_sender = transporter.templateSender(new EmailTemplate('emailhelper/emailViews'), {
+		// 	from: "rip@narola.email"
+		// });
+
+
+		// return template_sender({
+		// 	to: "rip@narola.email",
+		// 	subject: "just checking",
+		// }, data).then(function (info) {
+		// 	console.log("Mail Send");
+		// 	return { "status": 1, "message": info };
+		// }).catch(function (err) {
+		// 	console.log("Mail Not Send");
+		// 	return { "status": 0, "error": err };
+		// });
+
+
+		var template_sender = smtpTransport.templateSender(new EmailTemplate('emailhelper/emailViews'), {
+			from: "rip@narola.email"
+		});
+		return template_sender({
+			to: "rip@narola.email",
+			subject: "just checking",
+		}, data).then(function (info) {
+			console.log("Mail Send");
+			return { "status": 1, "message": info };
+		}).catch(function (err) {
+			console.log("Mail Not Send");
+			return { "status": 0, "error": err };
+		});
+
+
+
+		// const email = new EmailTemplate({
+		// 	message: {
+		// 		from: 'rip@narola.email'
+		// 	},
+		// 	transport: {
+		// 		jsonTransport: true
+		// 	},
+		// 	textOnly: true // <----- HERE
+		// });
+
+		// email
+		// 	.send({
+		// 		template: 'mars',
+		// 		message: {
+		// 			to: 'rip@narola.email'
+		// 		},
+		// 		locals: {
+		// 			name: 'Elon'
+		// 		}
+		// 	})
+		// 	.then(console.log)
+		// 	.catch(console.error);
+
 	}
 
 }

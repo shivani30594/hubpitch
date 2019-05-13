@@ -5,6 +5,29 @@ const db = require('./db');
 const Joi = require("joi");
 class usersController {
 
+    static async checklogin(req, res, next) {
+        console.log("rip");
+        var token = req.cookies.accesstoken;
+        let userid = '';
+        jwt.verify(token, jwtsecret, function (err, decoded) {
+            if (err) {
+
+                res.render('loginModule/index', { title: 'SignIn || hubPitch' });
+
+            } else {
+                userid = decoded.user;
+                db.query(
+                    'SELECT * FROM hp_users WHERE user_id = "' + userid + '"',
+                    function (error, results, fields) {
+                        if (results.length) {
+                            let dashboardURL = (results[0].role == 'user') ? 'user/dashboard' : 'admin/dashboard';
+                            res.redirect(dashboardURL);
+                        }
+                    });
+            }
+        });
+    }
+
     // Profile
     static async profile(req, res, next) {
         var token = req.cookies.accesstoken;

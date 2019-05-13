@@ -242,6 +242,10 @@ const Login = function () {
                     },
                     success: function (response) {
                         if (!response.success) {
+                            // $("#success-alert").fadeTo(5000, 500).slideUp(500, function () {
+                            //     $("#success-alert").slideUp(500);
+                            // });
+                            $("#success-alert").show();
                             return alert(JSON.stringify(response.message));
                         }
                         // document.cookie = "accesstoken=" + response.accesstoken;
@@ -259,7 +263,7 @@ const Login = function () {
                         // document.cookie = "newtoken=" + response.token;
                         // $('.loader_hp_').hide('50');
                         // alert("You will be redirected to a new page in 5 seconds");
-                        // setTimeout(window.location = "/payment", 5000);                  
+                        // setTimeout(window.location = "/payment", 5000);                 
 
 
                     },
@@ -285,6 +289,7 @@ const Login = function () {
 
 
 jQuery(document).ready(function () {
+    //$("#success-alert").hide();
     Login.init();
 });
 

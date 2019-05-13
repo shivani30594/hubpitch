@@ -12,6 +12,8 @@ require('dotenv').config()
 
 class authController {
 
+
+
   static async singup(req, res, next) {
 
     try {

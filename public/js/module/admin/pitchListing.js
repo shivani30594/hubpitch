@@ -31,7 +31,7 @@ $(document).ready(function () {
     });
     $('#example').DataTable();
 });
-function myActivate(id){
+function myActivate(id) {
 
     var r = confirm("Are you sure you want to Activate the User!");
     if (r == true) {
@@ -52,7 +52,7 @@ function myActivate(id){
                     return alert(JSON.stringify(response.message));
                 }
                 alert(response.message);
-                location.reload();               
+                location.reload();
             },
             error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
@@ -64,10 +64,10 @@ function myActivate(id){
 }
 
 function myDeactive(id) {
- 
+
     var r = confirm("Are you sure you want to deactivate the User!");
     if (r == true) {
-       
+
         let accesstoken = getCookie('accesstoken')
         $.ajax({
             url: site_url + 'admin/block_user',
@@ -77,7 +77,7 @@ function myDeactive(id) {
             },
             method: 'POST',
             data: {
-                 "user_id": id
+                "user_id": id
             },
             success: function (response) {
                 if (!response.success) {
@@ -102,10 +102,10 @@ function myDeactive(id) {
         });
     } else {
         txt = "You pressed Cancel!";
-    }    
+    }
 }
 
-function ConfirmDeleteUser(id) {    
+function ConfirmDeleteUser(id) {
     var x = confirm("Are you sure you want to delete?");
     if (x) {
         $('.loader_hp_').show('50');
@@ -125,7 +125,7 @@ function ConfirmDeleteUser(id) {
                 if (!response.success) {
                     return alert(JSON.stringify(response.error));
                 }
-                console.log(response)
+                console.log(response);
                 $('.loader_hp_').hide('50');
                 alert(response.message);
                 location.reload();

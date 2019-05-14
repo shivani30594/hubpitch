@@ -66,6 +66,7 @@ app.use(function (req, res, next) {
   //   message: "Invalid route"
   // })//yeha se
   //res.send("<h1>page not found</h1>");
+
   res.render('404')
   console.log('404 => ');
 });

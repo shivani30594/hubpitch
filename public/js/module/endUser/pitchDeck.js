@@ -190,74 +190,68 @@ const pitchDeck = function () {
                 //     required: true
                 // },
                 email_body: {
+
                     required: {
                         depends: function () {
                             let t = $(this).val().replace(/<[^>]+>/g, '');
                             let p = t.replace(/\&nbsp;/g, '');
-                            p.trim(
-                                $(this).val().replace(/\&nbsp;/g, '')
-                            );
-                            if (p.trim() == '') {
-
-                                return true;
-                            }
-                            else {
-
-                                return false;
-                            }
-
+                            $(this).val($.trim(p));
+                            return true;
                         }
                     },
 
                 }
             },
             submitHandler: function (form) {
-                let temp_text = $('textarea[name="email_body"]').val()
-                let t = temp_text.replace(/<[^>]+>/g, '');
-                let p = t.replace(/\&nbsp;/g, '');
-                if (p.trim() == '') {
-                    alert("Email information can't be empty");
-                }
-                else {
-                    $('.loader_hp_').show();
-                    let view_token = getCookie('viewertoken')
-                    tinyMCE.triggerSave();
-                    $.ajax({
-                        url: site_url + 'share-pitch',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            email_id: $('input[name="email_id"]').val(),
-                            sender_name: viewerName,
-                            sender_role: viewerRole,
-                            url: window.location.href,
-                            email_body: $('textarea[name="email_body"]').val(),
-                            pitch_token: $('#pitch_token').val(),
-                            user_token: $('#user_token').val(),
-                            user_email: $('#user_email').val(),
-                            company_name: $('#company_name').val()
-                        },
-                        success: function (response) {
-                            if (!response.success) {
-                                //return alert(JSON.stringify(response.error));
-                            }
-
-                            $('.loader_hp_').hide();
-                            //console.log(response);
-                            if (JSON.stringify(response.success == 'true')) {
-                                // $('input[name="sender_name"]').val('');
-                                $('input[name="email_id"]').val('');
-                                $('#name-window').modal('hide')
-                                $("#success-alert").fadeTo(5000, 500).slideUp(500, function () {
-                                    $("#success-alert").slideUp(500);
-                                });
-                            }
-                        },
-                        error: function (jqXHR, textStatus) {
-                            //alert("Request failed: " + textStatus);
+                // let temp_text = $('textarea[name="email_body"]').val()
+                // let t = temp_text.replace(/<[^>]+>/g, '');
+                // let p = t.replace(/\&nbsp;/g, '');
+                // if (p.trim() == '') {
+                //     alert("Email information can't be empty");
+                // }
+                // else {
+                $('.loader_hp_').show();
+                let view_token = getCookie('viewertoken')
+                tinyMCE.triggerSave();
+                $.ajax({
+                    url: site_url + 'share-pitch',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        email_id: $('input[name="email_id"]').val(),
+                        sender_name: viewerName,
+                        sender_role: viewerRole,
+                        url: window.location.href,
+                        email_body: $('textarea[name="email_body"]').val(),
+                        pitch_token: $('#pitch_token').val(),
+                        user_token: $('#user_token').val(),
+                        user_email: $('#user_email').val(),
+                        company_name: $('#company_name').val()
+                    },
+                    success: function (response) {
+                        if (!response.success) {
+                            //return alert(JSON.stringify(response.error));
                         }
-                    });
-                }
+
+                        $('.loader_hp_').hide();
+                        //console.log(response);
+                        if (JSON.stringify(response.success == 'true')) {
+                            // $('input[name="sender_name"]').val('');
+                            $('.alert alert-success').remove();
+                            $('input[name="email_id"]').val('');
+                            $('#name-window').modal('hide');
+                            dataHTML = '<div class="alert alert-success" id="success-alert">< button type = "button" class="close" data - dismiss="alert" > x</button ><strong>Email Sent Successfully</strong>Thank You For Sharing Pitch.</div >';
+                            $('.notifysentmail').append(dataHTML);
+
+
+
+                        }
+                    },
+                    error: function (jqXHR, textStatus) {
+                        //alert("Request failed: " + textStatus);
+                    }
+                });
+                // }
             }
         });
 
@@ -779,22 +773,22 @@ const pitchDeck = function () {
                 console.log('viewer_id', viewer_id);
                 console.log('viewing_time', $('.slick-active .sliderViewer').val());
                 console.log('pitch_info_id', $('.slick-current .pitch_info_token_c').val());
-                $.ajax({
-                    url: site_url + 'viewer/analysis-update',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                    method: 'POST',
-                    dataType: 'json',
-                    data: {
-                        viewer_id: viewer_id,
-                        viewing_time: $('.slick-active .sliderViewer').val(),
-                        pitch_info_id: $('.slick-current .pitch_info_token_c').val(),
-                    },
-                    success: function (response) {
-                        console.log(response)
-                    }
-                });
+                // $.ajax({
+                //     url: site_url + 'viewer/analysis-update',
+                //     headers: {
+                //         'Accept': 'application/json',
+                //     },
+                //     method: 'POST',
+                //     dataType: 'json',
+                //     data: {
+                //         viewer_id: viewer_id,
+                //         viewing_time: $('.slick-active .sliderViewer').val(),
+                //         pitch_info_id: $('.slick-current .pitch_info_token_c').val(),
+                //     },
+                //     success: function (response) {
+                //         console.log(response)
+                //     }
+                // });
             }, 10000);
         }
         else {
@@ -951,18 +945,32 @@ const getCookie = (name) => {
     if (parts.length == 2) return parts.pop().split(";").shift();
 }
 const full_sceen_zoom = (id, e, loop) => {
-    console.log("e => ", e.text());
     let currentText = e.text();
     if (currentText == 'Full Screen') {
-        e.html('<i class="glyphicon glyphicon-resize-full">Normal Screen</i>');
-    } else {
-        console.log("is normal size");
-        e.html('<i class="glyphicon glyphicon-resize-small">Full Screen</i>');
+        e.html('Normal Screen<i class="glyphicon glyphicon-resize-small"></i>');
+    }
+    if (currentText == 'Normal Screen') {
+        e.html('Full Screen<i class="glyphicon glyphicon-resize-full"></i>');
+    }
+    else {
+        e.html('Normal Screen<i class="glyphicon glyphicon-resize-small"></i>');
     }
     $("." + id + "_edit-wrap").toggleClass("edit-wrap-toggled");
     currentText = '';
     $("#loaded-layout_" + loop).resize();
 }
+//Server backup
+// const full_sceen_zoom = (id, e, loop) => {
+//     console.log(e.text());
+//     let currentText = e.text();
+//     if (currentText == 'Full Screen') {
+//         e.html('Full Screen<i class="glyphicon glyphicon-resize-small">');
+//     } else {
+//         e.html('Normal Screen<i class="glyphicon glyphicon-resize-full">');
+//     }
+//     $("." + id + "_edit-wrap").toggleClass("edit-wrap-toggled");
+//     $("#loaded-layout_" + loop).resize();
+// }
 $('#login').on('hide.bs.modal', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();

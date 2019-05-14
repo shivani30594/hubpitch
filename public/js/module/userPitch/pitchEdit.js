@@ -441,6 +441,9 @@ function checkEmails() {
         } else {
             var emailArray = emails.split(",");
             var pre_email_id_arr = pre_emails.split(',');
+            if (pre_email_id_arr == '') {
+                pre_email_id_arr = emailArray;
+            }
             let errorFlag = 0;
             for (i = 0; i <= (emailArray.length - 1); i++) {
                 if (checkEmail(emailArray[i])) {

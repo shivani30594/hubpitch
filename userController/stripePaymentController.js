@@ -96,6 +96,10 @@ class stripePaymentController {
 			}
 		});
 
+		var days = 7;
+		var expire_date = new Date();
+		var res_date = expire_date.setTime(expire_date.getTime() + (days * 24 * 60 * 60 * 1000));
+		var round_date = Math.round(res_date / 1000);
 
 		var bin1 = atob(req.params.id);
 		var array = bin1.split(',');
@@ -114,7 +118,7 @@ class stripePaymentController {
 				stripe.subscriptions.create({
 					customer: customer.id,
 					items: [{ plan: array[2] }],
-					trial_end: 1557896607,
+					trial_end: round_date,
 					billing: 'send_invoice',
 					days_until_due: 5,
 				}, function (err, subscription) {
@@ -404,30 +408,38 @@ class stripePaymentController {
 
 	static async tempMail(req, res) {
 
-		var readHTMLFile = function (path, callback) {
-			fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
-				if (err) {
-					throw err;
-					callback(err);
-				}
-				else {
-					callback(null, html);
-				}
-			});
-		};
+		// var readHTMLFile = function (path, callback) {
+		// 	fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
+		// 		if (err) {
+		// 			throw err;
+		// 			callback(err);
+		// 		}
+		// 		else {
+		// 			callback(null, html);
+		// 		}
+		// 	});
+		// };
 
 
-		var transporter = nodemailer.createTransport({
-			service: process.env.SERVICE,
-			auth: {
-				user: process.env.HPEMAILUSER,
-				pass: process.env.PASSWORD
-			}
-		});
+		// var transporter = nodemailer.createTransport({
+		// 	service: process.env.SERVICE,
+		// 	auth: {
+		// 		user: process.env.HPEMAILUSER,
+		// 		pass: process.env.PASSWORD
+		// 	}
+		// });
 
 		var date = new Date();
+
+		var vardate = moment(Date.now()).add(7, 'days').format('LLLL');
+		console.log("date", date);
+		console.log("moment date", vardate);
+
 		var timestamp = date.getTime();
 		var expire = timestamp + 30 * 24 * 60 * 60;
+		console.log("Expire moment date1", timestamp);
+		timestamp = strtotime('+7 days', timestamp);
+		console.log("Expire moment date2", timestamp);
 		// console.log(date);
 		// console.log(timestamp);
 		// console.log(expire);
@@ -435,7 +447,7 @@ class stripePaymentController {
 		// // console.log(moment.unix(Date.now()).add(7, 'days'));
 		// console.log("now", moment(Date.now()).format('LL'));
 
-		console.log("7 daya", moment(Date.now()).add(7, 'days').format('LLLL'));
+		console.log("7 days", moment(Date.now()).add(7, 'days').format('LLLL'));
 		console.log("1 month", moment(Date.now()).add(1, 'months').format('LLLL'));
 
 

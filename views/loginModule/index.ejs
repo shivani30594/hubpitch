@@ -50,66 +50,78 @@
 	<div class="container popup-content">
 
 		<div class="row">
-			<div class="col-md-12">
+			<!-- <div class="col-md-12">
+				<div class="notification"
 				<div class="alert alert-success" id="success-alert">
 					<button type="button" class="close" data-dismiss="alert">x</button>
 					<strong>Email Sent Successfully</strong>
 					Thank You For Sharing Pitch.
 				</div>
-			</div>
-		</div>
-	</div>
-	<section class="signup-wrapper">
-		<div class="container">
+			</div> -->
+			<!-- Modals -->
+			<div class="modal fade" id="information" role="dialog">
+				<div class="modal-dialog">
 
-			<div class="row">
-				<div class="col-md-12">
-					<div class="form-wrap">
-						<div class="head">Sign In</div>
-						<div class="sign-up-form">
-							<form method="post" class="sign-in-form" name="sign_in" id="sign_in">
-								<div class="row">
-									<div class="col-md-12">
-										<div class="input-group">
-											<input type="email" class="form-control" placeholder="Email Address" name="email">
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="input-group">
-											<input type="password" class="form-control" placeholder="Password" name="password">
-										</div>
-									</div>
-									<div class="form-bottom">
-										<div class="col-md-6 col-sm-6 col-xs-7">
-											<div class="form-group rem-me">
-												<label class="checkbox-inline">
-													<input type="checkbox" class="styled">
-													<span class="chk_check"></span>
-													Remember Me
-												</label>
-											</div>
-
-										</div>
-										<div class="col-md-6 col-sm-6 col-xs-5">
-											<button type="submit" name="login" class="continue-btn">Continue</button>
-										</div>
-										<div class="col-md-12 col-xs-12">
-											<a href="/forgot-password" class="sign-up-link">Forgot Password</a>
-										</div>
-										<div class="col-md-12 col-xs-12">
-											<!-- <a href="/signup" class="sign-up-link">Sign Up A New User</a> -->
-											<a href="/payment" class="sign-up-link">Sign Up A New User</a>
-										</div>
-									</div>
-								</div>
-							</form>
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Login Credential</h4>
+							<button type="button" class="close" data-dismiss="modal" style="top:13% !important;">&times;</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
-	<script src="/js/module/login.js"></script>
+		<section class="signup-wrapper">
+			<div class="container">
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-wrap">
+							<div class="head">Sign In</div>
+							<div class="sign-up-form">
+								<form method="post" class="sign-in-form" name="sign_in" id="sign_in">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="input-group">
+												<input type="email" class="form-control" placeholder="Email Address" name="email">
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="input-group">
+												<input type="password" class="form-control" placeholder="Password" name="password">
+											</div>
+										</div>
+										<div class="form-bottom">
+											<div class="col-md-6 col-sm-6 col-xs-7">
+												<div class="form-group rem-me">
+													<label class="checkbox-inline">
+														<input type="checkbox" class="styled">
+														<span class="chk_check"></span>
+														Remember Me
+													</label>
+												</div>
+
+											</div>
+											<div class="col-md-6 col-sm-6 col-xs-5">
+												<button type="submit" name="login" class="continue-btn">Continue</button>
+											</div>
+											<div class="col-md-12 col-xs-12">
+												<a href="/forgot-password" class="sign-up-link">Forgot Password</a>
+											</div>
+											<div class="col-md-12 col-xs-12">
+												<!-- <a href="/signup" class="sign-up-link">Sign Up A New User</a> -->
+												<a href="/payment" class="sign-up-link">Sign Up A New User</a>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<script src="/js/module/login.js"></script>
 </body>
 
 </html>

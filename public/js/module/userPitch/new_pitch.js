@@ -428,7 +428,7 @@ function checkEmails() {
         let t = s.replace(/<[^>]+>/g, '');
         let p = t.replace(/\&nbsp;/g, '');
 
-        alert(p.trim());
+
         if (p.trim() == '') {
             alert("Email information can't be empty");
             $('#email_body').val('');

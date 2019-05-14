@@ -151,7 +151,13 @@ const Login = function () {
                     },
                     success: function (response) {
                         if (!response.success) {
-                            return alert(JSON.stringify(response.message));
+                            $('.modal-body').remove();
+                            $('#information').modal('show');
+                            dataHTML = '<div class="modal-body"><p class="modal-head" ><b>User Not Found!!</b></p></div >';
+                            $('.modal-content').append(dataHTML);
+                            return
+                            //return alert(JSON.stringify(response.message));
+
                         }
                         alert(response.message)
                         window.location.href = "/";
@@ -245,8 +251,13 @@ const Login = function () {
                             // $("#success-alert").fadeTo(5000, 500).slideUp(500, function () {
                             //     $("#success-alert").slideUp(500);
                             // });
-                            $("#success-alert").show();
-                            return alert(JSON.stringify(response.message));
+                            //$("#success-alert").show();
+                            $('.modal-body').remove();
+                            $('#information').modal('show');
+                            dataHTML = '<div class="modal-body"><p class="modal-head" ><b>Email And Password Is Incorrect!!</b></p></div >';
+                            $('.modal-content').append(dataHTML);
+                            //alert(JSON.stringify(response.message))
+                            return;
                         }
                         // document.cookie = "accesstoken=" + response.accesstoken;
                         // window.location.href = "/" + response.url;
